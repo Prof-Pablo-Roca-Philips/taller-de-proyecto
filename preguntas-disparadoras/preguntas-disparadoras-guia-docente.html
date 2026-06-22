@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Preguntas Disparadoras — Taller de Proyecto</title>
+<style>
+  /* ── TOKENS ─────────────────────────────────────────────────────── */
+  :root {
+    --navy:     #0A0E2A;
+    --navy-mid: #1A2550;
+    --navy-lit: #253070;
+    --cyan:     #00D4FF;
+    --cyan-dim: #0097B8;
+    --amber:    #FFB800;
+    --green:    #00C896;
+    --red:      #FF4D6A;
+    --purple:   #9B59B6;
+    --white:    #FFFFFF;
+    --off:      #E8EDF5;
+    --muted:    #7A8BAA;
+    --card:     #131B3A;
+    --card-lit: #1E2B4A;
+    --sidebar-w: 260px;
+    --radius: 10px;
+    font-size: 16px;
+  }
+
+  /* ── RESET ────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--navy);
+    color: var(--off);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    display: flex;
+  }
+
+  /* ── SIDEBAR ──────────────────────────────────────────────────── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: #080C20;
+    border-right: 1px solid rgba(0,212,255,0.12);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-logo {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid rgba(0,212,255,0.1);
+  }
+  .sidebar-logo .tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    color: var(--cyan-dim);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .sidebar-logo h1 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.3;
+  }
+  .sidebar-logo h1 span { color: var(--cyan); }
+
+  .nav-section-label {
+    padding: 18px 20px 6px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    transition: all .2s;
+    cursor: pointer;
+  }
+  .nav-item:hover {
+    color: var(--white);
+    background: rgba(0,212,255,0.06);
+  }
+  .nav-item.active {
+    color: var(--cyan);
+    border-left-color: var(--cyan);
+    background: rgba(0,212,255,0.08);
+  }
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .nav-sub {
+    padding-left: 36px;
+    font-size: 12px;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── MAIN ─────────────────────────────────────────────────────── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ─────────────────────────────────────────────────────── */
+  #hero {
+    background: linear-gradient(135deg, #0A0E2A 0%, #1A2550 60%, #0D1535 100%);
+    padding: 72px 56px 64px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(0,212,255,0.15);
+  }
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(0,212,255,0.12);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  #hero h2 {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  #hero h2 em { color: var(--cyan); font-style: normal; }
+  #hero p {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 32px;
+  }
+  .hero-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .flow-node {
+    background: var(--card);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--off);
+    text-align: center;
+    line-height: 1.3;
+  }
+  .flow-node.highlight {
+    background: rgba(255,184,0,0.12);
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+  .flow-node.end {
+    background: rgba(0,200,150,0.12);
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .flow-arrow {
+    color: var(--cyan-dim);
+    font-size: 16px;
+    padding: 0 2px;
+  }
+
+  /* ── SECTIONS ─────────────────────────────────────────────────── */
+  .section {
+    padding: 56px 56px 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    scroll-margin-top: 20px;
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .eyebrow-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .eyebrow-text {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .section h2 {
+    font-size: clamp(20px, 2.5vw, 30px);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .section > p {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 680px;
+    margin-bottom: 32px;
+  }
+
+  /* ── CARDS ────────────────────────────────────────────────────── */
+  .cards-grid {
+    display: grid;
+    gap: 16px;
+  }
+  .cards-grid.cols-2 { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .cards-grid.cols-3 { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 22px;
+    border: 1px solid rgba(255,255,255,0.07);
+    transition: border-color .2s, transform .2s;
+  }
+  .card:hover {
+    border-color: rgba(0,212,255,0.25);
+    transform: translateY(-2px);
+  }
+  .card-accent { border-left: 3px solid var(--accent, var(--cyan)); }
+
+  .card-icon {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+  .card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .card p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+  /* ── DEFINITION BOX ───────────────────────────────────────────── */
+  .def-box {
+    background: var(--card);
+    border: 1px solid rgba(0,212,255,0.25);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+  .def-box p { font-size: 16px; color: var(--off); line-height: 1.7; }
+  .def-box strong { color: var(--cyan); font-weight: 700; }
+  .def-box em { color: var(--amber); font-style: normal; font-weight: 600; }
+
+  /* ── COMPONENT ROWS ───────────────────────────────────────────── */
+  .comp-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 200px;
+    align-items: start;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .comp-row:last-child { border-bottom: none; }
+  .comp-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .comp-question { font-size: 14px; color: var(--off); font-style: italic; }
+  .comp-validity { font-size: 12px; color: var(--muted); line-height: 1.45; }
+
+  /* ── TIPO PREGUNTA ────────────────────────────────────────────── */
+  .tipo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .tipo-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+    transition: transform .2s;
+  }
+  .tipo-card:hover { transform: translateY(-2px); }
+  .tipo-header {
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--navy);
+  }
+  .tipo-body { padding: 14px 16px; }
+  .tipo-body p { font-size: 12.5px; color: var(--muted); margin-bottom: 10px; }
+  .tipo-example {
+    font-size: 12px;
+    color: var(--off);
+    font-style: italic;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    padding: 8px 12px;
+    line-height: 1.5;
+  }
+
+  /* ── EJES ─────────────────────────────────────────────────────── */
+  .ejes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .eje-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .eje-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--navy);
+  }
+  .eje-card h3 { font-size: 13px; font-weight: 700; color: var(--white); }
+  .eje-card p { font-size: 12.5px; color: var(--muted); }
+  .eje-card .eje-example {
+    font-size: 12px;
+    color: var(--off);
+    font-style: italic;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    padding: 10px 12px;
+    line-height: 1.5;
+  }
+  .eje-result {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    align-self: flex-start;
+  }
+
+  /* ── FORMULA BOX ──────────────────────────────────────────────── */
+  .formula-box {
+    background: var(--navy);
+    border: 2px solid var(--green);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin: 24px 0;
+  }
+  .formula-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 10px;
+  }
+  .formula-text {
+    font-size: 15px;
+    color: var(--off);
+    line-height: 1.8;
+  }
+  .formula-text .f-ctx  { color: var(--cyan);   font-weight: 700; }
+  .formula-text .f-prob { color: var(--amber);  font-weight: 700; }
+  .formula-text .f-var  { color: var(--purple); font-weight: 700; }
+  .formula-text .f-qbk  { color: var(--red);   font-weight: 700; }
+  .formula-text .f-eff  { color: var(--green);  font-weight: 700; }
+
+  /* ── VALIDATION ROWS ──────────────────────────────────────────── */
+  .validation-list { display: flex; flex-direction: column; gap: 8px; }
+  .val-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+  }
+  .val-row.ok  { background: rgba(0,200,150,0.08); color: #00C896; }
+  .val-row.bad { background: rgba(255,77,106,0.08); color: #FF4D6A; font-weight: 600; }
+  .val-row .val-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .val-row .val-text { color: var(--off); }
+  .val-row.bad .val-text { color: #FF4D6A; }
+
+  /* ── EXAMPLE WALKTHROUGH ──────────────────────────────────────── */
+  .walkthrough {
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .walk-header {
+    background: var(--navy-mid);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .walk-header .walk-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    background: rgba(255,184,0,0.12);
+    border: 1px solid rgba(255,184,0,0.3);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .walk-header p { font-size: 14px; color: var(--off); font-style: italic; }
+  .walk-step {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    align-items: start;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .walk-label {
+    padding: 14px 16px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+  .walk-content {
+    padding: 14px 20px;
+    font-size: 13.5px;
+    color: var(--off);
+    line-height: 1.55;
+  }
+  .walk-content.result-box {
+    background: rgba(0,200,150,0.06);
+    border-left: 2px solid var(--green);
+  }
+
+  /* ── FASE SECTION ─────────────────────────────────────────────── */
+  .fase-steps { display: flex; flex-direction: column; gap: 12px; }
+  .fase-step {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255,255,255,0.07);
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  .fase-step:hover { border-color: rgba(0,212,255,0.2); }
+  .fase-step-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+  .step-title { font-size: 14px; font-weight: 700; color: var(--white); }
+  .step-chevron {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 13px;
+    transition: transform .25s;
+  }
+  .fase-step.open .step-chevron { transform: rotate(180deg); }
+  .fase-step-body {
+    display: none;
+    padding: 0 20px 18px 66px;
+  }
+  .fase-step.open .fase-step-body { display: block; }
+  .fase-step-body p { font-size: 13.5px; color: var(--muted); margin-bottom: 10px; line-height: 1.6; }
+  .mini-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .mini-list li {
+    font-size: 13px;
+    color: var(--off);
+    padding: 7px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    border-left: 2px solid var(--accent, var(--cyan));
+  }
+  .nota-docente {
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--cyan-dim);
+  }
+  .nota-docente strong { color: var(--cyan); }
+
+  /* ── PROYECTO CARDS ───────────────────────────────────────────── */
+  .proyecto-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 14px;
+  }
+  .proyecto-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .proyecto-num {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+  .proyecto-info h3 { font-size: 14px; font-weight: 700; color: var(--white); }
+  .proyecto-info p { font-size: 12px; color: var(--muted); }
+  .proyecto-toggle { margin-left: auto; color: var(--muted); transition: transform .25s; }
+  .proyecto-card.open .proyecto-toggle { transform: rotate(180deg); }
+  .proyecto-body { display: none; }
+  .proyecto-card.open .proyecto-body { display: block; }
+  .proyecto-row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .proyecto-row-label {
+    padding: 12px 16px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+  .proyecto-row-value {
+    padding: 12px 18px;
+    font-size: 13px;
+    color: var(--off);
+    line-height: 1.55;
+  }
+
+  /* ── GLOSARIO ─────────────────────────────────────────────────── */
+  .glosario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  .glosario-item {
+    background: var(--card);
+    border-radius: 8px;
+    padding: 16px;
+    border-left: 3px solid var(--accent, var(--cyan));
+  }
+  .glosario-term {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .glosario-def { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+  /* ── CHECKLIST ────────────────────────────────────────────────── */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--card);
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: var(--off);
+    line-height: 1.5;
+    cursor: pointer;
+    user-select: none;
+    transition: background .2s;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .check-item:hover { background: var(--card-lit); }
+  .check-item input[type=checkbox] {
+    width: 17px; height: 17px;
+    accent-color: var(--cyan);
+    margin-top: 2px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .check-item.checked { opacity: 0.55; text-decoration: line-through; color: var(--muted); }
+
+  /* ── PROGRESS BAR ─────────────────────────────────────────────── */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: var(--sidebar-w);
+    right: 0; height: 3px;
+    background: rgba(0,212,255,0.12);
+    z-index: 200;
+  }
+  #progress-fill {
+    height: 100%;
+    background: var(--cyan);
+    width: 0%;
+    transition: width .1s;
+  }
+
+  /* ── MOBILE TOGGLE ─────────────────────────────────────────────── */
+  #menu-toggle {
+    display: none;
+    position: fixed;
+    top: 12px; left: 12px;
+    z-index: 300;
+    background: var(--navy-mid);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--cyan);
+    font-size: 20px;
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  /* ── RESPONSIVE ───────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    :root { --sidebar-w: 0px; }
+    #sidebar { transform: translateX(-260px); width: 260px; transition: transform .3s; }
+    #sidebar.open { transform: translateX(0); --sidebar-w: 260px; }
+    #main { margin-left: 0; }
+    #menu-toggle { display: flex; }
+    .section { padding: 40px 24px 36px; }
+    #hero { padding: 56px 24px 48px; }
+    .comp-row { grid-template-columns: 1fr; }
+    #progress-bar { left: 0; }
+  }
+
+  /* ── SCROLLBAR ─────────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(0,212,255,0.4); }
+
+  /* ── HIGHLIGHT INLINE ─────────────────────────────────────────── */
+  .hl-cyan   { color: var(--cyan);   font-weight: 600; }
+  .hl-amber  { color: var(--amber);  font-weight: 600; }
+  .hl-green  { color: var(--green);  font-weight: 600; }
+  .hl-red    { color: var(--red);    font-weight: 600; }
+  .hl-purple { color: var(--purple); font-weight: 600; }
+
+  /* ── BACK TO TOP ──────────────────────────────────────────────── */
+  #back-top {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    width: 42px; height: 42px;
+    background: var(--navy-mid);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 50%;
+    color: var(--cyan);
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+    z-index: 150;
+  }
+  #back-top.visible { opacity: 1; pointer-events: auto; }
+  #back-top:hover { background: var(--navy-lit); }
+
+  /* ── TOOLTIP ──────────────────────────────────────────────────── */
+  [data-tip] { position: relative; cursor: help; border-bottom: 1px dashed var(--muted); }
+  [data-tip]::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%; transform: translateX(-50%);
+    background: var(--navy-mid);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--off);
+    font-size: 11.5px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .2s;
+    z-index: 999;
+  }
+  [data-tip]:hover::after { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<!-- MENU TOGGLE MOBILE -->
+<button id="menu-toggle" onclick="toggleSidebar()" aria-label="Menú">☰</button>
+
+<!-- BACK TO TOP -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">↑</button>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────────── -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="tag">Taller de Proyecto · 1er Año</div>
+    <h1>Preguntas<br><span>Disparadoras</span></h1>
+  </div>
+
+  <div class="nav-section-label">Fundamentos</div>
+  <a class="nav-item" href="#intro" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#00D4FF"></span> ¿Qué es una pregunta disparadora?
+  </a>
+  <a class="nav-item" href="#flujo" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#FFB800"></span> El flujo del proyecto
+  </a>
+
+  <div class="nav-section-label">Herramientas</div>
+  <a class="nav-item" href="#tipos" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#9B59B6"></span> Los 6 tipos
+  </a>
+  <a class="nav-item" href="#ejes" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#00C896"></span> Los 3 ejes
+  </a>
+  <a class="nav-item" href="#componentes" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#FF4D6A"></span> Las 4 componentes
+  </a>
+  <a class="nav-item" href="#formula" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#00C896"></span> Fórmula del problema técnico
+  </a>
+
+  <div class="nav-section-label">Fase 1 — Análisis</div>
+  <a class="nav-item" href="#fase1" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#00D4FF"></span> Los 5 pasos
+  </a>
+  <a class="nav-item nav-sub" href="#fase1-p1" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#253070"></span> Problema original
+  </a>
+  <a class="nav-item nav-sub" href="#fase1-p2" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#253070"></span> Contexto
+  </a>
+  <a class="nav-item nav-sub" href="#fase1-p3" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#253070"></span> Impacto
+  </a>
+  <a class="nav-item nav-sub" href="#fase1-p4" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#253070"></span> Variables
+  </a>
+  <a class="nav-item nav-sub" href="#fase1-p5" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#253070"></span> Problema técnico definitivo
+  </a>
+
+  <div class="nav-section-label">Ejemplo y práctica</div>
+  <a class="nav-item" href="#ejemplo" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#FFB800"></span> Ejemplo completo
+  </a>
+  <a class="nav-item" href="#proyectos" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#00C896"></span> Proyectos de referencia
+  </a>
+  <a class="nav-item" href="#checklist" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#FF4D6A"></span> Checklist de autoevaluación
+  </a>
+  <a class="nav-item" href="#glosario" onclick="closeSidebar()">
+    <span class="nav-dot" style="background:#9B59B6"></span> Glosario
+  </a>
+
+  <div class="sidebar-footer">
+    Electromecánica · Robótica · IA<br>
+    Industria 4.0 · 2025
+  </div>
+</nav>
+
+<!-- ── MAIN ─────────────────────────────────────────────────────── -->
+<main id="main">
+
+  <!-- HERO -->
+  <section id="top">
+    <div id="hero">
+      <div class="hero-tag">Guía de Referencia Autodidacta</div>
+      <h2>Preguntas<br><em>Disparadoras</em></h2>
+      <p>Todo lo que necesitás para pasar de un problema vago a un proyecto técnico bien definido. Usá esta guía como referencia durante la clase.</p>
+      <div class="hero-flow">
+        <div class="flow-node">Problema<br>Vago</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node highlight">Preguntas<br>Disparadoras</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">4 Comp.</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Problema<br>Técnico</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Objetivo</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node end">Solución</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INTRO ───────────────────────────────────────────────────── -->
+  <section class="section" id="intro">
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot" style="background:#00D4FF"></div>
+      <span class="eyebrow-text">Fundamento central</span>
+    </div>
+    <h2>¿Qué es una pregunta disparadora?</h2>
+    <p>El punto de partida de todo proyecto técnico bien diseñado.</p>
+
+    <div class="def-box">
+      <p>Una pregunta disparadora es una pregunta <strong>abierta y precisa</strong> que despierta curiosidad y da inicio a un proyecto. No se responde con sí o no: <em>obliga a investigar, definir o crear algo</em>. A diferencia de una pregunta vaga, tiene la forma correcta y apunta a un resultado concreto.</p>
+    </div>
+
+    <div class="cards-grid cols-3">
+      <div class="card card-accent" style="--accent:#00D4FF">
+        <div class="card-icon" style="background:rgba(0,212,255,0.12); color:#00D4FF">◎</div>
+        <h3>Abierta</h3>
+        <p>No admite sí o no como respuesta. Abre un campo de indagación que lleva a explorar, investigar o construir.</p>
+      </div>
+      <div class="card card-accent" style="--accent:#FFB800">
+        <div class="card-icon" style="background:rgba(255,184,0,0.12); color:#FFB800">⚡</div>
+        <h3>Precisa</h3>
+        <p>Sin ambigüedad. La respuesta tiene que poder medirse o verificarse. Si la respuesta puede ser cualquier cosa, la pregunta está mal formulada.</p>
+      </div>
+      <div class="card card-accent" style="--accent:#00C896">
+        <div class="card-icon" style="background:rgba(0,200,150,0.12); color:#00C896">→</div>
+        <h3>Orientada</h3>
+        <p>Apunta a un destino: un informe, una solución técnica o un producto físico. Define hacia dónde va el proyecto.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FLUJO ───────────────────────────────────────────────────── -->
+  <section class="section" id="flujo">
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot" style="background:#FFB800"></div>
+      <span class="eyebrow-text">El proceso completo</span>
+    </div>
+    <h2>El flujo del proyecto</h2>
+    <p>Cada etapa depende de la anterior. Si cualquier eslabón está mal definido, el error se propaga hacia adelante.</p>
+
+    <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+      <div style="display:grid; grid-template-columns:120px 1fr; gap:14px; align-items:center; padding:14px 18px; background:var(--card); border-radius:9px; border-left:3px solid #4A5580;">
+        <span style="font-size:12px; font-weight:700; color:#4A5580; text-transform:uppercase; letter-spacing:.06em;">Robot / instrucción atómica</span>
+        <span style="font-size:13px; color:var(--muted);">Las instrucciones deben ser atómicas, sin ambigüedad. Lo que no se contempla, no pasa.</span>
+      </div>
+      <div style="display:grid; grid-template-columns:120px 1fr; gap:14px; align-items:center; padding:14px 18px; background:var(--card); border-radius:9px; border-left:3px solid #7A8BAA;">
+        <span style="font-size:12px; font-weight:700; color:#7A8BAA; text-transform:uppercase; letter-spacing:.06em;">Problema vago</span>
+        <span style="font-size:13px; color:var(--muted);">La situación tal como la describe alguien sin conocimiento técnico. Punto de partida.</span>
+      </div>
+      <div style="display:grid; grid-template-columns:120px 1fr; gap:14px; align-items:center; padding:14px 18px; background:rgba(255,184,0,0.07); border-radius:9px; border-left:3px solid var(--amber);">
+        <span style="font-size:12px; font-weight:700; color:var(--amber); text-transform:uppercase; letter-spacing:.06em;">Preguntas disparadoras ★</span>
+        <span style="font-size:13px; color:var(--off);">El nodo clave. Las preguntas correctas extraen las 4 componentes del problema vago.</span>
+      </div>
+      <div style="display:grid; grid-template-columns:120px 1fr; gap:14px; align-items:center; padding:14px 18px; background:var(--card); border-radius:9px; border-left:3px solid var(--cyan);">
+        <span style="font-size:12px; font-weight:700; color:var(--cyan); text-transform:uppercase; letter-spacing:.06em;">4 Componentes</span>
+        <span style="font-size:13px; color:var(--muted);">Problema · Contexto · Variable(s) · Punto de quiebre. Las piezas del problema técnico.</span>
+      </div>
+      <div style="display:grid; grid-template-columns:120px 1fr; gap:14px; align-items:center; padding:14px 18px; background:var(--card); border-radius:9px; border-left:3px solid var(--purple);">
+        <span style="font-size:12px; font-weight:700; color:var(--purple); text-transform:uppercase; letter-spacing:.06em;">Problema técnico</span>
+        <span style="font-size:13px; color:var(--muted);">El enunciado preciso y verificable del problema. Una sola oración, sin adjetivos subjetivos.</span>
+      </div>
+      <div style="display:grid; grid-template-columns:120px 1fr; gap:14px; align-items:center; padding:14px 18px; background:var(--card); border-radius:9px; border-left:3px solid #9B59B6;">
+        <span style="font-size:12px; font-weight:700; color:#9B59B6; text-transform:uppercase; letter-spacing:.06em;">Objetivos</span>
+        <span style="font-size:13px; color:var(--muted);">Acciones medibles y verificables que resuelven cada componente del problema técnico.</span>
+      </div>
+      <div style="display:grid; grid-template-columns:120px 1fr; gap:14px; align-items:center; padding:14px 18px; background:rgba(0,200,150,0.07); border-radius:9px; border-left:3px solid var(--green);">
+        <span style="font-size:12px; font-weight:700; color:var(--green); text-transform:uppercase; letter-spacing:.06em;">Solución</span>
+        <span style="font-size:13px; color:var(--off);">El dispositivo, sistema o producto que materializa cada objetivo. Sale directamente de ahí.</span>
+      </div>
+    </div>
+
+    <div style="margin-top:18px; padding:14px 18px; background:rgba(255,77,106,0.07); border-radius:9px; border:1px solid rgba(255,77,106,0.25); font-size:13px; color:var(--off);">
+      ⚠️ <strong style="color:var(--red);">Regla de oro:</strong> un problema mal enunciado genera una solución incorrecta. Si la pregunta disparadora es vaga, el proyecto va a ser vago.
+    </div>
+  </section>
+
+  <!-- ── TIPOS ───────────────────────────────────────────────────── -->
+  <section class="section" id="tipos">
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot" style="background:#9B59B6"></div>
+      <span class="eyebrow-text">Herramienta 1</span>
+    </div>
+    <h2>Los 6 tipos de preguntas disparadoras</h2>
+    <p>El inicio de la pregunta no es decorativo — cambia el ángulo de indagación y el tipo de respuesta que vas a obtener.</p>
+
+    <div class="tipo-grid">
+      <div class="tipo-card">
+        <div class="tipo-header" style="background:#00D4FF">¿Cómo...?</div>
+        <div class="tipo-body">
+          <p>Busca crear un proceso o solución. Es la más común en proyectos de creación de productos.</p>
+          <div class="tipo-example">"¿Cómo diseñamos un sensor que detecte fallos en una máquina antes de que ocurran?"</div>
+        </div>
+      </div>
+      <div class="tipo-card">
+        <div class="tipo-header" style="background:#FFB800">¿Por qué...?</div>
+        <div class="tipo-body">
+          <p>Investiga causas. Lleva a un proyecto de tipo respuesta a una pregunta.</p>
+          <div class="tipo-example">"¿Por qué las fábricas modernas usan robots en lugar de personas para tareas repetitivas?"</div>
+        </div>
+      </div>
+      <div class="tipo-card">
+        <div class="tipo-header" style="background:#00C896">¿Para qué...?</div>
+        <div class="tipo-body">
+          <p>Explora el propósito. Define el valor o impacto esperado de la solución.</p>
+          <div class="tipo-example">"¿Para qué necesitamos un sistema de IA que monitoree el rendimiento de una línea de producción?"</div>
+        </div>
+      </div>
+      <div class="tipo-card">
+        <div class="tipo-header" style="background:#9B59B6">¿Qué harías...?</div>
+        <div class="tipo-body">
+          <p>Imagina soluciones. Activa el pensamiento creativo e inventivo.</p>
+          <div class="tipo-example">"¿Qué harías para que un brazo robótico clasifique materiales reciclables automáticamente?"</div>
+        </div>
+      </div>
+      <div class="tipo-card">
+        <div class="tipo-header" style="background:#FF4D6A">¿De qué manera...?</div>
+        <div class="tipo-body">
+          <p>Busca métodos. Abre posibilidades múltiples para llegar a un mismo resultado.</p>
+          <div class="tipo-example">"¿De qué manera podríamos usar energía solar para alimentar los sensores de una fábrica?"</div>
+        </div>
+      </div>
+      <div class="tipo-card">
+        <div class="tipo-header" style="background:#0097B8">¿Cuál es...?</div>
+        <div class="tipo-body">
+          <p>Compara opciones. Lleva a evaluar alternativas con criterios técnicos.</p>
+          <div class="tipo-example">"¿Cuál es la mejor forma de conectar sensores distribuidos a una app de monitoreo central?"</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EJES ────────────────────────────────────────────────────── -->
+  <section class="section" id="ejes">
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot" style="background:#00C896"></div>
+      <span class="eyebrow-text">Herramienta 2</span>
+    </div>
+    <h2>Los 3 ejes disparadores</h2>
+    <p>La pregunta no solo abre el proyecto — define hacia dónde va y qué tipo de entregable se produce al final.</p>
+
+    <div class="ejes-grid">
+      <div class="eje-card" style="border-top:3px solid var(--cyan)">
+        <div class="eje-num" style="background:var(--cyan)">1</div>
+        <h3>Respuesta a una pregunta</h3>
+        <p>Investigamos para entender algo. El proyecto culmina en conocimiento documentado.</p>
+        <div class="eje-example">"¿Por qué los paneles solares con seguimiento de luz generan hasta un 40% más de energía que los fijos?"</div>
+        <span class="eje-result" style="background:rgba(0,212,255,0.12); color:var(--cyan)">→ Informe</span>
+      </div>
+      <div class="eje-card" style="border-top:3px solid var(--amber)">
+        <div class="eje-num" style="background:var(--amber)">2</div>
+        <h3>Resolución de un problema</h3>
+        <p>Solucionamos un desafío concreto. El proyecto culmina en un diseño o sistema funcional.</p>
+        <div class="eje-example">"¿Cómo podríamos detectar y reducir los errores en una línea de producción antes de que se propaguen?"</div>
+        <span class="eje-result" style="background:rgba(255,184,0,0.12); color:var(--amber)">→ Diseño / Sensor</span>
+      </div>
+      <div class="eje-card" style="border-top:3px solid var(--green)">
+        <div class="eje-num" style="background:var(--green)">3</div>
+        <h3>Creación de un producto</h3>
+        <p>Inventamos algo tangible. El proyecto culmina en un prototipo físico o digital.</p>
+        <div class="eje-example">"¿De qué manera construiríamos un brazo robótico que clasifique residuos por tipo de material?"</div>
+        <span class="eje-result" style="background:rgba(0,200,150,0.12); color:var(--green)">→ Prototipo</span>
+      </div>
+    </div>
+
+    <div style="margin-top:18px; padding:14px 18px; background:var(--card); border-radius:9px; border:1px solid rgba(255,255,255,0.08); font-size:13px; color:var(--muted);">
+      💡 <strong style="color:var(--off);">Tip:</strong> elegir el eje correcto antes de formular la pregunta ahorra rehacer el proyecto a mitad de camino. Preguntate primero: ¿qué quiero producir al final?
+    </div>
+  </section>
+
+  <!-- ── COMPONENTES ─────────────────────────────────────────────── -->
+  <section class="section" id="componentes">
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot" style="background:#FF4D6A"></div>
+      <span class="eyebrow-text">Herramienta 3</span>
+    </div>
+    <h2>Las 4 componentes del problema</h2>
+    <p>Cada pregunta disparadora apunta a extraer exactamente una componente del problema vago. Si la respuesta sigue siendo vaga, la pregunta estaba mal hecha.</p>
+
+    <div style="background:var(--card); border-radius:var(--radius); overflow:hidden; border:1px solid rgba(255,255,255,0.08); margin-bottom:24px;">
+      <div class="comp-row">
+        <div><span class="comp-badge" style="background:rgba(0,212,255,0.12);color:var(--cyan)">CONTEXTO</span></div>
+        <div>
+          <p class="comp-question">"¿En qué sistema, espacio o ámbito ocurre esto, y quién o qué está involucrado?"</p>
+          <p style="font-size:12px; color:var(--muted); margin-top:5px;">Trampa común: confundir el contexto con el problema mismo. El contexto es el <em class="hl-cyan">escenario</em>, no el síntoma.</p>
+        </div>
+        <div class="comp-validity">Debe poder <strong>delimitarse o dibujarse</strong>. Si sigue siendo "en la sociedad", es demasiado amplio.</div>
+      </div>
+      <div class="comp-row">
+        <div><span class="comp-badge" style="background:rgba(255,184,0,0.12);color:var(--amber)">VARIABLE</span></div>
+        <div>
+          <p class="comp-question">"¿Qué es lo único que, si lo mido u observo, me dice si el problema está presente o no?"</p>
+          <p style="font-size:12px; color:var(--muted); margin-top:5px;">Trampa común: elegir una variable que es un síntoma, no la causa. Preguntate: <em class="hl-amber">¿si esta variable cambia, el problema desaparece?</em></p>
+        </div>
+        <div class="comp-validity">Tiene que ser <strong>observable o medible</strong> directamente.</div>
+      </div>
+      <div class="comp-row">
+        <div><span class="comp-badge" style="background:rgba(255,77,106,0.12);color:var(--red)">PUNTO DE QUIEBRE</span></div>
+        <div>
+          <p class="comp-question">"¿En qué valor, estado o condición de esa variable digo que el problema empieza (o termina)?"</p>
+          <p style="font-size:12px; color:var(--muted); margin-top:5px;">Trampa común: dejar el quiebre en términos subjetivos. <em class="hl-red">"Cuando ya es mucho"</em> no es un quiebre — es otra vagedad.</p>
+        </div>
+        <div class="comp-validity">Debe escribirse como <strong>condición objetiva</strong>: un número, un estado lógico (sí/no), un cambio discreto.</div>
+      </div>
+      <div class="comp-row">
+        <div><span class="comp-badge" style="background:rgba(0,200,150,0.12);color:var(--green)">PROBLEMA</span></div>
+        <div>
+          <p class="comp-question">"Dado este contexto, esta variable y este quiebre — ¿qué efecto no deseado ocurre cuando se cruza el umbral?"</p>
+          <p style="font-size:12px; color:var(--muted); margin-top:5px;">Esta es la única componente que no genera información nueva: <em class="hl-green">reconstruye</em> el problema técnico a partir de las tres anteriores.</p>
+        </div>
+        <div class="comp-validity">Una sola oración, <strong>sin 'y'</strong>, sin adjetivos valorativos.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FÓRMULA ─────────────────────────────────────────────────── -->
+  <section class="section" id="formula">
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot" style="background:#00C896"></div>
+      <span class="eyebrow-text">Herramienta 4</span>
+    </div>
+    <h2>Fórmula del problema técnico</h2>
+    <p>Una vez identificadas las 4 componentes, el problema técnico se construye siguiendo esta estructura. Cada hueco en corchetes corresponde a una componente.</p>
+
+    <div class="formula-box">
+      <div class="formula-label">Estructura</div>
+      <div class="formula-text">
+        En <span class="f-ctx">[CONTEXTO]</span> ocurre <span class="f-prob">[PROBLEMA]</span> cuando <span class="f-var">[VARIABLE]</span> supera <span class="f-qbk">[PUNTO DE QUIEBRE]</span>, lo que genera <span class="f-eff">[EFECTO NO DESEADO]</span>.
+      </div>
+    </div>
+
+    <div class="validation-list">
+      <div class="val-row ok"><span class="val-icon">✓</span><span class="val-text">Una sola oración — no usar "y" para unir dos problemas distintos.</span></div>
+      <div class="val-row ok"><span class="val-icon">✓</span><span class="val-text">Sin adjetivos subjetivos: no "mucho", "grave", "excesivo", "peligroso".</span></div>
+      <div class="val-row ok"><span class="val-icon">✓</span><span class="val-text">Cada término entre corchetes ya debe estar definido en los pasos anteriores.</span></div>
+      <div class="val-row bad"><span class="val-icon">✗</span><span class="val-text">NO: "Hay mucho calor en la oficina que molesta a la gente y genera problemas."</span></div>
+      <div class="val-row ok"><span class="val-icon">✓</span><span class="val-text">SÍ: "La temperatura del ambiente supera los 26 °C por más de 30 min en horario laboral, lo que genera fatiga cognitiva en los ocupantes."</span></div>
+    </div>
+  </section>
+
+  <!-- ── FASE 1 ───────────────────────────────────────────────────── -->
+  <section class="section" id="fase1">
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot" style="background:#00D4FF"></div>
+      <span class="eyebrow-text">Fase 1 · Semanas 1–3</span>
+    </div>
+    <h2>Análisis del Problema — Los 5 pasos</h2>
+    <p>Objetivo: comprender qué problema se quiere resolver <em>antes</em> de proponer cualquier solución. Hacé clic en cada paso para expandirlo.</p>
+
+    <div class="fase-steps">
+
+      <div class="fase-step" id="fase1-p1">
+        <div class="fase-step-header" onclick="toggleFase(this)">
+          <div class="step-num" style="background:var(--cyan)">1</div>
+          <span class="step-title">Problema original</span>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="fase-step-body">
+          <p>Describan el problema tal como lo identificaron, sin usar lenguaje técnico todavía. Tiene que sonar como lo diría alguien afectado por el problema en la vida cotidiana.</p>
+          <ul class="mini-list" style="--accent:var(--cyan)">
+            <li>¿Dónde ocurre exactamente?</li>
+            <li>¿Quién se ve afectado y cómo?</li>
+            <li>¿En qué situación o condición aparece el problema?</li>
+          </ul>
+          <div class="nota-docente"><strong>Docente:</strong> si el problema es demasiado abstracto, preguntar: ¿dónde pasa? · ¿cuándo pasa? · ¿a quién afecta? Eso obliga a concretar antes de avanzar.</div>
+        </div>
+      </div>
+
+      <div class="fase-step" id="fase1-p2">
+        <div class="fase-step-header" onclick="toggleFase(this)">
+          <div class="step-num" style="background:var(--amber)">2</div>
+          <span class="step-title">Contexto del problema</span>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="fase-step-body">
+          <p>Describan el entorno donde ocurre el problema. El contexto acota el universo de variables posibles — sin él, todo es demasiado amplio para definir qué medir.</p>
+          <ul class="mini-list" style="--accent:var(--amber)">
+            <li>Aula · Casa · Transporte · Taller · Patio · Industria</li>
+            <li>¿En qué momento del día o del proceso ocurre?</li>
+            <li>¿Qué personas o dispositivos están involucrados?</li>
+          </ul>
+          <p style="margin-top:10px; font-size:12.5px;"><strong style="color:var(--amber)">Conexión:</strong> este paso produce la componente <span class="hl-cyan">CONTEXTO</span>. La disparadora correspondiente es: <em>"¿En qué sistema o espacio ocurre esto, y quién está involucrado?"</em></p>
+        </div>
+      </div>
+
+      <div class="fase-step" id="fase1-p3">
+        <div class="fase-step-header" onclick="toggleFase(this)">
+          <div class="step-num" style="background:var(--red)">3</div>
+          <span class="step-title">Impacto del problema</span>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="fase-step-body">
+          <p>¿Qué consecuencias genera este problema si no se resuelve? El impacto justifica la existencia del proyecto. Sin impacto real, el proyecto pierde sentido.</p>
+          <ul class="mini-list" style="--accent:var(--red)">
+            <li>¿Qué pasa si no se resuelve?</li>
+            <li>¿Quién sufre las consecuencias directas?</li>
+            <li>¿Con qué frecuencia ocurre?</li>
+            <li>¿Cuál es la magnitud del efecto?</li>
+          </ul>
+          <div class="nota-docente"><strong>Pensamiento crítico:</strong> si el problema no tiene impacto real o verificable, el proyecto pierde su razón de ser. Volver al paso 1.</div>
+        </div>
+      </div>
+
+      <div class="fase-step" id="fase1-p4">
+        <div class="fase-step-header" onclick="toggleFase(this)">
+          <div class="step-num" style="background:var(--purple)">4</div>
+          <span class="step-title">Variables del problema</span>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="fase-step-body">
+          <p>Todo sistema automático detecta una <span class="hl-purple">variable del entorno</span>. Identificar la variable principal es el paso más técnico y el que más cuesta — pero es el corazón del diseño del sensor.</p>
+          <ul class="mini-list" style="--accent:var(--purple)">
+            <li>Temperatura · Luz · Sonido · Movimiento · Distancia</li>
+            <li>Humedad · Tiempo · Corriente · Presión · Color</li>
+            <li>Concentración de gas · Posición · Voltaje · pH</li>
+          </ul>
+          <p style="margin-top:10px; font-size:12.5px;"><strong style="color:var(--purple)">Regla clave:</strong> <code style="background:rgba(155,89,182,0.12); padding:2px 7px; border-radius:4px; font-size:12px;">sensor = medir variable</code>. Este paso prepara directamente la elección del sensor en fases siguientes.</p>
+          <p style="font-size:12.5px; margin-top:8px;"><strong style="color:var(--amber)">Conexión:</strong> este paso produce la componente <span class="hl-amber">VARIABLE</span>. La disparadora es: <em>"¿Qué es lo único que, si lo mido, me dice si el problema existe?"</em></p>
+        </div>
+      </div>
+
+      <div class="fase-step" id="fase1-p5">
+        <div class="fase-step-header" onclick="toggleFase(this)">
+          <div class="step-num" style="background:var(--green)">5</div>
+          <span class="step-title">Problema técnico definitivo</span>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="fase-step-body">
+          <p>Reescribir el problema en lenguaje técnico usando la fórmula. Cada término entre corchetes tiene que estar ya definido en los pasos anteriores. Si alguno falta, volver al paso correspondiente.</p>
+          <div class="formula-box" style="margin:12px 0;">
+            <div class="formula-label">Estructura</div>
+            <div class="formula-text" style="font-size:13px;">
+              En <span class="f-ctx">[CONTEXTO]</span> ocurre <span class="f-prob">[PROBLEMA]</span> cuando <span class="f-var">[VARIABLE]</span> supera <span class="f-qbk">[PUNTO DE QUIEBRE]</span>, lo que genera <span class="f-eff">[EFECTO NO DESEADO]</span>.
+            </div>
+          </div>
+          <div class="nota-docente"><strong>Autocontrol:</strong> si necesitás usar "y" para conectar dos ideas, probablemente estás describiendo dos problemas distintos. Elegí uno.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── EJEMPLO ─────────────────────────────────────────────────── -->
+  <section class="section" id="ejemplo">
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot" style="background:#FFB800"></div>
+      <span class="eyebrow-text">Caso resuelto</span>
+    </div>
+    <h2>Ejemplo completo</h2>
+    <p>Un caso trabajado paso a paso desde el problema vago hasta el objetivo.</p>
+
+    <div class="walkthrough">
+      <div class="walk-header">
+        <span class="walk-tag">PROBLEMA VAGO</span>
+        <p>"En la oficina a veces hace mucho calor."</p>
+      </div>
+      <div class="walk-step">
+        <div class="walk-label" style="color:var(--cyan)">CONTEXTO</div>
+        <div class="walk-content">La oficina, en horario laboral, con el personal administrativo presente y ventanas cerradas.</div>
+      </div>
+      <div class="walk-step">
+        <div class="walk-label" style="color:var(--amber)">VARIABLE</div>
+        <div class="walk-content">Temperatura ambiente del espacio de trabajo (medida en °C).</div>
+      </div>
+      <div class="walk-step">
+        <div class="walk-label" style="color:var(--red)">PUNTO DE QUIEBRE</div>
+        <div class="walk-content">Temperatura ambiente superior a 26 °C sostenida por más de 30 minutos.</div>
+      </div>
+      <div class="walk-step">
+        <div class="walk-label" style="color:var(--green)">PROBLEMA TÉCNICO</div>
+        <div class="walk-content result-box">La temperatura del ambiente de la oficina supera los 26 °C durante más de 30 minutos en horario laboral, lo que genera fatiga cognitiva y reduce el rendimiento del personal.</div>
+      </div>
+      <div class="walk-step">
+        <div class="walk-label" style="color:var(--purple)">OBJETIVO</div>
+        <div class="walk-content">Detectar cuando la temperatura supere los 26 °C por más de 30 minutos y activar automáticamente un mecanismo de enfriamiento.</div>
+      </div>
+      <div class="walk-step">
+        <div class="walk-label" style="color:#0097B8">SOLUCIÓN</div>
+        <div class="walk-content">Termostato con sensor de temperatura + controlador + relé que activa el aire acondicionado automáticamente al superar el umbral.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROYECTOS ───────────────────────────────────────────────── -->
+  <section class="section" id="proyectos">
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot" style="background:#00C896"></div>
+      <span class="eyebrow-text">Referencia de clase</span>
+    </div>
+    <h2>Proyectos de referencia</h2>
+    <p>Los 4 proyectos de la competencia grupal, resueltos. Usá estos como modelo para verificar tus respuestas.</p>
+
+    <!-- P1 -->
+    <div class="proyecto-card" id="proj-1">
+      <div class="proyecto-header" onclick="toggleProyecto(this)">
+        <div class="proyecto-num" style="background:#00C896">1</div>
+        <div class="proyecto-info">
+          <h3>Monitor de Calidad del Aire</h3>
+          <p>Automatización · Salud · IoT</p>
+        </div>
+        <span class="proyecto-toggle">▼</span>
+      </div>
+      <div class="proyecto-body">
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:#00C896">Problema vago</div><div class="proyecto-row-value">En el aula a veces el ambiente se pone pesado y la gente se cansa.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--cyan)">Contexto</div><div class="proyecto-row-value">Aula escolar en horario de clases con ventanas cerradas y 20+ estudiantes presentes.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--amber)">Variable</div><div class="proyecto-row-value">Concentración de CO₂ en el aire (ppm — partes por millón).</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--red)">Punto de quiebre</div><div class="proyecto-row-value">Concentración de CO₂ superior a 1000 ppm sostenida por más de 5 minutos.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--green)">Problema técnico</div><div class="proyecto-row-value">En el aula, la concentración de CO₂ supera las 1000 ppm durante más de 5 minutos con ventanas cerradas, lo que genera fatiga cognitiva y reduce el rendimiento de los estudiantes.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--purple)">Objetivos</div><div class="proyecto-row-value">1. Detectar continuamente la concentración de CO₂. 2. Activar alarma sonora y visual al superar las 1000 ppm por más de 5 min. 3. Accionar automáticamente ventilación.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:#00C896">Solución</div><div class="proyecto-row-value">Sensor MQ-135 + Arduino + display LCD + buzzer + relé que controla un extractor de aire.</div></div>
+      </div>
+    </div>
+
+    <!-- P2 -->
+    <div class="proyecto-card" id="proj-2">
+      <div class="proyecto-header" onclick="toggleProyecto(this)">
+        <div class="proyecto-num" style="background:#FFB800">2</div>
+        <div class="proyecto-info">
+          <h3>Panel Solar con Seguidor de Luz</h3>
+          <p>Energías Limpias · Automatización · Eficiencia</p>
+        </div>
+        <span class="proyecto-toggle">▼</span>
+      </div>
+      <div class="proyecto-body">
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:#FFB800">Problema vago</div><div class="proyecto-row-value">Los paneles solares no siempre aprovechan bien la luz del sol.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--cyan)">Contexto</div><div class="proyecto-row-value">Panel solar fotovoltaico instalado al aire libre durante las horas de luz solar (6:00–19:00 hs).</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--amber)">Variable</div><div class="proyecto-row-value">Diferencia de intensidad lumínica entre dos fotorresistencias (LDR) ubicadas a cada lado del panel.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--red)">Punto de quiebre</div><div class="proyecto-row-value">Diferencia de lectura entre ambos sensores LDR mayor a 50 unidades (escala 0–1023).</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--green)">Problema técnico</div><div class="proyecto-row-value">En un panel solar fijo, la diferencia de irradiación entre ambos lados supera 50 unidades cuando el sol se desplaza, generando una pérdida de captación energética evitable.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--purple)">Objetivos</div><div class="proyecto-row-value">1. Medir continuamente la diferencia de intensidad entre ambos sensores. 2. Activar servomotor para rotar el panel cuando la diferencia supere 50 unidades.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:#FFB800">Solución</div><div class="proyecto-row-value">Dos sensores LDR + Arduino + servomotor. El sistema compara lecturas y rota el panel hacia la mayor fuente de luz cada 30 segundos.</div></div>
+      </div>
+    </div>
+
+    <!-- P3 -->
+    <div class="proyecto-card" id="proj-3">
+      <div class="proyecto-header" onclick="toggleProyecto(this)">
+        <div class="proyecto-num" style="background:#FF4D6A">3</div>
+        <div class="proyecto-info">
+          <h3>Silla de Ruedas Autónoma</h3>
+          <p>Robótica · Inclusión Social · IA</p>
+        </div>
+        <span class="proyecto-toggle">▼</span>
+      </div>
+      <div class="proyecto-body">
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:#FF4D6A">Problema vago</div><div class="proyecto-row-value">Las personas en silla de ruedas a veces se chocan con cosas.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--cyan)">Contexto</div><div class="proyecto-row-value">Silla de ruedas motorizada en movimiento en interiores (pasillos, habitaciones) con personas y objetos presentes.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--amber)">Variable</div><div class="proyecto-row-value">Distancia al obstáculo más próximo en la dirección de movimiento (sensor ultrasónico, en cm).</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--red)">Punto de quiebre</div><div class="proyecto-row-value">Distancia al obstáculo menor a 30 cm con la silla en movimiento.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--green)">Problema técnico</div><div class="proyecto-row-value">En un interior, la silla de ruedas en movimiento detecta un obstáculo a menos de 30 cm en su trayectoria, lo que genera riesgo de colisión con consecuencias físicas para el usuario.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--purple)">Objetivos</div><div class="proyecto-row-value">1. Medir continuamente la distancia a obstáculos frontales. 2. Detener los motores cuando la distancia sea menor a 30 cm. 3. Emitir alerta sonora y visual antes de la detención.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:#FF4D6A">Solución</div><div class="proyecto-row-value">Sensor HC-SR04 + Arduino + controlador L298N. A menos de 50 cm: pre-alerta y reducción de velocidad. A menos de 30 cm: frenado total y buzzer.</div></div>
+      </div>
+    </div>
+
+    <!-- P4 -->
+    <div class="proyecto-card" id="proj-4">
+      <div class="proyecto-header" onclick="toggleProyecto(this)">
+        <div class="proyecto-num" style="background:#00D4FF">4</div>
+        <div class="proyecto-info">
+          <h3>Brazo Robótico Clasificador de Residuos</h3>
+          <p>Robótica · IA · Sustentabilidad</p>
+        </div>
+        <span class="proyecto-toggle">▼</span>
+      </div>
+      <div class="proyecto-body">
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:#00D4FF">Problema vago</div><div class="proyecto-row-value">La gente no separa bien la basura y los reciclables se contaminan.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--cyan)">Contexto</div><div class="proyecto-row-value">Punto de depósito de residuos domésticos con contenedores separados para plástico, papel y residuo general.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--amber)">Variable</div><div class="proyecto-row-value">Tipo de material detectado por sensor de color o inductivo (metálico / no metálico / transparente).</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--red)">Punto de quiebre</div><div class="proyecto-row-value">Detección de material metálico (sensor inductivo activo) o clasificación de color por sensor TCS3200.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--green)">Problema técnico</div><div class="proyecto-row-value">En el punto de reciclaje, un objeto depositado sin clasificar activa el sensor antes de caer en el contenedor general, lo que genera pérdida de material reciclable recuperable.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:var(--purple)">Objetivos</div><div class="proyecto-row-value">1. Detectar automáticamente el tipo de material de cada objeto. 2. Activar el brazo para dirigir el objeto al contenedor correcto. 3. Registrar cantidad clasificada por tipo.</div></div>
+        <div class="proyecto-row"><div class="proyecto-row-label" style="color:#00D4FF">Solución</div><div class="proyecto-row-value">3 servomotores + sensor inductivo + sensor TCS3200 + Arduino. El sistema identifica el material y rota el brazo al ángulo correspondiente a cada contenedor.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CHECKLIST ───────────────────────────────────────────────── -->
+  <section class="section" id="checklist">
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot" style="background:#FF4D6A"></div>
+      <span class="eyebrow-text">Autoevaluación</span>
+    </div>
+    <h2>Checklist de autoevaluación</h2>
+    <p>Antes de entregar tu enunciado de problema técnico, verificá cada punto. Hacé clic para marcar.</p>
+
+    <div class="checklist" id="checklist-items">
+      <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>Tengo identificado el CONTEXTO: sistema, lugar, momento y personas involucradas.</span></label>
+      <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>La VARIABLE que elegí es observable o medible directamente (no una sensación o juicio).</span></label>
+      <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>El PUNTO DE QUIEBRE está expresado como un número, condición lógica o cambio de estado concreto.</span></label>
+      <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>El enunciado del problema técnico tiene UNA sola oración — no usé "y" para unir dos problemas.</span></label>
+      <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>No usé adjetivos subjetivos: "mucho", "grave", "excesivo", "peligroso", "muy".</span></label>
+      <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>La pregunta disparadora elegida es abierta: no se puede responder con sí o no.</span></label>
+      <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>El eje del proyecto (respuesta / problema / producto) está elegido y justificado.</span></label>
+      <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>Cada objetivo comienza con un verbo de acción (detectar, activar, medir, controlar...).</span></label>
+      <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>Cada objetivo menciona la variable y el punto de quiebre que ya identifiqué.</span></label>
+      <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>Puedo describir en 2 líneas qué dispositivo o sistema resuelve exactamente estos objetivos.</span></label>
+    </div>
+
+    <div id="checklist-status" style="margin-top:16px; padding:12px 16px; background:var(--card); border-radius:8px; font-size:13px; color:var(--muted); display:flex; align-items:center; gap:10px;">
+      <span id="check-count" style="color:var(--cyan); font-weight:700; font-size:18px;">0/10</span>
+      <span>puntos verificados. Completá todos antes de avanzar a la solución.</span>
+    </div>
+  </section>
+
+  <!-- ── GLOSARIO ─────────────────────────────────────────────────── -->
+  <section class="section" id="glosario">
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot" style="background:#9B59B6"></div>
+      <span class="eyebrow-text">Referencia rápida</span>
+    </div>
+    <h2>Glosario</h2>
+    <p>Los términos clave de la materia, en orden de aparición en el flujo del proyecto.</p>
+
+    <div class="glosario-grid">
+      <div class="glosario-item" style="--accent:var(--muted)">
+        <div class="glosario-term">Instrucción atómica</div>
+        <div class="glosario-def">Instrucción mínima e indivisible que no requiere conocimiento previo ni interpretación. El robot no asume nada que no se indique explícitamente.</div>
+      </div>
+      <div class="glosario-item" style="--accent:#7A8BAA">
+        <div class="glosario-term">Problema vago</div>
+        <div class="glosario-def">Descripción informal de una situación no deseada, sin definir contexto, variable ni umbral. Es el punto de partida del proceso de diseño.</div>
+      </div>
+      <div class="glosario-item" style="--accent:var(--amber)">
+        <div class="glosario-term">Pregunta disparadora</div>
+        <div class="glosario-def">Pregunta abierta y precisa que despierta curiosidad y da inicio a un proyecto. No se responde con sí o no.</div>
+      </div>
+      <div class="glosario-item" style="--accent:var(--cyan)">
+        <div class="glosario-term">Contexto</div>
+        <div class="glosario-def">Sistema, espacio o ámbito donde ocurre el problema. Debe poder delimitarse o dibujarse. Acota el universo de variables posibles.</div>
+      </div>
+      <div class="glosario-item" style="--accent:var(--amber)">
+        <div class="glosario-term">Variable</div>
+        <div class="glosario-def">Magnitud, estado o condición observable que indica si el problema está presente o no. Debe ser medible directamente.</div>
+      </div>
+      <div class="glosario-item" style="--accent:var(--red)">
+        <div class="glosario-term">Punto de quiebre</div>
+        <div class="glosario-def">Valor o condición de la variable a partir del cual el problema se considera activo. Puede ser cuantitativo (número) o lógico (estado).</div>
+      </div>
+      <div class="glosario-item" style="--accent:var(--green)">
+        <div class="glosario-term">Problema técnico</div>
+        <div class="glosario-def">Enunciado preciso del problema construido a partir de las 4 componentes. Una sola oración, sin adjetivos subjetivos.</div>
+      </div>
+      <div class="glosario-item" style="--accent:var(--purple)">
+        <div class="glosario-term">Objetivo</div>
+        <div class="glosario-def">Acción medible y verificable que resuelve un componente del problema técnico. Comienza con verbo de acción e incluye variable y punto de quiebre.</div>
+      </div>
+      <div class="glosario-item" style="--accent:#0097B8">
+        <div class="glosario-term">Eje disparador</div>
+        <div class="glosario-def">Tipo de proyecto que define la pregunta: respuesta a una pregunta (informe), resolución de un problema (diseño), o creación de un producto (prototipo).</div>
+      </div>
+      <div class="glosario-item" style="--accent:#9B59B6">
+        <div class="glosario-term">Sensor</div>
+        <div class="glosario-def">Componente electrónico que mide una variable del entorno y convierte ese valor en una señal eléctrica procesable. Sensor = medir variable.</div>
+      </div>
+      <div class="glosario-item" style="--accent:var(--amber)">
+        <div class="glosario-term">Actuador</div>
+        <div class="glosario-def">Componente que ejecuta una acción física en respuesta a una señal del controlador (motor, relé, válvula, servo, etc.).</div>
+      </div>
+      <div class="glosario-item" style="--accent:var(--green)">
+        <div class="glosario-term">ABP</div>
+        <div class="glosario-def">Aprendizaje Basado en Proyectos. Metodología educativa donde se aprende resolviendo problemas reales o creando productos significativos.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:36px; padding:18px 22px; background:var(--card); border-radius:var(--radius); border:1px solid rgba(0,212,255,0.12); font-size:13px; color:var(--muted); text-align:center;">
+      Taller de Proyecto · 1er Año · Electromecánica con orientación en Robótica, Automatización e IA
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // ── NAVIGATION ACTIVE STATE ────────────────────────────────────
+  const sections = document.querySelectorAll('section[id], .fase-step[id], .proyecto-card[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  function updateActive() {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navItems.forEach(n => {
+      n.classList.toggle('active', n.getAttribute('href') === '#' + current);
+    });
+  }
+
+  // ── PROGRESS BAR ───────────────────────────────────────────────
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progress-fill').style.width = (scrollTop / docH * 100) + '%';
+  }
+
+  // ── BACK TO TOP ────────────────────────────────────────────────
+  function updateBackTop() {
+    document.getElementById('back-top').classList.toggle('visible', window.scrollY > 400);
+  }
+
+  window.addEventListener('scroll', () => {
+    updateActive(); updateProgress(); updateBackTop();
+  }, { passive: true });
+
+  // ── SIDEBAR TOGGLE ─────────────────────────────────────────────
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+  function closeSidebar() {
+    if (window.innerWidth <= 768)
+      document.getElementById('sidebar').classList.remove('open');
+  }
+
+  // ── FASE ACCORDION ─────────────────────────────────────────────
+  function toggleFase(header) {
+    const step = header.closest('.fase-step');
+    step.classList.toggle('open');
+  }
+
+  // ── PROYECTO ACCORDION ─────────────────────────────────────────
+  function toggleProyecto(header) {
+    const card = header.closest('.proyecto-card');
+    // Close others
+    document.querySelectorAll('.proyecto-card.open').forEach(c => {
+      if (c !== card) c.classList.remove('open');
+    });
+    card.classList.toggle('open');
+  }
+
+  // ── CHECKLIST ──────────────────────────────────────────────────
+  function toggleCheck(input) {
+    input.closest('.check-item').classList.toggle('checked', input.checked);
+    const total = document.querySelectorAll('#checklist-items input').length;
+    const done  = document.querySelectorAll('#checklist-items input:checked').length;
+    const countEl = document.getElementById('check-count');
+    countEl.textContent = done + '/' + total;
+    const statusEl = document.getElementById('checklist-status');
+    if (done === total) {
+      statusEl.style.borderColor = 'var(--green)';
+      statusEl.style.background = 'rgba(0,200,150,0.08)';
+      document.querySelector('#checklist-status span:last-child').textContent = 'puntos verificados. ¡Proyecto listo para avanzar a la solución! 🎯';
+    } else {
+      statusEl.style.borderColor = '';
+      statusEl.style.background = 'var(--card)';
+      document.querySelector('#checklist-status span:last-child').textContent = 'puntos verificados. Completá todos antes de avanzar a la solución.';
+    }
+  }
+
+  // ── SMOOTH SCROLL OFFSET ───────────────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        const offset = target.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Init
+  updateActive(); updateProgress();
+</script>
+</body>
+</html>

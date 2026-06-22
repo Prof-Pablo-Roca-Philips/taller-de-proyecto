@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Cuaderno de Proyecto — Taller de Proyecto</title>
+<style>
+/* ── TOKENS ───────────────────────────────────────────────────── */
+:root {
+  --navy:     #0A0E2A;
+  --navy-mid: #1A2550;
+  --navy-lit: #253070;
+  --cyan:     #00D4FF;
+  --cyan-dim: #0097B8;
+  --amber:    #FFB800;
+  --green:    #00C896;
+  --red:      #FF4D6A;
+  --purple:   #9B59B6;
+  --white:    #FFFFFF;
+  --off:      #E8EDF5;
+  --muted:    #7A8BAA;
+  --card:     #131B3A;
+  --card-lit: #1E2B4A;
+  --sidebar-w: 240px;
+  --radius: 10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--navy);
+  color: var(--off);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ──────────────────────────────────────────────────── */
+#sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: #060918;
+  border-right: 1px solid rgba(0,212,255,0.1);
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-logo {
+  padding: 22px 18px 16px;
+  border-bottom: 1px solid rgba(0,212,255,0.08);
+}
+.sidebar-logo .tag {
+  font-size: 9px; font-weight: 700; letter-spacing: .12em;
+  color: var(--cyan-dim); text-transform: uppercase; margin-bottom: 6px;
+}
+.sidebar-logo h1 { font-size: 14px; font-weight: 800; color: var(--white); line-height: 1.3; }
+.sidebar-logo h1 span { color: var(--cyan); }
+
+/* Student name badge in sidebar */
+.student-badge {
+  margin: 14px 14px 0;
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.student-badge strong { color: var(--cyan); font-size: 13px; display: block; margin-bottom: 2px; }
+
+.nav-section-label {
+  padding: 16px 18px 5px;
+  font-size: 9px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+}
+.nav-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 18px;
+  text-decoration: none; color: var(--muted);
+  font-size: 12.5px; font-weight: 500;
+  border-left: 3px solid transparent;
+  transition: all .2s; cursor: pointer;
+}
+.nav-item:hover { color: var(--white); background: rgba(0,212,255,0.05); }
+.nav-item.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0,212,255,0.07); }
+.nav-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* Progress in sidebar */
+.sidebar-progress {
+  margin: 10px 14px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.sidebar-progress .prog-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.prog-bar-outer {
+  height: 5px; background: rgba(255,255,255,0.08);
+  border-radius: 3px; overflow: hidden; margin-bottom: 6px;
+}
+.prog-bar-fill {
+  height: 100%; background: var(--cyan);
+  border-radius: 3px; transition: width .4s;
+  width: 0%;
+}
+.prog-fraction { font-size: 11px; color: var(--cyan); font-weight: 700; }
+
+.sidebar-footer {
+  margin-top: auto; padding: 14px 18px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  font-size: 11px; color: var(--muted); line-height: 1.5;
+}
+
+/* ── MAIN ─────────────────────────────────────────────────────── */
+#main { margin-left: var(--sidebar-w); flex: 1; }
+
+/* ── HERO ─────────────────────────────────────────────────────── */
+#hero {
+  background: linear-gradient(135deg, #0A0E2A 0%, #1A2550 60%, #0D1535 100%);
+  padding: 56px 52px 48px;
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid rgba(0,212,255,0.12);
+}
+#hero::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 350px; height: 350px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-block;
+  background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.25);
+  color: var(--cyan); font-size: 10px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 20px; margin-bottom: 18px;
+}
+#hero h2 {
+  font-size: clamp(24px, 3.5vw, 40px);
+  font-weight: 900; color: var(--white);
+  line-height: 1.15; margin-bottom: 8px;
+}
+#hero h2 em { color: var(--cyan); font-style: normal; }
+#hero p { font-size: 14px; color: var(--muted); max-width: 500px; margin-bottom: 28px; }
+
+/* Name input in hero */
+.name-input-wrap {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.name-input-wrap label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.name-field {
+  background: rgba(0,212,255,0.06);
+  border: 1.5px solid rgba(0,212,255,0.25);
+  border-radius: 8px; padding: 9px 16px;
+  color: var(--white); font-size: 14px; font-weight: 600;
+  outline: none; min-width: 220px;
+  transition: border-color .2s;
+}
+.name-field:focus { border-color: var(--cyan); }
+.name-field::placeholder { color: var(--muted); font-weight: 400; }
+
+/* ── SECTIONS ─────────────────────────────────────────────────── */
+.section {
+  padding: 52px 52px 44px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  scroll-margin-top: 20px;
+}
+.section-eyebrow {
+  display: flex; align-items: center; gap: 9px; margin-bottom: 10px;
+}
+.eyebrow-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.eyebrow-text { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.section h2 {
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 800; color: var(--white); margin-bottom: 8px; line-height: 1.2;
+}
+.section > .sec-desc { color: var(--muted); font-size: 13.5px; max-width: 620px; margin-bottom: 28px; }
+
+/* ── REFERENCE CARDS (no answers) ────────────────────────────── */
+.ref-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  border: 1px solid rgba(255,255,255,0.07);
+  margin-bottom: 12px;
+}
+.ref-card h3 { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+.ref-card p { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+
+/* ── TIPO CARDS ───────────────────────────────────────────────── */
+.tipo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+  gap: 12px; margin-bottom: 24px;
+}
+.tipo-card { background: var(--card); border-radius: var(--radius); overflow: hidden; border: 1px solid rgba(255,255,255,0.07); }
+.tipo-header { padding: 9px 15px; font-size: 13px; font-weight: 800; color: var(--navy); }
+.tipo-body { padding: 13px 15px; }
+.tipo-body p { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.tipo-example { font-size: 11.5px; color: var(--off); font-style: italic; background: rgba(255,255,255,0.04); border-radius: 6px; padding: 7px 10px; line-height: 1.5; }
+
+/* ── FORMULA BOX ──────────────────────────────────────────────── */
+.formula-box {
+  background: var(--navy); border: 2px solid var(--green);
+  border-radius: var(--radius); padding: 20px 24px; margin: 20px 0;
+}
+.formula-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+.formula-text { font-size: 14px; color: var(--off); line-height: 1.8; }
+.f-ctx  { color: var(--cyan);   font-weight: 700; }
+.f-prob { color: var(--amber);  font-weight: 700; }
+.f-var  { color: var(--purple); font-weight: 700; }
+.f-qbk  { color: var(--red);   font-weight: 700; }
+.f-eff  { color: var(--green);  font-weight: 700; }
+
+/* ── WORKBLOCK — the core interactive element ─────────────────── */
+.workblock {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.07);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.workblock-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px;
+  background: var(--card-lit);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.wb-num {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: var(--navy); flex-shrink: 0;
+}
+.wb-title { font-size: 13px; font-weight: 700; color: var(--white); }
+.wb-hint { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.wb-status {
+  margin-left: auto;
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: transparent;
+  transition: all .3s; flex-shrink: 0;
+}
+.wb-status.done { border-color: var(--green); background: rgba(0,200,150,0.15); color: var(--green); }
+
+.workblock-body { padding: 16px 18px; }
+
+/* ── TEXTAREA ─────────────────────────────────────────────────── */
+.work-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: var(--off);
+  font-size: 13.5px;
+  font-family: inherit;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+.work-textarea:focus {
+  border-color: var(--cyan);
+  background: rgba(0,212,255,0.04);
+}
+.work-textarea::placeholder { color: rgba(122,139,170,0.6); font-style: italic; }
+.work-textarea.has-content { border-color: rgba(0,212,255,0.3); }
+
+/* ── COMPONENT ROWS (workable) ────────────────────────────────── */
+.comp-work-row {
+  display: grid;
+  grid-template-columns: 145px 1fr;
+  gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.comp-work-row:last-child { border-bottom: none; }
+.comp-work-label {
+  padding: 14px 16px;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+.comp-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 4px 10px; border-radius: 6px;
+  font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+}
+.comp-hint { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.4; font-style: italic; }
+.comp-work-field { padding: 12px 16px; }
+
+/* ── FASE ACCORDION ───────────────────────────────────────────── */
+.fase-step {
+  background: var(--card); border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.07); overflow: hidden;
+  margin-bottom: 10px; transition: border-color .2s;
+}
+.fase-step:hover { border-color: rgba(0,212,255,0.18); }
+.fase-step-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; cursor: pointer; user-select: none;
+}
+.step-num {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: var(--navy); flex-shrink: 0;
+}
+.step-title { font-size: 13.5px; font-weight: 700; color: var(--white); }
+.step-status {
+  margin-left: auto; font-size: 11px; color: var(--muted);
+  background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 10px;
+}
+.step-chevron { color: var(--muted); font-size: 12px; transition: transform .25s; margin-left: 8px; }
+.fase-step.open .step-chevron { transform: rotate(180deg); }
+.fase-step-body { display: none; padding: 0 18px 18px; }
+.fase-step.open .fase-step-body { display: block; }
+.step-desc { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.6; padding-top: 4px; }
+.step-questions { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.step-questions li {
+  font-size: 12.5px; color: var(--off); padding: 7px 12px;
+  background: rgba(255,255,255,0.03); border-radius: 6px;
+  border-left: 2px solid var(--accent, var(--cyan));
+}
+
+/* ── OBJETIVO BUILDER ─────────────────────────────────────────── */
+.objetivo-row {
+  display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px;
+}
+.objetivo-num {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; color: var(--navy); margin-top: 7px;
+}
+.work-input {
+  flex: 1; background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 9px 13px;
+  color: var(--off); font-size: 13px; font-family: inherit;
+  outline: none; transition: border-color .2s;
+}
+.work-input:focus { border-color: var(--cyan); }
+.work-input::placeholder { color: rgba(122,139,170,0.5); font-style: italic; }
+.work-input.has-content { border-color: rgba(0,212,255,0.25); }
+
+/* ── DISPARADORA BUILDER ──────────────────────────────────────── */
+.disp-row {
+  display: grid; grid-template-columns: 120px 1fr;
+  gap: 8px; margin-bottom: 8px; align-items: center;
+}
+.disp-badge {
+  padding: 7px 10px; border-radius: 7px; font-size: 11px;
+  font-weight: 800; color: var(--navy); text-align: center;
+}
+
+/* ── CHECKLIST ────────────────────────────────────────────────── */
+.checklist { display: flex; flex-direction: column; gap: 8px; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 11px;
+  padding: 11px 15px; background: var(--card);
+  border-radius: 8px; font-size: 13px; color: var(--off);
+  line-height: 1.5; cursor: pointer; user-select: none;
+  transition: background .2s; border: 1px solid rgba(255,255,255,0.05);
+}
+.check-item:hover { background: var(--card-lit); }
+.check-item input[type=checkbox] {
+  width: 16px; height: 16px; accent-color: var(--green);
+  margin-top: 2px; flex-shrink: 0; cursor: pointer;
+}
+.check-item.checked { opacity: 0.5; }
+.check-item.checked span { text-decoration: line-through; color: var(--muted); }
+
+/* ── GLOSARIO ─────────────────────────────────────────────────── */
+.glosario-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 10px;
+}
+.glosario-item {
+  background: var(--card); border-radius: 8px; padding: 14px 16px;
+  border-left: 3px solid var(--accent, var(--cyan));
+}
+.glosario-term { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+.glosario-def { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ── SAVE INDICATOR ───────────────────────────────────────────── */
+#save-indicator {
+  position: fixed; bottom: 20px; right: 20px;
+  background: var(--navy-mid); border: 1px solid rgba(0,200,150,0.3);
+  border-radius: 8px; padding: 8px 14px;
+  font-size: 12px; color: var(--green);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s; z-index: 200;
+  display: flex; align-items: center; gap: 6px;
+}
+#save-indicator.show { opacity: 1; }
+
+/* ── PROGRESS TOP ─────────────────────────────────────────────── */
+#progress-bar {
+  position: fixed; top: 0; left: var(--sidebar-w); right: 0; height: 3px;
+  background: rgba(0,212,255,0.1); z-index: 200;
+}
+#progress-fill { height: 100%; background: var(--cyan); width: 0%; transition: width .1s; }
+
+/* ── MOBILE TOGGLE ─────────────────────────────────────────────── */
+#menu-toggle {
+  display: none; position: fixed; top: 12px; left: 12px; z-index: 300;
+  background: var(--navy-mid); border: 1px solid rgba(0,212,255,0.3);
+  color: var(--cyan); font-size: 18px;
+  width: 38px; height: 38px; border-radius: 8px;
+  align-items: center; justify-content: center; cursor: pointer;
+}
+
+/* ── BACK TO TOP ──────────────────────────────────────────────── */
+#back-top {
+  position: fixed; bottom: 20px; left: calc(var(--sidebar-w) + 20px);
+  width: 38px; height: 38px; background: var(--navy-mid);
+  border: 1px solid rgba(0,212,255,0.25); border-radius: 50%;
+  color: var(--cyan); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0; pointer-events: none;
+  transition: opacity .3s; z-index: 150;
+}
+#back-top.visible { opacity: 1; pointer-events: auto; }
+
+/* ── RESPONSIVE ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  :root { --sidebar-w: 0px; }
+  #sidebar { transform: translateX(-240px); width: 240px; transition: transform .3s; }
+  #sidebar.open { transform: translateX(0); }
+  #main { margin-left: 0; }
+  #menu-toggle { display: flex; }
+  .section { padding: 36px 22px 32px; }
+  #hero { padding: 48px 22px 40px; }
+  .comp-work-row { grid-template-columns: 1fr; }
+  .disp-row { grid-template-columns: 1fr; }
+  #progress-bar { left: 0; }
+  #back-top { left: 20px; }
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.18); border-radius: 3px; }
+
+/* ── INLINE HIGHLIGHTS ────────────────────────────────────────── */
+.hl-cyan   { color: var(--cyan);   font-weight: 600; }
+.hl-amber  { color: var(--amber);  font-weight: 600; }
+.hl-green  { color: var(--green);  font-weight: 600; }
+.hl-red    { color: var(--red);    font-weight: 600; }
+.hl-purple { color: var(--purple); font-weight: 600; }
+
+/* ── EVAL RESULT ──────────────────────────────────────────────── */
+#eval-result {
+  margin-top: 16px; padding: 14px 18px; border-radius: 9px;
+  font-size: 13.5px; background: var(--card);
+  border: 1px solid rgba(255,255,255,0.07);
+  display: none;
+}
+
+  /* ── PRINT / PDF ──────────────────────────────────────────────── */
+  @media print {
+    #sidebar, #progress-bar, #menu-toggle, #back-top,
+    #save-indicator, .export-bar, .section-eyebrow,
+    .ref-card, .tipo-grid, .tipo-card, .formula-box,
+    .comp-work-row .comp-work-label .comp-hint,
+    #ref-flujo, #ref-tipos, #ref-ejes, #ref-componentes, #ref-formula,
+    #glosario, #checklist { display: none !important; }
+
+    body { background: #fff !important; color: #000 !important;
+           display: block !important; font-size: 11pt; }
+    #main { margin-left: 0 !important; }
+    .section { padding: 12px 0 !important; border: none !important;
+                page-break-inside: avoid; }
+    .work-textarea, .work-input {
+      background: #f9f9f9 !important; color: #000 !important;
+      border: 1px solid #ccc !important; min-height: auto !important;
+      font-size: 10pt; resize: none;
+    }
+    .fase-step-body { display: block !important; }
+    .fase-step-header .step-chevron,
+    .fase-step-header .step-status { display: none !important; }
+    .workblock-header .wb-status { display: none !important; }
+    .fase-step { border: none !important; margin-bottom: 8px !important; }
+    #hero { padding: 16px 0 !important; background: #fff !important; }
+    #hero p, .name-input-wrap label { color: #000 !important; }
+    .name-field { background: transparent !important; border: none !important;
+                  color: #000 !important; font-weight: 700; padding: 0 !important; }
+    h2 { color: #000 !important; font-size: 14pt !important; }
+    .wb-title { color: #000 !important; }
+    .wb-hint  { color: #555 !important; }
+    .objetivo-num { color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .print-header { display: block !important; }
+    .print-section-title { display: block !important; font-weight: 800;
+                           font-size: 12pt; margin: 14px 0 4px;
+                           border-bottom: 1.5px solid #000; padding-bottom: 3px; }
+    .work-textarea.empty-print::after { content: "(sin respuesta)";
+                                         color: #aaa; font-style: italic; }
+  }
+
+  /* Hide print header in screen mode */
+  .print-header { display: none; }
+  .print-section-title { display: none; }
+
+
+  /* ── EXPORT BAR ──────────────────────────────────────────────── */
+  .export-bar {
+    position: fixed; bottom: 0; left: var(--sidebar-w); right: 0;
+    background: #080C20; border-top: 1px solid rgba(0,212,255,0.15);
+    z-index: 150; padding: 10px 28px;
+  }
+  .export-bar-inner {
+    display: flex; align-items: center; gap: 12px; max-width: 900px;
+  }
+  .export-label {
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .07em; margin-right: 4px;
+  }
+  .export-btn {
+    padding: 8px 18px; border-radius: 8px; font-size: 13px;
+    font-weight: 700; cursor: pointer; border: 1.5px solid;
+    transition: all .2s; font-family: inherit;
+  }
+  .pdf-btn {
+    background: rgba(155,89,182,0.12); color: #9B59B6;
+    border-color: #9B59B6;
+  }
+  .pdf-btn:hover { background: rgba(155,89,182,0.25); }
+  .gmail-btn {
+    background: rgba(0,212,255,0.1); color: var(--cyan);
+    border-color: var(--cyan);
+  }
+  .gmail-btn:hover { background: rgba(0,212,255,0.22); }
+  /* Push main content up so export bar doesn't cover it */
+  #main { padding-bottom: 62px; }
+  @media (max-width: 768px) {
+    .export-bar { left: 0; }
+    .export-bar-inner { flex-wrap: wrap; gap: 8px; }
+    .export-label { width: 100%; }
+  }
+
+</style>
+</head>
+<body>
+
+
+<!-- ── EXPORT BAR ──────────────────────────────────────────────── -->
+<div class="export-bar" id="export-bar">
+  <div class="export-bar-inner">
+    <span class="export-label">📤 Entregá tu trabajo</span>
+    <button class="export-btn pdf-btn" onclick="printPDF()">
+      🖨 Imprimir / Guardar PDF
+    </button>
+    <button class="export-btn gmail-btn" onclick="openGmailModal()">
+      ✉ Enviar por Gmail
+    </button>
+  </div>
+</div>
+
+<!-- ── GMAIL MODAL ──────────────────────────────────────────────── -->
+<div id="gmail-modal" onclick="if(event.target===this)closeGmailModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:500;align-items:center;justify-content:center;">
+  <div style="background:#131B3A;border:1.5px solid rgba(0,212,255,0.3);border-radius:14px;padding:32px 28px;width:min(480px,92vw);position:relative;">
+    <button onclick="closeGmailModal()" style="position:absolute;top:12px;right:14px;background:none;border:none;color:#7A8BAA;font-size:20px;cursor:pointer;">✕</button>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0097B8;margin-bottom:8px;">Enviar respuestas</div>
+    <h3 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">Enviá tu trabajo por Gmail</h3>
+    <p style="font-size:13px;color:#7A8BAA;margin-bottom:22px;line-height:1.5;">Ingresá el email de tu docente. Se va a abrir Gmail con todas tus respuestas ya escritas en el cuerpo del mensaje.</p>
+
+    <div style="margin-bottom:14px;">
+      <label style="font-size:11px;font-weight:700;color:#7A8BAA;text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:6px;">Email del docente</label>
+      <input type="email" id="teacher-email" placeholder="docente@ejemplo.com"
+        style="width:100%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(0,212,255,0.25);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;font-family:inherit;"
+        onfocus="this.style.borderColor='#00D4FF'" onblur="this.style.borderColor='rgba(0,212,255,0.25)'">
+    </div>
+
+    <div id="gmail-preview" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:11.5px;color:#7A8BAA;max-height:160px;overflow-y:auto;line-height:1.6;white-space:pre-wrap;font-family:monospace;"></div>
+
+    <div id="gmail-error" style="display:none;color:#FF4D6A;font-size:12.5px;margin-bottom:12px;"></div>
+
+    <button onclick="sendGmail()"
+      style="width:100%;background:#00D4FF;color:#0A0E2A;font-size:14px;font-weight:800;padding:12px;border:none;border-radius:9px;cursor:pointer;transition:opacity .2s;"
+      onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+      Abrir Gmail con mis respuestas →
+    </button>
+    <p style="font-size:11px;color:#7A8BAA;margin-top:10px;text-align:center;">Se abre en una nueva pestaña. Solo tenés que hacer clic en Enviar.</p>
+  </div>
+</div>
+
+<div id="progress-bar"><div id="progress-fill"></div></div>
+<button id="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div id="save-indicator">✓ Guardado</div>
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────────── -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="tag">Taller de Proyecto · 1er Año</div>
+    <h1>Mi Cuaderno<br><span>de Proyecto</span></h1>
+  </div>
+
+  <div class="student-badge">
+    <strong id="sidebar-name">—</strong>
+    Mi espacio de trabajo
+  </div>
+
+  <div class="sidebar-progress">
+    <div class="prog-label">Mi progreso</div>
+    <div class="prog-bar-outer"><div class="prog-bar-fill" id="sidebar-prog"></div></div>
+    <span class="prog-fraction" id="sidebar-frac">0 / 0 campos completados</span>
+  </div>
+
+  <div class="nav-section-label">Referencia</div>
+  <a class="nav-item" href="#ref-flujo" onclick="closeSidebar()"><span class="nav-dot" style="background:#FFB800"></span> El flujo del proyecto</a>
+  <a class="nav-item" href="#ref-tipos" onclick="closeSidebar()"><span class="nav-dot" style="background:#9B59B6"></span> Los 6 tipos de pregunta</a>
+  <a class="nav-item" href="#ref-ejes" onclick="closeSidebar()"><span class="nav-dot" style="background:#00C896"></span> Los 3 ejes</a>
+  <a class="nav-item" href="#ref-componentes" onclick="closeSidebar()"><span class="nav-dot" style="background:#FF4D6A"></span> Las 4 componentes</a>
+  <a class="nav-item" href="#ref-formula" onclick="closeSidebar()"><span class="nav-dot" style="background:#00C896"></span> Fórmula del problema técnico</a>
+
+  <div class="nav-section-label">Mi trabajo</div>
+  <a class="nav-item" href="#trabajo-fase1" onclick="closeSidebar()"><span class="nav-dot" style="background:#00D4FF"></span> Fase 1 — Análisis del problema</a>
+  <a class="nav-item" href="#trabajo-disparadoras" onclick="closeSidebar()"><span class="nav-dot" style="background:#FFB800"></span> Mis preguntas disparadoras</a>
+  <a class="nav-item" href="#trabajo-tecnico" onclick="closeSidebar()"><span class="nav-dot" style="background:#00C896"></span> Mi problema técnico</a>
+  <a class="nav-item" href="#trabajo-objetivos" onclick="closeSidebar()"><span class="nav-dot" style="background:#9B59B6"></span> Mis objetivos</a>
+  <a class="nav-item" href="#trabajo-solucion" onclick="closeSidebar()"><span class="nav-dot" style="background:#FF4D6A"></span> Mi solución propuesta</a>
+
+  <div class="nav-section-label">Cierre</div>
+  <a class="nav-item" href="#checklist" onclick="closeSidebar()"><span class="nav-dot" style="background:#00C896"></span> Checklist de autoevaluación</a>
+  <a class="nav-item" href="#glosario" onclick="closeSidebar()"><span class="nav-dot" style="background:#7A8BAA"></span> Glosario</a>
+
+  <div class="sidebar-footer">Electromecánica · Robótica · Automatización · IA</div>
+</nav>
+
+<!-- ── MAIN ─────────────────────────────────────────────────────── -->
+<main id="main">
+
+<!-- HERO -->
+<section id="top">
+  <div id="hero">
+    <div class="hero-tag">Cuaderno de Trabajo Interactivo</div>
+    <h2>Mi Cuaderno<br><em>de Proyecto</em></h2>
+    <p>Acá vas a encontrar las herramientas teóricas de referencia y tu espacio de trabajo propio. Lo que escribas se guarda automáticamente en este dispositivo.</p>
+    <div class="name-input-wrap">
+      <label for="student-name">Tu nombre:</label>
+      <input type="text" id="student-name" class="name-field"
+        placeholder="Escribí tu nombre acá..."
+        oninput="saveName(this.value)" autocomplete="off">
+    </div>
+  </div>
+</section>
+
+  <!-- PRINT HEADER — only visible when printing -->
+  <div class="print-header" style="padding:0 52px;border-bottom:2px solid #000;margin-bottom:8px;">
+    <div style="font-size:9pt;color:#555;margin-bottom:3px;">TALLER DE PROYECTO · 1er AÑO — Preguntas Disparadoras</div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;">
+      <div style="font-size:16pt;font-weight:800;" id="print-name">—</div>
+      <div style="font-size:9pt;color:#555;" id="print-date"></div>
+    </div>
+  </div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SECCIÓN REFERENCIA
+════════════════════════════════════════════════════════════ -->
+
+<!-- REF: FLUJO -->
+<section class="section" id="ref-flujo">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#FFB800"></div>
+    <span class="eyebrow-text">Referencia</span>
+  </div>
+  <h2>El flujo del proyecto</h2>
+  <p class="sec-desc">Cada etapa depende de la anterior. Si un eslabón está mal definido, el error avanza con vos.</p>
+
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center;padding:12px 16px;background:var(--card);border-radius:8px;border-left:3px solid #4A5580;">
+      <span style="font-size:11px;font-weight:700;color:#4A5580;text-transform:uppercase;letter-spacing:.06em;">Robot / instrucción atómica</span>
+      <span style="font-size:13px;color:var(--muted);">Las instrucciones deben ser mínimas y sin ambigüedad. Lo que no se indica, no pasa.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center;padding:12px 16px;background:var(--card);border-radius:8px;border-left:3px solid #7A8BAA;">
+      <span style="font-size:11px;font-weight:700;color:#7A8BAA;text-transform:uppercase;letter-spacing:.06em;">Problema vago</span>
+      <span style="font-size:13px;color:var(--muted);">El problema como lo describiría cualquier persona sin conocimiento técnico.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center;padding:12px 16px;background:rgba(255,184,0,0.07);border-radius:8px;border-left:3px solid var(--amber);">
+      <span style="font-size:11px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.06em;">Preguntas disparadoras ★</span>
+      <span style="font-size:13px;color:var(--off);">Las preguntas correctas extraen las 4 componentes del problema vago. Acá está el nudo.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center;padding:12px 16px;background:var(--card);border-radius:8px;border-left:3px solid var(--cyan);">
+      <span style="font-size:11px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:.06em;">4 Componentes</span>
+      <span style="font-size:13px;color:var(--muted);">Contexto · Variable · Punto de quiebre · Problema. Las piezas del enunciado técnico.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center;padding:12px 16px;background:var(--card);border-radius:8px;border-left:3px solid var(--purple);">
+      <span style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;">Problema técnico</span>
+      <span style="font-size:13px;color:var(--muted);">El enunciado preciso del problema. Una sola oración, sin adjetivos subjetivos.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center;padding:12px 16px;background:var(--card);border-radius:8px;border-left:3px solid #9B59B6;">
+      <span style="font-size:11px;font-weight:700;color:#9B59B6;text-transform:uppercase;letter-spacing:.06em;">Objetivos</span>
+      <span style="font-size:13px;color:var(--muted);">Acciones medibles que resuelven el problema técnico. Cada uno arranca con un verbo.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center;padding:12px 16px;background:rgba(0,200,150,0.07);border-radius:8px;border-left:3px solid var(--green);">
+      <span style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.06em;">Solución</span>
+      <span style="font-size:13px;color:var(--off);">El dispositivo o sistema que materializa los objetivos. Sale directamente de ellos.</span>
+    </div>
+  </div>
+
+  <div style="margin-top:14px;padding:12px 16px;background:rgba(255,77,106,0.07);border-radius:8px;border:1px solid rgba(255,77,106,0.2);font-size:12.5px;color:var(--off);">
+    ⚠️ <strong style="color:var(--red);">Regla de oro:</strong> problema mal enunciado = solución incorrecta. Si tu pregunta disparadora es vaga, tu proyecto va a ser vago.
+  </div>
+</section>
+
+<!-- REF: TIPOS -->
+<section class="section" id="ref-tipos">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#9B59B6"></div>
+    <span class="eyebrow-text">Referencia</span>
+  </div>
+  <h2>Los 6 tipos de preguntas disparadoras</h2>
+  <p class="sec-desc">El inicio de la pregunta no es decorativo — cambia el ángulo de lo que vas a investigar.</p>
+  <div class="tipo-grid">
+    <div class="tipo-card"><div class="tipo-header" style="background:#00D4FF">¿Cómo...?</div><div class="tipo-body"><p>Busca crear un proceso o solución.</p><div class="tipo-example">"¿Cómo diseñamos un sensor que detecte fallos en una máquina?"</div></div></div>
+    <div class="tipo-card"><div class="tipo-header" style="background:#FFB800">¿Por qué...?</div><div class="tipo-body"><p>Investiga causas. Lleva a un informe.</p><div class="tipo-example">"¿Por qué las fábricas modernas usan robots en tareas repetitivas?"</div></div></div>
+    <div class="tipo-card"><div class="tipo-header" style="background:#00C896">¿Para qué...?</div><div class="tipo-body"><p>Explora el propósito o el valor.</p><div class="tipo-example">"¿Para qué usamos IA en el monitoreo de una línea de producción?"</div></div></div>
+    <div class="tipo-card"><div class="tipo-header" style="background:#9B59B6">¿Qué harías...?</div><div class="tipo-body"><p>Activa el pensamiento creativo.</p><div class="tipo-example">"¿Qué harías para que un brazo robótico clasifique residuos automáticamente?"</div></div></div>
+    <div class="tipo-card"><div class="tipo-header" style="background:#FF4D6A">¿De qué manera...?</div><div class="tipo-body"><p>Busca métodos, abre posibilidades.</p><div class="tipo-example">"¿De qué manera usamos energía solar para alimentar sensores en una fábrica?"</div></div></div>
+    <div class="tipo-card"><div class="tipo-header" style="background:#0097B8">¿Cuál es...?</div><div class="tipo-body"><p>Compara opciones con criterio técnico.</p><div class="tipo-example">"¿Cuál es la mejor forma de conectar sensores a una app de monitoreo?"</div></div></div>
+  </div>
+</section>
+
+<!-- REF: EJES -->
+<section class="section" id="ref-ejes">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#00C896"></div>
+    <span class="eyebrow-text">Referencia</span>
+  </div>
+  <h2>Los 3 ejes disparadores</h2>
+  <p class="sec-desc">La pregunta define el tipo de proyecto y el entregable final. Elegí el eje antes de formular la pregunta.</p>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div style="display:grid;grid-template-columns:30px 1fr auto;gap:14px;align-items:center;padding:16px 18px;background:var(--card);border-radius:9px;border:1px solid rgba(0,212,255,0.15);">
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--cyan);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--navy);">1</div>
+      <div><div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px;">Respuesta a una pregunta</div><div style="font-size:12px;color:var(--muted);">Investigamos para entender algo. <em>"¿Por qué los paneles solares fijos pierden eficiencia?"</em></div></div>
+      <span style="background:rgba(0,212,255,0.1);color:var(--cyan);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;">→ Informe</span>
+    </div>
+    <div style="display:grid;grid-template-columns:30px 1fr auto;gap:14px;align-items:center;padding:16px 18px;background:var(--card);border-radius:9px;border:1px solid rgba(255,184,0,0.15);">
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--navy);">2</div>
+      <div><div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px;">Resolución de un problema</div><div style="font-size:12px;color:var(--muted);">Solucionamos un desafío concreto. <em>"¿Cómo evitamos que una silla de ruedas colisione?"</em></div></div>
+      <span style="background:rgba(255,184,0,0.1);color:var(--amber);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;">→ Diseño</span>
+    </div>
+    <div style="display:grid;grid-template-columns:30px 1fr auto;gap:14px;align-items:center;padding:16px 18px;background:var(--card);border-radius:9px;border:1px solid rgba(0,200,150,0.15);">
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--navy);">3</div>
+      <div><div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px;">Creación de un producto</div><div style="font-size:12px;color:var(--muted);">Inventamos algo tangible. <em>"¿De qué manera construiríamos un brazo clasificador de residuos?"</em></div></div>
+      <span style="background:rgba(0,200,150,0.1);color:var(--green);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;">→ Prototipo</span>
+    </div>
+  </div>
+</section>
+
+<!-- REF: COMPONENTES -->
+<section class="section" id="ref-componentes">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#FF4D6A"></div>
+    <span class="eyebrow-text">Referencia</span>
+  </div>
+  <h2>Las 4 componentes del problema</h2>
+  <p class="sec-desc">Cada pregunta apunta a extraer exactamente una componente. Si tu respuesta sigue siendo vaga, la pregunta estaba mal hecha.</p>
+  <div style="background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,0.07);">
+    <div style="display:grid;grid-template-columns:130px 1fr 170px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.05);gap:14px;align-items:start;">
+      <span class="comp-badge" style="background:rgba(0,212,255,0.12);color:var(--cyan);">CONTEXTO</span>
+      <span style="font-size:12.5px;color:var(--off);font-style:italic;">"¿En qué sistema, espacio o ámbito ocurre esto, y quién está involucrado?"</span>
+      <span style="font-size:11.5px;color:var(--muted);">Debe poder <strong>delimitarse</strong>. Si es "en la sociedad", es demasiado amplio.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr 170px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.05);gap:14px;align-items:start;">
+      <span class="comp-badge" style="background:rgba(255,184,0,0.12);color:var(--amber);">VARIABLE</span>
+      <span style="font-size:12.5px;color:var(--off);font-style:italic;">"¿Qué es lo único que, si lo mido, me dice si el problema existe?"</span>
+      <span style="font-size:11.5px;color:var(--muted);">Tiene que ser <strong>medible directamente</strong>.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr 170px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.05);gap:14px;align-items:start;">
+      <span class="comp-badge" style="background:rgba(255,77,106,0.12);color:var(--red);">PUNTO DE QUIEBRE</span>
+      <span style="font-size:12.5px;color:var(--off);font-style:italic;">"¿A partir de qué valor o condición digo que el problema empieza?"</span>
+      <span style="font-size:11.5px;color:var(--muted);">Un número, estado lógico o cambio concreto. <strong>No "cuando ya es mucho".</strong></span>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr 170px;padding:12px 16px;gap:14px;align-items:start;">
+      <span class="comp-badge" style="background:rgba(0,200,150,0.12);color:var(--green);">PROBLEMA</span>
+      <span style="font-size:12.5px;color:var(--off);font-style:italic;">"Dado el contexto, la variable y el quiebre — ¿qué efecto no deseado ocurre?"</span>
+      <span style="font-size:11.5px;color:var(--muted);">Una sola oración, <strong>sin "y"</strong>, sin adjetivos subjetivos.</span>
+    </div>
+  </div>
+</section>
+
+<!-- REF: FORMULA -->
+<section class="section" id="ref-formula">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#00C896"></div>
+    <span class="eyebrow-text">Referencia</span>
+  </div>
+  <h2>Fórmula del problema técnico</h2>
+  <p class="sec-desc">Una vez que tenés las 4 componentes, construís el enunciado técnico con esta estructura.</p>
+  <div class="formula-box">
+    <div class="formula-label">Estructura</div>
+    <div class="formula-text">
+      En <span class="f-ctx">[CONTEXTO]</span> ocurre <span class="f-prob">[PROBLEMA]</span> cuando <span class="f-var">[VARIABLE]</span> supera <span class="f-qbk">[PUNTO DE QUIEBRE]</span>, lo que genera <span class="f-eff">[EFECTO NO DESEADO]</span>.
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:7px;">
+    <div style="padding:9px 14px;background:rgba(0,200,150,0.07);border-radius:7px;font-size:12.5px;color:var(--off);">✓ Una sola oración. No usar "y" para unir dos problemas.</div>
+    <div style="padding:9px 14px;background:rgba(0,200,150,0.07);border-radius:7px;font-size:12.5px;color:var(--off);">✓ Sin "mucho", "grave", "excesivo" ni ningún adjetivo subjetivo.</div>
+    <div style="padding:9px 14px;background:rgba(0,200,150,0.07);border-radius:7px;font-size:12.5px;color:var(--off);">✓ Cada término entre corchetes ya debe estar definido antes de escribir esta oración.</div>
+    <div style="padding:9px 14px;background:rgba(255,77,106,0.08);border-radius:7px;font-size:12.5px;color:var(--red);">✗ NO: "Hay mucho calor en la oficina que molesta a la gente."</div>
+    <div style="padding:9px 14px;background:rgba(0,200,150,0.07);border-radius:7px;font-size:12.5px;color:var(--off);">✓ SÍ: "La temperatura del ambiente supera los 26 °C por más de 30 min en horario laboral, lo que genera fatiga cognitiva en los ocupantes."</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SECCIÓN MI TRABAJO
+════════════════════════════════════════════════════════════ -->
+
+<!-- TRABAJO: FASE 1 -->
+<section class="section" id="trabajo-fase1">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#00D4FF"></div>
+    <span class="eyebrow-text">Mi trabajo · Fase 1</span>
+  </div>
+  <h2>Análisis del problema</h2>
+  <p class="sec-desc">Completá cada paso en orden. No avances al siguiente sin cerrar el anterior — cada respuesta alimenta la siguiente.</p>
+
+  <!-- Paso 1 -->
+  <div class="fase-step open" id="fase-p1">
+    <div class="fase-step-header" onclick="toggleFase(this)">
+      <div class="step-num" style="background:var(--cyan)">1</div>
+      <div><div class="step-title">Problema original</div></div>
+      <span class="step-status" id="status-p1">pendiente</span>
+      <span class="step-chevron">▼</span>
+    </div>
+    <div class="fase-step-body">
+      <p class="step-desc">Describí el problema tal como lo observaste, sin usar lenguaje técnico. Como lo explicarías a alguien que no sabe nada del tema.</p>
+      <ul class="step-questions" style="--accent:var(--cyan)">
+        <li>¿Dónde ocurre exactamente?</li>
+        <li>¿Quién se ve afectado y cómo?</li>
+        <li>¿En qué situación aparece el problema?</li>
+      </ul>
+      <textarea class="work-textarea" id="p1-problema" rows="3"
+        placeholder="Ej: En el aula a veces el ambiente se pone pesado y la gente se cansa..."
+        oninput="saveField('p1-problema', this.value); checkStep('p1', this.value)"></textarea>
+    </div>
+  </div>
+
+  <!-- Paso 2 -->
+  <div class="fase-step" id="fase-p2">
+    <div class="fase-step-header" onclick="toggleFase(this)">
+      <div class="step-num" style="background:var(--amber)">2</div>
+      <div><div class="step-title">Contexto del problema</div></div>
+      <span class="step-status" id="status-p2">pendiente</span>
+      <span class="step-chevron">▼</span>
+    </div>
+    <div class="fase-step-body">
+      <p class="step-desc">¿En qué sistema, espacio, momento y con quiénes ocurre el problema? El contexto tiene que poder dibujarse o delimitarse.</p>
+      <textarea class="work-textarea" id="p2-contexto" rows="3"
+        placeholder="Ej: Aula escolar, horario de clases, ventanas cerradas, 20+ estudiantes presentes..."
+        oninput="saveField('p2-contexto', this.value); checkStep('p2', this.value)"></textarea>
+    </div>
+  </div>
+
+  <!-- Paso 3 -->
+  <div class="fase-step" id="fase-p3">
+    <div class="fase-step-header" onclick="toggleFase(this)">
+      <div class="step-num" style="background:var(--red)">3</div>
+      <div><div class="step-title">Impacto del problema</div></div>
+      <span class="step-status" id="status-p3">pendiente</span>
+      <span class="step-chevron">▼</span>
+    </div>
+    <div class="fase-step-body">
+      <p class="step-desc">¿Qué consecuencias genera este problema si no se resuelve? Si el problema no tiene impacto real, el proyecto pierde sentido.</p>
+      <ul class="step-questions" style="--accent:var(--red)">
+        <li>¿Qué pasa si no se resuelve?</li>
+        <li>¿A quién afecta directamente?</li>
+        <li>¿Con qué frecuencia ocurre?</li>
+      </ul>
+      <textarea class="work-textarea" id="p3-impacto" rows="3"
+        placeholder="Ej: Los estudiantes se cansan y baja la concentración. Afecta la clase entera durante horas..."
+        oninput="saveField('p3-impacto', this.value); checkStep('p3', this.value)"></textarea>
+    </div>
+  </div>
+
+  <!-- Paso 4 -->
+  <div class="fase-step" id="fase-p4">
+    <div class="fase-step-header" onclick="toggleFase(this)">
+      <div class="step-num" style="background:var(--purple)">4</div>
+      <div><div class="step-title">Variables del problema</div></div>
+      <span class="step-status" id="status-p4">pendiente</span>
+      <span class="step-chevron">▼</span>
+    </div>
+    <div class="fase-step-body">
+      <p class="step-desc">Todo sistema automático detecta una variable del entorno. Identificá la variable principal y las secundarias. Recordá: <strong style="color:var(--purple)">sensor = medir variable.</strong></p>
+      <div style="margin-bottom:10px;">
+        <div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Variable principal</div>
+        <input type="text" class="work-input" id="p4-var-principal"
+          placeholder="Ej: concentración de CO₂ en el aire (ppm)"
+          oninput="saveField('p4-var-principal', this.value); checkStep('p4', this.value)">
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Variables secundarias (opcional)</div>
+        <input type="text" class="work-input" id="p4-var-sec"
+          placeholder="Ej: temperatura, humedad..."
+          oninput="saveField('p4-var-sec', this.value)" style="margin-bottom:6px;">
+      </div>
+      <div style="margin-top:10px;padding:10px 13px;background:rgba(155,89,182,0.08);border-radius:7px;font-size:12px;color:var(--muted);">
+        Ejemplos de variables: temperatura · luz · sonido · movimiento · distancia · humedad · tiempo · corriente · CO₂ · color · pH · voltaje
+      </div>
+    </div>
+  </div>
+
+  <!-- Paso 5 -->
+  <div class="fase-step" id="fase-p5">
+    <div class="fase-step-header" onclick="toggleFase(this)">
+      <div class="step-num" style="background:var(--green)">5</div>
+      <div><div class="step-title">Punto de quiebre</div></div>
+      <span class="step-status" id="status-p5">pendiente</span>
+      <span class="step-chevron">▼</span>
+    </div>
+    <div class="fase-step-body">
+      <p class="step-desc">¿A partir de qué valor o condición de la variable decís que el problema empieza? Tiene que ser un número, un estado lógico (hay/no hay) o un cambio concreto. Nada subjetivo.</p>
+      <input type="text" class="work-input" id="p5-quiebre"
+        placeholder="Ej: concentración de CO₂ superior a 1000 ppm por más de 5 minutos"
+        oninput="saveField('p5-quiebre', this.value); checkStep('p5', this.value)" style="width:100%">
+      <div style="margin-top:10px;padding:10px 13px;background:rgba(255,77,106,0.07);border-radius:7px;font-size:12px;color:var(--muted);">
+        ⚠️ Si tu respuesta incluye "mucho", "muy", "bastante" o "cuando ya es grave" — no es un quiebre, es otra vagedad. Buscá el número o condición exacta.
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- TRABAJO: DISPARADORAS -->
+<section class="section" id="trabajo-disparadoras">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#FFB800"></div>
+    <span class="eyebrow-text">Mi trabajo</span>
+  </div>
+  <h2>Mis preguntas disparadoras</h2>
+  <p class="sec-desc">Formulá una pregunta disparadora para cada tipo. Usá la referencia de arriba si necesitás. Cada pregunta tiene que ser abierta — no respondible con sí o no.</p>
+
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="workblock">
+      <div class="workblock-header">
+        <div class="wb-num" style="background:#00D4FF">?</div>
+        <div><div class="wb-title">¿Cómo...?</div><div class="wb-hint">Busca crear un proceso o solución</div></div>
+        <div class="wb-status" id="ws-disp-como">✓</div>
+      </div>
+      <div class="workblock-body">
+        <textarea class="work-textarea" id="disp-como" rows="2"
+          placeholder="¿Cómo podríamos..."
+          oninput="saveField('disp-como', this.value); checkWB('ws-disp-como', this.value)"></textarea>
+      </div>
+    </div>
+
+    <div class="workblock">
+      <div class="workblock-header">
+        <div class="wb-num" style="background:#FFB800">?</div>
+        <div><div class="wb-title">¿Por qué...?</div><div class="wb-hint">Investiga causas</div></div>
+        <div class="wb-status" id="ws-disp-porque">✓</div>
+      </div>
+      <div class="workblock-body">
+        <textarea class="work-textarea" id="disp-porque" rows="2"
+          placeholder="¿Por qué..."
+          oninput="saveField('disp-porque', this.value); checkWB('ws-disp-porque', this.value)"></textarea>
+      </div>
+    </div>
+
+    <div class="workblock">
+      <div class="workblock-header">
+        <div class="wb-num" style="background:#00C896">?</div>
+        <div><div class="wb-title">¿Para qué...?</div><div class="wb-hint">Explora el propósito</div></div>
+        <div class="wb-status" id="ws-disp-paraque">✓</div>
+      </div>
+      <div class="workblock-body">
+        <textarea class="work-textarea" id="disp-paraque" rows="2"
+          placeholder="¿Para qué..."
+          oninput="saveField('disp-paraque', this.value); checkWB('ws-disp-paraque', this.value)"></textarea>
+      </div>
+    </div>
+
+    <div class="workblock">
+      <div class="workblock-header">
+        <div class="wb-num" style="background:#9B59B6">?</div>
+        <div><div class="wb-title">¿Qué harías...?</div><div class="wb-hint">Imagina soluciones</div></div>
+        <div class="wb-status" id="ws-disp-que">✓</div>
+      </div>
+      <div class="workblock-body">
+        <textarea class="work-textarea" id="disp-que" rows="2"
+          placeholder="¿Qué harías para..."
+          oninput="saveField('disp-que', this.value); checkWB('ws-disp-que', this.value)"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;padding:12px 16px;background:var(--card);border-radius:8px;font-size:12.5px;color:var(--muted);">
+    💡 <strong style="color:var(--off);">Tip:</strong> si tu pregunta se puede responder con "sí" o "no", no es una disparadora — es una pregunta cerrada. Reformulala.
+  </div>
+</section>
+
+<!-- TRABAJO: PROBLEMA TÉCNICO -->
+<section class="section" id="trabajo-tecnico">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#00C896"></div>
+    <span class="eyebrow-text">Mi trabajo</span>
+  </div>
+  <h2>Mi problema técnico</h2>
+  <p class="sec-desc">Usá la fórmula y los datos que completaste en Fase 1. Cada hueco tiene que estar definido — si falta alguno, volvé al paso correspondiente.</p>
+
+  <div style="background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,0.07);margin-bottom:16px;">
+    <div class="comp-work-row">
+      <div class="comp-work-label">
+        <span class="comp-badge" style="background:rgba(0,212,255,0.12);color:var(--cyan);">CONTEXTO</span>
+        <div class="comp-hint">De tu paso 2</div>
+      </div>
+      <div class="comp-work-field">
+        <textarea class="work-textarea" id="tec-contexto" rows="2"
+          placeholder="Sistema, lugar, momento, personas involucradas..."
+          oninput="saveField('tec-contexto', this.value); checkWB('ws-tec-ctx', this.value)"></textarea>
+      </div>
+    </div>
+    <div class="comp-work-row">
+      <div class="comp-work-label">
+        <span class="comp-badge" style="background:rgba(255,184,0,0.12);color:var(--amber);">VARIABLE</span>
+        <div class="comp-hint">De tu paso 4</div>
+      </div>
+      <div class="comp-work-field">
+        <textarea class="work-textarea" id="tec-variable" rows="2"
+          placeholder="Magnitud observable que indica si el problema existe..."
+          oninput="saveField('tec-variable', this.value); checkWB('ws-tec-var', this.value)"></textarea>
+      </div>
+    </div>
+    <div class="comp-work-row">
+      <div class="comp-work-label">
+        <span class="comp-badge" style="background:rgba(255,77,106,0.12);color:var(--red);">PTO. DE QUIEBRE</span>
+        <div class="comp-hint">De tu paso 5</div>
+      </div>
+      <div class="comp-work-field">
+        <textarea class="work-textarea" id="tec-quiebre" rows="2"
+          placeholder="Valor o condición exacta donde empieza el problema..."
+          oninput="saveField('tec-quiebre', this.value); checkWB('ws-tec-qbk', this.value)"></textarea>
+      </div>
+    </div>
+    <div class="comp-work-row">
+      <div class="comp-work-label">
+        <span class="comp-badge" style="background:rgba(0,200,150,0.12);color:var(--green);">EFECTO NO DESEADO</span>
+        <div class="comp-hint">Consecuencia que genera</div>
+      </div>
+      <div class="comp-work-field">
+        <textarea class="work-textarea" id="tec-efecto" rows="2"
+          placeholder="Qué consecuencia concreta genera cruzar ese umbral..."
+          oninput="saveField('tec-efecto', this.value); checkWB('ws-tec-eff', this.value)"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:8px;font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.08em;">Enunciado final del problema técnico</div>
+  <textarea class="work-textarea" id="tec-enunciado" rows="4"
+    placeholder="En [contexto] ocurre [problema] cuando [variable] supera [punto de quiebre], lo que genera [efecto no deseado]."
+    oninput="saveField('tec-enunciado', this.value); checkWB('ws-tec-final', this.value)"
+    style="border-color:rgba(0,200,150,0.3); font-size:14px;"></textarea>
+</section>
+
+<!-- TRABAJO: OBJETIVOS -->
+<section class="section" id="trabajo-objetivos">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#9B59B6"></div>
+    <span class="eyebrow-text">Mi trabajo</span>
+  </div>
+  <h2>Mis objetivos</h2>
+  <p class="sec-desc">Cada objetivo tiene que empezar con un verbo de acción (detectar, activar, medir, controlar, avisar...) e incluir la variable y el punto de quiebre que ya definiste.</p>
+
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div class="objetivo-row">
+      <div class="objetivo-num" style="background:var(--purple)">1</div>
+      <input type="text" class="work-input" id="obj-1"
+        placeholder="Detectar / Medir / Activar / Controlar..."
+        oninput="saveField('obj-1', this.value); checkWB('ws-obj1', this.value)">
+      <div class="wb-status" id="ws-obj1" style="margin-top:7px;">✓</div>
+    </div>
+    <div class="objetivo-row">
+      <div class="objetivo-num" style="background:var(--purple)">2</div>
+      <input type="text" class="work-input" id="obj-2"
+        placeholder="Detectar / Medir / Activar / Controlar..."
+        oninput="saveField('obj-2', this.value); checkWB('ws-obj2', this.value)">
+      <div class="wb-status" id="ws-obj2" style="margin-top:7px;">✓</div>
+    </div>
+    <div class="objetivo-row">
+      <div class="objetivo-num" style="background:var(--purple)">3</div>
+      <input type="text" class="work-input" id="obj-3"
+        placeholder="Opcional: tercer objetivo"
+        oninput="saveField('obj-3', this.value)">
+    </div>
+  </div>
+
+  <div style="margin-top:14px;padding:11px 15px;background:var(--card);border-radius:8px;font-size:12.5px;color:var(--muted);">
+    Un objetivo bien planteado se puede <strong style="color:var(--off)">verificar</strong>: sabés exactamente cuándo se cumplió y cuándo no.
+  </div>
+</section>
+
+<!-- TRABAJO: SOLUCIÓN -->
+<section class="section" id="trabajo-solucion">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#FF4D6A"></div>
+    <span class="eyebrow-text">Mi trabajo</span>
+  </div>
+  <h2>Mi solución propuesta</h2>
+  <p class="sec-desc">¿Qué dispositivo, sistema o artefacto resuelve exactamente estos objetivos? Describí sensor, controlador y actuador si aplican.</p>
+
+  <!-- Eje -->
+  <div style="margin-bottom:16px;">
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Eje del proyecto</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;background:var(--card);border-radius:8px;cursor:pointer;border:1.5px solid transparent;transition:border-color .2s;" id="eje-label-1">
+        <input type="radio" name="eje" value="respuesta" onchange="saveField('eje', this.value); markEje()" style="accent-color:var(--cyan)">
+        <span style="font-size:12.5px;color:var(--off);">Respuesta a una pregunta → Informe</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;background:var(--card);border-radius:8px;cursor:pointer;border:1.5px solid transparent;transition:border-color .2s;" id="eje-label-2">
+        <input type="radio" name="eje" value="problema" onchange="saveField('eje', this.value); markEje()" style="accent-color:var(--amber)">
+        <span style="font-size:12.5px;color:var(--off);">Resolución de un problema → Diseño</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;background:var(--card);border-radius:8px;cursor:pointer;border:1.5px solid transparent;transition:border-color .2s;" id="eje-label-3">
+        <input type="radio" name="eje" value="producto" onchange="saveField('eje', this.value); markEje()" style="accent-color:var(--green)">
+        <span style="font-size:12.5px;color:var(--off);">Creación de un producto → Prototipo</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Disparadora final -->
+  <div style="margin-bottom:16px;">
+    <div style="font-size:11px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Mi pregunta disparadora final del proyecto</div>
+    <textarea class="work-textarea" id="sol-disparadora" rows="2"
+      placeholder="La pregunta que da inicio a TODO el proyecto, con el eje y el tipo de pregunta elegidos..."
+      oninput="saveField('sol-disparadora', this.value)"></textarea>
+  </div>
+
+  <!-- Descripción de solución -->
+  <div>
+    <div style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Descripción de la solución</div>
+    <textarea class="work-textarea" id="sol-descripcion" rows="4"
+      placeholder="Describí qué dispositivo o sistema resuelve el problema. Sensor + controlador + actuador si aplica. Ej: sensor MQ-135 + Arduino + relé que activa un extractor..."
+      oninput="saveField('sol-descripcion', this.value)"></textarea>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<section class="section" id="checklist">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#00C896"></div>
+    <span class="eyebrow-text">Cierre</span>
+  </div>
+  <h2>Checklist de autoevaluación</h2>
+  <p class="sec-desc">Antes de dar por cerrado tu enunciado, verificá cada punto. Marcá solo lo que ya completaste.</p>
+
+  <div class="checklist" id="checklist-items">
+    <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>Identifiqué el CONTEXTO: sistema, lugar, momento y personas involucradas.</span></label>
+    <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>Mi VARIABLE es observable o medible directamente — no es una sensación ni un juicio de valor.</span></label>
+    <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>El PUNTO DE QUIEBRE está expresado como un número, condición lógica o cambio de estado concreto.</span></label>
+    <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>El enunciado del problema técnico tiene UNA sola oración — no usé "y" para unir dos problemas.</span></label>
+    <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>No usé adjetivos subjetivos: "mucho", "grave", "excesivo", "peligroso", "muy".</span></label>
+    <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>Mi pregunta disparadora es abierta: no se puede responder con sí o no.</span></label>
+    <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>Elegí el eje del proyecto (respuesta / problema / producto) y sé por qué.</span></label>
+    <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>Mis objetivos empiezan con verbos de acción (detectar, activar, medir, controlar...).</span></label>
+    <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>Cada objetivo menciona la variable y el punto de quiebre que definí.</span></label>
+    <label class="check-item"><input type="checkbox" onchange="toggleCheck(this)"><span>Puedo describir en 2 líneas qué dispositivo resuelve exactamente mis objetivos.</span></label>
+  </div>
+
+  <div id="eval-result" style="margin-top:16px;padding:14px 18px;border-radius:9px;font-size:13.5px;background:var(--card);border:1px solid rgba(255,255,255,0.07);display:block;">
+    <span id="check-count" style="color:var(--cyan);font-weight:800;font-size:20px;">0</span><span style="color:var(--muted);font-size:13px;"> / 10 verificados</span>
+    <div id="check-msg" style="font-size:12.5px;color:var(--muted);margin-top:4px;">Completá los puntos antes de avanzar a la solución.</div>
+  </div>
+</section>
+
+<!-- GLOSARIO -->
+<section class="section" id="glosario">
+  <div class="section-eyebrow">
+    <div class="eyebrow-dot" style="background:#7A8BAA"></div>
+    <span class="eyebrow-text">Referencia rápida</span>
+  </div>
+  <h2>Glosario</h2>
+  <p class="sec-desc">Los términos clave, en el orden en que aparecen en el flujo.</p>
+  <div class="glosario-grid">
+    <div class="glosario-item" style="--accent:#4A5580"><div class="glosario-term">Instrucción atómica</div><div class="glosario-def">Instrucción mínima e indivisible. El robot no asume nada que no se indique.</div></div>
+    <div class="glosario-item" style="--accent:#7A8BAA"><div class="glosario-term">Problema vago</div><div class="glosario-def">Descripción informal de una situación no deseada, sin definir contexto, variable ni umbral.</div></div>
+    <div class="glosario-item" style="--accent:var(--amber)"><div class="glosario-term">Pregunta disparadora</div><div class="glosario-def">Pregunta abierta y precisa que despierta curiosidad y da inicio a un proyecto.</div></div>
+    <div class="glosario-item" style="--accent:var(--cyan)"><div class="glosario-term">Contexto</div><div class="glosario-def">Sistema, espacio o ámbito donde ocurre el problema. Debe poder delimitarse.</div></div>
+    <div class="glosario-item" style="--accent:var(--amber)"><div class="glosario-term">Variable</div><div class="glosario-def">Magnitud o estado observable que indica si el problema está presente.</div></div>
+    <div class="glosario-item" style="--accent:var(--red)"><div class="glosario-term">Punto de quiebre</div><div class="glosario-def">Valor o condición de la variable donde el problema se considera activo. Cuantitativo o lógico.</div></div>
+    <div class="glosario-item" style="--accent:var(--green)"><div class="glosario-term">Problema técnico</div><div class="glosario-def">Enunciado preciso construido a partir de las 4 componentes. Una sola oración.</div></div>
+    <div class="glosario-item" style="--accent:var(--purple)"><div class="glosario-term">Objetivo</div><div class="glosario-def">Acción medible que resuelve un componente del problema técnico. Empieza con verbo.</div></div>
+    <div class="glosario-item" style="--accent:#0097B8"><div class="glosario-term">Eje disparador</div><div class="glosario-def">Tipo de proyecto: respuesta (informe), resolución (diseño) o creación (prototipo).</div></div>
+    <div class="glosario-item" style="--accent:var(--purple)"><div class="glosario-term">Sensor</div><div class="glosario-def">Componente que mide una variable del entorno. Sensor = medir variable.</div></div>
+    <div class="glosario-item" style="--accent:var(--amber)"><div class="glosario-term">Actuador</div><div class="glosario-def">Componente que ejecuta una acción física (motor, relé, válvula, servo...).</div></div>
+    <div class="glosario-item" style="--accent:var(--green)"><div class="glosario-term">ABP</div><div class="glosario-def">Aprendizaje Basado en Proyectos. Se aprende resolviendo problemas reales.</div></div>
+  </div>
+  <div style="margin-top:28px;padding:14px 18px;background:var(--card);border-radius:var(--radius);border:1px solid rgba(255,255,255,0.06);font-size:12px;color:var(--muted);text-align:center;">
+    Taller de Proyecto · 1er Año · Electromecánica · Robótica · Automatización · IA
+  </div>
+</section>
+
+</main>
+
+<script>
+// ── STORAGE KEY PREFIX ─────────────────────────────────────────
+const KEY = 'taller_proyecto_';
+
+// ── SAVE / LOAD ────────────────────────────────────────────────
+function saveField(id, value) {
+  localStorage.setItem(KEY + id, value);
+  flashSave();
+  updateProgress();
+}
+
+function loadField(id) {
+  return localStorage.getItem(KEY + id) || '';
+}
+
+let saveTimer;
+function flashSave() {
+  const el = document.getElementById('save-indicator');
+  el.classList.add('show');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => el.classList.remove('show'), 1400);
+}
+
+// ── NAME ───────────────────────────────────────────────────────
+function saveName(val) {
+  localStorage.setItem(KEY + 'nombre', val);
+  document.getElementById('sidebar-name').textContent = val || '—';
+  flashSave();
+}
+
+// ── STEP STATUS ────────────────────────────────────────────────
+function checkStep(stepId, value) {
+  const el = document.getElementById('status-' + stepId);
+  if (!el) return;
+  const done = value && value.trim().length > 10;
+  el.textContent = done ? '✓ listo' : 'pendiente';
+  el.style.color = done ? 'var(--green)' : 'var(--muted)';
+  el.style.background = done ? 'rgba(0,200,150,0.1)' : 'rgba(255,255,255,0.05)';
+  el.style.borderColor = done ? 'rgba(0,200,150,0.25)' : '';
+}
+
+// ── WORKBLOCK STATUS ───────────────────────────────────────────
+function checkWB(statusId, value) {
+  const el = document.getElementById(statusId);
+  if (!el) return;
+  const done = value && value.trim().length > 5;
+  el.classList.toggle('done', done);
+  updateProgress();
+}
+
+// ── PROGRESS ───────────────────────────────────────────────────
+const TRACKED_FIELDS = [
+  'p1-problema','p2-contexto','p3-impacto','p4-var-principal','p5-quiebre',
+  'disp-como','disp-porque','disp-paraque','disp-que',
+  'tec-contexto','tec-variable','tec-quiebre','tec-efecto','tec-enunciado',
+  'obj-1','obj-2',
+  'sol-disparadora','sol-descripcion'
+];
+
+function updateProgress() {
+  const done = TRACKED_FIELDS.filter(f => {
+    const val = document.getElementById(f);
+    return val && val.value && val.value.trim().length > 5;
+  }).length;
+  const total = TRACKED_FIELDS.length;
+  const pct = Math.round(done / total * 100);
+  document.getElementById('sidebar-prog').style.width = pct + '%';
+  document.getElementById('sidebar-frac').textContent = done + ' / ' + total + ' campos completados';
+  document.getElementById('progress-fill').style.width =
+    (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + '%';
+}
+
+// ── CHECKLIST ──────────────────────────────────────────────────
+function toggleCheck(input) {
+  const item = input.closest('.check-item');
+  item.classList.toggle('checked', input.checked);
+  const all  = document.querySelectorAll('#checklist-items input');
+  const done = document.querySelectorAll('#checklist-items input:checked').length;
+  document.getElementById('check-count').textContent = done;
+  const msg = document.getElementById('check-msg');
+  const result = document.getElementById('eval-result');
+  if (done === all.length) {
+    result.style.borderColor = 'var(--green)';
+    result.style.background = 'rgba(0,200,150,0.07)';
+    msg.textContent = '¡Todo listo! Tu enunciado está completo. Podés avanzar a la solución. 🎯';
+    msg.style.color = 'var(--green)';
+  } else if (done >= 7) {
+    result.style.borderColor = 'var(--amber)';
+    result.style.background = 'rgba(255,184,0,0.05)';
+    msg.textContent = 'Casi. Revisá los últimos puntos antes de cerrar.';
+    msg.style.color = 'var(--amber)';
+  } else {
+    result.style.borderColor = '';
+    result.style.background = 'var(--card)';
+    msg.textContent = 'Completá los puntos antes de avanzar a la solución.';
+    msg.style.color = 'var(--muted)';
+  }
+  // save checklist state
+  const states = Array.from(all).map(i => i.checked ? '1' : '0').join('');
+  localStorage.setItem(KEY + 'checklist', states);
+}
+
+// ── FASE ACCORDION ─────────────────────────────────────────────
+function toggleFase(header) {
+  header.closest('.fase-step').classList.toggle('open');
+}
+
+// ── EJE RADIO ─────────────────────────────────────────────────
+function markEje() {
+  const colors = { respuesta: 'var(--cyan)', problema: 'var(--amber)', producto: 'var(--green)' };
+  document.querySelectorAll('input[name="eje"]').forEach((r, i) => {
+    const label = document.getElementById('eje-label-' + (i + 1));
+    if (label) label.style.borderColor = r.checked ? colors[r.value] : 'transparent';
+  });
+}
+
+// ── SIDEBAR ────────────────────────────────────────────────────
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+function closeSidebar() {
+  if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+}
+
+// ── SCROLL / NAV ACTIVE ─────────────────────────────────────── 
+const sections = document.querySelectorAll('section[id], .fase-step[id]');
+const navItems = document.querySelectorAll('.nav-item');
+
+window.addEventListener('scroll', () => {
+  // progress bar
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  // back to top
+  document.getElementById('back-top').classList.toggle('visible', window.scrollY > 400);
+  // active nav
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navItems.forEach(n => { n.classList.toggle('active', n.getAttribute('href') === '#' + current); });
+}, { passive: true });
+
+// ── SMOOTH SCROLL ──────────────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); window.scrollTo({ top: t.offsetTop - 24, behavior: 'smooth' }); }
+  });
+});
+
+// ── RESTORE ON LOAD ────────────────────────────────────────────
+window.addEventListener('load', () => {
+  // name
+  const name = localStorage.getItem(KEY + 'nombre') || '';
+  if (name) {
+    document.getElementById('student-name').value = name;
+    document.getElementById('sidebar-name').textContent = name;
+    const pn = document.getElementById('print-name'); if (pn) pn.textContent = name;
+  }
+
+  // all textareas and inputs
+  document.querySelectorAll('textarea[id], input[type=text][id]').forEach(el => {
+    const val = loadField(el.id);
+    if (val) {
+      el.value = val;
+      el.classList.add('has-content');
+    }
+  });
+
+  // step statuses
+  ['p1','p2','p3','p4','p5'].forEach(s => {
+    const field = document.getElementById(s + '-' + (s === 'p4' ? 'var-principal' : s.slice(1) === '1' ? 'problema' : s.slice(1) === '2' ? 'contexto' : s.slice(1) === '3' ? 'impacto' : s.slice(1) === '5' ? 'quiebre' : 'contexto'));
+    if (field && field.value) checkStep(s, field.value);
+  });
+
+  // workblock statuses
+  const wbMap = {
+    'ws-disp-como': 'disp-como', 'ws-disp-porque': 'disp-porque',
+    'ws-disp-paraque': 'disp-paraque', 'ws-disp-que': 'disp-que',
+    'ws-tec-ctx': 'tec-contexto', 'ws-tec-var': 'tec-variable',
+    'ws-tec-qbk': 'tec-quiebre', 'ws-tec-eff': 'tec-efecto',
+    'ws-tec-final': 'tec-enunciado', 'ws-obj1': 'obj-1', 'ws-obj2': 'obj-2',
+  };
+  Object.entries(wbMap).forEach(([ws, fld]) => {
+    const f = document.getElementById(fld);
+    if (f && f.value) checkWB(ws, f.value);
+  });
+
+  // eje radio
+  const eje = localStorage.getItem(KEY + 'eje');
+  if (eje) {
+    const r = document.querySelector(`input[name="eje"][value="${eje}"]`);
+    if (r) { r.checked = true; markEje(); }
+  }
+
+  // checklist
+  const cl = localStorage.getItem(KEY + 'checklist');
+  if (cl) {
+    document.querySelectorAll('#checklist-items input').forEach((inp, i) => {
+      if (cl[i] === '1') { inp.checked = true; inp.closest('.check-item').classList.add('checked'); }
+    });
+    // trigger count update
+    if (document.querySelector('#checklist-items input:checked'))
+      document.querySelector('#checklist-items input').dispatchEvent(new Event('change'));
+  }
+
+  updateProgress();
+});
+
+  // ── BUILD RESPUESTAS TEXT ──────────────────────────────────────
+  function buildRespuestasText(forGmail = false) {
+    const name = document.getElementById('student-name').value.trim() || 'Sin nombre';
+    const date = new Date().toLocaleDateString('es-AR', { 
+      weekday:'long', year:'numeric', month:'long', day:'numeric' 
+    });
+    const sep = forGmail ? '\n' : '\n';
+    const line = forGmail ? '─────────────────────────────────────────' : '─────────────────────';
+    
+    const get = id => {
+      const el = document.getElementById(id);
+      return el ? (el.value.trim() || '(sin respuesta)') : '(sin respuesta)';
+    };
+    const eje = document.querySelector('input[name="eje"]:checked');
+    const ejeVal = eje ? ({respuesta:'Respuesta a una pregunta → Informe', problema:'Resolución de un problema → Diseño', producto:'Creación de un producto → Prototipo'}[eje.value] || eje.value) : '(sin seleccionar)';
+
+    return [
+      '╔══════════════════════════════════════════╗',
+      '   TALLER DE PROYECTO · Preguntas Disparadoras',
+      '╚══════════════════════════════════════════╝',
+      '',
+      `Alumno/a: ${name}`,
+      `Fecha:    ${date}`,
+      '',
+      line,
+      'FASE 1 — ANÁLISIS DEL PROBLEMA',
+      line,
+      '',
+      '1. PROBLEMA ORIGINAL',
+      get('p1-problema'),
+      '',
+      '2. CONTEXTO',
+      get('p2-contexto'),
+      '',
+      '3. IMPACTO',
+      get('p3-impacto'),
+      '',
+      '4. VARIABLE PRINCIPAL',
+      get('p4-var-principal'),
+      get('p4-var-sec') !== '(sin respuesta)' ? '   Variables secundarias: ' + get('p4-var-sec') : '',
+      '',
+      '5. PUNTO DE QUIEBRE',
+      get('p5-quiebre'),
+      '',
+      line,
+      'PREGUNTAS DISPARADORAS',
+      line,
+      '',
+      '¿Cómo...?',
+      get('disp-como'),
+      '',
+      '¿Por qué...?',
+      get('disp-porque'),
+      '',
+      '¿Para qué...?',
+      get('disp-paraque'),
+      '',
+      '¿Qué harías...?',
+      get('disp-que'),
+      '',
+      line,
+      'PROBLEMA TÉCNICO',
+      line,
+      '',
+      'Contexto:          ' + get('tec-contexto'),
+      'Variable:          ' + get('tec-variable'),
+      'Punto de quiebre:  ' + get('tec-quiebre'),
+      'Efecto no deseado: ' + get('tec-efecto'),
+      '',
+      'ENUNCIADO FINAL:',
+      get('tec-enunciado'),
+      '',
+      line,
+      'OBJETIVOS',
+      line,
+      '',
+      '1. ' + get('obj-1'),
+      '2. ' + get('obj-2'),
+      get('obj-3') !== '(sin respuesta)' ? '3. ' + get('obj-3') : '',
+      '',
+      line,
+      'SOLUCIÓN PROPUESTA',
+      line,
+      '',
+      'Eje del proyecto: ' + ejeVal,
+      '',
+      'Pregunta disparadora final:',
+      get('sol-disparadora'),
+      '',
+      'Descripción de la solución:',
+      get('sol-descripcion'),
+      '',
+      line,
+    ].filter(l => l !== null && l !== undefined).join(sep);
+  }
+
+  // ── PRINT PDF ─────────────────────────────────────────────────
+  function printPDF() {
+    const name = document.getElementById('student-name').value.trim() || 'Sin nombre';
+    document.getElementById('print-name').textContent = name;
+    document.getElementById('print-date').textContent = new Date().toLocaleDateString('es-AR', {
+      weekday:'long', year:'numeric', month:'long', day:'numeric'
+    });
+    // Open all accordions for print
+    document.querySelectorAll('.fase-step').forEach(s => s.classList.add('open'));
+    window.print();
+  }
+
+  // ── GMAIL MODAL ────────────────────────────────────────────────
+  function openGmailModal() {
+    const name = document.getElementById('student-name').value.trim();
+    if (!name) {
+      alert('Primero escribí tu nombre en la parte de arriba.');
+      document.getElementById('student-name').focus();
+      return;
+    }
+    const preview = buildRespuestasText(true);
+    document.getElementById('gmail-preview').textContent = 
+      preview.substring(0, 600) + (preview.length > 600 ? '\n... (continúa en el mail)' : '');
+    const modal = document.getElementById('gmail-modal');
+    modal.style.display = 'flex';
+    setTimeout(() => document.getElementById('teacher-email').focus(), 100);
+  }
+
+  function closeGmailModal() {
+    document.getElementById('gmail-modal').style.display = 'none';
+    document.getElementById('gmail-error').style.display = 'none';
+    document.getElementById('teacher-email').value = '';
+  }
+
+  function sendGmail() {
+    const email = document.getElementById('teacher-email').value.trim();
+    const errEl = document.getElementById('gmail-error');
+    if (!email || !email.includes('@')) {
+      errEl.textContent = 'Ingresá un email válido.';
+      errEl.style.display = 'block';
+      return;
+    }
+    errEl.style.display = 'none';
+    const name = document.getElementById('student-name').value.trim() || 'Sin nombre';
+    const subject = encodeURIComponent(`[Taller de Proyecto] Respuestas — ${name}`);
+    const body = encodeURIComponent(buildRespuestasText(true));
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(email)}&su=${subject}&body=${body}`;
+    window.open(gmailUrl, '_blank');
+    closeGmailModal();
+  }
+
+  // Keyboard: close modal on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeGmailModal();
+  });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taller de Proyecto — Planificación</title>
+<style>
+/* ── TOKENS ───────────────────────────────────────────────────── */
+:root {
+  --navy:    #0A0E2A;
+  --mid:     #1A2550;
+  --lit:     #253070;
+  --cyan:    #00D4FF;
+  --cdim:    #0097B8;
+  --amber:   #FFB800;
+  --green:   #00C896;
+  --red:     #FF4D6A;
+  --purple:  #9B59B6;
+  --white:   #FFFFFF;
+  --off:     #E8EDF5;
+  --muted:   #7A8BAA;
+  --card:    #131B3A;
+  --clit:    #1E2B4A;
+  --sw:      260px;
+  --r:       10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;display:flex;min-height:100vh}
+
+/* ── SIDEBAR ──────────────────────────────────────────────────── */
+#sb{width:var(--sw);min-height:100vh;background:#060918;border-right:1px solid rgba(0,212,255,0.1);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sb-logo{padding:22px 18px 16px;border-bottom:1px solid rgba(0,212,255,0.08)}
+.sb-logo .tag{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cdim);text-transform:uppercase;margin-bottom:5px}
+.sb-logo h1{font-size:14px;font-weight:800;color:var(--white);line-height:1.3}
+.sb-logo h1 span{color:var(--cyan)}
+.sb-name{margin:12px 14px 0;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.12);border-radius:8px;padding:9px 12px;font-size:12px;color:var(--muted)}
+.sb-name strong{color:var(--cyan);font-size:13px;display:block;margin-bottom:2px}
+.nl{padding:16px 18px 5px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 18px;text-decoration:none;color:var(--muted);font-size:12.5px;font-weight:500;border-left:3px solid transparent;transition:all .2s;cursor:pointer}
+.ni:hover{color:var(--white);background:rgba(0,212,255,0.05)}
+.ni.active{color:var(--cyan);border-left-color:var(--cyan);background:rgba(0,212,255,0.07)}
+.nd{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sb-foot{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,0.05);font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ── MAIN ─────────────────────────────────────────────────────── */
+#main{margin-left:var(--sw);flex:1}
+
+/* ── PROGRESS BAR ─────────────────────────────────────────────── */
+#pb{position:fixed;top:0;left:var(--sw);right:0;height:3px;background:rgba(0,212,255,0.1);z-index:200}
+#pf{height:100%;background:var(--cyan);width:0%;transition:width .1s}
+
+/* ── HERO ─────────────────────────────────────────────────────── */
+#hero{background:linear-gradient(135deg,#0A0E2A 0%,#1A2550 60%,#0D1535 100%);padding:56px 52px 48px;position:relative;overflow:hidden;border-bottom:1px solid rgba(0,212,255,0.12)}
+#hero::before{content:'';position:absolute;top:-60px;right:-60px;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,0.07) 0%,transparent 70%);pointer-events:none}
+.htag{display:inline-block;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--cyan);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:18px}
+#hero h2{font-size:clamp(24px,3.5vw,40px);font-weight:900;color:var(--white);line-height:1.15;margin-bottom:8px}
+#hero h2 em{color:var(--cyan);font-style:normal}
+#hero p{font-size:14px;color:var(--muted);max-width:560px;margin-bottom:24px;line-height:1.7}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px}
+.hpill{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:6px 14px;font-size:11.5px;color:var(--off)}
+.hpill .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* ── SECTIONS ─────────────────────────────────────────────────── */
+.sec{padding:52px 52px 44px;border-bottom:1px solid rgba(255,255,255,0.04);scroll-margin-top:20px}
+.eyebrow{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.edot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.etxt{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sec h2{font-size:clamp(18px,2.5vw,28px);font-weight:800;color:var(--white);margin-bottom:8px;line-height:1.2}
+.sec>.desc{color:var(--muted);font-size:13.5px;max-width:660px;margin-bottom:28px;line-height:1.65}
+
+/* ── CONCEPT CARDS ────────────────────────────────────────────── */
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.ccard{background:var(--card);border-radius:var(--r);padding:20px 22px;border:1px solid rgba(255,255,255,0.07);border-left:3px solid var(--acc,var(--cyan))}
+.ccard-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px}
+.ccard h3{font-size:13.5px;font-weight:700;color:var(--white);margin-bottom:7px}
+.ccard p{font-size:13px;color:var(--muted);line-height:1.55}
+
+/* ── PLAN / SECUENCIA ─────────────────────────────────────────── */
+.plan{display:flex;flex-direction:column}
+.pstep{display:grid;grid-template-columns:54px 1fr;gap:16px;position:relative;padding-bottom:16px}
+.pstep:not(:last-child)::before{content:'';position:absolute;left:26px;top:50px;bottom:-2px;width:2px;background:rgba(0,212,255,0.14)}
+.pnum{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:var(--navy);background:var(--pc,var(--cyan));z-index:1}
+.pcontent{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-left:3px solid var(--pc,var(--cyan));border-radius:var(--r);padding:15px 20px;transition:border-color .2s}
+.pcontent:hover{border-top-color:rgba(255,255,255,0.07);border-right-color:rgba(255,255,255,0.07);border-bottom-color:rgba(255,255,255,0.07)}
+.pmeta{display:flex;align-items:center;gap:9px;margin-bottom:6px;flex-wrap:wrap}
+.ptype{font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:4px}
+.ptype.html{background:rgba(0,212,255,0.12);color:var(--cyan)}
+.ptype.pptx{background:rgba(255,184,0,0.12);color:var(--amber)}
+.prole{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pcontent h3{font-size:14.5px;font-weight:700;margin-bottom:5px;line-height:1.3}
+.pcontent h3 a{color:var(--white);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+.pcontent h3 a:hover{border-bottom-color:var(--cyan)}
+.pcontent p{font-size:12.5px;color:var(--muted);line-height:1.55}
+
+/* ── RESOURCE CARDS ───────────────────────────────────────────── */
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:16px}
+.rescard{display:flex;flex-direction:column;background:var(--card);border:1px solid rgba(255,255,255,0.07);border-top:3px solid var(--acc,var(--cyan));border-radius:var(--r);padding:22px 24px;text-decoration:none;transition:transform .2s,border-color .2s}
+.rescard:hover{transform:translateY(-3px);border-color:rgba(0,212,255,0.3);border-top-color:var(--acc,var(--cyan))}
+.rescard-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.rescard-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:21px}
+.rtype{font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:4px 9px;border-radius:5px}
+.rtype.html{background:rgba(0,212,255,0.12);color:var(--cyan)}
+.rtype.pptx{background:rgba(255,184,0,0.12);color:var(--amber)}
+.rescard h3{font-size:15.5px;font-weight:700;color:var(--white);margin-bottom:7px;line-height:1.3}
+.rescard p{font-size:12.5px;color:var(--muted);line-height:1.55;flex:1}
+.rescard .open{margin-top:15px;font-size:11.5px;font-weight:700;color:var(--cyan);display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.05em}
+.rescard:hover .open{gap:9px}
+
+/* ── DOCENTE BOX ──────────────────────────────────────────────── */
+.tipbox{background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:var(--r);padding:14px 18px;margin-top:6px;font-size:13px;color:var(--muted);line-height:1.6}
+.tipbox strong{color:var(--off)}
+
+/* ── FOOTER ───────────────────────────────────────────────────── */
+.foot{padding:30px 52px;font-size:12px;color:var(--muted);line-height:1.6}
+.foot strong{color:var(--off)}
+
+/* ── BACK TO TOP ──────────────────────────────────────────────── */
+#bt{position:fixed;bottom:20px;right:20px;width:38px;height:38px;background:var(--mid);border:1px solid rgba(0,212,255,0.25);border-radius:50%;color:var(--cyan);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;z-index:150}
+#bt.vis{opacity:1;pointer-events:auto}
+
+/* ── MOBILE ───────────────────────────────────────────────────── */
+#mtoggle{display:none;position:fixed;top:12px;left:12px;z-index:300;background:var(--mid);border:1px solid rgba(0,212,255,0.3);color:var(--cyan);font-size:18px;width:38px;height:38px;border-radius:8px;align-items:center;justify-content:center;cursor:pointer}
+@media(max-width:768px){
+  :root{--sw:0px}
+  #sb{transform:translateX(-260px);width:260px;transition:transform .3s}
+  #sb.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #mtoggle{display:flex}
+  #pb{left:0}
+  .sec{padding:36px 22px 32px}
+  #hero{padding:48px 22px 40px}
+  .foot{padding:26px 22px}
+  .pstep{grid-template-columns:44px 1fr;gap:12px}
+  .pstep:not(:last-child)::before{left:21px}
+  .pnum{width:38px;height:38px;font-size:15px}
+}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<div id="pb"><div id="pf"></div></div>
+<button id="mtoggle" onclick="toggleSB()" aria-label="Menú">☰</button>
+<button id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Arriba">↑</button>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────────── -->
+<nav id="sb">
+  <div class="sb-logo">
+    <div class="tag">Taller de Proyecto · 1er Año</div>
+    <h1>Taller de <span>Proyecto</span></h1>
+  </div>
+  <div class="sb-name"><strong>Planificación</strong>Mapa de la materia</div>
+
+  <div class="nl">Inicio</div>
+  <a class="ni" href="#top" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Presentación</a>
+  <a class="ni" href="#como" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Cómo usar este espacio</a>
+
+  <div class="nl">Unidad 1 · Preguntas Disparadoras</div>
+  <a class="ni" href="#secuencia" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span>La secuencia de la clase</a>
+  <a class="ni" href="#materiales" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Materiales del alumno</a>
+  <a class="ni" href="#docente" onclick="cSB()"><span class="nd" style="background:#7A8BAA"></span>Para el docente</a>
+
+  <div class="sb-foot">
+    Electromecánica · Robótica<br>Automatización · IA · Industria 4.0
+  </div>
+</nav>
+
+<!-- ── MAIN ─────────────────────────────────────────────────────── -->
+<main id="main">
+
+<!-- HERO -->
+<section id="top">
+  <div id="hero">
+    <div class="htag">Planificación · Mapa de la materia</div>
+    <h2>Taller de <em>Proyecto</em></h2>
+    <p>Acá está todo lo que necesitás para cursar la materia, ordenado y en un solo lugar. No hace falta que juntes links sueltos: entrá, seguí la secuencia y abrí cada material desde acá.</p>
+    <div class="hero-meta">
+      <span class="hpill"><span class="dot" style="background:#9B59B6"></span>Unidad 1 — Preguntas Disparadoras</span>
+      <span class="hpill"><span class="dot" style="background:#00D4FF"></span>3 páginas web</span>
+      <span class="hpill"><span class="dot" style="background:#FFB800"></span>2 presentaciones</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CÓMO USAR
+══════════════════════════════════════════════════════════════ -->
+<section class="sec" id="como">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Antes de empezar</span></div>
+  <h2>Cómo usar este espacio</h2>
+  <p class="desc">Esta página es tu punto de partida. Funciona como índice de toda la materia: desde acá llegás a las presentaciones de clase, a tu carpeta de teoría y a tu cuaderno de ejercicios. Guardala en favoritos.</p>
+
+  <div class="grid3">
+    <div class="ccard" style="--acc:#9B59B6">
+      <div class="ccard-icon" style="background:rgba(155,89,182,0.12)">🧭</div>
+      <h3>Seguí la secuencia</h3>
+      <p>Cada material tiene su momento. Más abajo está el orden recomendado, paso a paso.</p>
+    </div>
+    <div class="ccard" style="--acc:#00D4FF">
+      <div class="ccard-icon" style="background:rgba(0,212,255,0.12)">📖</div>
+      <h3>La carpeta es tu referencia</h3>
+      <p>La teoría no se estudia una sola vez. Volvé a la carpeta cada vez que necesites recordar un concepto.</p>
+    </div>
+    <div class="ccard" style="--acc:#00C896">
+      <div class="ccard-icon" style="background:rgba(0,200,150,0.12)">✏️</div>
+      <h3>El cuaderno se trabaja</h3>
+      <p>Los ejercicios se completan a medida que avanza la clase. Tu progreso queda guardado en el navegador.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SECUENCIA
+══════════════════════════════════════════════════════════════ -->
+<section class="sec" id="secuencia">
+  <div class="eyebrow"><div class="edot" style="background:#9B59B6"></div><span class="etxt">Unidad 1 · Preguntas Disparadoras</span></div>
+  <h2>La secuencia de la clase</h2>
+  <p class="desc">El orden recomendado para recorrer la unidad <strong>«Del problema vago al problema técnico»</strong>. Cada paso enlaza directo a su material.</p>
+
+  <div class="plan">
+
+    <div class="pstep">
+      <div class="pnum" style="background:#FFB800">1</div>
+      <div class="pcontent" style="--pc:#FFB800">
+        <div class="pmeta"><span class="ptype pptx">PPTX</span><span class="prole">En clase · Exposición</span></div>
+        <h3><a href="preguntas-disparadoras/Preguntas%20%20Disparadoras%20-%20Del%20problema%20vago%20al%20problema%20t%C3%A9cnico.pptx">Preguntas Disparadoras — Del problema vago al problema técnico</a></h3>
+        <p>La presentación con la que arranca la unidad. Introduce el concepto central: cómo pasar de un problema mal definido a un problema técnico que se puede resolver.</p>
+      </div>
+    </div>
+
+    <div class="pstep">
+      <div class="pnum" style="background:#00D4FF">2</div>
+      <div class="pcontent" style="--pc:#00D4FF">
+        <div class="pmeta"><span class="ptype html">WEB</span><span class="prole">Referencia permanente</span></div>
+        <h3><a href="preguntas-disparadoras/preguntas-disparadoras-carpeta-de-clase.html">Mi Carpeta — Teoría de la unidad</a></h3>
+        <p>Todo el contenido teórico en un solo lugar: qué es una pregunta disparadora, los 6 tipos, los 3 ejes, las 4 componentes y la fórmula del problema técnico. Tu material de consulta.</p>
+      </div>
+    </div>
+
+    <div class="pstep">
+      <div class="pnum" style="background:#00C896">3</div>
+      <div class="pcontent" style="--pc:#00C896">
+        <div class="pmeta"><span class="ptype html">WEB</span><span class="prole">Práctica guiada</span></div>
+        <h3><a href="preguntas-disparadoras/preguntas-disparadoras-cuaderno.html">Mi Cuaderno de Proyecto — Ejercicios</a></h3>
+        <p>El cuaderno de trabajo donde aplicás la teoría: ejercicios para transformar problemas vagos en problemas técnicos. Se completa durante la cursada y guarda tu progreso.</p>
+      </div>
+    </div>
+
+    <div class="pstep">
+      <div class="pnum" style="background:#FFB800">4</div>
+      <div class="pcontent" style="--pc:#FFB800">
+        <div class="pmeta"><span class="ptype pptx">PPTX</span><span class="prole">Cierre · Desafío</span></div>
+        <h3><a href="preguntas-disparadoras/Competencia%20de%20Proyectos%20-%205%20ejercicios%20para%20pensar.pptx">Competencia de Proyectos — 5 ejercicios para pensar</a></h3>
+        <p>La actividad de cierre: cinco ejercicios para poner a prueba todo lo aprendido y empezar a pensar proyectos propios.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MATERIALES
+══════════════════════════════════════════════════════════════ -->
+<section class="sec" id="materiales">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">Acceso directo</span></div>
+  <h2>Materiales del alumno</h2>
+  <p class="desc">Todos los recursos de la unidad, sin orden, para cuando ya sabés qué buscás.</p>
+
+  <div class="res-grid">
+
+    <a class="rescard" style="--acc:#00D4FF" href="preguntas-disparadoras/preguntas-disparadoras-carpeta-de-clase.html">
+      <div class="rescard-top">
+        <div class="rescard-icon" style="background:rgba(0,212,255,0.12)">📖</div>
+        <span class="rtype html">Web</span>
+      </div>
+      <h3>Mi Carpeta de Teoría</h3>
+      <p>La referencia permanente de la materia. Conceptos, tipos de preguntas, ejes y la fórmula del problema técnico.</p>
+      <span class="open">Abrir →</span>
+    </a>
+
+    <a class="rescard" style="--acc:#00C896" href="preguntas-disparadoras/preguntas-disparadoras-cuaderno.html">
+      <div class="rescard-top">
+        <div class="rescard-icon" style="background:rgba(0,200,150,0.12)">✏️</div>
+        <span class="rtype html">Web</span>
+      </div>
+      <h3>Mi Cuaderno de Proyecto</h3>
+      <p>El cuaderno de ejercicios para aplicar la teoría. Guarda tu progreso en el navegador.</p>
+      <span class="open">Abrir →</span>
+    </a>
+
+    <a class="rescard" style="--acc:#FFB800" href="preguntas-disparadoras/Preguntas%20%20Disparadoras%20-%20Del%20problema%20vago%20al%20problema%20t%C3%A9cnico.pptx">
+      <div class="rescard-top">
+        <div class="rescard-icon" style="background:rgba(255,184,0,0.12)">📊</div>
+        <span class="rtype pptx">PPTX</span>
+      </div>
+      <h3>Preguntas Disparadoras</h3>
+      <p>Presentación de clase: del problema vago al problema técnico. El arranque de la unidad.</p>
+      <span class="open">Descargar →</span>
+    </a>
+
+    <a class="rescard" style="--acc:#FFB800" href="preguntas-disparadoras/Competencia%20de%20Proyectos%20-%205%20ejercicios%20para%20pensar.pptx">
+      <div class="rescard-top">
+        <div class="rescard-icon" style="background:rgba(255,184,0,0.12)">🏆</div>
+        <span class="rtype pptx">PPTX</span>
+      </div>
+      <h3>Competencia de Proyectos</h3>
+      <p>5 ejercicios para pensar. La actividad de cierre de la unidad.</p>
+      <span class="open">Descargar →</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     DOCENTE
+══════════════════════════════════════════════════════════════ -->
+<section class="sec" id="docente">
+  <div class="eyebrow"><div class="edot" style="background:#7A8BAA"></div><span class="etxt">Uso del profesor</span></div>
+  <h2>Para el docente</h2>
+  <p class="desc">Material de apoyo para dictar la unidad. No es necesario para el alumno.</p>
+
+  <div class="res-grid">
+    <a class="rescard" style="--acc:#7A8BAA" href="preguntas-disparadoras/preguntas-disparadoras-guia-docente.html">
+      <div class="rescard-top">
+        <div class="rescard-icon" style="background:rgba(122,139,170,0.15)">🎓</div>
+        <span class="rtype html">Web</span>
+      </div>
+      <h3>Guía Docente</h3>
+      <p>Guía para dictar la unidad de Preguntas Disparadoras: objetivos, secuencia didáctica y claves de cada actividad.</p>
+      <span class="open">Abrir →</span>
+    </a>
+  </div>
+
+  <div class="tipbox"><strong>Nota:</strong> esta planificación crece con la materia. A medida que se sumen unidades, se agregan acá nuevas secciones con sus materiales.</div>
+</section>
+
+<!-- FOOTER -->
+<div class="foot">
+  <strong>Taller de Proyecto</strong> · 1er Año — Electromecánica · Robótica · IA<br>
+  Planificación de la materia · Unidad 1: Preguntas Disparadoras
+</div>
+
+</main>
+
+<script>
+// ── SIDEBAR ────────────────────────────────────────────────────
+function toggleSB() { document.getElementById('sb').classList.toggle('open'); }
+function cSB() { if (window.innerWidth <= 768) document.getElementById('sb').classList.remove('open'); }
+
+// ── SCROLL / NAV / PROGRESS ────────────────────────────────────
+const secs = document.querySelectorAll('section[id]');
+const navs = document.querySelectorAll('.ni');
+
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+  document.getElementById('pf').style.width = pct + '%';
+  document.getElementById('bt').classList.toggle('vis', window.scrollY > 400);
+  let cur = '';
+  secs.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
+  navs.forEach(n => n.classList.toggle('active', n.getAttribute('href') === '#' + cur));
+}, {passive:true});
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); window.scrollTo({top:t.offsetTop - 24, behavior:'smooth'}); }
+  });
+});
+</script>
+</body>
+</html>
