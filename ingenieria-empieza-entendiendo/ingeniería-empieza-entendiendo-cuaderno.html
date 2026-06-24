@@ -125,6 +125,24 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
 .gtag2{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-bottom:4px}
 .gterm{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:4px}
 .gdef{font-size:11.5px;color:var(--muted);line-height:1.5}
+/* Actividad: ordenar el flujo */
+.flow-pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.fp{display:inline-flex;align-items:center;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;color:var(--off);background:var(--card);border:1px solid rgba(255,255,255,0.1);border-left:3px solid var(--gc,var(--amber));cursor:pointer;user-select:none;transition:opacity .18s,transform .18s,border-color .18s}
+.fp:hover{border-color:var(--gc,var(--amber));transform:translateY(-1px)}
+.fp.sel{opacity:.35}
+.fp.sel:hover{opacity:.55}
+.flow-row{display:flex;flex-wrap:wrap;gap:8px;min-height:54px;padding:14px;border-radius:var(--r);background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.13);align-items:center}
+.flow-row.empty{justify-content:center}
+.flow-row.empty::before{content:'Hacé clic en los términos de arriba para armar la fila…';color:var(--muted);font-size:12px;font-style:italic}
+.fq{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:20px;font-size:12px;font-weight:700;color:var(--white);background:var(--card);border:1px solid var(--gc,var(--amber));cursor:pointer;animation:fqin .2s ease}
+.fq .n{display:inline-flex;align-items:center;justify-content:center;width:21px;height:21px;border-radius:50%;background:var(--gc,var(--amber));color:var(--navy);font-size:11px;font-weight:800;flex-shrink:0}
+.fq .x{color:var(--muted);font-size:12px;font-weight:700;margin-left:1px}
+.fq:hover{border-color:var(--red)} .fq:hover .x{color:var(--red)}
+@keyframes fqin{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
+.flow-bar{display:flex;align-items:center;gap:16px;margin-top:14px;flex-wrap:wrap}
+.flow-count{font-size:12px;color:var(--muted)} .flow-count b{color:var(--amber)}
+.flow-reset{padding:7px 15px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:var(--off);font-family:inherit;transition:border-color .2s,color .2s}
+.flow-reset:hover{border-color:var(--red);color:var(--red)}
 /* Checklist */
 .cklist{display:flex;flex-direction:column;gap:7px}
 .ckitem{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--card);border-radius:8px;font-size:12.5px;color:var(--off);line-height:1.5;cursor:pointer;user-select:none;transition:background .2s;border:1px solid rgba(255,255,255,0.05)}
@@ -173,6 +191,7 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
   <div class="nl">Cierre</div>
   <a class="ni" href="#checklist" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Mi checklist</a>
   <a class="ni" href="#glosario" onclick="cSB()"><span class="nd" style="background:#7A8BAA"></span>Glosario</a>
+  <a class="ni" href="#actividad-flujo" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Actividad: ordenar el flujo</a>
   <div class="sbf">Electromecánica · Robótica<br>Automatización · IA</div>
 </nav>
 
@@ -487,6 +506,19 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
     La ingeniería empieza Entendiendo · 1er y 2do Año · Electromecánica · Robótica · Automatización · IA
   </div>
 </section>
+
+<!-- ACTIVIDAD: ordenar el glosario según el flujo -->
+<section class="sec" id="actividad-flujo">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Actividad final</span></div>
+  <h2>Ordená el glosario según el flujo de ejecución</h2>
+  <p class="desc">Hacé clic en cada término para sumarlo a la fila, en el orden en que aparecen dentro del flujo de un proyecto (desde el problema vago hasta el objetivo y su ejecución). Se numeran solos según el orden en que los elegís. Si sacás uno del medio, los demás se reacomodan. Volvé a hacer clic —en el término o en la fila— para quitarlo.</p>
+  <div class="flow-pool" id="flowPool"></div>
+  <div class="flow-row empty" id="flowRow"></div>
+  <div class="flow-bar">
+    <span class="flow-count">En la fila: <b id="flowN">0</b> / <span id="flowTot">0</span></span>
+    <button class="flow-reset" type="button" onclick="flowReset()">Reiniciar</button>
+  </div>
+</section>
 </main>
 
 <script>
@@ -499,6 +531,30 @@ const secs=document.querySelectorAll('section[id]'),navs=document.querySelectorA
 window.addEventListener('scroll',()=>{const p=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;document.getElementById('pf').style.width=p+'%';document.getElementById('bt').classList.toggle('vis',window.scrollY>400);let c='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-100)c=s.id});navs.forEach(n=>n.classList.toggle('active',n.getAttribute('href')==='#'+c))},{passive:true});
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();window.scrollTo({top:t.offsetTop-24,behavior:'smooth'})}})});
 window.addEventListener('load',()=>{const n=localStorage.getItem(K+'n')||'';if(n){document.getElementById('myname').value=n;document.getElementById('sbn').textContent=n;const p=document.getElementById('ph-n');if(p)p.textContent=n}const cl=localStorage.getItem(K+'cl');if(cl){document.querySelectorAll('#cklist input').forEach((i,idx)=>{if(cl[idx]==='1'){i.checked=true;i.closest('.ckitem').classList.add('checked')}});if(document.querySelector('#cklist input:checked'))document.querySelector('#cklist input').dispatchEvent(new Event('change'))}});
+
+/* Actividad: ordenar el glosario según el flujo (cola FIFO con renumeración dinámica) */
+const flowQ=[];let flowTerms=[];
+function flowRender(){
+  const pool=document.getElementById('flowPool'),row=document.getElementById('flowRow');
+  pool.querySelectorAll('.fp').forEach(p=>p.classList.toggle('sel',flowQ.includes(+p.dataset.id)));
+  row.innerHTML='';
+  flowQ.forEach((id,i)=>{const t=flowTerms[id],el=document.createElement('span');el.className='fq';el.style.setProperty('--gc',t.color);el.innerHTML='<span class="n">'+(i+1)+'</span>'+t.name+'<span class="x">✕</span>';el.onclick=()=>flowToggle(id);row.appendChild(el)});
+  row.classList.toggle('empty',flowQ.length===0);
+  document.getElementById('flowN').textContent=flowQ.length;
+  localStorage.setItem(K+'flow',JSON.stringify(flowQ));
+}
+function flowToggle(id){const i=flowQ.indexOf(id);if(i===-1)flowQ.push(id);else flowQ.splice(i,1);flowRender()}
+function flowReset(){flowQ.length=0;flowRender()}
+function flowInit(){
+  const pool=document.getElementById('flowPool');if(!pool)return;
+  flowTerms=Array.from(document.querySelectorAll('#glosario .gi')).map(gi=>({name:gi.querySelector('.gterm').textContent.trim(),color:(gi.style.getPropertyValue('--gc')||'#FFB800').trim()}));
+  document.getElementById('flowTot').textContent=flowTerms.length;
+  pool.innerHTML='';
+  flowTerms.forEach((t,id)=>{const p=document.createElement('span');p.className='fp';p.dataset.id=id;p.style.setProperty('--gc',t.color);p.textContent=t.name;p.onclick=()=>flowToggle(id);pool.appendChild(p)});
+  const s=localStorage.getItem(K+'flow');if(s){try{JSON.parse(s).forEach(id=>{if(id>=0&&id<flowTerms.length&&!flowQ.includes(id))flowQ.push(id)})}catch(e){}}
+  flowRender();
+}
+flowInit();
 </script>
 <!-- SEND BAR -->
 <div style="position:fixed;bottom:0;left:var(--sw);right:0;background:#060918;border-top:1px solid rgba(255,184,0,0.12);padding:10px 24px;z-index:150;display:flex;align-items:center;gap:12px">
