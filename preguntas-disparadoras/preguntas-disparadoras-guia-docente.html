@@ -40,7 +40,9 @@
   /* ── SIDEBAR ──────────────────────────────────────────────────── */
   #sidebar {
     width: var(--sidebar-w);
-    min-height: 100vh;
+    height: 100vh;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
     background: #080C20;
     border-right: 1px solid rgba(0,212,255,0.12);
     position: fixed;
@@ -54,7 +56,13 @@
   .sidebar-logo {
     padding: 24px 20px 16px;
     border-bottom: 1px solid rgba(0,212,255,0.1);
+    position: sticky;
+    top: 0;
+    background: #080C20;
+    z-index: 3;
   }
+  #sidebar::-webkit-scrollbar { width: 6px; }
+  #sidebar::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.18); border-radius: 3px; }
   .sidebar-logo .tag {
     font-size: 9px;
     font-weight: 700;
@@ -1434,15 +1442,16 @@
   const sections = document.querySelectorAll('section[id], .fase-step[id], .proyecto-card[id]');
   const navItems = document.querySelectorAll('.nav-item');
 
-  function updateActive() {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 100) current = s.id;
-    });
-    navItems.forEach(n => {
-      n.classList.toggle('active', n.getAttribute('href') === '#' + current);
-    });
-  }
+  /* NAV ninja: scrollspy con IntersectionObserver + auto-follow del item activo en el sidebar */
+  (function(sb, navs, secs){
+    if (!sb || !navs.length || !secs.length) return;
+    let cur = null;
+    function follow(n){ const t=n.offsetTop, b=t+n.offsetHeight, vT=sb.scrollTop, vB=vT+sb.clientHeight; if(t<vT+44||b>vB-44) sb.scrollTo({top:t-sb.clientHeight/2+n.offsetHeight/2, behavior:'smooth'}); }
+    function setA(id){ if(id===cur) return; cur=id; navs.forEach(n=>{ const on=n.getAttribute('href')==='#'+id; n.classList.toggle('active',on); if(on) follow(n); }); }
+    const io = new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting) setA(e.target.id); }); }, { rootMargin:'-12% 0px -80% 0px', threshold:0 });
+    secs.forEach(s=>io.observe(s));
+    let best=null; secs.forEach(s=>{ if(s.getBoundingClientRect().top<innerHeight*0.3) best=s; }); setA((best||secs[0]).id);
+  })(document.getElementById('sidebar'), navItems, sections);
 
   // ── PROGRESS BAR ───────────────────────────────────────────────
   function updateProgress() {
@@ -1457,7 +1466,7 @@
   }
 
   window.addEventListener('scroll', () => {
-    updateActive(); updateProgress(); updateBackTop();
+    updateProgress(); updateBackTop();
   }, { passive: true });
 
   // ── SIDEBAR TOGGLE ─────────────────────────────────────────────
@@ -1517,7 +1526,7 @@
   });
 
   // Init
-  updateActive(); updateProgress();
+  updateProgress();
 </script>
 </body>
 </html>
