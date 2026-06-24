@@ -329,12 +329,6 @@ a { color: inherit; }
   opacity: .74;
 }
 
-.unit-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
 .unit-card {
   border-radius: 24px;
   padding: 22px;
@@ -463,18 +457,6 @@ a { color: inherit; }
   text-transform: uppercase;
 }
 
-.note {
-  margin-top: 14px;
-  padding: 14px 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.03);
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.note strong { color: var(--off); }
-
 .footer {
   padding: 22px 2px 0;
   color: var(--muted);
@@ -520,7 +502,7 @@ a { color: inherit; }
 }
 
 @media (max-width: 960px) {
-  .hero, .unit-grid, .resource-grid, .stats { grid-template-columns: 1fr; }
+  .hero, .resource-grid, .stats { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 720px) {
@@ -549,8 +531,7 @@ a { color: inherit; }
       <h1>Taller de <span>Proyecto</span></h1>
     </div>
     <nav class="nav" aria-label="Secciones">
-      <a href="#unidades">Unidades</a>
-      <a href="#materiales">Accesos</a>
+      <a href="#trayecto">Trayecto</a>
       <a href="#oficial">Oficial</a>
     </nav>
   </header>
@@ -561,8 +542,8 @@ a { color: inherit; }
       <h2>Portal oficial de acceso a <em>Taller de Proyecto</em>.</h2>
       <p>Ingreso institucional a los materiales de 1° y 2° año. Desde esta portada se accede a las unidades, a las guías docentes y a los cuadernos de trabajo publicados.</p>
       <div class="hero-pills">
-        <span class="pill"><span class="dot" style="background:#FFB800"></span>Unidad 1 · La Ingeniería empieza Entendiendo</span>
-        <span class="pill"><span class="dot" style="background:#00D4FF"></span>Unidad 2 · Preguntas Disparadoras</span>
+        <span class="pill"><span class="dot" style="background:#FFB800"></span>Unidad 1 · La Ingeniería empieza entendiendo</span>
+        <span class="pill"><span class="dot" style="background:#00D4FF"></span>Unidad 2 · Preguntas disparadoras</span>
         <span class="pill"><span class="dot" style="background:#00C896"></span>Acceso oficial de la materia</span>
       </div>
     </div>
@@ -574,12 +555,12 @@ a { color: inherit; }
       </div>
       <div class="stats">
         <div class="stat"><strong>2</strong><span>unidades</span></div>
-        <div class="stat"><strong>6</strong><span>recursos</span></div>
+        <div class="stat"><strong>5</strong><span>separadores</span></div>
         <div class="stat"><strong>OF</strong><span>oficial</span></div>
       </div>
       <div class="info-card">
-        <h3>Disponibilidad</h3>
-        <p>Los accesos publicados concentran la información vigente de la materia en un solo lugar.</p>
+        <h3>Trayecto continuo</h3>
+        <p>Estructura académica secuencial que organiza separadores y unidades en orden de progresión.</p>
       </div>
     </div>
   </section>
@@ -588,40 +569,23 @@ a { color: inherit; }
     <div class="section-head">
       <div>
         <div class="section-kicker">Estructura académica</div>
-        <h3>Separadores del trayecto</h3>
+        <h3>Trayecto académico</h3>
       </div>
-      <p class="section-desc">La materia se ordena en una secuencia académica continua. Los bloques marcan el trayecto completo del curso.</p>
+      <p class="section-desc">Estructura completa del curso. Separadores de transición intercalados con unidades en orden secuencial.</p>
     </div>
 
     <div class="track">
+      <!-- 1. Apertura -->
       <div class="separator active"><strong>Introducción al Taller de Proyecto</strong><span>Bloque de apertura</span></div>
-      <div class="separator active"><strong>Unidad 1: La Ingeniería empieza Entendiendo</strong><span>Publicado</span></div>
-      <div class="separator active"><strong>Del Problema Vago al Problema Técnico</strong><span>Transición académica</span></div>
-      <div class="separator active"><strong>Unidad 2: Preguntas disparadoras</strong><span>Publicado</span></div>
-      <div class="separator locked"><strong>Unidad 3: Determinación del Contexto</strong><span>Bloque del trayecto</span></div>
-      <div class="separator locked"><strong>Unidad 4: Variables y Puntos de Quiebre</strong><span>Bloque del trayecto</span></div>
-      <div class="separator locked"><strong>Nacimiento del Proyecto</strong><span>Bloque integrador</span></div>
-      <div class="separator locked"><strong>Unidad 5: Problema Técnico. Objetivos. Soluciones</strong><span>Cierre del trayecto</span></div>
-    </div>
-  </section>
 
-  <section class="section" id="unidades">
-    <div class="section-head">
-      <div>
-        <div class="section-kicker">Estructura académica</div>
-        <h3>Unidades</h3>
-      </div>
-      <p class="section-desc">La materia se organiza en dos unidades. Cada una centraliza presentación, cuaderno y guía docente en su propia carpeta.</p>
-    </div>
-
-    <div class="unit-grid">
+      <!-- Unidad 1 -->
       <article class="unit-card unit-1">
         <div class="unit-meta">
           <span class="unit-chip amber">Unidad 1</span>
           <span class="unit-chip green">1° año</span>
         </div>
         <div>
-          <h4>La Ingeniería empieza Entendiendo</h4>
+          <h4>La Ingeniería empieza entendiendo</h4>
           <p>Base de ingreso a la materia. Reúne la presentación de apertura, el cuaderno del alumno y la guía docente.</p>
         </div>
         <div class="resource-grid">
@@ -655,14 +619,18 @@ a { color: inherit; }
         </div>
       </article>
 
+      <!-- 2. Transición -->
+      <div class="separator active"><strong>Del Problema Vago al Problema Técnico</strong><span>Transición académica</span></div>
+
+      <!-- Unidad 2 -->
       <article class="unit-card unit-2">
         <div class="unit-meta">
           <span class="unit-chip cyan">Unidad 2</span>
           <span class="unit-chip green">2° año</span>
         </div>
         <div>
-          <h4>Del problema vago al problema técnico</h4>
-          <p>Desarrollo de la segunda unidad. Centraliza teoría, práctica, guía docente y presentación de apertura.</p>
+          <h4>Preguntas disparadoras</h4>
+          <p>Transformación del problema vago en técnico. Centraliza cuaderno, guía docente y presentación de apertura.</p>
         </div>
         <div class="resource-grid">
           <a class="resource-card" href="preguntas-disparadoras/preguntas-disparadoras-cuaderno.html">
@@ -694,76 +662,19 @@ a { color: inherit; }
           </a>
         </div>
       </article>
-    </div>
-  </section>
 
-  <section class="section" id="materiales">
-    <div class="section-head">
-      <div>
-        <div class="section-kicker">Accesos directos</div>
-        <h3>Biblioteca de materiales</h3>
-      </div>
-      <p class="section-desc">Accesos directos a los materiales oficiales publicados para ambas unidades.</p>
-    </div>
+      <!-- 3. Unidad 3 (bloqueada) -->
+      <div class="separator locked"><strong>Unidad 3: Determinación del Contexto</strong><span>Bloque del trayecto</span></div>
 
-    <div class="resource-grid">
-      <a class="resource-card" href="ingenieria-empieza-entendiendo/ingenier%C3%ADa-empieza-entendiendo-cuaderno.html">
-        <div class="resource-top">
-          <div class="resource-icon" style="background:rgba(0,212,255,0.12)">✏️</div>
-          <span class="resource-type html">HTML</span>
-        </div>
-        <h5>Unidad 1 · Cuaderno del alumno</h5>
-        <p>Trabajo guiado de la introducción al taller.</p>
-        <span class="resource-open">Abrir →</span>
-      </a>
-      <a class="resource-card" href="ingenieria-empieza-entendiendo/ingenier%C3%ADa-empieza-entendiendo-guia-docente.html">
-        <div class="resource-top">
-          <div class="resource-icon" style="background:rgba(122,139,170,0.15)">🎓</div>
-          <span class="resource-type html">HTML</span>
-        </div>
-        <h5>Unidad 1 · Guía docente</h5>
-        <p>Orientaciones para dictar la primera unidad.</p>
-        <span class="resource-open">Abrir →</span>
-      </a>
-      <a class="resource-card" href="ingenieria-empieza-entendiendo/La%20Ingenier%C3%ADa%20empieza%20Entendiendo.pptx">
-        <div class="resource-top">
-          <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
-          <span class="resource-type pptx">PPTX</span>
-        </div>
-        <h5>Unidad 1 · Presentación</h5>
-        <p>La Ingeniería empieza Entendiendo.</p>
-        <span class="resource-open">Descargar →</span>
-      </a>
-      <a class="resource-card" href="preguntas-disparadoras/preguntas-disparadoras-cuaderno.html">
-        <div class="resource-top">
-          <div class="resource-icon" style="background:rgba(0,200,150,0.12)">✏️</div>
-          <span class="resource-type html">HTML</span>
-        </div>
-        <h5>Unidad 2 · Cuaderno del alumno</h5>
-        <p>Práctica para transformar problemas vagos en técnicos.</p>
-        <span class="resource-open">Abrir →</span>
-      </a>
-      <a class="resource-card" href="preguntas-disparadoras/preguntas-disparadoras-guia-docente.html">
-        <div class="resource-top">
-          <div class="resource-icon" style="background:rgba(122,139,170,0.15)">🎓</div>
-          <span class="resource-type html">HTML</span>
-        </div>
-        <h5>Unidad 2 · Guía docente</h5>
-        <p>Secuencia y claves para la clase.</p>
-        <span class="resource-open">Abrir →</span>
-      </a>
-      <a class="resource-card" href="preguntas-disparadoras/Preguntas%20%20Disparadoras%20-%20Del%20problema%20vago%20al%20problema%20t%C3%A9cnico.pptx">
-        <div class="resource-top">
-          <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
-          <span class="resource-type pptx">PPTX</span>
-        </div>
-        <h5>Unidad 2 · Presentación</h5>
-        <p>Del problema vago al problema técnico.</p>
-        <span class="resource-open">Descargar →</span>
-      </a>
-    </div>
+      <!-- 4. Unidad 4 (bloqueada) -->
+      <div class="separator locked"><strong>Unidad 4: Variables y Puntos de Quiebre</strong><span>Bloque del trayecto</span></div>
 
-    <div class="note"><strong>Acceso institucional:</strong> el portal concentra el material oficial vigente de la materia para 1° y 2° año.</div>
+      <!-- 5. Nacimiento del Proyecto (bloqueado) -->
+      <div class="separator locked"><strong>Nacimiento del Proyecto</strong><span>Bloque integrador</span></div>
+
+      <!-- Unidad 5 (bloqueada) -->
+      <div class="separator locked"><strong>Unidad 5: Problema Técnico. Objetivos. Soluciones</strong><span>Cierre del trayecto</span></div>
+    </div>
   </section>
 
   <section class="section" id="oficial">
@@ -782,7 +693,7 @@ a { color: inherit; }
 
     <div class="footer">
       <strong>Taller de Proyecto</strong> · Campus académico oficial · 1° y 2° año<br>
-      Unidad 1: La Ingeniería empieza Entendiendo · Unidad 2: Preguntas Disparadoras
+      Unidad 1: La Ingeniería empieza entendiendo · Unidad 2: Preguntas disparadoras
     </div>
   </section>
 </main>
