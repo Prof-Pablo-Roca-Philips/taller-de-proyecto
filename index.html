@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taller de Proyecto — Campus académico</title>
+<title>Taller de Proyecto — Campus académico oficial</title>
 <style>
 :root {
   --navy: #0A0E2A;
@@ -290,6 +290,45 @@ a { color: inherit; }
   font-size: 14px;
 }
 
+.track {
+  display: grid;
+  gap: 10px;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+}
+
+.separator strong {
+  color: var(--white);
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.separator span {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.separator.active {
+  border-color: rgba(0,212,255,0.24);
+  background: linear-gradient(90deg, rgba(0,212,255,0.12), rgba(255,255,255,0.03));
+}
+
+.separator.locked {
+  opacity: .74;
+}
+
 .unit-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -531,17 +570,38 @@ a { color: inherit; }
     <div class="hero-side">
       <div class="info-card">
         <h3>Ámbito académico</h3>
-        <p>Plataforma de acceso a los materiales oficiales de la materia para 1° y 2° año.</p>
+        <p>Portal de ingreso oficial a los materiales de la materia para 1° y 2° año.</p>
       </div>
       <div class="stats">
         <div class="stat"><strong>2</strong><span>unidades</span></div>
         <div class="stat"><strong>6</strong><span>recursos</span></div>
-        <div class="stat"><strong>OF</strong><span>portal oficial</span></div>
+        <div class="stat"><strong>OF</strong><span>oficial</span></div>
       </div>
       <div class="info-card">
         <h3>Disponibilidad</h3>
         <p>Los accesos publicados concentran la información vigente de la materia en un solo lugar.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="section" id="trayecto">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">Estructura académica</div>
+        <h3>Separadores del trayecto</h3>
+      </div>
+      <p class="section-desc">La materia se ordena en una secuencia académica continua. Los bloques marcan el trayecto completo del curso.</p>
+    </div>
+
+    <div class="track">
+      <div class="separator active"><strong>Introducción al Taller de Proyecto</strong><span>Bloque de apertura</span></div>
+      <div class="separator active"><strong>Unidad 1: La Ingeniería empieza Entendiendo</strong><span>Publicado</span></div>
+      <div class="separator active"><strong>Del Problema Vago al Problema Técnico</strong><span>Transición académica</span></div>
+      <div class="separator active"><strong>Unidad 2: Preguntas disparadoras</strong><span>Publicado</span></div>
+      <div class="separator locked"><strong>Unidad 3: Determinación del Contexto</strong><span>Bloque del trayecto</span></div>
+      <div class="separator locked"><strong>Unidad 4: Variables y Puntos de Quiebre</strong><span>Bloque del trayecto</span></div>
+      <div class="separator locked"><strong>Nacimiento del Proyecto</strong><span>Bloque integrador</span></div>
+      <div class="separator locked"><strong>Unidad 5: Problema Técnico. Objetivos. Soluciones</strong><span>Cierre del trayecto</span></div>
     </div>
   </section>
 
