@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi Cuaderno de Proyecto — Taller de Proyecto</title>
+<title>Preguntas Disparadoras — Alumno · Taller de Proyecto</title>
 <style>
 /* ── TOKENS ───────────────────────────────────────────────────── */
 :root {
@@ -596,7 +596,7 @@ body {
 <nav id="sidebar">
   <div class="sidebar-logo">
     <div class="tag">Taller de Proyecto · 1er Año</div>
-    <h1>Mi Cuaderno<br><span>de Proyecto</span></h1>
+    <h1>Preguntas Disparadoras</h1>
   </div>
 
   <div class="student-badge">
@@ -616,6 +616,12 @@ body {
   <a class="nav-item" href="#ref-ejes" onclick="closeSidebar()"><span class="nav-dot" style="background:#00C896"></span> Los 3 ejes</a>
   <a class="nav-item" href="#ref-componentes" onclick="closeSidebar()"><span class="nav-dot" style="background:#FF4D6A"></span> Las 4 componentes</a>
   <a class="nav-item" href="#ref-formula" onclick="closeSidebar()"><span class="nav-dot" style="background:#00C896"></span> Fórmula del problema técnico</a>
+
+
+  <a class="nav-item" href="#instrucciones" onclick="closeSidebar()"><span class="nav-dot" style="background:#4A5580"></span> Instrucciones atómicas</a>
+  <a class="nav-item" href="#errores" onclick="closeSidebar()"><span class="nav-dot" style="background:#FF4D6A"></span> Errores comunes</a>
+  <a class="nav-item" href="#sensores" onclick="closeSidebar()"><span class="nav-dot" style="background:#9B59B6"></span> Variables y sensores</a>
+  <a class="nav-item" href="#ejemplo" onclick="closeSidebar()"><span class="nav-dot" style="background:#FFB800"></span> Ejemplo completo resuelto</a>
 
   <div class="nav-section-label">Mi trabajo</div>
   <a class="nav-item" href="#trabajo-fase1" onclick="closeSidebar()"><span class="nav-dot" style="background:#00D4FF"></span> Fase 1 — Análisis del problema</a>
@@ -638,8 +644,8 @@ body {
 <section id="top">
   <div id="hero">
     <div class="hero-tag">Cuaderno de Trabajo Interactivo</div>
-    <h2>Mi Cuaderno<br><em>de Proyecto</em></h2>
-    <p>Acá vas a encontrar las herramientas teóricas de referencia y tu espacio de trabajo propio. Lo que escribas se guarda automáticamente en este dispositivo.</p>
+    <h2>Preguntas Disparadoras<br><em>Mi Carpeta + Trabajo</em></h2>
+    <p>Tu carpeta completa — teoría de referencia y espacio de trabajo en un solo lugar. Lo que escribás se guarda automáticamente en este dispositivo.</p>
     <div class="name-input-wrap">
       <label for="student-name">Tu nombre:</label>
       <input type="text" id="student-name" class="name-field"
@@ -812,6 +818,172 @@ body {
 ════════════════════════════════════════════════════════════ -->
 
 <!-- TRABAJO: FASE 1 -->
+<section class="sec" id="instrucciones">
+  <div class="eyebrow"><div class="edot" style="background:#4A5580"></div><span class="etxt">Fundamento</span></div>
+  <h2>Instrucciones atómicas y ambigüedad</h2>
+  <p class="desc">El primer concepto de la materia. Para entender cómo diseñar sistemas automáticos, primero hay que entender qué es una instrucción perfecta.</p>
+
+  <div class="def">
+    <p>Una <strong>instrucción atómica</strong> es la unidad mínima e indivisible de una tarea. No requiere conocimiento previo, no admite interpretación, y no deja nada librado al azar. Si podés dividirla en pasos más chicos, todavía no es atómica.</p>
+  </div>
+
+  <div class="grid3" style="margin-bottom:20px">
+    <div class="ccard" style="--acc:#00D4FF">
+      <div class="ccard-icon" style="background:rgba(0,212,255,0.12)">🔬</div>
+      <h3>Atómica</h3>
+      <p>No se puede dividir en pasos más pequeños. Es la acción más simple posible.</p>
+    </div>
+    <div class="ccard" style="--acc:#FFB800">
+      <div class="ccard-icon" style="background:rgba(255,184,0,0.12)">🎯</div>
+      <h3>Sin ambigüedad</h3>
+      <p>Solo puede interpretarse de una manera. No hay "depende" ni "como quieras".</p>
+    </div>
+    <div class="ccard" style="--acc:#00C896">
+      <div class="ccard-icon" style="background:rgba(0,200,150,0.12)">✓</div>
+      <h3>Verificable</h3>
+      <p>Sabés exactamente cuándo se cumplió y cuándo no. El resultado es claro.</p>
+    </div>
+  </div>
+
+  <div class="tipbox">
+    💡 <strong>El robot del pan con dulce de leche:</strong> si le decís "preparar un sándwich" a un robot sin contexto ni conocimiento previo, no sabe nada. No sabe qué es pan, dónde está, cómo abrirlo. Cada cosa que no especificás es una posible falla. <strong>Lo que no contemplás, no pasa.</strong>
+  </div>
+
+  <div class="rulebox" style="margin-top:12px">
+    ⚠️ <strong>Ambigüedad:</strong> cuando una instrucción puede interpretarse de más de una manera. En un sistema automático, la ambigüedad siempre genera error. No existe el "se entiende".
+  </div>
+</section>
+
+<section class="sec" id="errores">
+  <div class="eyebrow"><div class="edot" style="background:#FF4D6A"></div><span class="etxt">Para no repetir</span></div>
+  <h2>Errores comunes</h2>
+  <p class="desc">Los errores que aparecen siempre. Conocerlos de antemano te ahorra rehacer el trabajo.</p>
+
+  <div class="errgrid">
+    <div class="errcard">
+      <div class="errhead"><span class="eico">🎯</span><span class="etitle">Error de contexto — demasiado amplio</span></div>
+      <div class="errbody">
+        <div class="errno"><div class="errlabel">✗ Mal</div><div class="errtext">"El contexto es la sociedad moderna con problemas de energía."</div></div>
+        <div class="errsi"><div class="errlabel">✓ Bien</div><div class="errtext">"Aula escolar de 30 m², horario de clases, ventanas cerradas, 20 estudiantes presentes."</div></div>
+      </div>
+    </div>
+    <div class="errcard">
+      <div class="errhead"><span class="eico">📏</span><span class="etitle">Error de variable — no es medible</span></div>
+      <div class="errbody">
+        <div class="errno"><div class="errlabel">✗ Mal</div><div class="errtext">"La variable es la incomodidad de la gente en el aula."</div></div>
+        <div class="errsi"><div class="errlabel">✓ Bien</div><div class="errtext">"La variable es la concentración de CO₂ en el aire (medida en ppm)."</div></div>
+      </div>
+    </div>
+    <div class="errcard">
+      <div class="errhead"><span class="eico">⚖️</span><span class="etitle">Error de punto de quiebre — subjetivo</span></div>
+      <div class="errbody">
+        <div class="errno"><div class="errlabel">✗ Mal</div><div class="errtext">"Cuando ya hay demasiado calor y la situación se pone grave."</div></div>
+        <div class="errsi"><div class="errlabel">✓ Bien</div><div class="errtext">"Cuando la temperatura supera los 26 °C sostenida por más de 30 minutos."</div></div>
+      </div>
+    </div>
+    <div class="errcard">
+      <div class="errhead"><span class="eico">📝</span><span class="etitle">Error de enunciado — dos problemas en uno</span></div>
+      <div class="errbody">
+        <div class="errno"><div class="errlabel">✗ Mal</div><div class="errtext">"El calor molesta a la gente y también genera humedad y eso hace que los aparatos fallen."</div></div>
+        <div class="errsi"><div class="errlabel">✓ Bien</div><div class="errtext">Una sola oración. Un solo problema. Si tenés varios, elegí el principal.</div></div>
+      </div>
+    </div>
+    <div class="errcard">
+      <div class="errhead"><span class="eico">❓</span><span class="etitle">Error de pregunta disparadora — es cerrada</span></div>
+      <div class="errbody">
+        <div class="errno"><div class="errlabel">✗ Mal</div><div class="errtext">"¿Se puede hacer un sensor de temperatura?" → se responde con sí/no.</div></div>
+        <div class="errsi"><div class="errlabel">✓ Bien</div><div class="errtext">"¿Cómo podríamos detectar automáticamente cuándo el aula supera la temperatura segura de trabajo?"</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="sensores">
+  <div class="eyebrow"><div class="edot" style="background:#9B59B6"></div><span class="etxt">Referencia técnica</span></div>
+  <h2>Variables y sensores</h2>
+  <p class="desc">Cada variable del entorno puede medirse con un sensor específico. Esta tabla te ayuda a conectar el problema con la tecnología que lo detecta.</p>
+
+  <div class="stbl">
+    <table>
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Unidad</th>
+          <th>Sensor típico</th>
+          <th>Aplicación ejemplo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="var-pill" style="background:rgba(255,77,106,0.15);color:#FF4D6A">Temperatura</span></td><td>°C / °F</td><td>DHT11 · DHT22 · LM35 · DS18B20</td><td>Control de clima, refrigeración industrial</td></tr>
+        <tr><td><span class="var-pill" style="background:rgba(255,184,0,0.15);color:#FFB800">Luz / Luminosidad</span></td><td>Lux</td><td>LDR · BH1750 · TSL2561</td><td>Iluminación automática, seguidor solar</td></tr>
+        <tr><td><span class="var-pill" style="background:rgba(0,212,255,0.15);color:#00D4FF">Humedad</span></td><td>% HR</td><td>DHT11 · DHT22 · SHT31</td><td>Riego automático, invernaderos</td></tr>
+        <tr><td><span class="var-pill" style="background:rgba(155,89,182,0.15);color:#9B59B6">Distancia</span></td><td>cm / mm</td><td>HC-SR04 · VL53L0X · Sharp IR</td><td>Detección de obstáculos, nivel de líquido</td></tr>
+        <tr><td><span class="var-pill" style="background:rgba(0,200,150,0.15);color:#00C896">Gas / CO₂</span></td><td>ppm</td><td>MQ-135 · MH-Z19 · CCS811</td><td>Calidad del aire, detección de humo</td></tr>
+        <tr><td><span class="var-pill" style="background:rgba(255,184,0,0.15);color:#FFB800">Movimiento</span></td><td>Presencia</td><td>PIR HC-SR501 · RCWL-0516</td><td>Alarmas, luces automáticas</td></tr>
+        <tr><td><span class="var-pill" style="background:rgba(0,212,255,0.15);color:#00D4FF">Sonido</span></td><td>dB</td><td>KY-037 · MAX4466 · INMP441</td><td>Control por voz, detección de ruido</td></tr>
+        <tr><td><span class="var-pill" style="background:rgba(255,77,106,0.15);color:#FF4D6A">Corriente</span></td><td>A / mA</td><td>ACS712 · INA219 · SCT-013</td><td>Protección eléctrica, gestión de energía</td></tr>
+        <tr><td><span class="var-pill" style="background:rgba(155,89,182,0.15);color:#9B59B6">Voltaje</span></td><td>V</td><td>Divisor resistivo · INA219</td><td>BMS de baterías, paneles solares</td></tr>
+        <tr><td><span class="var-pill" style="background:rgba(0,200,150,0.15);color:#00C896">Color / Tipo material</span></td><td>RGB / estado</td><td>TCS3200 · TCS34725 · Inductivo</td><td>Clasificación de residuos, control de calidad</td></tr>
+        <tr><td><span class="var-pill" style="background:rgba(255,184,0,0.15);color:#FFB800">Aceleración / Vibración</span></td><td>m/s²</td><td>MPU-6050 · ADXL345</td><td>Detección de choques, airbag, inclinación</td></tr>
+        <tr><td><span class="var-pill" style="background:rgba(0,212,255,0.15);color:#00D4FF">Nivel de líquido</span></td><td>cm / estado</td><td>HC-SR04 · Float switch · eTape</td><td>Bomba de achique, tanques automáticos</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tipbox" style="margin-top:14px">
+    💡 <strong>Recordá:</strong> sensor = medir variable. El actuador es lo que <em>actúa</em> cuando se supera el quiebre — motor, relé, válvula, servo, buzzer, LED.
+  </div>
+</section>
+
+<section class="sec" id="ejemplo">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Caso resuelto</span></div>
+  <h2>Ejemplo completo resuelto</h2>
+  <p class="desc">Un caso trabajado paso a paso, desde el problema vago hasta el objetivo. Usalo como modelo para entender cómo se conectan todas las herramientas.</p>
+
+  <div class="wt">
+    <div class="wh">
+      <span class="wtag">PROBLEMA VAGO</span>
+      <p>"En la oficina a veces hace mucho calor."</p>
+    </div>
+    <div class="ws">
+      <div class="wl" style="color:var(--cyan)">CONTEXTO</div>
+      <div class="wc">La oficina, en horario laboral (8:00–17:00 hs), con el personal administrativo presente y ventanas cerradas.</div>
+    </div>
+    <div class="ws">
+      <div class="wl" style="color:var(--amber)">VARIABLE</div>
+      <div class="wc">Temperatura ambiente del espacio de trabajo (medida en °C).</div>
+    </div>
+    <div class="ws">
+      <div class="wl" style="color:var(--red)">PTO. DE QUIEBRE</div>
+      <div class="wc">Temperatura ambiente superior a 26 °C sostenida por más de 30 minutos.</div>
+    </div>
+    <div class="ws">
+      <div class="wl" style="color:var(--green)">PROB. TÉCNICO</div>
+      <div class="wc res">La temperatura del ambiente de la oficina supera los 26 °C durante más de 30 minutos en horario laboral, lo que genera fatiga cognitiva y reduce el rendimiento del personal.</div>
+    </div>
+    <div class="ws">
+      <div class="wl" style="color:var(--purple)">OBJETIVO</div>
+      <div class="wc">Detectar cuando la temperatura supere los 26 °C por más de 30 minutos y activar automáticamente un mecanismo de enfriamiento.</div>
+    </div>
+    <div class="ws">
+      <div class="wl" style="color:var(--cdim)">SENSOR</div>
+      <div class="wc">DHT22 — sensor de temperatura y humedad de precisión.</div>
+    </div>
+    <div class="ws">
+      <div class="wl" style="color:var(--cdim)">ACTUADOR</div>
+      <div class="wc">Relé que activa el aire acondicionado + LED de alerta + buzzer de advertencia.</div>
+    </div>
+    <div class="ws">
+      <div class="wl" style="color:var(--cdim)">SOLUCIÓN</div>
+      <div class="wc">Termostato con sensor DHT22 + Arduino que monitorea temperatura, activa relé al superar el umbral y muestra los valores en una pantalla LCD.</div>
+    </div>
+    <div class="ws">
+      <div class="wl" style="color:var(--amber)">PREG. DISPARADORA</div>
+      <div class="wc">¿Cómo podríamos detectar y controlar automáticamente la temperatura del ambiente de trabajo para que nunca supere el límite de confort durante el horario laboral?</div>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="trabajo-fase1">
   <div class="section-eyebrow">
     <div class="eyebrow-dot" style="background:#00D4FF"></div>

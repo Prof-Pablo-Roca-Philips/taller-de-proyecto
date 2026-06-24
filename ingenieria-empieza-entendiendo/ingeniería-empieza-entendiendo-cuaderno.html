@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Ingeniería empieza Entendiendo — Alumno · Taller de Proyecto</title>
+<style>
+:root{--navy:#0A0E2A;--mid:#1A2550;--lit:#253070;--cyan:#00D4FF;--cdim:#0097B8;--amber:#FFB800;--green:#00C896;--red:#FF4D6A;--purple:#9B59B6;--white:#FFFFFF;--off:#E8EDF5;--muted:#7A8BAA;--card:#131B3A;--clit:#1E2B4A;--light:#F0F4FA;--sw:255px;--r:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;display:flex;min-height:100vh}
+#sb{width:var(--sw);min-height:100vh;background:#060918;border-right:1px solid rgba(0,212,255,0.1);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sbl{padding:20px 16px 14px;border-bottom:1px solid rgba(0,212,255,0.08)}
+.sbl .tag{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cdim);text-transform:uppercase;margin-bottom:5px}
+.sbl h1{font-size:13px;font-weight:800;color:var(--white);line-height:1.3}
+.sbl h1 span{color:var(--amber)}
+.sbn{margin:10px 12px 0;background:rgba(255,184,0,0.05);border:1px solid rgba(255,184,0,0.12);border-radius:7px;padding:8px 11px;font-size:11.5px;color:var(--muted)}
+.sbn strong{color:var(--amber);font-size:12px;display:block;margin-bottom:2px}
+.nl{padding:14px 16px 4px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 16px;text-decoration:none;color:var(--muted);font-size:12px;font-weight:500;border-left:3px solid transparent;transition:all .2s;cursor:pointer}
+.ni:hover{color:var(--white);background:rgba(0,212,255,0.05)}
+.ni.active{color:var(--amber);border-left-color:var(--amber);background:rgba(255,184,0,0.07)}
+.nd{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sbf{margin-top:auto;padding:12px 16px;border-top:1px solid rgba(255,255,255,0.05);font-size:11px;color:var(--muted);line-height:1.5}
+#main{margin-left:var(--sw);flex:1}
+#pb{position:fixed;top:0;left:var(--sw);right:0;height:3px;background:rgba(255,184,0,0.1);z-index:200}
+#pf{height:100%;background:var(--amber);width:0%;transition:width .1s}
+#hero{background:linear-gradient(135deg,#0A0E2A 0%,#1A2550 55%,#0D1535 100%);padding:52px 48px 44px;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,184,0,0.1)}
+#hero::before{content:'';position:absolute;top:-60px;right:-60px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(255,184,0,0.07) 0%,transparent 70%);pointer-events:none}
+.htag{display:inline-block;background:rgba(255,184,0,0.1);border:1px solid rgba(255,184,0,0.25);color:var(--amber);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px}
+#hero h2{font-size:clamp(22px,3.5vw,38px);font-weight:900;color:var(--white);line-height:1.15;margin-bottom:8px}
+#hero h2 em{color:var(--amber);font-style:normal}
+#hero p{font-size:13.5px;color:var(--muted);max-width:480px;margin-bottom:24px;line-height:1.7}
+.nrow{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.nrow label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.ninp{background:rgba(255,184,0,0.06);border:1.5px solid rgba(255,184,0,0.25);border-radius:8px;padding:9px 15px;color:var(--white);font-size:14px;font-weight:600;outline:none;min-width:200px;transition:border-color .2s;font-family:inherit}
+.ninp:focus{border-color:var(--amber)}
+.ninp::placeholder{color:var(--muted);font-weight:400}
+.sec{padding:48px 48px 40px;border-bottom:1px solid rgba(255,255,255,0.04);scroll-margin-top:20px}
+.eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.edot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.etxt{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sec h2{font-size:clamp(17px,2.5vw,26px);font-weight:800;color:var(--white);margin-bottom:8px;line-height:1.2}
+.sec>.desc{color:var(--muted);font-size:13px;max-width:620px;margin-bottom:24px;line-height:1.65}
+/* Cards */
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
+.cc{background:var(--card);border-radius:var(--r);padding:18px 20px;border:1px solid rgba(255,255,255,0.07);border-left:3px solid var(--ca,var(--amber))}
+.cc h3{font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px}
+.cc p{font-size:12.5px;color:var(--muted);line-height:1.55}
+/* Def box */
+.def{background:var(--card);border:1px solid rgba(255,184,0,0.2);border-radius:var(--r);padding:22px 26px;margin-bottom:20px}
+.def p{font-size:15px;color:var(--off);line-height:1.75}
+.def strong{color:var(--amber);font-weight:700}
+.def em{color:var(--cyan);font-style:normal;font-weight:600}
+/* Flow */
+.flow{display:flex;flex-direction:column;gap:7px}
+.fr{display:grid;grid-template-columns:130px 1fr;gap:11px;align-items:center;padding:11px 15px;background:var(--card);border-radius:8px;border-left:3px solid var(--fc,#4A5580)}
+.fr-l{font-size:11px;font-weight:700;color:var(--fc,#4A5580);text-transform:uppercase;letter-spacing:.06em}
+.fr-d{font-size:12.5px;color:var(--muted)}
+.fr.hl{background:rgba(255,184,0,0.07)} .fr.hl .fr-d{color:var(--off)}
+.fr.end{background:rgba(0,200,150,0.07)} .fr.end .fr-d{color:var(--off)}
+/* Sistema interactivo */
+.si-flow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+.si-node{background:var(--card);border-radius:var(--r);padding:14px 18px;border:1.5px solid var(--nc,var(--cyan));min-width:140px;text-align:center;flex:1}
+.si-node .nn{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--nc,var(--cyan));margin-bottom:5px}
+.si-node .nd2{font-size:11.5px;color:var(--muted);line-height:1.45}
+.si-arr{color:var(--cdim);font-size:18px;flex-shrink:0}
+/* Comp table */
+.ctbl{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.07);margin-bottom:18px}
+.crow{display:grid;grid-template-columns:130px 1fr 175px;padding:13px 15px;border-bottom:1px solid rgba(255,255,255,0.05);gap:12px;align-items:start}
+.crow:last-child{border-bottom:none}
+.cbadge{display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.cq{font-size:12px;color:var(--off);font-style:italic;line-height:1.5}
+.cv{font-size:11px;color:var(--muted);line-height:1.4}
+.ctrap{font-size:10.5px;color:rgba(255,77,106,0.65);margin-top:4px;line-height:1.35}
+/* Walkthrough */
+.wt{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.08)}
+.wh{background:var(--mid);padding:12px 18px;display:flex;align-items:center;gap:11px}
+.wtg{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);background:rgba(255,184,0,0.12);border:1px solid rgba(255,184,0,0.3);padding:3px 10px;border-radius:20px}
+.wh p{font-size:13px;color:var(--off);font-style:italic}
+.ws{display:grid;grid-template-columns:110px 1fr;align-items:start;border-top:1px solid rgba(255,255,255,0.05)}
+.wl{padding:12px 14px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-right:1px solid rgba(255,255,255,0.05)}
+.wc{padding:12px 18px;font-size:13px;color:var(--off);line-height:1.55}
+.wc.res{background:rgba(0,200,150,0.06);border-left:2px solid var(--green)}
+/* Errores */
+.egrid{display:flex;flex-direction:column;gap:9px}
+.ecard{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+.ehead{display:flex;align-items:center;gap:9px;padding:10px 15px;background:rgba(255,77,106,0.08);border-bottom:1px solid rgba(255,77,106,0.12)}
+.etitle{font-size:12.5px;font-weight:700;color:var(--red)}
+.ebody{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.eno,.esi{padding:11px 15px}
+.eno{border-right:1px solid rgba(255,255,255,0.05)}
+.elabel{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+.eno .elabel{color:var(--red)} .esi .elabel{color:var(--green)}
+.etext{font-size:12px;color:var(--off);font-style:italic;line-height:1.5}
+/* Rule/tip boxes */
+.rule{background:rgba(255,77,106,0.07);border:1px solid rgba(255,77,106,0.18);border-radius:var(--r);padding:13px 16px;margin-top:14px;font-size:13px;color:var(--off);line-height:1.6}
+.rule strong{color:var(--red)}
+.tip{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r);padding:13px 16px;margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.6}
+.tip strong{color:var(--off)}
+/* Formula */
+.fbox{background:var(--navy);border:2px solid var(--green);border-radius:var(--r);padding:20px 24px;margin:18px 0}
+.flabel{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:8px}
+.ftext{font-size:14px;color:var(--off);line-height:1.9}
+.fc2{color:var(--cyan);font-weight:700} .fp2{color:var(--amber);font-weight:700}
+.fv2{color:var(--purple);font-weight:700} .fq2{color:var(--red);font-weight:700} .fe2{color:var(--green);font-weight:700}
+/* Vlist */
+.vlist{display:flex;flex-direction:column;gap:6px}
+.vrow{display:flex;align-items:flex-start;gap:9px;padding:8px 13px;border-radius:7px;font-size:12.5px}
+.vrow.ok{background:rgba(0,200,150,0.08);color:var(--green)}
+.vrow.bad{background:rgba(255,77,106,0.08);color:var(--red);font-weight:600}
+.vrow .vt{color:var(--off)} .vrow.bad .vt{color:var(--red)}
+/* Sensores table */
+.stbl{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+.stbl table{width:100%;border-collapse:collapse}
+.stbl th{background:var(--mid);padding:9px 13px;text-align:left;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);border-bottom:1px solid rgba(255,184,0,0.15)}
+.stbl td{padding:9px 13px;font-size:12.5px;color:var(--off);border-bottom:1px solid rgba(255,255,255,0.04)}
+.stbl tr:last-child td{border-bottom:none}
+.stbl tr:hover td{background:rgba(255,184,0,0.03)}
+.vpill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:700}
+/* Glosario */
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:9px}
+.gi{background:var(--card);border-radius:8px;padding:13px 15px;border-left:3px solid var(--gc,var(--amber))}
+.gtag2{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-bottom:4px}
+.gterm{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:4px}
+.gdef{font-size:11.5px;color:var(--muted);line-height:1.5}
+/* Checklist */
+.cklist{display:flex;flex-direction:column;gap:7px}
+.ckitem{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--card);border-radius:8px;font-size:12.5px;color:var(--off);line-height:1.5;cursor:pointer;user-select:none;transition:background .2s;border:1px solid rgba(255,255,255,0.05)}
+.ckitem:hover{background:var(--clit)}
+.ckitem input{width:15px;height:15px;accent-color:var(--amber);margin-top:2px;flex-shrink:0;cursor:pointer}
+.ckitem.checked{opacity:.5} .ckitem.checked span{text-decoration:line-through;color:var(--muted)}
+#ck-res{margin-top:13px;padding:12px 16px;border-radius:9px;font-size:13px;background:var(--card);border:1px solid rgba(255,255,255,0.07)}
+/* Back top */
+#bt{position:fixed;bottom:20px;right:20px;width:36px;height:36px;background:var(--mid);border:1px solid rgba(255,184,0,0.25);border-radius:50%;color:var(--amber);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;z-index:150}
+#bt.vis{opacity:1;pointer-events:auto}
+/* Mobile */
+#mt{display:none;position:fixed;top:12px;left:12px;z-index:300;background:var(--mid);border:1px solid rgba(255,184,0,0.3);color:var(--amber);font-size:17px;width:36px;height:36px;border-radius:8px;align-items:center;justify-content:center;cursor:pointer}
+@media(max-width:768px){:root{--sw:0px}#sb{transform:translateX(-255px);width:255px;transition:transform .3s}#sb.open{transform:translateX(0)}#main{margin-left:0}#mt{display:flex}.sec{padding:34px 20px 30px}#hero{padding:44px 20px 38px}.crow{grid-template-columns:1fr}#pb{left:0}.ebody{grid-template-columns:1fr}.eno{border-right:none;border-bottom:1px solid rgba(255,255,255,0.05)}}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,184,0,0.18);border-radius:3px}
+.print-hdr{display:none}
+@media print{#sb,#pb,#mt,#bt{display:none!important}body{background:#fff!important;color:#000!important;display:block!important;font-size:10pt}#main{margin-left:0!important}.sec{padding:12px 0!important;border-bottom:1px solid #ddd!important}.def,.cc,.ctbl,.wt,.ecard,.gi,.ckitem,.stbl{background:#f9f9f9!important;border-color:#ccc!important}.def p,.cc p,.wc,.gdef,.etext,.ckitem,.vrow .vt{color:#000!important}.ftext{color:#000!important}.print-hdr{display:block!important}}
+</style>
+</head>
+<body>
+<div id="pb"><div id="pf"></div></div>
+<button id="mt" onclick="tSB()">☰</button>
+<button id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div class="print-hdr" style="padding:0 0 12px;border-bottom:2px solid #000;margin-bottom:12px">
+  <div style="font-size:9pt;color:#555">TALLER DE PROYECTO · UNIDAD 1 — Introducción</div>
+  <div style="font-size:17pt;font-weight:800" id="ph-t">La ingeniería empieza Entendiendo</div>
+  <div style="font-size:9pt;color:#555" id="ph-n"></div>
+</div>
+
+<nav id="sb">
+  <div class="sbl"><div class="tag">La ingeniería empieza Entendiendo</div><h1>La ingeniería<br><span>empieza Entendiendo</span></h1></div>
+  <div class="sbn"><strong id="sbn">—</strong>Unidad 1 · Introducción al Taller</div>
+  <div class="nl">El proyecto</div>
+  <a class="ni" href="#que-hacemos" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>¿Qué hacemos acá?</a>
+  <a class="ni" href="#sistema" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>El sistema interactivo</a>
+  <a class="ni" href="#tecnico" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span>¿Qué es un técnico?</a>
+  <div class="nl">El problema</div>
+  <a class="ni" href="#prob-vago" onclick="cSB()"><span class="nd" style="background:#7A8BAA"></span>El problema vago</a>
+  <a class="ni" href="#componentes" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span>Las 4 componentes</a>
+  <a class="ni" href="#formula" onclick="cSB()"><span class="nd" style="background:#00C896"></span>La fórmula</a>
+  <a class="ni" href="#errores" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span>Errores comunes</a>
+  <div class="nl">Herramientas</div>
+  <a class="ni" href="#sensores" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span>Variables y sensores</a>
+  <a class="ni" href="#ejemplo" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Ejemplo resuelto</a>
+  <div class="nl">Mi trabajo</div>
+  <a class="ni" href="#trabajo" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Ejercicios prácticos</a>
+  <div class="nl">Cierre</div>
+  <a class="ni" href="#checklist" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Mi checklist</a>
+  <a class="ni" href="#glosario" onclick="cSB()"><span class="nd" style="background:#7A8BAA"></span>Glosario</a>
+  <div class="sbf">Electromecánica · Robótica<br>Automatización · IA</div>
+</nav>
+
+<main id="main">
+<section id="top">
+  <div id="hero">
+    <div class="htag">La ingeniería empieza Entendiendo</div>
+    <h2>La ingeniería empieza<br><em>Entendiendo</em></h2>
+    <p>Tu carpeta completa — teoría, referencia y ejercicios en un solo lugar. Lo que escribís se guarda automáticamente en este dispositivo.</p>
+    <div class="nrow">
+      <label for="myname">Tu nombre:</label>
+      <input type="text" id="myname" class="ninp" placeholder="Escribí tu nombre..." oninput="sN(this.value)" autocomplete="off">
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ HACEMOS -->
+<section class="sec" id="que-hacemos">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Fundamento</span></div>
+  <h2>¿Qué hacemos en Taller de Proyecto?</h2>
+  <p class="desc">No es solo construir cosas. Es aprender a pensar, diseñar y resolver problemas como lo hacen los ingenieros y técnicos reales.</p>
+  <div class="flow">
+    <div class="fr" style="--fc:#00D4FF"><div class="fr-l">👁 Observar</div><div class="fr-d">Detectar problemas reales en el entorno cotidiano y técnico. El primer paso de cualquier proyecto.</div></div>
+    <div class="fr" style="--fc:#FFB800"><div class="fr-l">🧠 Analizar</div><div class="fr-d">Entender qué pasa, por qué pasa y qué se necesita para resolverlo. Antes de proponer cualquier solución.</div></div>
+    <div class="fr" style="--fc:#00C896"><div class="fr-l">📐 Diseñar</div><div class="fr-d">Planificar la solución antes de construirla. Planos, diagramas, inventarios, Gantt.</div></div>
+    <div class="fr" style="--fc:#9B59B6"><div class="fr-l">🔧 Construir</div><div class="fr-d">Armar el prototipo real en el taller con herramientas, electrónica y materiales.</div></div>
+    <div class="fr end" style="--fc:#00C896"><div class="fr-l">🏁 Presentar</div><div class="fr-d">Defender el proyecto frente a un jurado en un Pitch Elevator. MVP funcionando en pantalla gigante.</div></div>
+  </div>
+  <div class="rule">⚠️ <strong>Regla de oro:</strong> un problema mal enunciado genera una solución incorrecta. Si definimos mal el problema, la solución casi seguro va a ser mala.</div>
+</section>
+
+<!-- SISTEMA INTERACTIVO -->
+<section class="sec" id="sistema">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Concepto central</span></div>
+  <h2>El sistema interactivo</h2>
+  <p class="desc">Desde una puerta automática hasta un robot industrial — todo sistema automático funciona con el mismo principio.</p>
+  <div class="si-flow">
+    <div class="si-node" style="--nc:#7A8BAA"><div class="nn">Entorno</div><div class="nd2">La realidad que rodea al sistema</div></div>
+    <div class="si-arr">→</div>
+    <div class="si-node" style="--nc:#00D4FF"><div class="nn">Sensor</div><div class="nd2">Detecta y mide una variable</div></div>
+    <div class="si-arr">→</div>
+    <div class="si-node" style="--nc:#FFB800"><div class="nn">Decisión</div><div class="nd2">Compara con el umbral definido</div></div>
+    <div class="si-arr">→</div>
+    <div class="si-node" style="--nc:#00C896"><div class="nn">Acción</div><div class="nd2">Ejecuta la respuesta correcta</div></div>
+  </div>
+  <div class="grid3">
+    <div class="cc" style="--ca:#00D4FF"><h3>Puerta automática</h3><p>Presencia (infrarrojo) → detecta persona → abre la puerta automáticamente.</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>Aire acondicionado</h3><p>Temperatura > 26°C → compara con umbral → activa el compresor.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>Sensor de humo</h3><p>Partículas en el aire → supera el nivel → dispara la alarma sonora.</p></div>
+  </div>
+  <div class="tip" style="margin-top:14px">💡 <strong>Tres componentes físicos:</strong> sensor (mide), controlador (decide), actuador (actúa). Todo sistema automático tiene estos tres.</div>
+</section>
+
+<!-- QUÉ ES UN TÉCNICO -->
+<section class="sec" id="tecnico">
+  <div class="eyebrow"><div class="edot" style="background:#9B59B6"></div><span class="etxt">Identidad profesional</span></div>
+  <h2>¿Qué es un técnico electromecánico?</h2>
+  <p class="desc">El técnico no solo opera máquinas — las diseña, las mejora y resuelve los problemas que generan.</p>
+  <div class="def"><p>Un técnico electromecánico es un profesional que <strong>combina conocimientos de electricidad, mecánica, electrónica y automatización</strong> para diseñar, construir y mantener sistemas que resuelven problemas reales. En la era de la Industria 4.0, también trabaja con <em>robótica, sensores, programación e inteligencia artificial</em>.</p></div>
+  <div class="grid2">
+    <div class="cc" style="--ca:#FFB800"><h3>Industria 4.0</h3><p>Fábricas inteligentes donde máquinas, sensores y sistemas se comunican entre sí. El técnico diseña y mantiene esos sistemas.</p></div>
+    <div class="cc" style="--ca:#00D4FF"><h3>IoT — Internet de las Cosas</h3><p>Dispositivos conectados que recopilan y comparten datos. Desde sensores de temperatura hasta robots colaborativos.</p></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>Automatización</h3><p>Sistemas que funcionan solos, tomando decisiones basadas en datos del entorno. El núcleo de la electromecánica moderna.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>IA aplicada</h3><p>Algoritmos que permiten a los sistemas aprender y adaptarse. Clasificación de materiales, detección de fallas, optimización de procesos.</p></div>
+  </div>
+</section>
+
+<!-- EL PROBLEMA VAGO -->
+<section class="sec" id="prob-vago">
+  <div class="eyebrow"><div class="edot" style="background:#7A8BAA"></div><span class="etxt">Punto de partida</span></div>
+  <h2>El problema vago</h2>
+  <p class="desc">Así describe un problema alguien que lo vive, pero no sabe cómo resolverlo técnicamente.</p>
+  <div class="def"><p>Un problema vago <strong>no tiene contexto, no tiene variable medible, no tiene umbral.</strong> Es una sensación o descripción informal. <em>No se puede programar, no se puede medir, no se puede resolver sin antes transformarlo.</em></p></div>
+  <div class="grid3" style="margin-bottom:16px">
+    <div class="cc" style="--ca:#00D4FF"><h3>🔊 "Hay mucho ruido."</h3><p>¿Dónde? ¿Cuánto ruido? ¿A partir de qué nivel es un problema? No se puede resolver así.</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>💡 "La luz molesta."</h3><p>¿Qué luz? ¿Molesta cuánto? ¿A quién? ¿En qué condición exacta?</p></div>
+    <div class="cc" style="--ca:#FF4D6A"><h3>🚪 "La puerta queda abierta."</h3><p>¿Qué puerta? ¿Cuánto abierta? ¿Por qué es un problema? ¿Qué consecuencia tiene?</p></div>
+  </div>
+  <div class="rule">⚠️ <strong>¿Por qué no alcanza?</strong> Un problema vago no se puede medir, no se puede programar en un controlador y no se puede verificar si fue resuelto. Para diseñar una solución técnica, primero hay que convertirlo en un <strong>problema técnico</strong>.</div>
+  <div class="tip" style="margin-top:10px">💡 <strong>Test rápido:</strong> ¿Podés programar un Arduino para resolver "hay mucho ruido"? No — porque no sabés qué medir ni cuándo actuar. Eso te dice que todavía es un problema vago.</div>
+</section>
+
+<!-- LAS 4 COMPONENTES -->
+<section class="sec" id="componentes">
+  <div class="eyebrow"><div class="edot" style="background:#FF4D6A"></div><span class="etxt">Herramienta central</span></div>
+  <h2>Las 4 componentes del problema técnico</h2>
+  <p class="desc">Todo problema técnico tiene exactamente 4 componentes. Ni más, ni menos. Identificarlas es lo que transforma el problema vago en algo resoluble.</p>
+  <div class="ctbl">
+    <div class="crow">
+      <div><span class="cbadge" style="background:rgba(0,212,255,0.12);color:#00D4FF">CONTEXTO</span></div>
+      <div><div class="cq">"¿En qué sistema, lugar o momento ocurre el problema?"</div><div class="ctrap">⚠ Trampa: confundir el contexto con el problema. El contexto es el escenario, no el síntoma.</div></div>
+      <div class="cv">Debe poder delimitarse o dibujarse. Si sigue siendo "en la sociedad", es demasiado amplio.</div>
+    </div>
+    <div class="crow">
+      <div><span class="cbadge" style="background:rgba(255,184,0,0.12);color:#FFB800">VARIABLE</span></div>
+      <div><div class="cq">"¿Qué es lo único que, si lo mido, me dice si el problema existe?"</div><div class="ctrap">⚠ Trampa: elegir algo que no se puede medir directamente. La variable tiene que tener un sensor.</div></div>
+      <div class="cv">Tiene que ser observable o medible directamente. No puede ser una sensación.</div>
+    </div>
+    <div class="crow">
+      <div><span class="cbadge" style="background:rgba(255,77,106,0.12);color:#FF4D6A">PUNTO DE QUIEBRE</span></div>
+      <div><div class="cq">"¿A partir de qué valor o condición digo que el problema empieza?"</div><div class="ctrap">⚠ Trampa: dejarlo subjetivo. "Cuando ya es mucho" no es un quiebre — es otra vagedad.</div></div>
+      <div class="cv">Un número, un estado lógico (sí/no), o un cambio concreto. Nunca subjetivo.</div>
+    </div>
+    <div class="crow">
+      <div><span class="cbadge" style="background:rgba(0,200,150,0.12);color:#00C896">PROBLEMA</span></div>
+      <div><div class="cq">"¿Qué efecto no deseado ocurre cuando se cruza ese umbral?"</div><div class="ctrap">⚠ Esta componente no genera información nueva: reconstruye el problema a partir de las tres anteriores.</div></div>
+      <div class="cv">Una sola oración, sin "y", sin adjetivos subjetivos como "mucho" o "grave".</div>
+    </div>
+  </div>
+  <div class="tip">💡 <strong>Orden importante:</strong> siempre identificar primero el CONTEXTO, luego la VARIABLE, luego el PUNTO DE QUIEBRE. El PROBLEMA sale solo al final como consecuencia lógica de los tres anteriores.</div>
+</section>
+
+<!-- FÓRMULA -->
+<section class="sec" id="formula">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">La herramienta</span></div>
+  <h2>La fórmula del problema técnico</h2>
+  <p class="desc">Una vez identificadas las 4 componentes, el enunciado técnico se construye con esta estructura. Cada hueco corresponde a una componente ya definida.</p>
+  <div class="fbox">
+    <div class="flabel">Estructura</div>
+    <div class="ftext">En <span class="fc2">[CONTEXTO]</span> ocurre <span class="fp2">[PROBLEMA]</span> cuando <span class="fv2">[VARIABLE]</span> supera <span class="fq2">[PUNTO DE QUIEBRE]</span>, lo que genera <span class="fe2">[EFECTO NO DESEADO]</span>.</div>
+  </div>
+  <div class="vlist">
+    <div class="vrow ok"><span>✓</span><span class="vt">Una sola oración — no usar "y" para unir dos problemas distintos.</span></div>
+    <div class="vrow ok"><span>✓</span><span class="vt">Sin adjetivos subjetivos: no "mucho", "grave", "excesivo", "peligroso".</span></div>
+    <div class="vrow ok"><span>✓</span><span class="vt">Cada término entre corchetes tiene que estar ya definido antes de escribir esta oración.</span></div>
+    <div class="vrow bad"><span>✗</span><span class="vt">NO: "Hay mucho ruido en la calle que molesta a la gente y genera problemas."</span></div>
+    <div class="vrow ok"><span>✓</span><span class="vt">SÍ: "El nivel de ruido en Av. 9 de Julio supera los 70 dB los viernes de noche, perturbando el descanso de los habitantes."</span></div>
+  </div>
+</section>
+
+<!-- ERRORES COMUNES -->
+<section class="sec" id="errores">
+  <div class="eyebrow"><div class="edot" style="background:#FF4D6A"></div><span class="etxt">Para no repetir</span></div>
+  <h2>Errores comunes</h2>
+  <p class="desc">Los errores que aparecen siempre. Conocerlos de antemano te ahorra rehacer el trabajo.</p>
+  <div class="egrid">
+    <div class="ecard">
+      <div class="ehead"><span>🎯</span><span class="etitle">Contexto demasiado amplio</span></div>
+      <div class="ebody"><div class="eno"><div class="elabel">✗ Mal</div><div class="etext">"El contexto es la sociedad moderna con problemas de contaminación sonora."</div></div><div class="esi"><div class="elabel">✓ Bien</div><div class="etext">"Av. 9 de Julio, viernes y sábados de noche, entre las 22:00 y las 6:00 hs."</div></div></div>
+    </div>
+    <div class="ecard">
+      <div class="ehead"><span>📏</span><span class="etitle">Variable que no se puede medir</span></div>
+      <div class="ebody"><div class="eno"><div class="elabel">✗ Mal</div><div class="etext">"La variable es la incomodidad de la gente con el ruido."</div></div><div class="esi"><div class="elabel">✓ Bien</div><div class="etext">"La variable es el nivel de ruido ambiental medido en decibeles (dB)."</div></div></div>
+    </div>
+    <div class="ecard">
+      <div class="ehead"><span>⚖️</span><span class="etitle">Punto de quiebre subjetivo</span></div>
+      <div class="ebody"><div class="eno"><div class="elabel">✗ Mal</div><div class="etext">"Cuando ya hay demasiado ruido y la situación se pone grave."</div></div><div class="esi"><div class="elabel">✓ Bien</div><div class="etext">"Cuando el nivel de ruido supera los 70 dB — límite apto para la salud auditiva según OMS."</div></div></div>
+    </div>
+    <div class="ecard">
+      <div class="ehead"><span>📝</span><span class="etitle">Dos problemas en un enunciado</span></div>
+      <div class="ebody"><div class="eno"><div class="elabel">✗ Mal</div><div class="etext">"El ruido molesta y también la luz encandila y eso hace que pase accidentes."</div></div><div class="esi"><div class="elabel">✓ Bien</div><div class="etext">Una sola oración. Un solo problema. Si tenés varios, elegí el principal y enuncialo solo.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VARIABLES Y SENSORES -->
+<section class="sec" id="sensores">
+  <div class="eyebrow"><div class="edot" style="background:#9B59B6"></div><span class="etxt">Referencia técnica</span></div>
+  <h2>Variables y sensores</h2>
+  <p class="desc">Cada variable del entorno tiene un sensor que la mide. Esta tabla conecta el problema con la tecnología que lo detecta.</p>
+  <div class="stbl">
+    <table>
+      <thead><tr><th>Variable</th><th>Unidad</th><th>Sensor típico</th><th>Aplicación</th></tr></thead>
+      <tbody>
+        <tr><td><span class="vpill" style="background:rgba(255,77,106,0.15);color:#FF4D6A">Temperatura</span></td><td>°C</td><td>DHT11 · DHT22 · LM35</td><td>Clima, refrigeración, seguridad industrial</td></tr>
+        <tr><td><span class="vpill" style="background:rgba(255,184,0,0.15);color:#FFB800">Luz</span></td><td>Lux / Lúmenes</td><td>LDR · BH1750</td><td>Iluminación automática, seguidor solar</td></tr>
+        <tr><td><span class="vpill" style="background:rgba(0,212,255,0.15);color:#00D4FF">Sonido</span></td><td>dB</td><td>KY-037 · MAX4466</td><td>Control de ruido, detección de alertas</td></tr>
+        <tr><td><span class="vpill" style="background:rgba(155,89,182,0.15);color:#9B59B6">Distancia</span></td><td>cm</td><td>HC-SR04 · VL53L0X</td><td>Detección de obstáculos, nivel de líquido</td></tr>
+        <tr><td><span class="vpill" style="background:rgba(0,200,150,0.15);color:#00C896">Gas / CO₂</span></td><td>ppm</td><td>MQ-135 · MH-Z19</td><td>Calidad del aire, detección de humo</td></tr>
+        <tr><td><span class="vpill" style="background:rgba(255,184,0,0.15);color:#FFB800">Movimiento</span></td><td>Presencia</td><td>PIR HC-SR501</td><td>Alarmas, puertas automáticas, luces</td></tr>
+        <tr><td><span class="vpill" style="background:rgba(0,212,255,0.15);color:#00D4FF">Humedad</span></td><td>% HR</td><td>DHT11 · DHT22</td><td>Riego automático, invernaderos</td></tr>
+        <tr><td><span class="vpill" style="background:rgba(255,77,106,0.15);color:#FF4D6A">Corriente</span></td><td>A / mA</td><td>ACS712 · INA219</td><td>Protección eléctrica, gestión de energía</td></tr>
+        <tr><td><span class="vpill" style="background:rgba(155,89,182,0.15);color:#9B59B6">Posición / ángulo</span></td><td>° / mm</td><td>Potenciómetro · Encoder</td><td>Control de puertas, brazos robóticos</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip" style="margin-top:12px">💡 <strong>Recordá:</strong> sensor = medir variable. El actuador es lo que <em>actúa</em> cuando se supera el quiebre: motor, relé, válvula, servo, buzzer, LED.</div>
+</section>
+
+<!-- EJEMPLO RESUELTO -->
+<section class="sec" id="ejemplo">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Caso resuelto</span></div>
+  <h2>Ejemplo completo resuelto</h2>
+  <p class="desc">El problema del ruido, resuelto paso a paso usando las 4 componentes y la fórmula.</p>
+  <div class="wt">
+    <div class="wh"><span class="wtg">PROBLEMA VAGO</span><p>"Hay mucho ruido."</p></div>
+    <div class="ws"><div class="wl" style="color:#00D4FF">CONTEXTO</div><div class="wc">Av. 9 de Julio, los viernes y sábados, entre las 22:00 y las 6:00 hs, en el entorno residencial adyacente.</div></div>
+    <div class="ws"><div class="wl" style="color:#FFB800">VARIABLE</div><div class="wc">Nivel de ruido ambiental medido en decibeles (dB) — sensor: micrófono de precisión o sonómetro.</div></div>
+    <div class="ws"><div class="wl" style="color:#FF4D6A">PTO. DE QUIEBRE</div><div class="wc">Nivel de ruido superior a 70 dB — límite máximo apto para la salud auditiva según la OMS.</div></div>
+    <div class="ws"><div class="wl" style="color:#00C896">PROB. TÉCNICO</div><div class="wc res">El nivel de ruido en Av. 9 de Julio supera los 70 dB los viernes y sábados de noche, perturbando la atención y el descanso de los habitantes del entorno.</div></div>
+    <div class="ws"><div class="wl" style="color:#9B59B6">OBJETIVO</div><div class="wc">Detectar cuando el nivel de ruido supere los 70 dB y activar un sistema de alerta o registro para informar a las autoridades competentes.</div></div>
+    <div class="ws"><div class="wl" style="color:#FFB800">DISPARADORA</div><div class="wc">¿Cómo podríamos detectar automáticamente cuándo el ruido en una avenida supera el límite seguro para la salud de los vecinos?</div></div>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<!-- TRABAJO PRÁCTICO -->
+<section class="sec" id="trabajo">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Mi trabajo</span></div>
+  <h2>Mis ejercicios — Unidad 1</h2>
+  <p class="desc">Completá cada ejercicio. Tus respuestas se guardan automáticamente en este dispositivo.</p>
+
+  <div style="margin-bottom:20px">
+    <div style="font-size:11px;font-weight:700;color:#7A8BAA;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">EJERCICIO 1 — Identificá el sistema interactivo</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:10px">Elegí un objeto o sistema que conozcas (heladera, semáforo, celular, etc.) y describí sus 4 partes.</div>
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <div style="display:grid;grid-template-columns:100px 1fr;gap:8px;align-items:center">
+        <span style="font-size:10px;font-weight:700;color:#00D4FF;text-transform:uppercase">Mi sistema:</span>
+        <input type="text" id="ej1-sistema" class="ninp" style="font-size:13px;padding:7px 12px" placeholder="¿Qué sistema elegiste?" oninput="sf('ej1-sistema',this.value)">
+      </div>
+      <div style="display:grid;grid-template-columns:100px 1fr;gap:8px;align-items:center">
+        <span style="font-size:10px;font-weight:700;color:#7A8BAA;text-transform:uppercase">Entorno:</span>
+        <input type="text" id="ej1-entorno" class="ninp" style="font-size:13px;padding:7px 12px" placeholder="¿Qué lo rodea?" oninput="sf('ej1-entorno',this.value)">
+      </div>
+      <div style="display:grid;grid-template-columns:100px 1fr;gap:8px;align-items:center">
+        <span style="font-size:10px;font-weight:700;color:#00D4FF;text-transform:uppercase">Sensor:</span>
+        <input type="text" id="ej1-sensor" class="ninp" style="font-size:13px;padding:7px 12px" placeholder="¿Qué detecta?" oninput="sf('ej1-sensor',this.value)">
+      </div>
+      <div style="display:grid;grid-template-columns:100px 1fr;gap:8px;align-items:center">
+        <span style="font-size:10px;font-weight:700;color:#FFB800;text-transform:uppercase">Decisión:</span>
+        <input type="text" id="ej1-decision" class="ninp" style="font-size:13px;padding:7px 12px" placeholder="¿Qué compara?" oninput="sf('ej1-decision',this.value)">
+      </div>
+      <div style="display:grid;grid-template-columns:100px 1fr;gap:8px;align-items:center">
+        <span style="font-size:10px;font-weight:700;color:#00C896;text-transform:uppercase">Acción:</span>
+        <input type="text" id="ej1-accion" class="ninp" style="font-size:13px;padding:7px 12px" placeholder="¿Qué hace?" oninput="sf('ej1-accion',this.value)">
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:20px">
+    <div style="font-size:11px;font-weight:700;color:#7A8BAA;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">EJERCICIO 2 — Transformá el problema vago</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:10px">Tomá el problema vago "La luz molesta" y completá las 4 componentes.</div>
+    <div style="background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.07)">
+      <div style="display:grid;grid-template-columns:130px 1fr;border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div style="padding:11px 14px;border-right:1px solid rgba(255,255,255,0.05)"><span style="font-size:10px;font-weight:800;color:#00D4FF;text-transform:uppercase;letter-spacing:.06em">CONTEXTO</span></div>
+        <div style="padding:8px 14px"><input type="text" id="ej2-ctx" class="ninp" style="width:100%;font-size:13px;padding:7px 12px" placeholder="¿Dónde y cuándo ocurre?" oninput="sf('ej2-ctx',this.value)"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:130px 1fr;border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div style="padding:11px 14px;border-right:1px solid rgba(255,255,255,0.05)"><span style="font-size:10px;font-weight:800;color:#FFB800;text-transform:uppercase;letter-spacing:.06em">VARIABLE</span></div>
+        <div style="padding:8px 14px"><input type="text" id="ej2-var" class="ninp" style="width:100%;font-size:13px;padding:7px 12px" placeholder="¿Qué medimos?" oninput="sf('ej2-var',this.value)"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:130px 1fr;border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div style="padding:11px 14px;border-right:1px solid rgba(255,255,255,0.05)"><span style="font-size:10px;font-weight:800;color:#FF4D6A;text-transform:uppercase;letter-spacing:.06em">PTO. DE QUIEBRE</span></div>
+        <div style="padding:8px 14px"><input type="text" id="ej2-qbk" class="ninp" style="width:100%;font-size:13px;padding:7px 12px" placeholder="¿A partir de qué valor?" oninput="sf('ej2-qbk',this.value)"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:130px 1fr">
+        <div style="padding:11px 14px;border-right:1px solid rgba(255,255,255,0.05)"><span style="font-size:10px;font-weight:800;color:#00C896;text-transform:uppercase;letter-spacing:.06em">ENUNCIADO</span></div>
+        <div style="padding:8px 14px"><textarea id="ej2-enun" rows="2" style="width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:9px 12px;color:var(--off);font-size:13px;font-family:inherit;resize:vertical;outline:none" placeholder="En [contexto] ocurre [problema] cuando [variable] supera [quiebre], lo que genera [efecto]." oninput="sf('ej2-enun',this.value)"></textarea></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:20px">
+    <div style="font-size:11px;font-weight:700;color:#7A8BAA;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">EJERCICIO 3 — Mi problema propio</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:10px">Identificá un problema que hayas observado vos. Completá las 4 componentes y enuncialo técnicamente.</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Problema vago</div>
+        <input type="text" id="ej3-vago" class="ninp" style="width:100%;font-size:13px;padding:8px 13px" placeholder="Describilo como lo dirías en la calle..." oninput="sf('ej3-vago',this.value)">
+      </div>
+      <div><div style="font-size:10px;font-weight:700;color:#00D4FF;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Contexto</div><input type="text" id="ej3-ctx" class="ninp" style="width:100%;font-size:13px;padding:8px 13px" placeholder="¿Dónde y cuándo?" oninput="sf('ej3-ctx',this.value)"></div>
+      <div><div style="font-size:10px;font-weight:700;color:#FFB800;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Variable</div><input type="text" id="ej3-var" class="ninp" style="width:100%;font-size:13px;padding:8px 13px" placeholder="¿Qué medís?" oninput="sf('ej3-var',this.value)"></div>
+      <div><div style="font-size:10px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Punto de quiebre</div><input type="text" id="ej3-qbk" class="ninp" style="width:100%;font-size:13px;padding:8px 13px" placeholder="¿A partir de qué valor exacto?" oninput="sf('ej3-qbk',this.value)"></div>
+      <div><div style="font-size:10px;font-weight:700;color:#00C896;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Problema técnico (enunciado final)</div><textarea id="ej3-enun" rows="3" style="width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 13px;color:var(--off);font-size:13px;font-family:inherit;resize:vertical;outline:none" placeholder="En [contexto] ocurre [problema] cuando [variable] supera [quiebre], lo que genera [efecto]." oninput="sf('ej3-enun',this.value)"></textarea></div>
+    </div>
+  </div>
+
+  <div id="save-indicator" style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;background:rgba(0,200,150,0.08);border:1px solid rgba(0,200,150,0.2);border-radius:7px;font-size:12px;color:#00C896;opacity:0;transition:opacity .3s">✓ Guardado</div>
+</section>
+
+<section class="sec" id="checklist">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">Autoevaluación</span></div>
+  <h2>Mi checklist</h2>
+  <p class="desc">Verificá que entendiste los conceptos clave. Marcá solo lo que podés explicar con tus propias palabras.</p>
+  <div class="cklist" id="cklist">
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Puedo explicar el flujo Entorno → Sensor → Decisión → Acción con un ejemplo propio.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Entiendo la diferencia entre sensor, controlador y actuador.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Puedo identificar por qué "hay mucho ruido" es un problema vago.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Conozco las 4 componentes del problema técnico y puedo nombrarlas de memoria.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Sé qué es un punto de quiebre y puedo dar un ejemplo con un número o condición concreta.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Puedo tomar un problema vago y transformarlo en un problema técnico usando la fórmula.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Conozco al menos 5 variables y los sensores que las miden.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Entiendo qué significa Industria 4.0 y cómo se relaciona con mi carrera.</span></label>
+  </div>
+  <div id="ck-res">
+    <span id="ck-n" style="color:var(--amber);font-weight:800;font-size:18px">0</span>
+    <span style="color:var(--muted);font-size:12.5px"> / 8 conceptos verificados</span>
+    <div id="ck-m" style="font-size:12px;color:var(--muted);margin-top:3px">Repasá los que todavía no podés explicar.</div>
+  </div>
+</section>
+
+<!-- GLOSARIO -->
+<section class="sec" id="glosario">
+  <div class="eyebrow"><div class="edot" style="background:#7A8BAA"></div><span class="etxt">Referencia rápida</span></div>
+  <h2>Glosario — Unidad 1</h2>
+  <p class="desc">Los términos clave de la unidad, ordenados por aparición en el flujo del proyecto.</p>
+  <div class="ggrid">
+    <div class="gi" style="--gc:#4A5580"><div class="gtag2" style="background:rgba(74,85,128,0.15);color:#4A5580">Sistema</div><div class="gterm">Sistema interactivo</div><div class="gdef">Sistema que detecta una variable del entorno, toma una decisión y ejecuta una acción. Esquema: Entorno → Sensor → Decisión → Acción.</div></div>
+    <div class="gi" style="--gc:#9B59B6"><div class="gtag2" style="background:rgba(155,89,182,0.15);color:#9B59B6">Componente</div><div class="gterm">Sensor</div><div class="gdef">Dispositivo que mide una variable del entorno y la convierte en señal eléctrica. Sensor = medir variable.</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gtag2" style="background:rgba(255,184,0,0.12);color:#FFB800">Componente</div><div class="gterm">Actuador</div><div class="gdef">Dispositivo que ejecuta una acción física cuando el controlador lo ordena. Motor, relé, válvula, servo, buzzer.</div></div>
+    <div class="gi" style="--gc:#00D4FF"><div class="gtag2" style="background:rgba(0,212,255,0.1);color:#00D4FF">Componente</div><div class="gterm">Controlador</div><div class="gdef">El "cerebro" del sistema. Lee los sensores, compara con el umbral y decide qué hacer. Ej: Arduino.</div></div>
+    <div class="gi" style="--gc:#7A8BAA"><div class="gtag2" style="background:rgba(122,139,170,0.15);color:#7A8BAA">Problema</div><div class="gterm">Problema vago</div><div class="gdef">Descripción informal de una situación no deseada, sin contexto, variable ni umbral. Punto de partida del proceso de diseño.</div></div>
+    <div class="gi" style="--gc:#00D4FF"><div class="gtag2" style="background:rgba(0,212,255,0.1);color:#00D4FF">Componente</div><div class="gterm">Contexto</div><div class="gdef">Sistema, lugar o momento donde ocurre el problema. Debe poder delimitarse. Acota el universo de variables posibles.</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gtag2" style="background:rgba(255,184,0,0.12);color:#FFB800">Componente</div><div class="gterm">Variable</div><div class="gdef">Magnitud observable que indica si el problema está presente. Debe ser medible directamente con un sensor.</div></div>
+    <div class="gi" style="--gc:#FF4D6A"><div class="gtag2" style="background:rgba(255,77,106,0.1);color:#FF4D6A">Componente</div><div class="gterm">Punto de quiebre</div><div class="gdef">Valor o condición de la variable donde el problema se activa. Cuantitativo (número) o lógico (sí/no). Nunca subjetivo.</div></div>
+    <div class="gi" style="--gc:#00C896"><div class="gtag2" style="background:rgba(0,200,150,0.1);color:#00C896">Concepto</div><div class="gterm">Problema técnico</div><div class="gdef">Enunciado preciso construido con las 4 componentes. Una sola oración, sin adjetivos subjetivos ni ambigüedad.</div></div>
+    <div class="gi" style="--gc:#9B59B6"><div class="gtag2" style="background:rgba(155,89,182,0.1);color:#9B59B6">Concepto</div><div class="gterm">Objetivo</div><div class="gdef">Acción medible que resuelve el problema técnico. Empieza con verbo de acción. Se puede verificar si se cumplió.</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gtag2" style="background:rgba(255,184,0,0.12);color:#FFB800">Contexto</div><div class="gterm">Industria 4.0</div><div class="gdef">Cuarta revolución industrial. Integración de sensores, robótica, IA e IoT en los procesos productivos.</div></div>
+    <div class="gi" style="--gc:#00D4FF"><div class="gtag2" style="background:rgba(0,212,255,0.1);color:#00D4FF">Contexto</div><div class="gterm">MVP</div><div class="gdef">Minimum Viable Product — Producto Mínimo Viable. El mínimo que tiene que funcionar para demostrar que la solución es posible.</div></div>
+  </div>
+  <div style="margin-top:24px;padding:12px 16px;background:var(--card);border-radius:var(--r);border:1px solid rgba(255,255,255,0.06);font-size:11.5px;color:var(--muted);text-align:center">
+    La ingeniería empieza Entendiendo · 1er y 2do Año · Electromecánica · Robótica · Automatización · IA
+  </div>
+</section>
+</main>
+
+<script>
+const K='u1_';
+function sN(v){localStorage.setItem(K+'n',v);document.getElementById('sbn').textContent=v||'—';const p=document.getElementById('ph-n');if(p)p.textContent=v}
+function ck(inp){inp.closest('.ckitem').classList.toggle('checked',inp.checked);const all=document.querySelectorAll('#cklist input'),done=document.querySelectorAll('#cklist input:checked').length;document.getElementById('ck-n').textContent=done;const r=document.getElementById('ck-res'),m=document.getElementById('ck-m');if(done===all.length){r.style.borderColor='var(--green)';r.style.background='rgba(0,200,150,0.07)';m.textContent='¡Todos los conceptos verificados! Estás listo para la Unidad 2. 🎯';m.style.color='var(--green)'}else if(done>=5){r.style.borderColor='var(--amber)';r.style.background='rgba(255,184,0,0.05)';m.textContent='Bien encaminado — repasá los últimos conceptos.';m.style.color='var(--amber)'}else{r.style.borderColor='';r.style.background='var(--card)';m.textContent='Repasá los que todavía no podés explicar.';m.style.color='var(--muted)'}const s=Array.from(all).map(i=>i.checked?'1':'0').join('');localStorage.setItem(K+'cl',s)}
+function tSB(){document.getElementById('sb').classList.toggle('open')}
+function cSB(){if(window.innerWidth<=768)document.getElementById('sb').classList.remove('open')}
+const secs=document.querySelectorAll('section[id]'),navs=document.querySelectorAll('.ni');
+window.addEventListener('scroll',()=>{const p=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;document.getElementById('pf').style.width=p+'%';document.getElementById('bt').classList.toggle('vis',window.scrollY>400);let c='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-100)c=s.id});navs.forEach(n=>n.classList.toggle('active',n.getAttribute('href')==='#'+c))},{passive:true});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();window.scrollTo({top:t.offsetTop-24,behavior:'smooth'})}})});
+window.addEventListener('load',()=>{const n=localStorage.getItem(K+'n')||'';if(n){document.getElementById('myname').value=n;document.getElementById('sbn').textContent=n;const p=document.getElementById('ph-n');if(p)p.textContent=n}const cl=localStorage.getItem(K+'cl');if(cl){document.querySelectorAll('#cklist input').forEach((i,idx)=>{if(cl[idx]==='1'){i.checked=true;i.closest('.ckitem').classList.add('checked')}});if(document.querySelector('#cklist input:checked'))document.querySelector('#cklist input').dispatchEvent(new Event('change'))}});
+</script>
+<!-- SEND BAR -->
+<div style="position:fixed;bottom:0;left:var(--sw);right:0;background:#060918;border-top:1px solid rgba(255,184,0,0.12);padding:10px 24px;z-index:150;display:flex;align-items:center;gap:12px">
+  <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em">📤 Entregá tu trabajo</span>
+  <button onclick="window.print()" style="padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #9B59B6;background:rgba(155,89,182,0.1);color:#9B59B6;font-family:inherit;transition:all .2s" onmouseover="this.style.background='rgba(155,89,182,0.22)'" onmouseout="this.style.background='rgba(155,89,182,0.1)'">🖨 Imprimir</button>
+  <button onclick="sendGmail()" style="padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #FFB800;background:rgba(255,184,0,0.1);color:#FFB800;font-family:inherit;transition:all .2s" onmouseover="this.style.background='rgba(255,184,0,0.22)'" onmouseout="this.style.background='rgba(255,184,0,0.1)'">✉ Enviar por Gmail</button>
+</div>
+<div style="height:62px"></div>
+<div style="height:62px"></div>
+</body>
+</html>
