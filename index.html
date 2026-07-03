@@ -227,7 +227,7 @@ a { color: inherit; }
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
 
@@ -341,6 +341,7 @@ a { color: inherit; }
 
 .unit-card.unit-1 { border-top: 3px solid var(--amber); }
 .unit-card.unit-2 { border-top: 3px solid var(--cyan); }
+.unit-card.capsula { border-top: 3px solid var(--green); }
 
 .unit-meta {
   display: flex;
@@ -379,7 +380,7 @@ a { color: inherit; }
 
 .resource-grid {
   display: grid;
-  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -456,45 +457,6 @@ a { color: inherit; }
   letter-spacing: .06em;
   text-transform: uppercase;
 }
-
-.resource-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
-
-.res-btn {
-  flex: 1 1 auto;
-  min-width: 0;
-  text-decoration: none;
-  text-align: center;
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.04);
-  color: var(--off);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  transition: transform .2s, border-color .2s, background .2s;
-}
-
-.res-btn:hover {
-  transform: translateY(-1px);
-  border-color: rgba(0,212,255,0.3);
-  background: rgba(0,212,255,0.08);
-}
-
-.res-btn.present {
-  color: var(--navy);
-  background: var(--amber);
-  border-color: transparent;
-}
-
-.res-btn.present:hover { background: #ffc62e; }
 
 .footer {
   padding: 22px 2px 0;
@@ -584,6 +546,7 @@ a { color: inherit; }
         <span class="pill"><span class="dot" style="background:#FFB800"></span>Unidad 1 · La Ingeniería empieza entendiendo</span>
         <span class="pill"><span class="dot" style="background:#00D4FF"></span>Unidad 2 · Preguntas disparadoras</span>
         <span class="pill"><span class="dot" style="background:#00C896"></span>Acceso oficial de la materia</span>
+        <span class="pill"><span class="dot" style="background:#00C896"></span>Cápsula · Boceto a mano alzada</span>
       </div>
     </div>
 
@@ -595,6 +558,7 @@ a { color: inherit; }
       <div class="stats">
         <div class="stat"><strong>2</strong><span>unidades</span></div>
         <div class="stat"><strong>5</strong><span>separadores</span></div>
+        <div class="stat"><strong>1</strong><span>cápsula</span></div>
         <div class="stat"><strong>OF</strong><span>oficial</span></div>
       </div>
       <div class="info-card">
@@ -645,18 +609,15 @@ a { color: inherit; }
             <p>Secuencia, orientación y pautas de dictado.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <div class="resource-card pptx-card">
+          <a class="resource-card" href="ingenieria-empieza-entendiendo/La%20Ingenier%C3%ADa%20empieza%20Entendiendo.pptx">
             <div class="resource-top">
               <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
               <span class="resource-type pptx">Presentación</span>
             </div>
-            <h5>La Ingeniería empieza entendiendo</h5>
+            <h5>La Ingeniería empieza Entendiendo</h5>
             <p>Presentación principal de la unidad.</p>
-            <div class="resource-actions">
-              <a class="res-btn present" data-present href="ingenieria-empieza-entendiendo/La%20Ingenier%C3%ADa%20empieza%20entendiendo.pptx" target="_blank" rel="noopener">▶ Presentar</a>
-              <a class="res-btn" href="ingenieria-empieza-entendiendo/La%20Ingenier%C3%ADa%20empieza%20entendiendo.pptx" download>⬇ Descargar</a>
-            </div>
-          </div>
+            <span class="resource-open">Descargar →</span>
+          </a>
         </div>
       </article>
 
@@ -691,30 +652,15 @@ a { color: inherit; }
             <p>Organización de la clase y claves didácticas.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <div class="resource-card pptx-card">
+          <a class="resource-card" href="preguntas-disparadoras/Preguntas%20%20Disparadoras%20-%20Del%20problema%20vago%20al%20problema%20t%C3%A9cnico.pptx">
             <div class="resource-top">
               <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
               <span class="resource-type pptx">Presentación</span>
             </div>
             <h5>Preguntas Disparadoras</h5>
             <p>Arranque de la unidad técnica.</p>
-            <div class="resource-actions">
-              <a class="res-btn present" data-present href="preguntas-disparadoras/Preguntas%20%20Disparadoras%20-%20Del%20problema%20vago%20al%20problema%20t%C3%A9cnico.pptx" target="_blank" rel="noopener">▶ Presentar</a>
-              <a class="res-btn" href="preguntas-disparadoras/Preguntas%20%20Disparadoras%20-%20Del%20problema%20vago%20al%20problema%20t%C3%A9cnico.pptx" download>⬇ Descargar</a>
-            </div>
-          </div>
-          <div class="resource-card pptx-card">
-            <div class="resource-top">
-              <div class="resource-icon" style="background:rgba(255,184,0,0.12)">🏆</div>
-              <span class="resource-type pptx">Presentación</span>
-            </div>
-            <h5>Competencia de Proyectos</h5>
-            <p>5 ejercicios para pensar — actividad de cierre.</p>
-            <div class="resource-actions">
-              <a class="res-btn present" data-present href="preguntas-disparadoras/Competencia%20de%20Proyectos%20-%205%20ejercicios%20para%20pensar.pptx" target="_blank" rel="noopener">▶ Presentar</a>
-              <a class="res-btn" href="preguntas-disparadoras/Competencia%20de%20Proyectos%20-%205%20ejercicios%20para%20pensar.pptx" download>⬇ Descargar</a>
-            </div>
-          </div>
+            <span class="resource-open">Descargar →</span>
+          </a>
         </div>
       </article>
 
@@ -729,6 +675,30 @@ a { color: inherit; }
 
       <!-- Unidad 5 (bloqueada) -->
       <div class="separator locked"><strong>Unidad 5: Problema Técnico. Objetivos. Soluciones</strong><span>Cierre del trayecto</span></div>
+
+      <!-- Cápsula de práctica (complemento, disponible) -->
+      <div class="separator active"><strong>Cápsulas de práctica</strong><span>Complemento del trayecto</span></div>
+
+      <article class="unit-card capsula">
+        <div class="unit-meta">
+          <span class="unit-chip green">Cápsula</span>
+        </div>
+        <div>
+          <h4>Boceto a mano alzada</h4>
+          <p>Complemento práctico del trayecto: recorrido interactivo del trazo al boceto de piezas — trazo, proporción, axonometría, elipses, cilindros y piezas de robótica.</p>
+        </div>
+        <div class="resource-grid" style="grid-template-columns:1fr;">
+          <a class="resource-card" href="capsulas/boceto/boceto-a-mano-alzada.html">
+            <div class="resource-top">
+              <div class="resource-icon" style="background:rgba(0,200,150,0.12)">✏️</div>
+              <span class="resource-type html">Práctica</span>
+            </div>
+            <h5>Práctica interactiva de boceto</h5>
+            <p>Del trazo limpio a la construcción de piezas en perspectiva, paso a paso y a tu ritmo.</p>
+            <span class="resource-open">Abrir →</span>
+          </a>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -748,7 +718,7 @@ a { color: inherit; }
 
     <div class="footer">
       <strong>Taller de Proyecto</strong> · Campus académico oficial · 1° y 2° año<br>
-      Unidad 1: La Ingeniería empieza entendiendo · Unidad 2: Preguntas disparadoras
+      Unidad 1: La Ingeniería empieza entendiendo · Unidad 2: Preguntas disparadoras · Cápsula: Boceto a mano alzada
     </div>
   </section>
 </main>
@@ -777,22 +747,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     event.preventDefault();
     window.scrollTo({ top: target.offsetTop - 18, behavior: 'smooth' });
   });
-});
-
-// PPTX → modo presentación en el navegador (visor Office Online).
-// La descarga directa sigue intacta; esto solo arma el botón "Presentar".
-document.querySelectorAll('a[data-present]').forEach(link => {
-  const fileUrl = new URL(link.getAttribute('href'), location.href).href;
-  link.href = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(fileUrl);
-});
-
-// Balancea las grillas según la cantidad de tarjetas: evita filas con un solo huérfano.
-document.querySelectorAll('.resource-grid').forEach(grid => {
-  const n = grid.children.length;
-  let cols = Math.min(n, 3);
-  if (n === 4) cols = 2;
-  else if (n > 4) { cols = (n % 3 === 1) ? 4 : 3; if (cols === 4 && n % 4 === 1) cols = 3; }
-  grid.style.setProperty('--cols', cols);
 });
 </script>
 </body>

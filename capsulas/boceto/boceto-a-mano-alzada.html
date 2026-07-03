@@ -1,0 +1,2112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boceto a mano alzada — Práctica | Taller de Proyecto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #17181a;
+      --bg-soft: #1e2022;
+      --bg-raised: #26282b;
+      --paper: #f1ead9;
+      --paper-dim: #e6ddc7;
+      --ink: #242220;
+      --ink-soft: #6b6660;
+      --line-fine: #3a3d40;
+      --guide: #c9492f;
+      --guide-soft: #c9492f99;
+      --accent: #f2b544;
+      --accent-dim: #f2b54433;
+      --good: #5fa87c;
+      --paper-shadow: 0 22px 44px -18px rgba(0, 0, 0, .55), 0 2px 0 rgba(255, 255, 255, .03) inset;
+      --radius: 3px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse 1200px 700px at 20% -10%, #23262a 0%, transparent 60%),
+        radial-gradient(ellipse 900px 600px at 100% 20%, #201e1e 0%, transparent 55%),
+        var(--bg);
+      color: var(--paper);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: #1a1a1a;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      margin: 0;
+      color: #f6f2e8;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.28rem;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      margin-bottom: .55rem;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* ============ SLIDE SYSTEM ============ */
+    .slide {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 2.4rem;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide+.slide {
+      border-top: 1px solid #ffffff0d;
+    }
+
+    .slide-wrap {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      margin-right: 0.4rem;
+    }
+
+    /* ============ FIXED CHROME (nav) ============ */
+    .brandmark {
+      position: fixed;
+      top: 1.1rem;
+      left: 1.6rem;
+      z-index: 60;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: .82rem;
+      color: #f1ead9cc;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      pointer-events: none;
+    }
+
+    .brandmark span {
+      color: var(--accent);
+    }
+
+    .brandmark-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3rem;
+      background: var(--bg);
+      z-index: 59;
+    }
+
+    .slide-counter {
+      position: fixed;
+      top: 1.15rem;
+      right: 1.6rem;
+      z-index: 60;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem;
+      color: #8b877e;
+      letter-spacing: .05em;
+    }
+
+    .slide-counter b {
+      color: var(--accent);
+    }
+
+    .dotnav {
+      position: fixed;
+      right: 1.4rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 60;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      align-items: center;
+    }
+
+    .dotnav button {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ffffff2a;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: background .2s ease, transform .2s ease;
+    }
+
+    .dotnav button:hover {
+      background: #ffffff55;
+    }
+
+    .dotnav button.active {
+      background: var(--accent);
+      transform: scale(1.5);
+    }
+
+    .arrownav {
+      position: fixed;
+      right: 1.4rem;
+      bottom: 1.3rem;
+      z-index: 60;
+      display: flex;
+      gap: .5rem;
+    }
+
+    .arrownav button {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--bg-raised);
+      border: 1px solid #ffffff1c;
+      color: #e8e3d6;
+      cursor: pointer;
+      font-size: .85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s ease, border-color .15s ease;
+    }
+
+    .arrownav button:hover {
+      border-color: var(--accent);
+      background: #302f2b;
+    }
+
+    .arrownav button:disabled {
+      opacity: .25;
+      cursor: default;
+    }
+
+    .progress-fill {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 61;
+      transition: width .35s ease;
+    }
+
+    /* ============ HERO ============ */
+    .hero-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #c9c4b8;
+      background: var(--bg-raised);
+      border: 1px solid #ffffff14;
+      display: inline-block;
+      padding: .35rem .75rem;
+      border-radius: 20px;
+      margin-bottom: 1.3rem;
+    }
+
+    h1.title,
+    h2.title {
+      font-size: clamp(2rem, 4.2vw, 3.3rem);
+      line-height: 1.05;
+      max-width: 16ch;
+      letter-spacing: -.01em;
+    }
+
+    h1.title em,
+    h2.title em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    h2.title {
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      max-width: 38ch;
+      margin-top: .6rem;
+      color: #d8d3c6;
+    }
+
+    .hero-sub {
+      max-width: 110ch;
+      color: #c9c4b8;
+      font-size: 1rem;
+      margin-top: 1.1rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 4.2rem;
+      flex-wrap: wrap;
+      margin-top: 1.7rem;
+      padding-top: 1.3rem;
+      border-top: 1px solid #ffffff14;
+    }
+
+    .hero-meta div {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .74rem;
+      color: #8b877e;
+      width: 30%;
+    }
+
+    .hero-meta b {
+      display: block;
+      color: #f1ead9;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .94rem;
+      font-weight: 600;
+      margin-bottom: .12rem;
+    }
+
+    /* ============ SECTION HEADERS ============ */
+    .sec-head {
+      max-width: 70ch;
+      margin-bottom: 1.2rem;
+    }
+
+    .sec-head h2 {
+      font-size: clamp(1.35rem, 2.3vw, 1.85rem);
+    }
+
+    .sec-head p {
+      color: #b6b1a4;
+      margin-top: .5rem;
+      font-size: .9rem;
+    }
+
+    .sec-head.center {
+      max-width: none;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .sec-head.center .eyebrow {
+      justify-content: center;
+    }
+
+    .sec-head.center .eyebrow::before {
+      display: none;
+    }
+
+    /* ============ DRAFTING TABLE / PAPER ============ */
+    .table-frame {
+      background: repeating-linear-gradient(135deg, #101112 0 2px, #131415 2px 4px);
+      border-radius: 9px;
+      padding: 1.1rem;
+      border: 1px solid #ffffff10;
+    }
+
+    .paper {
+      background: var(--paper);
+      border-radius: var(--radius);
+      box-shadow: var(--paper-shadow);
+      padding: .9rem 1rem .75rem;
+      position: relative;
+    }
+
+    .paper-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: .4rem;
+      color: var(--ink);
+      gap: 1rem;
+    }
+
+    .paper-label .step-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: .84rem;
+    }
+
+    .paper-label .step-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .64rem;
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+
+    svg.sketch {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-height: 50vh;
+      margin: 0 auto;
+    }
+
+    .draw {
+      fill: none;
+    }
+
+    .fade {
+      opacity: 0;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      flex-wrap: wrap;
+      margin-top: .65rem;
+    }
+
+    .btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .66rem;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      background: var(--bg-raised);
+      color: #e8e3d6;
+      border: 1px solid #ffffff1c;
+      padding: .4rem .72rem;
+      border-radius: 18px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      transition: background .15s ease, border-color .15s ease, transform .1s ease;
+    }
+
+    .btn:hover {
+      background: #302f2b;
+      border-color: var(--accent);
+    }
+
+    .btn:active {
+      transform: scale(.96);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #211a09;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .btn.primary:hover {
+      filter: brightness(1.08);
+    }
+
+    .scrubber {
+      flex: 1 1 150px;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      min-width: 130px;
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 3px;
+      background: #ffffff22;
+      border-radius: 2px;
+      outline: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid #17181a;
+      cursor: pointer;
+      margin-top: -1px;
+    }
+
+    input[type=range]::-moz-range-thumb {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid #17181a;
+      cursor: pointer;
+    }
+
+    .scrub-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .62rem;
+      color: #8b877e;
+      white-space: nowrap;
+    }
+
+    .legend {
+      margin-top: .6rem;
+      background: var(--bg-raised);
+      border: 1px solid #ffffff14;
+      border-radius: var(--radius);
+      padding: .55rem .8rem;
+      min-height: 48px;
+    }
+
+    .legend .lg-step {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      font-size: .63rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: .2rem;
+    }
+
+    .legend .lg-text {
+      color: #d8d3c6;
+      font-size: .8rem;
+      line-height: 1.4;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .split.even {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .notes {
+      color: #b6b1a4;
+      font-size: .86rem;
+    }
+
+    .notes ul {
+      padding-left: 1rem;
+      margin: .55rem 0;
+    }
+
+    .notes ol {
+      padding-left: 1.15rem;
+      margin: .55rem 0;
+    }
+
+    .notes li {
+      margin-bottom: .4rem;
+      line-height: 1.42;
+    }
+
+    .notes li b {
+      color: #f1ead9;
+    }
+
+    .notes h3 {
+      font-size: .98rem;
+      margin-bottom: .5rem;
+      color: #f1ead9;
+    }
+
+    .notes p {
+      margin: .5rem 0;
+      line-height: 1.5;
+    }
+
+    /* callout boxes matching docx "boxed" notes */
+    .tip {
+      margin-top: .7rem;
+      background: linear-gradient(180deg, #2a2311, #221d0e);
+      border: 1px solid #4a3c14;
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: .6rem .85rem;
+      font-size: .8rem;
+      color: #e9dfb8;
+      line-height: 1.42;
+    }
+
+    .tip b {
+      color: var(--accent);
+    }
+
+    .consigna {
+      background: var(--bg-raised);
+      border: 1px solid #ffffff14;
+      border-left: 3px solid var(--good);
+      border-radius: var(--radius);
+      padding: .7rem .9rem;
+      font-size: .84rem;
+      color: #d8d3c6;
+      line-height: 1.45;
+      margin: .6rem 0;
+    }
+
+    .consigna b {
+      color: #8fd0aa;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .7rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: .25rem;
+    }
+
+    /* line-type callouts (peluda / tiritona / invisible) */
+    .linetypes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .85rem;
+      margin: 1rem 0 .3rem;
+    }
+
+    .linetypes.four {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .lt-card {
+      background: var(--bg-raised);
+      border: 1px solid #ffffff14;
+      border-radius: 8px;
+      padding: .85rem .9rem;
+    }
+
+    .lt-card.goal {
+      background: linear-gradient(180deg, #1c2b23, #16211b);
+      border-color: #2f5f47;
+    }
+
+    .lt-card .lt-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--guide);
+      margin-bottom: .45rem;
+    }
+
+    .lt-card .lt-name.good {
+      color: var(--good);
+    }
+
+    .lt-card svg {
+      width: 100%;
+      height: 48px;
+      margin-bottom: .5rem;
+      background: var(--paper);
+      border-radius: 4px;
+      padding: 4px 10px;
+      box-shadow: 0 6px 16px -10px rgba(0, 0, 0, .5);
+    }
+
+    .lt-card svg path {
+      stroke: var(--ink);
+    }
+
+    .lt-card .q-good {
+      stroke: #2c6b48;
+    }
+
+    .lt-card p {
+      font-size: .78rem;
+      color: #c9c4b8;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .lt-card .sol {
+      color: #8fd0aa;
+      font-weight: 600;
+      margin-top: .4rem;
+      display: inline-block;
+    }
+
+    .lt-card .sol.goodtext {
+      color: #a8e0c0;
+    }
+
+    .q-good {
+      stroke-linecap: round;
+      stroke-dashoffset: 0;
+    }
+
+    .q-good.is-playing {
+      animation: drawGood 1.2s cubic-bezier(.4, 0, .2, 1) 1 forwards;
+    }
+
+    .lt-card.goal.is-interactive {
+      cursor: pointer;
+    }
+
+    /* ============ DOCX IMAGE FIGURES ============ */
+    .figure-frame {
+      background: var(--paper);
+      border-radius: var(--radius);
+      box-shadow: var(--paper-shadow);
+      padding: .7rem;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .figure-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 2px;
+      object-fit: contain;
+      max-height: 50vh;
+    }
+
+    .figure-media {
+      background: #fff;
+      padding: .55rem;
+      border-radius: 2px;
+      min-height: 33vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .figure-media img {
+      max-height: calc(33vh - 1.1rem);
+    }
+
+    .figure-cap {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .04em;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .figure-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .7rem;
+    }
+
+    .figure-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: #211a09;
+      background: var(--accent);
+      padding: .15rem .5rem;
+      border-radius: 10px;
+      margin-bottom: .15rem;
+      align-self: flex-start;
+    }
+
+    .figure-badge.ref {
+      background: #8a8578;
+      color: #17181a;
+    }
+
+    .figure-badge.live {
+      background: var(--good);
+      color: #17181a;
+    }
+
+    /* dual: live svg + reference image side by side */
+    .dual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem;
+      align-items: stretch;
+    }
+
+    .dual>div {
+      /* display: flex; */
+      flex-direction: column;
+    }
+
+    /* ============ PIECES ============ */
+    .piece-head {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+    }
+
+    .piece-desc {
+      background: var(--bg-raised);
+      border: 1px solid #ffffff14;
+      border-radius: 8px;
+      padding: .7rem .9rem;
+      font-size: .82rem;
+      color: #d8d3c6;
+      line-height: 1.45;
+    }
+
+    .piece-desc b {
+      color: #f1ead9;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .66rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: .2rem;
+    }
+
+    .piece-desc.foco b {
+      color: var(--accent);
+    }
+
+    /* ============ LEVEL STRIP ============ */
+    .level-strip {
+      display: flex;
+      gap: .85rem;
+      margin-top: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .level-chip {
+      flex: 1 1 140px;
+      background: var(--bg-raised);
+      border: 1px solid #ffffff14;
+      border-radius: 8px;
+      padding: .8rem .9rem;
+      text-align: center;
+    }
+
+    .level-chip .lvl-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .level-chip .lvl-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .64rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: #b6b1a4;
+      margin-top: .15rem;
+    }
+
+    /* ============ PROCESS LIST ============ */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: .85rem;
+      margin-top: 1.4rem;
+    }
+
+    .process-step {
+      background: var(--bg-raised);
+      border: 1px solid #ffffff14;
+      border-radius: 8px;
+      padding: 1rem .85rem;
+      text-align: center;
+    }
+
+    .process-step .pn {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: .45rem;
+    }
+
+    .process-step p {
+      font-size: .76rem;
+      color: #d8d3c6;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* numbered steps grid (prisma) */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: .9rem;
+      margin-top: .3rem;
+    }
+
+    .step-box {
+      background: var(--bg-raised);
+      border: 1px solid #ffffff14;
+      border-radius: 8px;
+      padding: .4rem 1rem;
+      display: grid;
+      grid-template-columns: 0.1fr 1fr;
+      grid-template-areas:
+        "sn info"
+        "title title"
+        "text text";
+      column-gap: .7rem;
+      row-gap: .35rem;
+      align-items: center;
+    }
+
+    .step-box .sn {
+      display: block;
+      width: auto;
+      grid-area: sn;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      color: var(--accent);
+      letter-spacing: .05em;
+      vertical-align: middle;
+    }
+
+    .step-box .info {
+      display: block;
+      width: auto;
+      grid-area: info;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .7rem;
+      color: #a8a397;
+      letter-spacing: .04em;
+      vertical-align: middle;
+      margin-top: 0;
+    }
+    
+    .step-box h4 {
+      grid-area: title;
+      text-transform: uppercase;
+      font-size: 1.26rem;
+      margin: .15rem 0 .2rem;
+    }
+
+    .step-box p {
+      grid-area: text;
+      font-size: .96rem;
+      color: #cec9bb;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* ============ CLOSING SLIDE ============ */
+    .closing-mark {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      color: #f6f2e8;
+    }
+
+    .closing-sub {
+      color: #8b877e;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .85rem;
+      margin-top: .8rem;
+      letter-spacing: .04em;
+    }
+
+    @media (max-width:900px) {
+      .slide {
+        padding: 1.2rem 1.2rem;
+      }
+
+      .split,
+      .split.even,
+      .dual {
+        grid-template-columns: 1fr;
+      }
+
+      .linetypes,
+      .linetypes.four {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .process-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .steps-grid,
+      .figure-row {
+        grid-template-columns: 1fr;
+      }
+
+      .dotnav,
+      .arrownav {
+        display: none;
+      }
+
+      svg.sketch,
+      .figure-frame img {
+        max-height: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  <div class="brandmark-bg">
+    <div class="brandmark">BOCETO <span>A MANO ALZADA</span></div>
+    <div class="slide-counter"><b id="slideCurrent">01</b> / <span id="slideTotal">17</span></div>
+  </div>
+  <nav class="dotnav" id="dotNav"></nav>
+  <div class="arrownav">
+    <button id="prevBtn" aria-label="Anterior">↑</button>
+    <button id="nextBtn" aria-label="Siguiente">↓</button>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 1 — HERO / INTRO -->
+  <!-- ============================================================ -->
+  <section class="slide" id="s-hero">
+    <div class="slide-wrap">
+      <span class="hero-tag">Taller de Proyecto · Práctica de boceto a mano alzada</span>
+      <h1 class="title">Pensar, verificar y decidir <em>con el lápiz</em>.</h1>
+      <h2 class="title">Un recorrido progresivo desde el trazo básico hasta la representación de piezas complejas de robótica.</h2>
+      <p class="hero-sub">El dibujo técnico a mano alzada es una herramienta de pensamiento. Antes de modelar en 3D,
+        antes de conectar componentes, antes de fabricar, la mano sobre el papel permite verificar, detectar problemas y
+        tomar decisiones. Esta sección propone un recorrido progresivo desde el trazo básico hasta la representación de
+        piezas complejas de robótica.</p>
+      <div class="hero-meta">
+        <div><b>Modo de uso</b>↓ / Espacio para avanzar, ↑ para volver, o los puntos de la derecha</div>
+        <div><b>Herramienta</b>Lápiz HB para construcción, 2B o microfibra para definir</div>
+        <div><b>Recorrido</b>Trazo → Proporción → Axonometría → 5 niveles → Piezas de robótica</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 2 — 1. EL TRAZO -->
+  <!-- ============================================================ -->
+  <section class="slide" id="s-trazo">
+    <div class="slide-wrap">
+      <div class="sec-head">
+        <div class="eyebrow">1 — El trazo</div>
+        <h2>Un trazo limpio y decidido</h2>
+        <p>Para poder transmitir ideas con seguridad, es necesario desarrollar un trazo limpio y decidido.<br /> Existen tres
+          tipos de líneas que debemos evitar y una que buscamos:</p>
+      </div>
+
+      <div class="linetypes four">
+        <div class="lt-card avoid">
+          <div class="lt-name">Línea peluda</div>
+          <svg viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
+            <g class="q-peluda">
+              <path d="M15 20 L185 18" stroke="#f1ead9" stroke-width="1.4" fill="none" />
+              <path d="M15 23 L185 21" stroke="#f1ead9" stroke-width="1.1" fill="none" opacity=".7" />
+              <path d="M15 17 L185 24" stroke="#f1ead9" stroke-width="1.1" fill="none" opacity=".6" />
+              <path d="M15 26 L183 17" stroke="#f1ead9" stroke-width="1" fill="none" opacity=".5" />
+            </g>
+          </svg>
+          <p>Está sobre-construida: se repasa el mismo trazo muchas veces por inseguridad. <span class="sol">Solución:
+              trazá de una sola pasada, con decisión.</span></p>
+        </div>
+        <div class="lt-card avoid">
+          <div class="lt-name">Línea tiritona</div>
+          <svg viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
+            <path class="q-tiritona" d="M15 20 Q35 13 50 21 T85 19 T120 22 T155 17 T185 20" stroke="#f1ead9"
+              stroke-width="1.3" fill="none" />
+          </svg>
+          <p>El pulso traiciona el trazo porque se mueve solo la muñeca sin guía del brazo. <span class="sol">Solución:
+              mover el brazo completo.</span></p>
+        </div>
+        <div class="lt-card avoid">
+          <div class="lt-name">Línea invisible</div>
+          <svg viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 20 L185 20" stroke="#f1ead9" stroke-width=".5" fill="none" opacity=".3" />
+          </svg>
+          <p>El trazo es tan suave que casi no se ve. Ocurre por miedo a equivocarse. <span class="sol">Solución:
+              presioná con decisión. Las aristas no pueden ser invisibles.</span></p>
+        </div>
+        <div class="lt-card goal">
+          <div class="lt-name good">Línea correcta</div>
+          <svg viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
+            <path class="q-good" pathLength="1" d="M15 20 L185 20" stroke="#8fd0aa" stroke-width="1.8" fill="none"
+              stroke-dasharray="1" stroke-dashoffset="1" />
+          </svg>
+          <p>Una sola pasada, brazo completo, presión pareja. <span class="sol goodtext">Así se ve una arista real:
+              limpia, firme y decidida.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 3 — ACTIVIDAD 1: LÍNEAS RECTAS (GIFs del docx) -->
+  <!-- ============================================================ -->
+  <section class="slide" id="s-actividad1">
+    <div class="slide-wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Actividad 1 — Líneas rectas · horizontales y verticales</div>
+        <h2>Calentamiento: dibujar muchas líneas rectas</h2>
+        <p>El primer ejercicio de calentamiento es dibujar muchas líneas rectas en una hoja de papel.</p>
+      </div>
+
+      <div class="split even">
+        <div class="notes">
+          <ul>
+            <li><b>Diestros:</b> visualizá el punto de destino a la derecha.</li>
+            <li><b>Zurdos:</b> visualizá el punto de destino a la izquierda.</li>
+            <li><b>Verticales:</b> visualizá el punto hacia abajo.</li>
+            <li><b>Girá el papel</b> si necesitás cambiar la dirección de las líneas.</li>
+          </ul>
+          <div class="tip">No dejes de practicar hasta que las líneas se vean rectas. La clave está en mover el brazo
+            completo, no solo la muñeca.</div>
+        </div>
+
+        <div class="figure-row">
+          <div class="figure-frame">
+            <span class="figure-badge ref">Referencia animada</span>
+            <div class="figure-media">
+              <img src="img/proceso/trazo-lineas-a.gif"
+                alt="Animación: trazado de líneas rectas moviendo el brazo completo" loading="lazy">
+            </div>
+            <div class="figure-cap">Trazo de líneas · brazo completo</div>
+          </div>
+          <div class="figure-frame">
+            <span class="figure-badge ref">Referencia animada</span>
+            <div class="figure-media">
+              <img src="img/proceso/trazo-lineas-b.gif" alt="Animación: dirección del trazo y punto de destino"
+                loading="lazy">
+            </div>
+            <div class="figure-cap">Dirección y punto de destino</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 4 — 2. PROPORCIÓN -->
+  <!-- ============================================================ -->
+  <section class="slide" id="s-proporcion">
+    <div class="slide-wrap">
+      <div class="sec-head">
+        <div class="eyebrow">2 — Proporción</div>
+        <h2>Estimar y reproducir tamaños sin medir</h2>
+        <p>La proporción es la capacidad de estimar y reproducir tamaños relativos sin necesidad de herramientas de
+          medición. Es fundamental para que los bocetos sean creíbles y comunicables.</p>
+      </div>
+
+      <div class="eyebrow">Actividad 2 — Encontrar el punto medio</div>
+
+      <div class="split" style="align-items:start;">
+        <div class="table-frame">
+          <div class="paper">
+            <div class="paper-label" style="justify-content:flex-end;">
+              <span class="step-count mono" id="propCount">0 / 3</span>
+            </div>
+            <svg class="sketch" id="propSVG" viewBox="0 0 560 190" xmlns="http://www.w3.org/2000/svg">
+              <path class="draw" pathLength="1" d="M50 100 L510 100" stroke="#242220" stroke-width="2.4" />
+
+              <path class="draw" pathLength="1" d="M280 84 L280 116" stroke="#c9492f" stroke-width="2" />
+
+              <g class="fade">
+                <text x="280" y="60" font-family="JetBrains Mono, monospace" font-size="12" fill="#c9492f"
+                  text-anchor="middle">estimado a ojo</text>
+
+                <path d="M50 100 L50 140" stroke="#6b6660" stroke-width="1" stroke-dasharray="3,3" />
+                <path d="M280 100 L280 140" stroke="#6b6660" stroke-width="1" stroke-dasharray="3,3" />
+                <path d="M510 100 L510 140" stroke="#6b6660" stroke-width="1" stroke-dasharray="3,3" />
+
+                <path d="M50 140 L280 140" stroke="#6b6660" stroke-width="1" stroke-dasharray="4,4" />
+                <path d="M280 140 L510 140" stroke="#6b6660" stroke-width="1" stroke-dasharray="4,4" />
+
+                <text x="165" y="158" font-family="JetBrains Mono, monospace" font-size="13" fill="#6b6660"
+                  text-anchor="middle">≈ 115 mm</text>
+                <text x="395" y="158" font-family="JetBrains Mono, monospace" font-size="13" fill="#6b6660"
+                  text-anchor="middle">≈ 118 mm</text>
+              </g>
+            </svg>
+            <div class="controls">
+              <button class="btn primary" data-play="propSVG">▶ Reproducir</button>
+              <button class="btn" data-step="propSVG">Paso</button>
+              <button class="btn" data-reset="propSVG">↺ Reiniciar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes">
+          <h3>Encontrar el punto medio a ojo</h3>
+          <p>Proporción es estimar tamaños relativos sin regla. Reproducí el ejercicio: trazá la línea, estimá el
+            centro con una marca corta perpendicular, y recién después verificá.</p>
+
+          <h3>Cómo se construye</h3>
+          <ol>
+            <li><b>Trazá la recta completa</b>, de punta a punta, en una sola pasada.</li>
+            <li><b>Marcá el centro estimado</b> con un trazo corto y perpendicular — sin medir todavía.</li>
+            <li><b>Verificá con regla</b> y anotá las dos mitades reales. Repetí hasta acortar el margen de error.</li>
+          </ol>
+          <div class="tip">Este mismo gesto —dividir a ojo, después verificar— es la base para ubicar aristas, puntos
+            medios de caras y centros de elipses más adelante.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 4b — 2. PROPORCIÓN · PRÁCTICA (consigna + referencia) -->
+  <!-- ============================================================ -->
+  <section class="slide" id="s-proporcion-practica">
+    <div class="slide-wrap">
+      <div class="sec-head">
+        <div class="eyebrow">2 — Proporción · Práctica</div>
+        <h2>Tu turno: estimar y verificar</h2>
+        <p>De la teoría al papel: estimá a ojo, después medí y compará. La diferencia es tu margen de error.</p>
+      </div>
+
+      <div class="split even">
+        <div class="notes">
+          <div class="consigna">
+            <b>Consigna</b>
+            Dibujá líneas rectas de distintos largos. Estimá el punto medio con un trazo corto perpendicular. Luego medí
+            con regla y anotá las dos mitades reales.
+          </div>
+          <p>La distancia entre tu estimación y la medida real es tu margen de error. Repetí el ejercicio hasta
+            acortarlo: este gesto —dividir a ojo, después verificar— es la base para ubicar aristas, puntos medios de
+            caras y centros de elipses más adelante.</p>
+        </div>
+
+        <div class="figure-frame">
+          <span class="figure-badge ref">Referencia del material</span>
+          <img src="img/proceso/proporcion-punto-medio.png"
+            alt="Ejercicio de punto medio: estimación y verificación con regla" loading="lazy">
+          <div class="figure-cap">Estimación del punto medio y verificación</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SLIDE 5 — 3. PERSPECTIVA AXONOMÉTRICA (intro + 4 pasos docx) -->
+  <!-- ============================================================ -->
+  <section class="slide" id="s-axono-intro">
+    <div class="slide-wrap">
+      <div class="sec-head">
+        <div class="eyebrow">3 — Perspectiva axonométrica</div>
+        <h2>El sistema tridimensional del dibujo técnico</h2>
+        <p>La perspectiva axonométrica es el sistema de representación tridimensional más utilizado en dibujo técnico.
+          Las líneas paralelas permanecen paralelas (no convergen), lo que facilita la representación de dimensiones
+          reales.</p>
+      </div>
+
+      <h3 style="font-family:'Space Grotesk';font-size:1rem;color:#f1ead9;margin-bottom:.2rem;">3a. Construcción de un
+        prisma en perspectiva</h3>
+      <p class="notes" style="margin:.2rem 0 .6rem;">Seguí estos pasos para construir cualquier forma tridimensional:
+      </p>
+
+      <div class="steps-grid">
+        <div class="step-box">
+          <div class="sn">Paso 1</div>
+          <div class="info">
+            <h4>Eje y punto de referencia</h4>
+            <p>Trazá el eje vertical y marcá los ángulos axonométricos (30° o 45°). Este eje es la columna vertebral de toda la figura.</p>
+          </div>
+              
+        </div>
+        <div class="step-box">
+          <div class="sn">Paso 2</div>
+          <div class="info">
+            <h4>Prisma contenedor (caja)</h4>
+            <p>Construí primero el volumen total que abarca la pieza. Las líneas deben ser paralelas a los ejes. Usá lápiz
+              HB suave.</p>
+          </div>
+        </div>
+        <div class="step-box">
+          <div class="sn">Paso 3</div>
+          <div class="info">
+            <h4>Sustracción o intersección</h4>
+            <p>Dentro del prisma, marcá los planos inclinados, huecos o formas curvas usando las diagonales del cuadrado.
+            </p>
+          </div>
+        </div>
+        <div class="step-box">
+          <div class="sn">Paso 4</div>
+          <div class="info">
+            <h4>Definición de aristas</h4>
+            <p>Con trazo firme (2B o microfibra), resaltá las aristas visibles. Las líneas constructivas quedan en segundo
+              plano.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip"><b>Tener en cuenta:</b> (1) ensayá el trazo en el aire antes de apoyar el lápiz, (2) respetá
+        siempre el paralelismo con los ejes.</div>
+    </div>
+  </section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6 — PRISMA VIVO (flagship) + referencia docx -->
+<!-- ============================================================ -->
+<section class="slide" id="s-prisma">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">3a — Construcción del prisma · en vivo</div>
+      <h2>El prisma, línea por línea</h2>
+      <p>La misma construcción del material, reconstruida trazo a trazo. Las líneas paralelas permanecen paralelas: no convergen. Arrastrá el control o tocá "Reproducir".</p>
+    </div>
+
+    <div class="dual">
+      <div>
+        <div class="table-frame" style="flex:1;">
+          <div class="paper">
+            <div class="paper-label">
+              <span class="step-name mono">Prisma en axonometría · vivo</span>
+              <span class="step-count mono" id="prismCount">0 / 27</span>
+            </div>
+            <svg class="sketch" id="prismSVG" viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg">
+              <path class="draw" pathLength="1" d="M40 285 L560 285" stroke="#8a8578" stroke-width="1.4" stroke-dasharray="5,5"/>
+              <g class="fade"><text x="566" y="289" font-family="JetBrains Mono, monospace" font-size="12" fill="#8a8578">LH</text></g>
+              <path class="draw" pathLength="1" d="M300 15 L300 305" stroke="#8a8578" stroke-width="1.2" stroke-dasharray="5,5"/>
+              <path class="draw" pathLength="1" d="M300 285 L316 285 L316 269" stroke="#c9492f" stroke-width="1.4"/>
+              <g class="fade"><text x="321" y="280" font-family="JetBrains Mono, monospace" font-size="12" fill="#c9492f">90°</text></g>
+              <path class="draw" pathLength="1" d="M300 265 L300 155" stroke="#242220" stroke-width="2.6"/>
+              <g class="fade"><text x="308" y="170" font-family="JetBrains Mono, monospace" font-size="11.5" fill="#242220">eje (y)</text></g>
+              <path class="draw" pathLength="1" d="M60 265 L540 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+              <path class="draw" pathLength="1" d="M60 200 L540 200" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+              <path class="draw" pathLength="1" d="M255 265 A45 45 0 0 1 261.4 249.5" stroke="#c9492f" stroke-width="1.4"/>
+              <path class="draw" pathLength="1" d="M345 265 A45 45 0 0 0 338.6 249.5" stroke="#c9492f" stroke-width="1.4"/>
+              <g class="fade">
+                <text x="222" y="252" font-family="JetBrains Mono, monospace" font-size="12" fill="#c9492f">30°</text>
+                <text x="358" y="252" font-family="JetBrains Mono, monospace" font-size="12" fill="#c9492f">30°</text>
+              </g>
+              <path class="draw" pathLength="1" d="M300 265 L187.42 200" stroke="#242220" stroke-width="2.6"/>
+              <path class="draw" pathLength="1" d="M300 265 L412.58 200" stroke="#242220" stroke-width="2.6"/>
+              <path class="draw" pathLength="1" d="M187.42 15 L187.42 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+              <path class="draw" pathLength="1" d="M412.58 15 L412.58 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+              <path class="draw" pathLength="1" d="M187.42 200 L187.42 90" stroke="#242220" stroke-width="2.6"/>
+              <path class="draw" pathLength="1" d="M412.58 200 L412.58 90" stroke="#242220" stroke-width="2.6"/>
+              <path class="draw" pathLength="1" d="M60 90 L540 90" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+              <path class="draw" pathLength="1" d="M300 155 L187.42 90" stroke="#242220" stroke-width="2.6"/>
+              <path class="draw" pathLength="1" d="M300 155 L412.58 90" stroke="#242220" stroke-width="2.6"/>
+              <path class="draw" pathLength="1" d="M187.42 90 L300 25" stroke="#242220" stroke-width="2.6"/>
+              <path class="draw" pathLength="1" d="M412.58 90 L300 25" stroke="#242220" stroke-width="2.6"/>
+              <g class="fade">
+                <polygon points="300,265 412.58,200 412.58,90 300,155" fill="#00000010"/>
+                <polygon points="300,265 300,155 187.42,90 187.42,200" fill="#0000001a"/>
+                <polygon points="300,155 412.58,90 300,25 187.42,90" fill="#00000008"/>
+              </g>
+              <g class="fade">
+                <path d="M300 265 L300 300" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
+                <path d="M412.58 200 L412.58 300" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
+                <path d="M187.42 200 L187.42 300" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
+                <line x1="300" y1="300" x2="412.58" y2="300" stroke="#c9492f" stroke-width="1.3"/>
+                <line x1="187.42" y1="300" x2="300" y2="300" stroke="#c9492f" stroke-width="1.3"/>
+                <line x1="300" y1="296" x2="300" y2="304" stroke="#c9492f" stroke-width="1.3"/>
+                <line x1="412.58" y1="296" x2="412.58" y2="304" stroke="#c9492f" stroke-width="1.3"/>
+                <line x1="187.42" y1="296" x2="187.42" y2="304" stroke="#c9492f" stroke-width="1.3"/>
+                <text x="356" y="317" font-family="JetBrains Mono, monospace" font-size="13" fill="#c9492f" text-anchor="middle">x</text>
+                <text x="243.7" y="317" font-family="JetBrains Mono, monospace" font-size="13" fill="#c9492f" text-anchor="middle">x</text>
+              </g>
+              <g class="fade">
+                <path d="M300 155 L472 155" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
+                <path d="M300 265 L472 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
+                <line x1="470" y1="155" x2="470" y2="265" stroke="#c9492f" stroke-width="1.3"/>
+                <line x1="466" y1="155" x2="474" y2="155" stroke="#c9492f" stroke-width="1.3"/>
+                <line x1="466" y1="265" x2="474" y2="265" stroke="#c9492f" stroke-width="1.3"/>
+                <text x="483" y="214" font-family="JetBrains Mono, monospace" font-size="13" fill="#c9492f" text-anchor="middle">y</text>
+              </g>
+              <g class="fade">
+                <text x="300" y="330" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="600" fill="#242220" text-anchor="middle">VOLUMEN TERMINADO — x = x' · caras en espejo parejas</text>
+              </g>
+            </svg>
+            <div class="controls">
+              <button class="btn primary" data-play="prismSVG">▶ Reproducir</button>
+              <button class="btn" data-step="prismSVG">Paso ⏭</button>
+              <button class="btn" data-back="prismSVG">⏮ Atrás</button>
+              <button class="btn" data-reset="prismSVG">↺ Reiniciar</button>
+              <div class="scrubber">
+                <span class="scrub-label">construcción</span>
+                <input type="range" id="prismRange" min="-1" max="26" value="-1">
+              </div>
+            </div>
+            <div class="legend" id="prismLegend">
+              <div class="lg-step mono">En espera</div>
+              <div class="lg-text">Tocá reproducir o arrastrá el control.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="figure-frame" style="flex:1;">
+          <span class="figure-badge ref">Referencia del material</span>
+          <img src="img/proceso/prisma-construccion-pasos.png" alt="Construcción del prisma en perspectiva: los cuatro pasos" loading="lazy" style="max-height:44vh;">
+          <div class="figure-cap">Los 4 pasos de construcción del prisma</div>
+        </div>
+        <div class="tip" style="margin-top:.7rem;"><b>Foco del ejercicio:</b> respetá el paralelismo con los ejes y verificá con las guías punteadas que las caras espejadas queden parejas (x = x'). Las cotas x e y comprueban que el volumen no salió deformado.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7 — 3b. ELIPSES (vivo + referencia docx) -->
+<!-- ============================================================ -->
+<section class="slide" id="s-elipse">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">3b — Elipses y círculos en perspectiva</div>
+      <h2>Un círculo visto en perspectiva es una elipse</h2>
+      <p>Para dibujarlo correctamente, se construye siempre dentro de un cuadrado en perspectiva —nunca a mano alzada libre.</p>
+    </div>
+
+    <div class="dual">
+      <div>
+        <div class="table-frame" style="flex:1;">
+          <div class="paper">
+            <div class="paper-label">
+              <span class="step-name mono">Elipse por cuadrado inscripto · vivo</span>
+              <span class="step-count mono" id="ellipseCount">0 / 9</span>
+            </div>
+            <svg class="sketch" id="ellipseSVG" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+              <path class="draw" pathLength="1" d="M90 200 L310 200 L340 70 L120 70 Z" stroke="#242220" stroke-width="2.2"/>
+              <path class="draw" pathLength="1" d="M90 200 L340 70" stroke="#c9492f" stroke-width="1.2" stroke-dasharray="4,4"/>
+              <path class="draw" pathLength="1" d="M310 200 L120 70" stroke="#c9492f" stroke-width="1.2" stroke-dasharray="4,4"/>
+              <path class="draw" pathLength="1" d="M105 135 L325 135" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+              <path class="draw" pathLength="1" d="M200 200 L230 70" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+              <g class="fade"><path d="M205 135 L225 135 M215 125 L215 145" stroke="#c9492f" stroke-width="1.4"/></g>
+              <path class="draw" pathLength="1" d="M200 200 L105 135 L230 70 L325 135 Z" stroke="#8a8578" stroke-width="1"/>
+              <ellipse class="draw" pathLength="1" cx="215" cy="135" rx="111.5" ry="64.1" transform="rotate(-6.8 215 135)" stroke="#242220" stroke-width="2.6"/>
+              <g class="fade"><text x="215" y="255" font-family="Space Grotesk, sans-serif" font-size="13" font-weight="600" fill="#242220" text-anchor="middle">CÍRCULO → ELIPSE</text></g>
+            </svg>
+            <div class="controls">
+              <button class="btn primary" data-play="ellipseSVG">▶ Reproducir</button>
+              <button class="btn" data-step="ellipseSVG">Paso</button>
+              <button class="btn" data-reset="ellipseSVG">↺ Reiniciar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="notes">
+          <ol>
+            <li>Dibujá el cuadrado que circunscribe al círculo en perspectiva.</li>
+            <li>Trazá las diagonales del cuadrado y conectá los puntos medios de los lados opuestos.</li>
+            <li>Inscribí otro cuadrado más pequeño dentro del anterior.</li>
+            <li>La elipse debe pasar por los puntos medios del lado exterior al interior.</li>
+            <li>Dibujá la elipse limpia y simétrica respecto a ambos ejes.</li>
+          </ol>
+        </div>
+        <div class="figure-frame" style="margin-top:.5rem;">
+          <span class="figure-badge ref">Referencia del material</span>
+          <img src="img/proceso/elipse-en-perspectiva.jpg" alt="Elipse inscripta en un cuadrado en perspectiva" loading="lazy" style="max-height:30vh;">
+          <div class="figure-cap">Elipse inscripta en el cuadrado en perspectiva</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8 — 3c. CILINDROS (vivo + 2 referencias docx) -->
+<!-- ============================================================ -->
+<section class="slide" id="s-cilindro">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">3c — Cilindros en perspectiva</div>
+      <h2>El cilindro nace de su caja delimitadora</h2>
+      <p>La forma más directa de construir un cilindro es partir de su caja delimitadora.</p>
+    </div>
+
+    <div class="dual">
+      <div>
+        <div class="table-frame" style="flex:1;">
+          <div class="paper">
+            <div class="paper-label">
+              <span class="step-name mono">Cilindro por caja · vivo</span>
+              <span class="step-count mono" id="cylCount">0 / 5</span>
+            </div>
+            <svg class="sketch" id="cylSVG" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+              <path class="draw" pathLength="1" d="M110 70 L110 190 M290 70 L290 190" stroke="#8a8578" stroke-width="1.3" stroke-dasharray="4,4"/>
+              <path class="draw" pathLength="1" d="M200 60 L200 200" stroke="#c9492f" stroke-width="1.2" stroke-dasharray="3,3"/>
+              <ellipse class="draw" pathLength="1" cx="200" cy="72" rx="90" ry="26" stroke="#242220" stroke-width="2.4"/>
+              <ellipse class="draw" pathLength="1" cx="200" cy="188" rx="90" ry="26" stroke="#242220" stroke-width="2.4"/>
+              <path class="draw" pathLength="1" d="M110 72 L110 188" stroke="#242220" stroke-width="2.4"/>
+              <path class="draw" pathLength="1" d="M290 72 L290 188" stroke="#242220" stroke-width="2.4"/>
+            </svg>
+            <div class="controls">
+              <button class="btn primary" data-play="cylSVG">▶ Reproducir</button>
+              <button class="btn" data-step="cylSVG">Paso</button>
+              <button class="btn" data-reset="cylSVG">↺ Reiniciar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="notes">
+          <ol start="6">
+            <li>Dibujá el prisma rectangular que contiene al cilindro.</li>
+            <li>Construí las elipses en el plano frontal y posterior usando el método anterior.</li>
+            <li>El eje del cilindro coincide con el eje menor de ambas elipses.</li>
+            <li>Conectá los extremos correspondientes de las dos elipses para completar el cilindro.</li>
+          </ol>
+        </div>
+        <div class="figure-row" style="margin-top:.5rem;">
+          <div class="figure-frame">
+            <span class="figure-badge ref">Referencia</span>
+            <img src="img/proceso/cilindro-a.jpg" alt="Cilindro construido a partir de su caja" loading="lazy" style="max-height:26vh;">
+            <div class="figure-cap">Cilindro desde la caja</div>
+          </div>
+          <div class="figure-frame">
+            <span class="figure-badge ref">Referencia</span>
+            <img src="img/proceso/cilindro-b.jpg" alt="Cilindro vertical en perspectiva" loading="lazy" style="max-height:26vh;">
+            <div class="figure-cap">Eje y elipses del cilindro</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9 — 3d. TRES ELIPSES VIVAS (complemento) -->
+<!-- ============================================================ -->
+<section class="slide" id="s-tri">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">3d — Complemento vivo: elipses en las tres caras</div>
+      <h2>Un mismo prisma, tres elipses tangentes y exactas</h2>
+      <p>Todo lo anterior junto: elipse construida por diagonales y diámetros conjugados en cada una de las tres caras visibles. Las tres son del mismo tamaño; solo cambia la rotación.</p>
+    </div>
+
+    <div class="split">
+      <div class="table-frame">
+        <div class="paper">
+          <div class="paper-label">
+            <span class="step-name mono">Prisma + 3 elipses tangentes · vivo</span>
+            <span class="step-count mono" id="triCount">0 / 14</span>
+          </div>
+          <svg class="sketch" id="triEllipseSVG" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+            <path class="draw" pathLength="1" d="M300 265 L300 155 M300 265 L187.42 200 M300 265 L412.58 200" stroke="#242220" stroke-width="2.4"/>
+            <path class="draw" pathLength="1" d="M187.42 200 L187.42 90 M412.58 200 L412.58 90" stroke="#242220" stroke-width="2.4"/>
+            <path class="draw" pathLength="1" d="M300 155 L187.42 90 M300 155 L412.58 90 M187.42 90 L300 25 M412.58 90 L300 25" stroke="#242220" stroke-width="2.4"/>
+            <g class="fade">
+              <polygon points="300,265 412.58,200 412.58,90 300,155" fill="#00000010"/>
+              <polygon points="300,265 300,155 187.42,90 187.42,200" fill="#0000001a"/>
+              <polygon points="300,155 412.58,90 300,25 187.42,90" fill="#00000008"/>
+            </g>
+            <path class="draw" pathLength="1" d="M300 265 L412.58 90 M412.58 200 L300 155" stroke="#c9492f" stroke-width="1.1" stroke-dasharray="4,4"/>
+            <path class="draw" pathLength="1" d="M300 210 L412.58 145 M356.29 122.5 L356.29 232.5" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+            <ellipse class="draw" pathLength="1" cx="356.29" cy="177.5" rx="74.2" ry="41.7" transform="rotate(-52.0 356.29 177.5)" stroke="#242220" stroke-width="2.2"/>
+            <path class="draw" pathLength="1" d="M300 265 L187.42 90 M187.42 200 L300 155" stroke="#c9492f" stroke-width="1.1" stroke-dasharray="4,4"/>
+            <path class="draw" pathLength="1" d="M300 210 L187.42 145 M243.71 122.5 L243.71 232.5" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+            <ellipse class="draw" pathLength="1" cx="243.71" cy="177.5" rx="74.2" ry="41.7" transform="rotate(52.0 243.71 177.5)" stroke="#242220" stroke-width="2.2"/>
+            <path class="draw" pathLength="1" d="M300 155 L300 25 M412.58 90 L187.42 90" stroke="#c9492f" stroke-width="1.1" stroke-dasharray="4,4"/>
+            <path class="draw" pathLength="1" d="M356.29 122.5 L243.71 57.5 M356.29 57.5 L243.71 122.5" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+            <ellipse class="draw" pathLength="1" cx="300" cy="90" rx="79.6" ry="46.0" stroke="#242220" stroke-width="2.2"/>
+            <g class="fade">
+              <text x="400" y="235" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b6660" text-anchor="middle">cara derecha</text>
+              <text x="200" y="235" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b6660" text-anchor="middle">cara izquierda</text>
+              <text x="300" y="42" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b6660" text-anchor="middle">cara superior</text>
+              <text x="300" y="290" font-family="Space Grotesk, sans-serif" font-size="13" font-weight="600" fill="#242220" text-anchor="middle">3 ELIPSES CONGRUENTES, 3 ROTACIONES DISTINTAS</text>
+            </g>
+          </svg>
+          <div class="controls">
+            <button class="btn primary" data-play="triEllipseSVG">▶ Reproducir</button>
+            <button class="btn" data-step="triEllipseSVG">Paso ⏭</button>
+            <button class="btn" data-back="triEllipseSVG">⏮ Atrás</button>
+            <button class="btn" data-reset="triEllipseSVG">↺ Reiniciar</button>
+            <div class="scrubber">
+              <span class="scrub-label">construcción</span>
+              <input type="range" id="triRange" min="-1" max="13" value="-1">
+            </div>
+          </div>
+          <div class="legend" id="triLegend">
+            <div class="lg-step mono">En espera</div>
+            <div class="lg-text">Tocá reproducir o arrastrá el control.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notes">
+        <h3>Cara por cara</h3>
+        <p>Este complemento aplica el método de la elipse (diagonales → puntos medios → tangencia) a las tres caras del prisma a la vez, para mostrar cómo un mismo círculo cambia de orientación según el plano donde se apoya.</p>
+        <ul>
+          <li><b>Prisma base + tinte</b> de las tres caras visibles.</li>
+          <li><b>Por cada cara:</b> diagonales → diámetros conjugados (puntos medios de lados opuestos) → elipse tangente a los cuatro lados.</li>
+          <li><b>Resultado:</b> mismo tamaño en las tres; la superior a 0°, las laterales a ±52° en espejo.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10 — 4. BOCETO DE FIGURAS · 5 NIVELES (intro) -->
+<!-- ============================================================ -->
+<section class="slide" id="s-niveles-intro">
+  <div class="slide-wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">4 — Boceto de figuras · 5 niveles de dificultad</div>
+      <h2>Poner en juego todo lo anterior</h2>
+      <p style="max-width:72ch;margin-left:auto;margin-right:auto;">El siguiente ejercicio pone en juego todos los conocimientos anteriores: tipo de trazo, rectitud, paralelismo/perpendicularidad, proporcionalidad y estructuración. Se presentan 5 figuras de dificultad progresiva.</p>
+    </div>
+
+    <div style="text-align:center;margin:.4rem 0 1rem;">
+      <p style="font-family:'Space Grotesk';font-size:1.15rem;font-weight:600;color:var(--accent);margin:0;">El foco está en la CALIDAD del trazo, no en la cantidad de figuras completadas.</p>
+    </div>
+
+    <div class="level-strip">
+      <div class="level-chip"><div class="lvl-num">01</div><div class="lvl-name">Básico</div></div>
+      <div class="level-chip"><div class="lvl-num">02</div><div class="lvl-name">Medio</div></div>
+      <div class="level-chip"><div class="lvl-num">03</div><div class="lvl-name">Avanzado</div></div>
+      <div class="level-chip"><div class="lvl-num">04</div><div class="lvl-name">Compuesto</div></div>
+      <div class="level-chip"><div class="lvl-num">05</div><div class="lvl-name">Robótica</div></div>
+    </div>
+
+    <div class="consigna" style="margin-top:1rem;">
+      <b>Portafolio</b>
+      Seleccioná tu mejor producción de cada nivel para el portafolio digital de la etapa.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11 — NIVELES 1/2/3 (imágenes del docx) -->
+<!-- ============================================================ -->
+<section class="slide" id="s-niveles-figuras">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">4 — Figuras de práctica</div>
+      <h2>Niveles 1 a 3</h2>
+      <p>Reproducí cada figura cuidando trazo, paralelismo y proporción. La dificultad aumenta de forma progresiva.</p>
+    </div>
+
+    <div class="figure-row" style="grid-template-columns:repeat(3,1fr);">
+      <div class="figure-frame">
+        <span class="figure-badge">Nivel 1 — Básico</span>
+        <img src="img/proceso/figuras-nivel-1.png" alt="Figuras de práctica, nivel 1 básico" loading="lazy" style="max-height:42vh;">
+        <div class="figure-cap">Formas prismáticas simples</div>
+      </div>
+      <div class="figure-frame">
+        <span class="figure-badge">Nivel 2 — Medio</span>
+        <img src="img/proceso/figuras-nivel-2.png" alt="Figuras de práctica, nivel 2 medio" loading="lazy" style="max-height:42vh;">
+        <div class="figure-cap">Volúmenes combinados</div>
+      </div>
+      <div class="figure-frame">
+        <span class="figure-badge">Nivel 3 — Avanzado</span>
+        <img src="img/proceso/figuras-nivel-3.png" alt="Figuras de práctica, nivel 3 avanzado" loading="lazy" style="max-height:42vh;">
+        <div class="figure-cap">Intersecciones y curvas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 12 — 5. PIEZAS DE ROBÓTICA (intro + proceso) -->
+<!-- ============================================================ -->
+<section class="slide" id="s-piezas-intro">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">5 — Boceto de piezas típicas de robótica</div>
+      <h2>De la caja a la pieza real</h2>
+      <p>Con las habilidades de trazo, proporción y perspectiva desarrolladas, el siguiente paso es aplicarlas a la representación de piezas reales utilizadas en proyectos de automatización y robótica: soportes, vínculos, brackets, bridas y carcasas de sensores y actuadores.</p>
+    </div>
+
+    <h3 style="font-family:'Space Grotesk';font-size:1rem;color:#f1ead9;margin-bottom:.2rem;">Proceso recomendado para cada pieza</h3>
+    <div class="process-grid">
+      <div class="process-step"><div class="pn">1</div><p>Observá la pieza real o la referencia fotográfica y analizá su geometría base.</p></div>
+      <div class="process-step"><div class="pn">2</div><p>Identificá el prisma o cilindro contenedor principal.</p></div>
+      <div class="process-step"><div class="pn">3</div><p>Trazá suavemente la caja contenedora con lápiz HB.</p></div>
+      <div class="process-step"><div class="pn">4</div><p>Agregá los planos inclinados, huecos, agujeros y curvas.</p></div>
+      <div class="process-step"><div class="pn">5</div><p>Definí las aristas con 2B o microfibra.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 13 — PIEZA 1: BRACKET L (vivo + fotos docx) -->
+<!-- ============================================================ -->
+<section class="slide" id="s-bracket">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Pieza 1 — Soporte tipo L (bracket)</div>
+      <h2>Perfil en L para fijación</h2>
+    </div>
+
+    <div class="dual">
+      <div>
+        <div class="table-frame" style="flex:1;">
+          <div class="paper">
+            <div class="paper-label">
+              <span class="step-name mono">Soporte tipo L · vivo</span>
+              <span class="step-count mono" id="bracketCount">0 / 10</span>
+            </div>
+            <svg class="sketch" id="bracketSVG" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg" style="max-height:28vh;">
+              <path class="draw" pathLength="1" d="M80 220 L80 90 L115 90 L115 195 L250 195 L250 220 Z" stroke="#242220" stroke-width="2.4"/>
+              <path class="draw" pathLength="1" d="M100 195 L100 178 L115 178" stroke="#c9492f" stroke-width="1.4"/>
+              <g class="fade"><text x="60" y="175" font-family="JetBrains Mono, monospace" font-size="11" fill="#c9492f">90°</text></g>
+              <path class="draw" pathLength="1" d="M80 220 L150 190 M80 90 L150 60 M115 90 L185 60 M115 195 L185 165 M250 195 L320 165 M250 220 L320 190" stroke="#242220" stroke-width="1.6"/>
+              <path class="draw" pathLength="1" d="M150 190 L150 60 L185 60 L185 165 L320 165 L320 190 Z" stroke="#8a8578" stroke-width="1.3"/>
+              <g class="fade"><polygon points="80,90 115,90 185,60 150,60" fill="#00000014"/></g>
+              <g class="fade"><polygon points="250,195 250,220 320,190 320,165" fill="#00000014"/></g>
+              <g class="fade"><polygon points="80,220 80,90 115,90 115,195 250,195 250,220" fill="#00000008"/></g>
+              <g class="fade">
+                <ellipse cx="97" cy="120" rx="8" ry="5" fill="none" stroke="#242220" stroke-width="1.6"/>
+                <ellipse cx="97" cy="155" rx="8" ry="5" fill="none" stroke="#242220" stroke-width="1.6"/>
+                <ellipse cx="190" cy="207" rx="8" ry="5" fill="none" stroke="#242220" stroke-width="1.6"/>
+              </g>
+              <g class="fade"><text x="200" y="245" font-family="Space Grotesk, sans-serif" font-size="13" font-weight="600" fill="#242220" text-anchor="middle">CAMBIO DE PLANO A 90°</text></g>
+            </svg>
+            <div class="controls">
+              <button class="btn primary" data-play="bracketSVG">▶ Reproducir</button>
+              <button class="btn" data-step="bracketSVG">Paso ⏭</button>
+              <button class="btn" data-back="bracketSVG">⏮ Atrás</button>
+              <button class="btn" data-reset="bracketSVG">↺ Reiniciar</button>
+              <div class="scrubber">
+                <span class="scrub-label">construcción</span>
+                <input type="range" id="bracketRange" min="-1" max="9" value="-1">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="piece-head">
+          <div class="piece-desc">
+            <b>Descripción</b>
+            Perfil en forma de L utilizado para fijar motores, servos y sensores a estructuras planas o perfiladas. Aparece frecuentemente en brazos robóticos y sistemas de sujeción.
+          </div>
+          <div class="piece-desc foco">
+            <b>Foco</b>
+            Representar correctamente el cambio de plano a 90°, los agujeros de fijación y el espesor uniforme del material.
+          </div>
+        </div>
+        <div class="figure-row" style="margin-top:.5rem;">
+          <div class="figure-frame">
+            <span class="figure-badge ref">Foto de referencia</span>
+            <img src="img/proceso/bracket-l-foto.png" alt="Soporte tipo L real (bracket)" loading="lazy" style="max-height:24vh;">
+            <div class="figure-cap">Pieza real</div>
+          </div>
+          <div class="figure-frame">
+            <span class="figure-badge ref">Dibujo de referencia</span>
+            <img src="img/proceso/bracket-l-dibujo.png" alt="Dibujo a mano del soporte tipo L" loading="lazy" style="max-height:24vh;">
+            <div class="figure-cap">Boceto del material</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 14 — PIEZA 2: SERVO (fotos docx) -->
+<!-- ============================================================ -->
+<section class="slide" id="s-servo">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Pieza 2 — Soporte para servo motor</div>
+      <h2>Alojar y fijar un servo motor</h2>
+    </div>
+
+    <div class="dual">
+      <div>
+        <div class="piece-head">
+          <div class="piece-desc">
+            <b>Descripción</b>
+            Estructura de fijación específicamente diseñada para alojar un servo motor. Incluye ranuras de ajuste, pasantes para tornillos y alojamiento para el eje de salida.
+          </div>
+          <div class="piece-desc foco">
+            <b>Foco</b>
+            Geometría simétrica, representación del cilindro del eje de salida, detalles de fijación lateral.
+          </div>
+        </div>
+      </div>
+
+      <div class="figure-row">
+        <div class="figure-frame">
+          <span class="figure-badge ref">Foto de referencia</span>
+          <img src="img/proceso/servo-foto.jpg" alt="Servo motor con soporte y rueda" loading="lazy" style="max-height:40vh;">
+          <div class="figure-cap">Servo motor y soporte</div>
+        </div>
+        <div class="figure-frame">
+          <span class="figure-badge ref">Dibujo de referencia</span>
+          <img src="img/proceso/servo-dibujo.png" alt="Dibujo a mano del soporte para servo motor" loading="lazy" style="max-height:40vh;">
+          <div class="figure-cap">Boceto del soporte</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 15 — PIEZA 3: CARCASA/SENSOR (fotos docx) -->
+<!-- ============================================================ -->
+<section class="slide" id="s-sensor">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Pieza 3 — Carcasa o soporte de sensor</div>
+      <h2>Alojar y orientar un sensor</h2>
+    </div>
+
+    <div class="dual">
+      <div>
+        <div class="piece-head">
+          <div class="piece-desc">
+            <b>Descripción</b>
+            Pieza que aloja y orienta un sensor (ultrasónico, infrarrojo, temperatura, etc.) permitiendo su posicionamiento preciso en el sistema.
+          </div>
+          <div class="piece-desc foco">
+            <b>Foco</b>
+            Representar el hueco interior donde encaja el sensor, la orientación del frente activo y los medios de fijación al conjunto.
+          </div>
+        </div>
+      </div>
+
+      <div class="figure-row">
+        <div class="figure-frame">
+          <span class="figure-badge ref">Foto de referencia</span>
+          <img src="img/proceso/sensor-foto.png" alt="Sensor y su carcasa de soporte" loading="lazy" style="max-height:40vh;">
+          <div class="figure-cap">Sensor y carcasa</div>
+        </div>
+        <div class="figure-frame">
+          <span class="figure-badge ref">Dibujo de referencia</span>
+          <img src="img/proceso/sensor-dibujo.png" alt="Dibujo a mano de la carcasa de sensor" loading="lazy" style="max-height:40vh;">
+          <div class="figure-cap">Boceto de la carcasa</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 16 — PIEZA BONUS: BRIDA DE SUJECIÓN -->
+<!-- ============================================================ -->
+<section class="slide" id="s-brida">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Pieza bonus — Brida de sujeción</div>
+      <h2>Vincular dos componentes del sistema</h2>
+      <p>Además de brackets, servos y sensores, el material menciona las <b style="color:#f1ead9">bridas</b> entre las piezas típicas: soportes, vínculos, brackets, bridas y carcasas de sensores y actuadores.</p>
+    </div>
+
+    <div class="dual">
+      <div>
+        <div class="table-frame" style="flex:1;">
+          <div class="paper">
+            <div class="paper-label">
+              <span class="step-name mono">Brida de sujeción · vivo</span>
+              <span class="step-count mono" id="bridaCount">0 / 9</span>
+            </div>
+            <svg class="sketch" id="bridaSVG" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg" style="max-height:28vh;">
+              <!-- caja contenedora guía -->
+              <path class="draw" pathLength="1" d="M70 175 L70 70 L250 55 L250 160 Z" stroke="#8a8578" stroke-width="1.2" stroke-dasharray="4,4"/>
+              <path class="draw" pathLength="1" d="M70 70 L120 45 L300 30 L250 55" stroke="#8a8578" stroke-width="1.2" stroke-dasharray="4,4"/>
+              <path class="draw" pathLength="1" d="M250 55 L300 30 L300 135 L250 160" stroke="#8a8578" stroke-width="1.2" stroke-dasharray="4,4"/>
+              <!-- placa frontal (contorno firme) -->
+              <path class="draw" pathLength="1" d="M85 165 L85 80 L235 67 L235 152 Z" stroke="#242220" stroke-width="2.4"/>
+              <!-- espesor: cara superior y lateral -->
+              <path class="draw" pathLength="1" d="M85 80 L120 60 L270 47 L235 67" stroke="#242220" stroke-width="2.2"/>
+              <path class="draw" pathLength="1" d="M235 67 L270 47 L270 132 L235 152" stroke="#242220" stroke-width="2.2"/>
+              <!-- orificios pasantes -->
+              <g class="fade">
+                <ellipse cx="120" cy="110" rx="12" ry="8" fill="none" stroke="#242220" stroke-width="1.8"/>
+                <ellipse cx="200" cy="103" rx="12" ry="8" fill="none" stroke="#242220" stroke-width="1.8"/>
+                <ellipse cx="120" cy="110" rx="5" ry="3.5" fill="none" stroke="#c9492f" stroke-width="1.3"/>
+                <ellipse cx="200" cy="103" rx="5" ry="3.5" fill="none" stroke="#c9492f" stroke-width="1.3"/>
+              </g>
+              <!-- eje de simetría -->
+              <g class="fade"><path d="M160 175 L160 55" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/></g>
+              <g class="fade"><text x="185" y="230" font-family="Space Grotesk, sans-serif" font-size="13" font-weight="600" fill="#242220" text-anchor="middle">ESPESOR CONSTANTE · AGUJEROS ALINEADOS</text></g>
+            </svg>
+            <div class="controls">
+              <button class="btn primary" data-play="bridaSVG">▶ Reproducir</button>
+              <button class="btn" data-step="bridaSVG">Paso ⏭</button>
+              <button class="btn" data-back="bridaSVG">⏮ Atrás</button>
+              <button class="btn" data-reset="bridaSVG">↺ Reiniciar</button>
+              <div class="scrubber">
+                <span class="scrub-label">construcción</span>
+                <input type="range" id="bridaRange" min="-1" max="8" value="-1">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="piece-head">
+          <div class="piece-desc">
+            <b>Descripción</b>
+            Pieza plana con orificios pasantes que vincula dos componentes del sistema, típicamente en uniones de eslabones robóticos.
+          </div>
+          <div class="piece-desc foco">
+            <b>Foco</b>
+            Espesor constante, alineación de agujeros y simetría del contorno.
+          </div>
+        </div>
+        <div class="tip" style="margin-top:.5rem;"><b>Proceso:</b> misma lógica que las demás piezas —caja contenedora primero (líneas suaves HB), después el espesor de la placa y por último los orificios pasantes, cuidando que queden alineados y simétricos respecto del eje.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 17 — CIERRE -->
+<!-- ============================================================ -->
+<section class="slide" id="s-cierre">
+  <div class="slide-wrap" style="text-align:center;">
+    <div class="closing-mark">El foco está en la calidad del trazo.</div>
+    <div class="closing-sub">Taller de Proyecto — Práctica de boceto a mano alzada</div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  class Construction{
+    constructor(svg, {stepDuration=650}={}){
+      this.svg = svg;
+      this.stepDuration = REDUCE ? 1 : stepDuration;
+      this.elements = Array.from(svg.querySelectorAll('.draw, .fade'));
+      this.index = -1;
+      this.timer = null;
+      this.onChange = null;
+      this.elements.forEach(el => this._prep(el));
+      this.setAll(false, {instant:true});
+    }
+    _prep(el){
+      if(!el.classList.contains('draw')) return;
+      if(!el.hasAttribute('stroke-dasharray')){
+        el.removeAttribute('pathLength');
+        el.style.vectorEffect = 'none';
+        let len = 1;
+        try { len = el.getTotalLength() || 1; } catch(e) {}
+        el._len = len;
+        el.style.strokeDasharray = len + ' ' + (len * 2);
+      } else {
+        // Dashed guide (pathLength=1 + inline dash): hide by offsetting past its first dash.
+        el._len = parseFloat(el.getAttribute('stroke-dasharray')) || 1;
+      }
+    }
+    setAll(shown, {instant=false}={}){
+      this.elements.forEach(el => this._set(el, shown, instant));
+    }
+    _set(el, shown, instant){
+      if(el.classList.contains('draw')){
+        el.style.transition = instant ? 'none' : `stroke-dashoffset ${this.stepDuration}ms cubic-bezier(.4,0,.2,1)`;
+        el.style.strokeDashoffset = shown ? '0' : (el._len || 1);
+      } else {
+        el.style.transition = instant ? 'none' : `opacity ${this.stepDuration*0.7}ms ease`;
+        el.style.opacity = shown ? '1' : '0';
+      }
+    }
+    goto(target, {instantAll=false}={}){
+      clearInterval(this.timer);
+      target = Math.max(-1, Math.min(this.elements.length-1, target));
+      this.elements.forEach((el,i)=>{
+        const shown = i<=target;
+        const isEdge = (i===target && !instantAll);
+        if(isEdge){
+          this._set(el, false, true);
+          void el.getBoundingClientRect();
+          requestAnimationFrame(()=> requestAnimationFrame(()=> this._set(el, true, false)));
+        } else {
+          this._set(el, shown, true);
+        }
+      });
+      this.index = target;
+      if(this.onChange) this.onChange(target, this.elements.length);
+    }
+    reset(){ this.goto(-1); }
+    step(){ this.goto(this.index+1); }
+    back(){ this.goto(this.index-1); }
+    playAll(){
+      this.reset();
+      let i = 0;
+      const next = () => {
+        if(i >= this.elements.length){ return; }
+        this.goto(i);
+        i++;
+        this.timer = setTimeout(next, this.stepDuration*0.62);
+      };
+      this.timer = setTimeout(next, 120);
+    }
+  }
+
+  const registry = {};
+  document.querySelectorAll('svg.sketch, svg[id$="SVG"]').forEach(svg=>{
+    registry[svg.id] = new Construction(svg);
+  });
+
+  document.querySelectorAll('[data-play]').forEach(btn=> btn.addEventListener('click', ()=> registry[btn.dataset.play].playAll()));
+  document.querySelectorAll('[data-step]').forEach(btn=> btn.addEventListener('click', ()=> registry[btn.dataset.step].step()));
+  document.querySelectorAll('[data-back]').forEach(btn=> btn.addEventListener('click', ()=> registry[btn.dataset.back].back()));
+  document.querySelectorAll('[data-reset]').forEach(btn=> btn.addEventListener('click', ()=> registry[btn.dataset.reset].reset()));
+
+  function bindCounter(svgId, countEl){
+    const c = registry[svgId]; const el = document.getElementById(countEl);
+    if(!c || !el) return;
+    const total = c.elements.length;
+    c.onChange = (idx)=>{ el.textContent = (idx+1) + ' / ' + total; };
+    el.textContent = '0 / ' + total;
+  }
+  bindCounter('propSVG','propCount');
+  bindCounter('prismSVG','prismCount');
+  bindCounter('ellipseSVG','ellipseCount');
+  bindCounter('cylSVG','cylCount');
+  bindCounter('bracketSVG','bracketCount');
+  bindCounter('triEllipseSVG','triCount');
+  bindCounter('bridaSVG','bridaCount');
+
+  function bindRange(svgId, rangeId){
+    const c = registry[svgId]; const range = document.getElementById(rangeId);
+    if(!c || !range) return;
+    range.max = c.elements.length - 1;
+    range.addEventListener('input', ()=>{
+      clearInterval(c.timer);
+      c.goto(parseInt(range.value,10), {instantAll:true});
+    });
+    const origOnChange = c.onChange;
+    c.onChange = (idx,total)=>{ range.value = idx; if(origOnChange) origOnChange(idx,total); };
+  }
+  bindRange('prismSVG','prismRange');
+  bindRange('bracketSVG','bracketRange');
+  bindRange('triEllipseSVG','triRange');
+  bindRange('bridaSVG','bridaRange');
+
+  function bindLegend(svgId, legendId, steps){
+    const legendBox = document.getElementById(legendId);
+    const c = registry[svgId];
+    if(!legendBox || !c) return;
+    const prev = c.onChange;
+    c.onChange = (idx,total)=>{
+      if(prev) prev(idx,total);
+      if(idx < 0){
+        legendBox.querySelector('.lg-step').textContent = 'En espera';
+        legendBox.querySelector('.lg-text').textContent = 'Tocá reproducir o arrastrá el control.';
+        return;
+      }
+      const found = steps.find(s => idx >= s.range[0] && idx <= s.range[1]);
+      if(found){
+        legendBox.querySelector('.lg-step').textContent = found.title;
+        legendBox.querySelector('.lg-text').textContent = found.text;
+      }
+    };
+  }
+
+  bindLegend('prismSVG','prismLegend', [
+    {range:[0,1],   title:'Paso 1 — Eje y punto de referencia', text:'Eje vertical y ángulos axonométricos (30°). La columna vertebral de la figura.'},
+    {range:[2,6],   title:'Paso 1 — Eje frontal (y)', text:'Perpendicular a la LH, a 90°. Define la altura inicial (cota y).'},
+    {range:[7,13],  title:'Paso 2 — Ángulo de 30° · prisma contenedor', text:'Guías horizontales verifican que ambos lados queden a la misma altura.'},
+    {range:[14,17], title:'Paso 2 — Paredes de la caja', text:'Verticales paralelas a los ejes; las guías confirman que cada pared cae sobre su esquina.'},
+    {range:[18,26], title:'Paso 4 — Definición de aristas y cotas', text:'Se cierra el volumen y se comprueba con las cotas x e y que las caras espejadas son parejas.'}
+  ]);
+
+  bindLegend('triEllipseSVG','triLegend', [
+    {range:[0,1],  title:'Prisma base', text:'Eje frontal, rayos a 30° y paredes laterales.'},
+    {range:[2,3],  title:'Tapa y tinte', text:'Se cierra la tapa y se tiñen las 3 caras visibles.'},
+    {range:[4,6],  title:'Cara derecha', text:'Diagonales → diámetros conjugados → elipse tangente.'},
+    {range:[7,9],  title:'Cara izquierda', text:'Mismo método, en espejo: rotada +52° en vez de −52°.'},
+    {range:[10,13],title:'Cara superior', text:'Por simetría, eje mayor perfectamente horizontal (0°).'}
+  ]);
+
+  if(!REDUCE){
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shakeY { 0%,100%{transform:translateY(0);} 25%{transform:translateY(-1.5px);} 50%{transform:translateY(1.5px);} 75%{transform:translateY(-1px);} }
+      .q-tiritona{ animation: shakeY 0.45s steps(6) infinite; transform-origin:center; }
+      @keyframes flicker { 0%,100%{opacity:.9;} 50%{opacity:.45;} }
+      .q-peluda{ animation: flicker 2.6s ease-in-out infinite; }
+      @keyframes drawGood { 0%{stroke-dashoffset:1;} 30%{stroke-dashoffset:0;} 82%{stroke-dashoffset:0;} 100%{stroke-dashoffset:1;} }
+      .q-good{ animation: drawGood 3.4s cubic-bezier(.4,0,.2,1) infinite; }
+    `;
+    document.head.appendChild(style);
+  }
+
+  /* ============ SLIDE NAVIGATION ============ */
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotNav = document.getElementById('dotNav');
+  const slideCurrentEl = document.getElementById('slideCurrent');
+  const slideTotalEl = document.getElementById('slideTotal');
+  const progressFill = document.getElementById('progressFill');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  let current = 0;
+
+  slideTotalEl.textContent = String(slides.length).padStart(2,'0');
+  slides.forEach((sl,i)=>{
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'Ir a pantalla ' + (i+1));
+    b.addEventListener('click', ()=> goTo(i));
+    dotNav.appendChild(b);
+  });
+  const dots = Array.from(dotNav.children);
+
+  function setActive(i){
+    current = i;
+    dots.forEach((d,idx)=> d.classList.toggle('active', idx===i));
+    slideCurrentEl.textContent = String(i+1).padStart(2,'0');
+    progressFill.style.width = (((i+1)/slides.length)*100) + '%';
+    prevBtn.disabled = i===0;
+    nextBtn.disabled = i===slides.length-1;
+  }
+
+  function goTo(i){
+    i = Math.max(0, Math.min(slides.length-1, i));
+    slides[i].scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting && e.intersectionRatio > 0.55){
+        const idx = slides.indexOf(e.target);
+        if(idx !== -1) setActive(idx);
+      }
+    });
+  }, {threshold:[0.55]});
+  slides.forEach(sl => io.observe(sl));
+
+  prevBtn.addEventListener('click', ()=> goTo(current-1));
+  nextBtn.addEventListener('click', ()=> goTo(current+1));
+
+  window.addEventListener('keydown', (e)=>{
+    const tag = (e.target && e.target.tagName) || '';
+    if(tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){ e.preventDefault(); goTo(current+1); }
+    else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); goTo(current-1); }
+    else if(e.key === 'Home'){ e.preventDefault(); goTo(0); }
+    else if(e.key === 'End'){ e.preventDefault(); goTo(slides.length-1); }
+  });
+
+  setActive(0);
+})();
+</script>
+
+</body>
+</html>
