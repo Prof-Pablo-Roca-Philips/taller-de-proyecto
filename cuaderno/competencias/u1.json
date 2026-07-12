@@ -1,0 +1,29 @@
+{
+  "v": 1,
+  "unidad": "u1",
+  "nombre": "La ingeniería empieza Entendiendo",
+  "competencias": [
+    {
+      "id": "u1-c1",
+      "nombre": "Visión sistémica",
+      "descripcion": "Identifica sistema, entorno, sensor, decisión y acción en una situación real."
+    },
+    {
+      "id": "u1-c2",
+      "nombre": "Del problema vago al técnico",
+      "descripcion": "Transforma un problema vago en un enunciado técnico usando las 4 componentes y la fórmula."
+    },
+    {
+      "id": "u1-c3",
+      "nombre": "Variables y sensores",
+      "descripcion": "Elige una variable medible y el sensor apropiado para detectarla, con su punto de quiebre."
+    }
+  ],
+  "ejercicios": {
+    "u1-e1": ["u1-c2"],
+    "u1-e2": ["u1-c2"],
+    "u1-e3": ["u1-c2"],
+    "u1-e4": ["u1-c1"],
+    "u1-e5": ["u1-c3"]
+  }
+}

@@ -1,0 +1,16 @@
+# Cuaderno Digital del Taller — API (Cloudflare Worker, plan free)
+name = "taller-cuaderno-api"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+
+[vars]
+# Desarrollo local: MODO_DEV=1 acepta el header X-Dev-Uid sin Firebase.
+# En producción DEBE ir en "0".
+MODO_DEV = "1"
+ALMACEN = "memoria"
+UNIDADES = "u1"
+DOMINIO_ESCOLAR = "philips.edu.ar"
+ORIGEN_PERMITIDO = "https://prof-pablo-roca-philips.github.io"
+COMPETENCIAS_BASE = "https://prof-pablo-roca-philips.github.io/taller-de-proyecto"
+# FIREBASE_PROJECT_ID se define al crear el proyecto Firebase (fase 1):
+# FIREBASE_PROJECT_ID = "taller-de-proyecto-philips"
