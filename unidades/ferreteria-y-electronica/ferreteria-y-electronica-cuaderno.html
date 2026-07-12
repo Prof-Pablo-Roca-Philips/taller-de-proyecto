@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ferretería y Electrónica — Mi Kit · Taller de Proyecto</title>
+<style>
+:root{--navy:#0A0E2A;--mid:#1A2550;--cyan:#00D4FF;--cdim:#0097B8;--amber:#FFB800;--green:#00C896;--red:#FF4D6A;--purple:#9B59B6;--white:#FFFFFF;--off:#E8EDF5;--muted:#7A8BAA;--card:#131B3A;--sw:230px;--r:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;display:flex;min-height:100vh}
+#sb{width:var(--sw);min-height:100vh;background:#060918;border-right:1px solid rgba(0,212,255,0.12);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sbl{padding:18px 15px 12px;border-bottom:1px solid rgba(0,212,255,0.1)}
+.sbl .tag{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cdim);text-transform:uppercase;margin-bottom:4px}
+.sbl h1{font-size:13px;font-weight:800;color:var(--white)}
+.sbl h1 span{color:var(--cyan)}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 15px;text-decoration:none;color:var(--muted);font-size:12px;font-weight:500;border-left:3px solid transparent;cursor:pointer}
+.ni:hover{color:var(--white);background:rgba(0,212,255,0.06)}
+.ni.active{color:var(--cyan);border-left-color:var(--cyan);background:rgba(0,212,255,0.08)}
+.sbf{margin-top:auto;padding:12px 15px;border-top:1px solid rgba(255,255,255,0.05);font-size:10.5px;color:var(--muted)}
+#main{margin-left:var(--sw);flex:1;padding-bottom:62px}
+#hero{background:linear-gradient(135deg,#0A0E2A 0%,#1A2550 55%,#0D1535 100%);padding:40px 40px 34px;border-bottom:1px solid rgba(0,212,255,0.1)}
+.htag{display:inline-block;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:var(--cyan);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 11px;border-radius:20px;margin-bottom:12px}
+#hero h2{font-size:clamp(20px,3vw,32px);font-weight:900;color:var(--white)}
+#hero h2 em{color:var(--cyan);font-style:normal}
+#hero p{font-size:13px;color:var(--muted);max-width:480px;margin-top:8px}
+.sec{padding:32px 40px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.sec h2{font-size:17px;font-weight:800;color:var(--white);margin-bottom:6px}
+.sec>.desc{color:var(--muted);font-size:12.5px;margin-bottom:16px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.cc{background:var(--card);border-radius:var(--r);padding:14px 16px;border-left:3px solid var(--ca,var(--cyan))}
+.cc h3{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:4px}
+.cc p{font-size:11.5px;color:var(--muted);line-height:1.5}
+.safety{background:rgba(255,77,106,.08);border:1.5px solid rgba(255,77,106,.3);border-radius:var(--r);padding:12px 15px;margin-top:10px}
+.safety .s-title{font-size:10px;font-weight:800;color:var(--red);text-transform:uppercase;margin-bottom:6px}
+.safety li{font-size:11.5px;color:var(--off);list-style:none;padding-left:16px;position:relative;line-height:1.5}
+.safety li::before{content:'⚠';position:absolute;left:0;color:var(--red)}
+.tip{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r);padding:11px 15px;margin-top:10px;font-size:12px;color:var(--muted)}
+.tip strong{color:var(--off)}
+.exlabel{font-size:10.5px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.cklist{display:flex;flex-direction:column;gap:6px}
+.ckitem{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--card);border-radius:7px;font-size:12px;cursor:pointer}
+.ckitem input{width:14px;height:14px;accent-color:var(--cyan)}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.gi{background:var(--card);border-radius:8px;padding:11px 13px;border-left:3px solid var(--gc,var(--cyan))}
+.gterm{font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px}
+.gdef{font-size:11px;color:var(--muted);line-height:1.45}
+.sendbar{position:fixed;bottom:0;left:var(--sw);right:0;background:#060918;border-top:1px solid rgba(0,212,255,0.12);padding:9px 20px;z-index:150;display:flex;align-items:center;gap:10px}
+.sendbar .sblabel{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase}
+.sbtn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid;font-family:inherit}
+.sbtn.print{border-color:#9B59B6;background:rgba(155,89,182,0.1);color:#9B59B6}
+.sbtn.gmail{border-color:var(--cyan);background:rgba(0,212,255,0.1);color:var(--cyan)}
+@media(max-width:768px){:root{--sw:0px}#sb{display:none}#main{margin-left:0}.sendbar{left:0}}
+@media print{#sb,.sendbar{display:none!important}body{background:#fff!important;color:#000!important}#main{margin-left:0!important}.cc,.gi,.safety{background:#f9f9f9!important}.cc p,.gdef,.safety li{color:#000!important}}
+</style>
+</head>
+<body>
+<nav id="sb">
+  <div class="sbl"><div class="tag">Unidad 12</div><h1>Ferretería y<br><span>Electrónica</span></h1></div>
+  <a class="ni active" href="#top">Inicio</a>
+  <a class="ni" href="#herramientas">Herramientas</a>
+  <a class="ni" href="#arduino">Arduino y sensores</a>
+  <a class="ni" href="#soldadura">Soldadura</a>
+  <a class="ni" href="#trabajo">Mi trabajo</a>
+  <a class="ni" href="#glosario">Glosario</a>
+  <div class="sbf">Taller de Proyecto<br>1er y 2do año</div>
+</nav>
+<main id="main">
+<section id="top"><div id="hero"><div class="htag">Unidad 12 · Kit del alumno</div><h2>Ferretería y <em>Electrónica</em></h2><p>Repaso rápido + checklist de tu circuito armado.</p></div></section>
+
+<section class="sec" id="herramientas">
+  <h2>Ferretería y herramientas</h2>
+  <div class="grid4">
+    <div class="cc" style="--ca:#00D4FF"><h3>Tornillería</h3><p>Tamaños normalizados M3, M4.</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>Destornilladores</h3><p>Phillips y plano, PH0-PH2.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>Pinzas</h3><p>Punta fina, universal, corte.</p></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>Corte</h3><p>Cutter, tijera, tabla de corte.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="arduino">
+  <h2>Arduino, sensores y alimentación</h2>
+  <div class="safety">
+    <div class="s-title">⚠ Cuidado</div>
+    <li>Revisá el voltaje del datasheet antes de conectar — 9V a un sensor de 5V lo quema.</li>
+  </div>
+</section>
+
+<section class="sec" id="soldadura">
+  <h2>Soldadura</h2>
+  <div class="safety">
+    <div class="s-title">⚠ Seguridad obligatoria</div>
+    <li>El soldador trabaja a 300-400°C — nunca tocar la punta</li>
+    <li>Ventilación siempre activa</li>
+    <li>Soporte metálico, nunca la mesa</li>
+  </div>
+</section>
+
+<section class="sec" id="trabajo">
+  <h2>Mi trabajo — Unidad 12</h2>
+  <p class="desc">Checklist antes de soldar cualquier cosa definitiva.</p>
+  <div class="cklist">
+    <label class="ckitem"><input type="checkbox" onchange="cw(this,'c1')"><span>Circuito probado en protoboard, sensor lee correctamente.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="cw(this,'c2')"><span>Actuador responde como se espera.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="cw(this,'c3')"><span>Voltajes verificados contra el datasheet de cada componente.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="cw(this,'c4')"><span>Zona de soldadura ventilada y con soporte metálico listo.</span></label>
+  </div>
+</section>
+
+<section class="sec" id="glosario">
+  <h2>Glosario</h2>
+  <div class="ggrid">
+    <div class="gi" style="--gc:#00D4FF"><div class="gterm">Datasheet</div><div class="gdef">Hoja de datos técnica de un componente.</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gterm">Protoboard</div><div class="gdef">Placa de pruebas sin soldadura.</div></div>
+  </div>
+</section>
+</main>
+<div class="sendbar">
+  <span class="sblabel">📤 Entregar</span>
+  <button class="sbtn print" onclick="window.print()">🖨 Imprimir</button>
+  <button class="sbtn gmail" onclick="sendGmail()">✉ Enviar por Gmail</button>
+</div>
+<script>
+const K='u12_';
+function cw(inp,key){localStorage.setItem(K+key,inp.checked?'1':'0')}
+function sendGmail(){const email=prompt('Email del docente:');if(!email||!email.includes('@'))return;const gc=id=>localStorage.getItem(K+id)==='1'?'✓':'✗';const body=['[Taller de Proyecto U12] Ferretería y Electrónica','','Checklist previo a soldar:',gc('c1')+' Circuito probado',gc('c2')+' Actuador responde',gc('c3')+' Voltajes verificados',gc('c4')+' Zona ventilada'].join('\\n');window.open('https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(email)+'&su='+encodeURIComponent('[Taller de Proyecto U12] Respuestas')+'&body='+encodeURIComponent(body),'_blank');}
+window.addEventListener('load',()=>{['c1','c2','c3','c4'].forEach(k=>{if(localStorage.getItem(K+k)==='1'){const el=document.querySelector('[onchange*="'+k+'"]');if(el)el.checked=true;}})});
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})}));
+</script>
+</body>
+</html>

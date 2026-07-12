@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelado 3D con Tinkercad — Mi Kit · Taller de Proyecto</title>
+<style>
+:root{--navy:#0A0E2A;--mid:#1A2550;--cyan:#00D4FF;--cdim:#0097B8;--amber:#FFB800;--green:#00C896;--red:#FF4D6A;--purple:#9B59B6;--white:#FFFFFF;--off:#E8EDF5;--muted:#7A8BAA;--card:#131B3A;--sw:230px;--r:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;display:flex;min-height:100vh}
+#sb{width:var(--sw);min-height:100vh;background:#060918;border-right:1px solid rgba(0,212,255,0.12);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sbl{padding:18px 15px 12px;border-bottom:1px solid rgba(0,212,255,0.1)}
+.sbl .tag{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--cdim);text-transform:uppercase;margin-bottom:4px}
+.sbl h1{font-size:13px;font-weight:800;color:var(--white)}
+.sbl h1 span{color:var(--cyan)}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 15px;text-decoration:none;color:var(--muted);font-size:12px;font-weight:500;border-left:3px solid transparent;cursor:pointer}
+.ni:hover{color:var(--white);background:rgba(0,212,255,0.06)}
+.ni.active{color:var(--cyan);border-left-color:var(--cyan);background:rgba(0,212,255,0.08)}
+.sbf{margin-top:auto;padding:12px 15px;border-top:1px solid rgba(255,255,255,0.05);font-size:10.5px;color:var(--muted)}
+#main{margin-left:var(--sw);flex:1;padding-bottom:62px}
+#hero{background:linear-gradient(135deg,#0A0E2A 0%,#1A2550 55%,#0D1535 100%);padding:40px 40px 34px;border-bottom:1px solid rgba(0,212,255,0.1)}
+.htag{display:inline-block;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:var(--cyan);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 11px;border-radius:20px;margin-bottom:12px}
+#hero h2{font-size:clamp(20px,3vw,32px);font-weight:900;color:var(--white)}
+#hero h2 em{color:var(--cyan);font-style:normal}
+#hero p{font-size:13px;color:var(--muted);max-width:480px;margin-top:8px}
+.sec{padding:32px 40px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.sec h2{font-size:17px;font-weight:800;color:var(--white);margin-bottom:6px}
+.sec>.desc{color:var(--muted);font-size:12.5px;margin-bottom:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.cc{background:var(--card);border-radius:var(--r);padding:14px 16px;border-left:3px solid var(--ca,var(--cyan))}
+.cc h3{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:4px}
+.cc p{font-size:11.5px;color:var(--muted);line-height:1.5}
+.tip{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r);padding:11px 15px;margin-top:10px;font-size:12px;color:var(--muted)}
+.tip strong{color:var(--off)}
+.exlabel{font-size:10.5px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.wfield{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 12px;color:var(--off);font-size:12.5px;font-family:inherit;outline:none}
+.wfield:focus{border-color:var(--cyan)}
+textarea.wfield{resize:vertical;min-height:70px}
+.exblock{background:var(--card);border-radius:var(--r);overflow:hidden}
+.exrow{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid rgba(255,255,255,0.05)}
+.exrow:last-child{border-bottom:none}
+.exrl{padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;border-right:1px solid rgba(255,255,255,0.05)}
+.exrv{padding:7px 12px}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.gi{background:var(--card);border-radius:8px;padding:11px 13px;border-left:3px solid var(--gc,var(--cyan))}
+.gterm{font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px}
+.gdef{font-size:11px;color:var(--muted);line-height:1.45}
+.sendbar{position:fixed;bottom:0;left:var(--sw);right:0;background:#060918;border-top:1px solid rgba(0,212,255,0.12);padding:9px 20px;z-index:150;display:flex;align-items:center;gap:10px}
+.sendbar .sblabel{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase}
+.sbtn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid;font-family:inherit}
+.sbtn.print{border-color:#9B59B6;background:rgba(155,89,182,0.1);color:#9B59B6}
+.sbtn.gmail{border-color:var(--cyan);background:rgba(0,212,255,0.1);color:var(--cyan)}
+@media(max-width:768px){:root{--sw:0px}#sb{display:none}#main{margin-left:0}.sendbar{left:0}}
+@media print{#sb,.sendbar{display:none!important}body{background:#fff!important;color:#000!important}#main{margin-left:0!important}.cc,.gi,.exblock{background:#f9f9f9!important}.cc p,.gdef{color:#000!important}}
+</style>
+</head>
+<body>
+<nav id="sb">
+  <div class="sbl"><div class="tag">Unidad 8</div><h1>Modelado 3D<br><span>Tinkercad</span></h1></div>
+  <a class="ni active" href="#top">Inicio</a>
+  <a class="ni" href="#que-es">Qué es Tinkercad</a>
+  <a class="ni" href="#medidas">Medidas reales</a>
+  <a class="ni" href="#trabajo">Mi trabajo</a>
+  <a class="ni" href="#glosario">Glosario</a>
+  <div class="sbf">Taller de Proyecto<br>1er y 2do año</div>
+</nav>
+<main id="main">
+<section id="top"><div id="hero"><div class="htag">Unidad 8 · Kit del alumno</div><h2>Modelado 3D con <em>Tinkercad</em></h2><p>Repaso rápido + registro de avance de tu modelo.</p></div></section>
+
+<section class="sec" id="que-es">
+  <h2>¿Qué es Tinkercad?</h2>
+  <p class="desc">Software gratuito de diseño 3D con simulador de circuitos Arduino incluido.</p>
+  <div class="grid3">
+    <div class="cc" style="--ca:#00D4FF"><h3>3D Design</h3><p>Combinás formas para armar tu pieza.</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>Circuits</h3><p>Simulás sensor + Arduino + actuador.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>Codeblocks</h3><p>Programás con bloques, sin sintaxis.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="medidas">
+  <h2>Medidas reales</h2>
+  <div class="tip">💡 <strong>Regla:</strong> medí el componente real, sumá 1-2mm de holgura, exportá a escala 1:1.</div>
+</section>
+
+<section class="sec" id="trabajo">
+  <h2>Mi trabajo — Unidad 8</h2>
+  <p class="desc">Registrá el avance de tu modelo.</p>
+  <div class="exblock">
+    <div class="exrow"><div class="exrl" style="color:#00D4FF">Link de Tinkercad</div><div class="exrv"><input type="text" class="wfield" id="link" placeholder="https://www.tinkercad.com/things/..." oninput="sf('link',this.value)"></div></div>
+    <div class="exrow"><div class="exrl" style="color:#FFB800">Medidas tomadas</div><div class="exrv"><textarea class="wfield" id="medidas" rows="3" placeholder="Arduino: 68x53mm, sensor: ..." oninput="sf('medidas',this.value)"></textarea></div></div>
+  </div>
+</section>
+
+<section class="sec" id="glosario">
+  <h2>Glosario</h2>
+  <div class="ggrid">
+    <div class="gi" style="--gc:#00D4FF"><div class="gterm">STL</div><div class="gdef">Formato de archivo para exportar a impresión 3D.</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gterm">Holgura</div><div class="gdef">Margen extra para que las piezas encajen sin forzar.</div></div>
+  </div>
+</section>
+</main>
+<div class="sendbar">
+  <span class="sblabel">📤 Entregar</span>
+  <button class="sbtn print" onclick="window.print()">🖨 Imprimir</button>
+  <button class="sbtn gmail" onclick="sendGmail()">✉ Enviar por Gmail</button>
+</div>
+<script>
+const K='u8_';
+function sf(id,v){localStorage.setItem(K+id,v)}
+function sendGmail(){const email=prompt('Email del docente:');if(!email||!email.includes('@'))return;const g=id=>localStorage.getItem(K+id)||'(sin completar)';const body=['[Taller de Proyecto U8] Modelado 3D','','Link Tinkercad: '+g('link'),'Medidas: '+g('medidas')].join('\\n');window.open('https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(email)+'&su='+encodeURIComponent('[Taller de Proyecto U8] Respuestas')+'&body='+encodeURIComponent(body),'_blank');}
+window.addEventListener('load',()=>{['link','medidas'].forEach(id=>{const v=localStorage.getItem(K+id);if(v)document.getElementById(id).value=v})});
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})}));
+</script>
+</body>
+</html>

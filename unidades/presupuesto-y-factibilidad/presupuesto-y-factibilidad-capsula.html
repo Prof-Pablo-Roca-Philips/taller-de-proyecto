@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presupuesto y Factibilidad — Unidad 11 | Taller de Proyecto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1117;--bg-raised:#1c2330;--line:#ffffff0f;--accent:#FFB800;--cyan:#00D4FF;--green:#00C896;--red:#FF4D6A;--purple:#9B59B6;--text:#e8edf5;--text-dim:#7a8baa;--text-mid:#b0bacb;--radius:4px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+::selection{background:var(--accent);color:#1a1400}
+body{background:radial-gradient(ellipse 1400px 800px at 15% -5%,#2a2010 0%,transparent 55%),radial-gradient(ellipse 800px 600px at 90% 25%,#1f1608 0%,transparent 50%),var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-y:scroll;scroll-snap-type:y mandatory}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;margin:0;color:#f0f4fa}
+.mono{font-family:'JetBrains Mono',monospace}
+.slide{min-height:100vh;width:100%;display:flex;align-items:center;justify-content:center;padding:4.5rem 2.8rem 2rem;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden}
+.slide+.slide{border-top:1px solid var(--line)}
+.slide.deepen{background:linear-gradient(180deg,#1a1508,#0e1117)}
+.slide-wrap{width:100%;max-width:1380px;margin:0 auto}
+.topbar{position:fixed;top:0;left:0;width:100%;height:3.2rem;background:rgba(14,17,23,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:60;display:flex;align-items:center;justify-content:space-between;padding:0 1.6rem}
+.brandmark{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.82rem;color:rgba(232,237,245,.7);display:flex;align-items:center;gap:.4rem;pointer-events:none}
+.brandmark span{color:var(--accent)}
+.slide-counter{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-dim)}
+.slide-counter b{color:var(--accent)}
+.progress-fill{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:61;transition:width .35s ease}
+.dotnav{position:fixed;right:1.3rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:.55rem;align-items:center}
+.dotnav button{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);border:none;padding:0;cursor:pointer;transition:all .2s}
+.dotnav button.deepen-dot{background:rgba(0,200,150,.4)}
+.dotnav button.active{background:var(--accent);transform:scale(1.6)}
+.arrownav{position:fixed;right:1.3rem;bottom:1.4rem;z-index:60;display:flex;gap:.45rem}
+.arrownav button{width:34px;height:34px;border-radius:50%;background:var(--bg-raised);border:1px solid rgba(255,255,255,.12);color:var(--text);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.arrownav button:hover{border-color:var(--accent);background:#332a15}
+.arrownav button:disabled{opacity:.2;cursor:default}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.eyebrow::before{content:'';display:block;width:1.8rem;height:1.5px;background:var(--accent)}
+.eyebrow.deep{color:var(--green)}
+.eyebrow.deep::before{background:var(--green)}
+h1.title{font-size:clamp(2.2rem,4.5vw,3.6rem);line-height:1.0;letter-spacing:-.015em;max-width:16ch}
+h1.title em{font-style:normal;color:var(--accent)}
+h2.title{font-size:clamp(1.2rem,2.2vw,1.6rem);max-width:42ch;margin-top:.7rem;color:var(--text-mid);font-weight:400}
+.sec-head{max-width:68ch;margin-bottom:1.4rem}
+.sec-head h2{font-size:clamp(1.3rem,2.2vw,1.8rem)}
+.sec-head p{color:var(--text-dim);margin-top:.45rem;font-size:.88rem;line-height:1.55}
+.notes{color:var(--text-dim);font-size:.86rem}
+.tip{margin-top:.8rem;background:linear-gradient(180deg,#2a2010,#221a0c);border:1px solid rgba(255,184,0,.2);border-left:3px solid var(--accent);border-radius:var(--radius);padding:.65rem .9rem;font-size:.8rem;color:#e0d4a8;line-height:1.45}
+.tip b{color:var(--accent)}
+.consigna{background:var(--bg-raised);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:var(--radius);padding:.9rem 1.05rem;font-size:.88rem;color:var(--text-mid);line-height:1.5;margin:.65rem 0}
+.consigna b{color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.3rem}
+.card-row{display:grid;gap:.8rem}
+.card-row.cols2{grid-template-columns:1fr 1fr}
+.card-row.cols3{grid-template-columns:repeat(3,1fr)}
+.card-row.cols5{grid-template-columns:repeat(5,1fr)}
+.card{background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;padding:.85rem 1rem}
+.card.good{border-left:3px solid var(--green)}
+.card.bad{border-left:3px solid var(--red)}
+.card.amber{border-left:3px solid var(--accent)}
+.card.purple{border-left:3px solid var(--purple)}
+.card.cyan{border-left:3px solid var(--cyan)}
+.card .c-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.35rem}
+.card.good .c-label{color:var(--green)}
+.card.bad .c-label{color:var(--red)}
+.card.amber .c-label{color:var(--accent)}
+.card.purple .c-label{color:var(--purple)}
+.card.cyan .c-label{color:var(--cyan)}
+.card h4{font-size:.9rem;margin-bottom:.3rem;color:#f0f4fa}
+.card p{font-size:.78rem;color:var(--text-dim);line-height:1.4}
+.divider{text-align:center;padding:2rem 0}
+.divider .dtag{display:inline-block;background:rgba(0,200,150,.1);border:1px solid rgba(0,200,150,.35);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:.5rem 1.2rem;border-radius:20px;margin-bottom:1rem}
+.divider h2{font-size:clamp(1.6rem,3vw,2.4rem)}
+.divider p{color:var(--text-dim);margin-top:.7rem;font-size:.95rem;max-width:52ch;margin-left:auto;margin-right:auto}
+.closing-mark{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;color:#f0f4fa}
+.closing-sub{color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:.82rem;margin-top:.8rem}
+.hero-meta{display:flex;gap:4rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line)}
+.hero-meta div{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);width:28%}
+.hero-meta b{display:block;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;margin-bottom:.1rem}
+.timebar{display:flex;align-items:center;gap:.6rem;background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,.3);border-radius:20px;padding:.5rem 1rem;margin-top:1.3rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#a8d8c4;width:fit-content}
+@media(max-width:900px){.slide{padding:4rem 1.3rem 1.5rem}.card-row.cols3,.card-row.cols5{grid-template-columns:1fr 1fr}.dotnav,.arrownav{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<div class="topbar"><div class="brandmark">TALLER DE PROYECTO &nbsp;·&nbsp; <span>UNIDAD 11</span></div><div class="slide-counter"><b id="slideCurrent">01</b> / <span id="slideTotal">8</span></div></div>
+<nav class="dotnav" id="dotNav"></nav>
+<div class="arrownav"><button id="prevBtn" aria-label="Anterior">↑</button><button id="nextBtn" aria-label="Siguiente">↓</button></div>
+
+<section class="slide" id="s-hero">
+  <div class="slide-wrap">
+    <div class="eyebrow" style="margin-bottom:1.2rem">Unidad 11 — Presupuesto y Factibilidad</div>
+    <h1 class="title">¿Se puede construir <em>a tiempo</em>?</h1>
+    <h2 class="title">Mercado, proveedores y la decisión que balancea costo con tiempo.</h2>
+    <div class="timebar">⏱ Núcleo: ~20 min &nbsp;·&nbsp; Después: cotizar su MVP &nbsp;·&nbsp; Profundizar: opcional</div>
+    <div class="hero-meta">
+      <div><b>Navegación</b>↓ avanzar &nbsp;·&nbsp; ↑ volver</div>
+      <div><b>Recorrido</b>Los 5 pasos → Cuellos de botella → A cotizar</div>
+      <div><b>Requisito previo</b>Inventario completo (U10)</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s-pasos">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Concepto 1</div>
+      <h2>Los 5 pasos del presupuesto</h2>
+      <p>El inventario dice qué necesitás. Esto dice si es viable conseguirlo a tiempo y al costo correcto.</p>
+    </div>
+    <div class="card-row cols5">
+      <div class="card cyan"><div class="c-label">1</div><h4>Investigar mercado</h4><p>Qué opciones y precios existen.</p></div>
+      <div class="card amber"><div class="c-label">2</div><h4>Proveedores</h4><p>Dónde comprar cada pieza.</p></div>
+      <div class="card bad"><div class="c-label">3</div><h4>Cuellos de botella</h4><p>Qué tarda más en llegar.</p></div>
+      <div class="card good"><div class="c-label">4</div><h4>Costo-beneficio</h4><p>¿Vale pagar más por llegar antes?</p></div>
+      <div class="card purple"><div class="c-label">5</div><h4>Decisión final</h4><p>Costo vs tiempo de espera.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s-cuellos">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Concepto 2</div>
+      <h2>El cuello de botella manda</h2>
+      <p>No sirve tener presupuesto si el componente clave tarda más que el plazo del proyecto.</p>
+    </div>
+    <div class="tip">⚠️ <strong>Ejemplo real:</strong> un sensor puede ser el más barato pero tardar 3 semanas en llegar. Con 7 clases de plazo, el sensor "más caro pero disponible ya" es la decisión correcta.</div>
+  </div>
+</section>
+
+<section class="slide" id="s-cotizar">
+  <div class="slide-wrap" style="text-align:center;max-width:760px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center">Fin de la parte teórica</div>
+    <h2 style="font-size:clamp(1.8rem,3.2vw,2.6rem);margin-bottom:1rem">Ahora, coticen su MVP.</h2>
+    <p style="color:var(--text-dim);font-size:.95rem;margin-bottom:1.5rem">Con el inventario en mano, busquen precios reales y decidan si algo hay que cambiar por disponibilidad.</p>
+    <div class="consigna" style="text-align:left"><b>Consigna — resto de la clase</b> Para cada pieza comprada del inventario: precio y tiempo de entrega estimado. Marquen si hay algún cuello de botella.</div>
+  </div>
+</section>
+
+<section class="slide deepen" id="s-divider">
+  <div class="slide-wrap"><div class="divider"><div class="dtag">🔍 Profundizar — opcional</div><h2>Para el que quiere ir más allá</h2><p>Volvé a esto en casa o si tu equipo termina antes.</p></div></div>
+</section>
+
+<section class="slide deepen" id="s-negociacion">
+  <div class="slide-wrap">
+    <div class="sec-head"><div class="eyebrow deep">Profundizar</div><h2>Comparar antes de decidir</h2><p>Nunca te quedes con el primer precio que encontrás.</p></div>
+    <div class="card-row cols2">
+      <div class="card good"><div class="c-label">Cotización comparativa</div><p>Pedí precio en al menos 2 lugares distintos antes de comprar. La diferencia puede ser grande.</p></div>
+      <div class="card purple"><div class="c-label">Compra grupal</div><p>Si varios equipos necesitan lo mismo, comprar junto puede bajar el costo por unidad.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s-cierre">
+  <div class="slide-wrap" style="text-align:center;max-width:700px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:1.4rem"><span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span>Cierre<span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span></div>
+    <div class="closing-mark">Presupuesto<br>y plan de compra.</div>
+    <div class="closing-sub" style="margin-top:1.2rem">Taller de Proyecto &nbsp;·&nbsp; Unidad 11 — Presupuesto y Factibilidad</div>
+    <div style="margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--line)"><div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);margin-bottom:.4rem">PRÓXIMO</div><div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent)">Unidad 12 — Ferretería y Electrónica Básica</div></div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const slides=Array.from(document.querySelectorAll('.slide'));
+  const dotNav=document.getElementById('dotNav'),slideCurrentEl=document.getElementById('slideCurrent'),slideTotalEl=document.getElementById('slideTotal'),progressFill=document.getElementById('progressFill'),prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn');
+  const REDUCE=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let current=0;
+  slideTotalEl.textContent=String(slides.length).padStart(2,'0');
+  slides.forEach((sl,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','Ir a pantalla '+(i+1));if(sl.classList.contains('deepen'))b.classList.add('deepen-dot');b.addEventListener('click',()=>goTo(i));dotNav.appendChild(b);});
+  const dots=Array.from(dotNav.children);
+  function setActive(i){current=i;dots.forEach((d,idx)=>d.classList.toggle('active',idx===i));slideCurrentEl.textContent=String(i+1).padStart(2,'0');progressFill.style.width=(((i+1)/slides.length)*100)+'%';prevBtn.disabled=i===0;nextBtn.disabled=i===slides.length-1;}
+  function goTo(i){i=Math.max(0,Math.min(slides.length-1,i));slides[i].scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'});}
+  const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>0.55){const idx=slides.indexOf(e.target);if(idx!==-1)setActive(idx);}});},{threshold:[0.55]});
+  slides.forEach(sl=>io.observe(sl));
+  prevBtn.addEventListener('click',()=>goTo(current-1));
+  nextBtn.addEventListener('click',()=>goTo(current+1));
+  window.addEventListener('keydown',(e)=>{const tag=(e.target&&e.target.tagName)||'';if(tag==='INPUT'||tag==='TEXTAREA')return;if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();goTo(current+1);}else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();goTo(current-1);}else if(e.key==='Home'){e.preventDefault();goTo(0);}else if(e.key==='End'){e.preventDefault();goTo(slides.length-1);}});
+  setActive(0);
+})();
+</script>
+</body>
+</html>

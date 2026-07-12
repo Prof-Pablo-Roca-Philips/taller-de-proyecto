@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ensamblaje, Calidad y Validación — Mi Kit · Taller de Proyecto</title>
+<style>
+:root{--navy:#0A0E2A;--mid:#1A2550;--green:#00C896;--gdim:#007A5E;--amber:#FFB800;--cyan:#00D4FF;--red:#FF4D6A;--purple:#9B59B6;--white:#FFFFFF;--off:#E8EDF5;--muted:#7A8BAA;--card:#131B3A;--sw:230px;--r:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;display:flex;min-height:100vh}
+#sb{width:var(--sw);min-height:100vh;background:#060918;border-right:1px solid rgba(0,200,150,0.12);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sbl{padding:18px 15px 12px;border-bottom:1px solid rgba(0,200,150,0.1)}
+.sbl .tag{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--gdim);text-transform:uppercase;margin-bottom:4px}
+.sbl h1{font-size:13px;font-weight:800;color:var(--white)}
+.sbl h1 span{color:var(--green)}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 15px;text-decoration:none;color:var(--muted);font-size:12px;font-weight:500;border-left:3px solid transparent;cursor:pointer}
+.ni:hover{color:var(--white);background:rgba(0,200,150,0.06)}
+.ni.active{color:var(--green);border-left-color:var(--green);background:rgba(0,200,150,0.08)}
+.sbf{margin-top:auto;padding:12px 15px;border-top:1px solid rgba(255,255,255,0.05);font-size:10.5px;color:var(--muted)}
+#main{margin-left:var(--sw);flex:1;padding-bottom:62px}
+#hero{background:linear-gradient(135deg,#0A0E2A 0%,#1A2550 55%,#0D1535 100%);padding:40px 40px 34px;border-bottom:1px solid rgba(0,200,150,0.1)}
+.htag{display:inline-block;background:rgba(0,200,150,0.1);border:1px solid rgba(0,200,150,0.3);color:var(--green);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 11px;border-radius:20px;margin-bottom:12px}
+#hero h2{font-size:clamp(20px,3vw,32px);font-weight:900;color:var(--white)}
+#hero h2 em{color:var(--green);font-style:normal}
+#hero p{font-size:13px;color:var(--muted);max-width:480px;margin-top:8px}
+.sec{padding:32px 40px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.sec h2{font-size:17px;font-weight:800;color:var(--white);margin-bottom:6px}
+.sec>.desc{color:var(--muted);font-size:12.5px;margin-bottom:16px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.cc{background:var(--card);border-radius:var(--r);padding:14px 16px;border-left:3px solid var(--ca,var(--green))}
+.cc h3{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:4px}
+.cc p{font-size:11.5px;color:var(--muted);line-height:1.5}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cmp{background:var(--card);border-radius:var(--r);padding:13px 15px}
+.cmp.bad{border-left:3px solid var(--red)}
+.cmp.good{border-left:3px solid var(--green)}
+.cmp .l{font-size:10.5px;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.cmp.bad .l{color:var(--red)}
+.cmp.good .l{color:var(--green)}
+.cmp p{font-size:12px;color:var(--off)}
+.tip{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r);padding:11px 15px;margin-top:10px;font-size:12px;color:var(--muted)}
+.tip strong{color:var(--off)}
+.exlabel{font-size:10.5px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.wfield{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 12px;color:var(--off);font-size:12.5px;font-family:inherit;outline:none}
+.wfield:focus{border-color:var(--green)}
+textarea.wfield{resize:vertical;min-height:60px}
+.exblock{background:var(--card);border-radius:var(--r);overflow:hidden}
+.exrow{display:grid;grid-template-columns:130px 1fr;border-bottom:1px solid rgba(255,255,255,0.05)}
+.exrow:last-child{border-bottom:none}
+.exrl{padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;border-right:1px solid rgba(255,255,255,0.05)}
+.exrv{padding:7px 12px}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.gi{background:var(--card);border-radius:8px;padding:11px 13px;border-left:3px solid var(--gc,var(--green))}
+.gterm{font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px}
+.gdef{font-size:11px;color:var(--muted);line-height:1.45}
+.sendbar{position:fixed;bottom:0;left:var(--sw);right:0;background:#060918;border-top:1px solid rgba(0,200,150,0.12);padding:9px 20px;z-index:150;display:flex;align-items:center;gap:10px}
+.sendbar .sblabel{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase}
+.sbtn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid;font-family:inherit}
+.sbtn.print{border-color:#9B59B6;background:rgba(155,89,182,0.1);color:#9B59B6}
+.sbtn.gmail{border-color:var(--green);background:rgba(0,200,150,0.1);color:var(--green)}
+@media(max-width:768px){:root{--sw:0px}#sb{display:none}#main{margin-left:0}.compare{grid-template-columns:1fr}.sendbar{left:0}}
+@media print{#sb,.sendbar{display:none!important}body{background:#fff!important;color:#000!important}#main{margin-left:0!important}.cc,.cmp,.exblock,.gi{background:#f9f9f9!important}.cc p,.cmp p,.gdef{color:#000!important}}
+</style>
+</head>
+<body>
+<nav id="sb">
+  <div class="sbl"><div class="tag">Unidad 14</div><h1>Ensamblaje<br><span>y Validación</span></h1></div>
+  <a class="ni active" href="#top">Inicio</a>
+  <a class="ni" href="#cascada">Pensamiento en cascada</a>
+  <a class="ni" href="#prueba">Prueba del MVP</a>
+  <a class="ni" href="#trabajo">Mi trabajo</a>
+  <a class="ni" href="#glosario">Glosario</a>
+  <div class="sbf">Taller de Proyecto<br>1er y 2do año</div>
+</nav>
+<main id="main">
+<section id="top"><div id="hero"><div class="htag">Unidad 14 · Kit del alumno</div><h2>Ensamblaje y <em>Validación del MVP</em></h2><p>Repaso rápido + registro final de tu sprint de prueba.</p></div></section>
+
+<section class="sec" id="cascada">
+  <h2>Pensamiento en cascada</h2>
+  <div class="compare">
+    <div class="cmp bad"><div class="l">✗ Sin cascada</div><p>Cerrás la tapa primero y después no podés acceder al cableado.</p></div>
+    <div class="cmp good"><div class="l">✓ Con cascada</div><p>Cableás y probás ANTES de cerrar cualquier tapa.</p></div>
+  </div>
+  <div class="tip">💡 <strong>Pregunta clave:</strong> "¿esto me va a bloquear algo que necesito después?"</div>
+</section>
+
+<section class="sec" id="prueba">
+  <h2>Prueba del MVP</h2>
+  <div class="grid4">
+    <div class="cc" style="--ca:#00D4FF"><h3>1. Probar</h3><p>¿Cumple el objetivo SMART?</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>2. Observar</h3><p>Qué funcionó, qué no.</p></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>3. Feedback</h3><p>Análisis crítico de otros.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>4. Ajustar</h3><p>Corregir, nuevo sprint.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="trabajo">
+  <h2>Mi trabajo — Unidad 14</h2>
+  <p class="desc">Registro final del sprint de prueba de su MVP.</p>
+  <div class="exblock">
+    <div class="exrow"><div class="exrl" style="color:#00D4FF">Probamos</div><div class="exrv"><textarea class="wfield" id="probar" rows="2" oninput="sf('probar',this.value)"></textarea></div></div>
+    <div class="exrow"><div class="exrl" style="color:#FFB800">Observamos</div><div class="exrv"><textarea class="wfield" id="observar" rows="2" oninput="sf('observar',this.value)"></textarea></div></div>
+    <div class="exrow"><div class="exrl" style="color:#9B59B6">Feedback</div><div class="exrv"><textarea class="wfield" id="feedback" rows="2" oninput="sf('feedback',this.value)"></textarea></div></div>
+    <div class="exrow"><div class="exrl" style="color:#00C896">Ajustes</div><div class="exrv"><textarea class="wfield" id="ajustes" rows="2" oninput="sf('ajustes',this.value)"></textarea></div></div>
+  </div>
+</section>
+
+<section class="sec" id="glosario">
+  <h2>Glosario</h2>
+  <div class="ggrid">
+    <div class="gi" style="--gc:#00C896"><div class="gterm">Pensamiento en cascada</div><div class="gdef">Planificar el orden de armado según qué necesitás acceder después.</div></div>
+    <div class="gi" style="--gc:#FF4D6A"><div class="gterm">Punto de falla</div><div class="gdef">Componente o conexión con mayor riesgo de fallar.</div></div>
+  </div>
+</section>
+</main>
+<div class="sendbar">
+  <span class="sblabel">📤 Entregar</span>
+  <button class="sbtn print" onclick="window.print()">🖨 Imprimir</button>
+  <button class="sbtn gmail" onclick="sendGmail()">✉ Enviar por Gmail</button>
+</div>
+<script>
+const K='u14_';
+function sf(id,v){localStorage.setItem(K+id,v)}
+function sendGmail(){const email=prompt('Email del docente:');if(!email||!email.includes('@'))return;const g=id=>localStorage.getItem(K+id)||'(sin completar)';const body=['[Taller de Proyecto U14] Ensamblaje y Validación','','Probamos: '+g('probar'),'Observamos: '+g('observar'),'Feedback: '+g('feedback'),'Ajustes: '+g('ajustes')].join('\\n');window.open('https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(email)+'&su='+encodeURIComponent('[Taller de Proyecto U14] Respuestas')+'&body='+encodeURIComponent(body),'_blank');}
+window.addEventListener('load',()=>{['probar','observar','feedback','ajustes'].forEach(id=>{const v=localStorage.getItem(K+id);if(v)document.getElementById(id).value=v})});
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})}));
+</script>
+</body>
+</html>

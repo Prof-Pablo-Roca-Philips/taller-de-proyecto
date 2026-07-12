@@ -597,8 +597,8 @@
     }
 
     .lt-card {
-      background: var(--bg-raised);
-      border: 1px solid #ffffff14;
+      background: linear-gradient(180deg, #2b1c1c, #211619);;
+      border: 1px solid #cf0202c9;
       border-radius: 8px;
       padding: .85rem .9rem;
     }
@@ -613,7 +613,7 @@
       font-size: .72rem;
       letter-spacing: .06em;
       text-transform: uppercase;
-      color: var(--guide);
+      color: var(--accent);
       margin-bottom: .45rem;
     }
 
@@ -863,7 +863,7 @@
       background: var(--bg-raised);
       border: 1px solid #ffffff14;
       border-radius: 8px;
-      padding: .4rem 1rem;
+      padding: .3rem 1rem;
       display: grid;
       grid-template-columns: 0.1fr 1fr;
       grid-template-areas:
@@ -883,25 +883,22 @@
       font-size: 1.3rem;
       color: var(--accent);
       letter-spacing: .05em;
-      vertical-align: middle;
     }
-
     .step-box .info {
       display: block;
       width: auto;
       grid-area: info;
       font-family: 'JetBrains Mono', monospace;
-      font-size: .7rem;
+      font-size: .6rem;
       color: #a8a397;
       letter-spacing: .04em;
-      vertical-align: middle;
       margin-top: 0;
     }
     
     .step-box h4 {
       grid-area: title;
       text-transform: uppercase;
-      font-size: 1.26rem;
+      font-size: 1.06rem;
       margin: .15rem 0 .2rem;
     }
 
@@ -996,8 +993,7 @@
       <h2 class="title">Un recorrido progresivo desde el trazo básico hasta la representación de piezas complejas de robótica.</h2>
       <p class="hero-sub">El dibujo técnico a mano alzada es una herramienta de pensamiento. Antes de modelar en 3D,
         antes de conectar componentes, antes de fabricar, la mano sobre el papel permite verificar, detectar problemas y
-        tomar decisiones. Esta sección propone un recorrido progresivo desde el trazo básico hasta la representación de
-        piezas complejas de robótica.</p>
+        tomar decisiones. Esta cápsula no muestra el resultado terminado — reconstruye cada trazo, cada ángulo y cada eje en el orden exacto en que se dibujan, proponiendo un recorrido progresivo desde el trazo básico hasta la representación de piezas complejas.</p>
       <div class="hero-meta">
         <div><b>Modo de uso</b>↓ / Espacio para avanzar, ↑ para volver, o los puntos de la derecha</div>
         <div><b>Herramienta</b>Lápiz HB para construcción, 2B o microfibra para definir</div>
@@ -1014,8 +1010,7 @@
       <div class="sec-head">
         <div class="eyebrow">1 — El trazo</div>
         <h2>Un trazo limpio y decidido</h2>
-        <p>Para poder transmitir ideas con seguridad, es necesario desarrollar un trazo limpio y decidido.<br /> Existen tres
-          tipos de líneas que debemos evitar y una que buscamos:</p>
+        <p>Para poder transmitir ideas con seguridad, es necesario desarrollar un trazo limpio y decidido.<br /> Antes de construir cualquier volumen hay que resolver el gesto. Estos cuatro trazos se repiten en bucle: mirá qué diferencia al trazo bueno de los otros tres, y por qué.</p>
       </div>
 
       <div class="linetypes four">
@@ -1029,7 +1024,7 @@
               <path d="M15 26 L183 17" stroke="#f1ead9" stroke-width="1" fill="none" opacity=".5" />
             </g>
           </svg>
-          <p>Está sobre-construida: se repasa el mismo trazo muchas veces por inseguridad. <span class="sol">Solución:
+          <p>Está sobre-construida: se repasa el mismo trazo muchas veces por inseguridad. <span class="sol">Solución:<br />
               trazá de una sola pasada, con decisión.</span></p>
         </div>
         <div class="lt-card avoid">
@@ -1038,7 +1033,7 @@
             <path class="q-tiritona" d="M15 20 Q35 13 50 21 T85 19 T120 22 T155 17 T185 20" stroke="#f1ead9"
               stroke-width="1.3" fill="none" />
           </svg>
-          <p>El pulso traiciona el trazo porque se mueve solo la muñeca sin guía del brazo. <span class="sol">Solución:
+          <p>El pulso traiciona el trazo porque se mueve solo la muñeca sin guía del brazo. <span class="sol">Solución:<br />
               mover el brazo completo.</span></p>
         </div>
         <div class="lt-card avoid">
@@ -1046,7 +1041,7 @@
           <svg viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
             <path d="M15 20 L185 20" stroke="#f1ead9" stroke-width=".5" fill="none" opacity=".3" />
           </svg>
-          <p>El trazo es tan suave que casi no se ve. Ocurre por miedo a equivocarse. <span class="sol">Solución:
+          <p>El trazo es tan suave que casi no se ve. Ocurre por miedo a equivocarse. <span class="sol">Solución:<br />
               presioná con decisión. Las aristas no pueden ser invisibles.</span></p>
         </div>
         <div class="lt-card goal">
@@ -1068,7 +1063,7 @@
   <section class="slide" id="s-actividad1">
     <div class="slide-wrap">
       <div class="sec-head">
-        <div class="eyebrow">Actividad 1 — Líneas rectas · horizontales y verticales</div>
+        <div class="eyebrow">Actividad 1 — Líneas rectas<br /> horizontales y verticales</div>
         <h2>Calentamiento: dibujar muchas líneas rectas</h2>
         <p>El primer ejercicio de calentamiento es dibujar muchas líneas rectas en una hoja de papel.</p>
       </div>
@@ -1119,9 +1114,28 @@
           medición. Es fundamental para que los bocetos sean creíbles y comunicables.</p>
       </div>
 
-      <div class="eyebrow">Actividad 2 — Encontrar el punto medio</div>
+      <div class="eyebrow">Estimación visual del punto medio de un segmento</div>
+
+      <div class="notes">
+        <p>La estimación visual es un procedimiento perceptivo que permite establecer relaciones proporcionales entre magnitudes sin el uso de instrumentos de medición. En el ámbito del dibujo técnico y geométrico, esta capacidad resulta esencial para la correcta disposición de los elementos gráficos.</p>
+      </div>
 
       <div class="split" style="align-items:start;">
+                <div class="notes">
+          <h3>Encontrar el punto medio a ojo</h3>
+          <p>En este ejercicio se propone trazar un segmento rectilíneo y determinar su punto medio mediante apreciación visual, señalándolo con una marca breve perpendicular al segmento. Posteriormente, se deberá comprobar la exactitud de la estimación empleando un método de medición o construcción geométrica.</p>
+          <p>Proporción es estimar tamaños relativos sin regla. Reproducí el ejercicio: trazá la línea, estimá el
+            centro con una marca corta perpendicular, y recién después verificá.</p>
+          <h3>Cómo se construye:</h3>
+          <ol>
+            <li><b>Trazá la recta completa</b>, de punta a punta, en una sola pasada.</li>
+            <li><b>Marcá el centro estimado</b> con un trazo corto y perpendicular — sin medir todavía.</li>
+            <li><b>Verificá con regla</b> y anotá las dos mitades reales. Repetí hasta acortar el margen de error.</li>
+          </ol>
+          <div class="tip">Este mismo gesto —dividir a ojo, después verificar— es la base para ubicar aristas, puntos
+            medios de caras y centros de elipses más adelante.</div>
+        </div>
+
         <div class="table-frame">
           <div class="paper">
             <div class="paper-label" style="justify-content:flex-end;">
@@ -1156,21 +1170,6 @@
             </div>
           </div>
         </div>
-
-        <div class="notes">
-          <h3>Encontrar el punto medio a ojo</h3>
-          <p>Proporción es estimar tamaños relativos sin regla. Reproducí el ejercicio: trazá la línea, estimá el
-            centro con una marca corta perpendicular, y recién después verificá.</p>
-
-          <h3>Cómo se construye</h3>
-          <ol>
-            <li><b>Trazá la recta completa</b>, de punta a punta, en una sola pasada.</li>
-            <li><b>Marcá el centro estimado</b> con un trazo corto y perpendicular — sin medir todavía.</li>
-            <li><b>Verificá con regla</b> y anotá las dos mitades reales. Repetí hasta acortar el margen de error.</li>
-          </ol>
-          <div class="tip">Este mismo gesto —dividir a ojo, después verificar— es la base para ubicar aristas, puntos
-            medios de caras y centros de elipses más adelante.</div>
-        </div>
       </div>
     </div>
   </section>
@@ -1181,7 +1180,7 @@
   <section class="slide" id="s-proporcion-practica">
     <div class="slide-wrap">
       <div class="sec-head">
-        <div class="eyebrow">2 — Proporción · Práctica</div>
+        <div class="eyebrow">Actividad 2 — Proporción · Práctica</div>
         <h2>Tu turno: estimar y verificar</h2>
         <p>De la teoría al papel: estimá a ojo, después medí y compará. La diferencia es tu margen de error.</p>
       </div>
@@ -1221,44 +1220,53 @@
           reales.</p>
       </div>
 
-      <h3 style="font-family:'Space Grotesk';font-size:1rem;color:#f1ead9;margin-bottom:.2rem;">3a. Construcción de un
+      <h3 style="font-family:'Space Grotesk';font-size:1rem;color:#f1ead9;margin-bottom:.2rem;">Construcción de un
         prisma en perspectiva</h3>
       <p class="notes" style="margin:.2rem 0 .6rem;">Seguí estos pasos para construir cualquier forma tridimensional:
       </p>
 
-      <div class="steps-grid">
-        <div class="step-box">
-          <div class="sn">Paso 1</div>
-          <div class="info">
-            <h4>Eje y punto de referencia</h4>
-            <p>Trazá el eje vertical y marcá los ángulos axonométricos (30° o 45°). Este eje es la columna vertebral de toda la figura.</p>
+      <div class="dual" style="align-items:start;">
+        <div class="steps-grid">
+          <div class="step-box">
+            <div class="sn">Paso 1</div>
+            <div class="info">
+              <h4>Eje y punto de referencia</h4>
+              <p>Trazá el eje vertical y marcá los ángulos axonométricos (30° o 45°). Este eje es la columna vertebral de toda la figura.</p>
+            </div>
+                
           </div>
-              
-        </div>
-        <div class="step-box">
-          <div class="sn">Paso 2</div>
-          <div class="info">
-            <h4>Prisma contenedor (caja)</h4>
-            <p>Construí primero el volumen total que abarca la pieza. Las líneas deben ser paralelas a los ejes. Usá lápiz
-              HB suave.</p>
+          <div class="step-box">
+            <div class="sn">Paso 2</div>
+            <div class="info">
+              <h4>Prisma contenedor (caja)</h4>
+              <p>Construí primero el volumen total que abarca la pieza. Las líneas deben ser paralelas a los ejes. Usá lápiz
+                HB suave.</p>
+            </div>
+          </div>
+          <div class="step-box">
+            <div class="sn">Paso 3</div>
+            <div class="info">
+              <h4>Sustracción o intersección</h4>
+              <p>Dentro del prisma, marcá los planos inclinados, huecos o formas curvas usando las diagonales del cuadrado.
+              </p>
+            </div>
+          </div>
+          <div class="step-box">
+            <div class="sn">Paso 4</div>
+            <div class="info">
+              <h4>Definición de aristas</h4>
+              <p>Con trazo firme (2B o microfibra), resaltá las aristas visibles. Las líneas constructivas quedan en segundo
+                plano.</p>
+            </div>
           </div>
         </div>
-        <div class="step-box">
-          <div class="sn">Paso 3</div>
-          <div class="info">
-            <h4>Sustracción o intersección</h4>
-            <p>Dentro del prisma, marcá los planos inclinados, huecos o formas curvas usando las diagonales del cuadrado.
-            </p>
-          </div>
+
+        <div class="figure-frame" style="flex:1;">
+          <span class="figure-badge ref">Referencia del material</span>
+          <img src="img/proceso/prisma-construccion-pasos.png" alt="Construcción del prisma en perspectiva: los cuatro pasos" loading="lazy" style="max-height:44vh;">
+          <div class="figure-cap">Los 4 pasos de construcción del prisma</div>
         </div>
-        <div class="step-box">
-          <div class="sn">Paso 4</div>
-          <div class="info">
-            <h4>Definición de aristas</h4>
-            <p>Con trazo firme (2B o microfibra), resaltá las aristas visibles. Las líneas constructivas quedan en segundo
-              plano.</p>
-          </div>
-        </div>
+        <div class="tip" style="margin-top:.7rem;"><b>Foco del ejercicio:</b> respetá el paralelismo con los ejes y verificá con las guías punteadas que las caras espejadas queden parejas (x = x'). Las cotas x e y comprueban que el volumen no salió deformado.</div>
       </div>
 
       <div class="tip"><b>Tener en cuenta:</b> (1) ensayá el trazo en el aire antes de apoyar el lápiz, (2) respetá
@@ -1274,98 +1282,100 @@
     <div class="sec-head">
       <div class="eyebrow">3a — Construcción del prisma · en vivo</div>
       <h2>El prisma, línea por línea</h2>
-      <p>La misma construcción del material, reconstruida trazo a trazo. Las líneas paralelas permanecen paralelas: no convergen. Arrastrá el control o tocá "Reproducir".</p>
+      <p>La misma construcción del material, reconstruida trazo a trazo. Las líneas paralelas permanecen paralelas: no convergen.</p>
     </div>
 
     <div class="dual">
-      <div>
-        <div class="table-frame" style="flex:1;">
-          <div class="paper">
-            <div class="paper-label">
-              <span class="step-name mono">Prisma en axonometría · vivo</span>
-              <span class="step-count mono" id="prismCount">0 / 27</span>
+      <div class="table-frame" style="flex:1;">
+        <div class="paper">
+          <div class="paper-label">
+            <span class="step-name mono">Prisma en axonometría</span>
+            <span class="step-count mono" id="prismCount">0 / 27</span>
+          </div>
+          <svg class="sketch" id="prismSVG" viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg">
+            <path class="draw" pathLength="1" d="M40 285 L560 285" stroke="#8a8578" stroke-width="1.4" stroke-dasharray="5,5"/>
+            <g class="fade"><text x="566" y="289" font-family="JetBrains Mono, monospace" font-size="12" fill="#8a8578">LH</text></g>
+            <path class="draw" pathLength="1" d="M300 15 L300 305" stroke="#8a8578" stroke-width="1.2" stroke-dasharray="5,5"/>
+            <path class="draw" pathLength="1" d="M300 285 L316 285 L316 269" stroke="#c9492f" stroke-width="1.4"/>
+            <g class="fade"><text x="321" y="280" font-family="JetBrains Mono, monospace" font-size="12" fill="#c9492f">90°</text></g>
+            <path class="draw" pathLength="1" d="M300 265 L300 155" stroke="#242220" stroke-width="2.6"/>
+            <g class="fade"><text x="308" y="170" font-family="JetBrains Mono, monospace" font-size="11.5" fill="#242220">arista frontal</text></g>
+            <g class="fade"><text x="308" y="190" font-family="JetBrains Mono, monospace" font-size="11.5" fill="#242220">(eje y)</text></g>
+            <path class="draw" pathLength="1" d="M60 265 L540 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+            <path class="draw" pathLength="1" d="M60 200 L540 200" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+            <path class="draw" pathLength="1" d="M255 265 A45 45 0 0 1 261.4 249.5" stroke="#c9492f" stroke-width="1.4"/>
+            <path class="draw" pathLength="1" d="M345 265 A45 45 0 0 0 338.6 249.5" stroke="#c9492f" stroke-width="1.4"/>
+            <g class="fade">
+              <text x="222" y="252" font-family="JetBrains Mono, monospace" font-size="12" fill="#c9492f">30°</text>
+              <text x="358" y="252" font-family="JetBrains Mono, monospace" font-size="12" fill="#c9492f">30°</text>
+            </g>
+            <path class="draw" pathLength="1" d="M300 265 L187.42 200" stroke="#242220" stroke-width="2.6"/>
+            <path class="draw" pathLength="1" d="M300 265 L412.58 200" stroke="#242220" stroke-width="2.6"/>
+            <path class="draw" pathLength="1" d="M187.42 15 L187.42 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+            <path class="draw" pathLength="1" d="M412.58 15 L412.58 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+            <path class="draw" pathLength="1" d="M187.42 200 L187.42 90" stroke="#242220" stroke-width="2.6"/>
+            <path class="draw" pathLength="1" d="M412.58 200 L412.58 90" stroke="#242220" stroke-width="2.6"/>
+            <path class="draw" pathLength="1" d="M60 90 L540 90" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+            <path class="draw" pathLength="1" d="M300 155 L187.42 90" stroke="#242220" stroke-width="2.6"/>
+            <path class="draw" pathLength="1" d="M300 155 L412.58 90" stroke="#242220" stroke-width="2.6"/>
+            <path class="draw" pathLength="1" d="M187.42 90 L300 25" stroke="#242220" stroke-width="2.6"/>
+            <path class="draw" pathLength="1" d="M412.58 90 L300 25" stroke="#242220" stroke-width="2.6"/>
+            <g class="fade">
+              <polygon points="300,265 412.58,200 412.58,90 300,155" fill="#00000010"/>
+              <polygon points="300,265 300,155 187.42,90 187.42,200" fill="#0000001a"/>
+              <polygon points="300,155 412.58,90 300,25 187.42,90" fill="#00000008"/>
+            </g>
+            <g class="fade">
+              <path d="M300 265 L300 300" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
+              <path d="M412.58 200 L412.58 300" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
+              <path d="M187.42 200 L187.42 300" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
+              <line x1="300" y1="300" x2="412.58" y2="300" stroke="#c9492f" stroke-width="1.3"/>
+              <line x1="187.42" y1="300" x2="300" y2="300" stroke="#c9492f" stroke-width="1.3"/>
+              <line x1="300" y1="296" x2="300" y2="304" stroke="#c9492f" stroke-width="1.3"/>
+              <line x1="412.58" y1="296" x2="412.58" y2="304" stroke="#c9492f" stroke-width="1.3"/>
+              <line x1="187.42" y1="296" x2="187.42" y2="304" stroke="#c9492f" stroke-width="1.3"/>
+              <text x="356" y="317" font-family="JetBrains Mono, monospace" font-size="13" fill="#c9492f" text-anchor="middle">x</text>
+              <text x="243.7" y="317" font-family="JetBrains Mono, monospace" font-size="13" fill="#c9492f" text-anchor="middle">x</text>
+            </g>
+            <g class="fade">
+              <path d="M300 155 L472 155" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
+              <path d="M300 265 L472 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
+              <line x1="470" y1="155" x2="470" y2="265" stroke="#c9492f" stroke-width="1.3"/>
+              <line x1="466" y1="155" x2="474" y2="155" stroke="#c9492f" stroke-width="1.3"/>
+              <line x1="466" y1="265" x2="474" y2="265" stroke="#c9492f" stroke-width="1.3"/>
+              <text x="483" y="214" font-family="JetBrains Mono, monospace" font-size="13" fill="#c9492f" text-anchor="middle">y</text>
+            </g>
+            <g class="fade">
+              <text x="300" y="330" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="600" fill="#242220" text-anchor="middle">VOLUMEN TERMINADO — x = x' · caras en espejo parejas</text>
+            </g>
+          </svg>
+          <div class="controls">
+            <button class="btn primary" data-play="prismSVG">▶ Reproducir</button>
+            <button class="btn" data-step="prismSVG">Paso ⏭</button>
+            <button class="btn" data-back="prismSVG">⏮ Atrás</button>
+            <button class="btn" data-reset="prismSVG">↺ Reiniciar</button>
+            <div class="scrubber">
+              <span class="scrub-label">construcción</span>
+              <input type="range" id="prismRange" min="-1" max="26" value="-1">
             </div>
-            <svg class="sketch" id="prismSVG" viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg">
-              <path class="draw" pathLength="1" d="M40 285 L560 285" stroke="#8a8578" stroke-width="1.4" stroke-dasharray="5,5"/>
-              <g class="fade"><text x="566" y="289" font-family="JetBrains Mono, monospace" font-size="12" fill="#8a8578">LH</text></g>
-              <path class="draw" pathLength="1" d="M300 15 L300 305" stroke="#8a8578" stroke-width="1.2" stroke-dasharray="5,5"/>
-              <path class="draw" pathLength="1" d="M300 285 L316 285 L316 269" stroke="#c9492f" stroke-width="1.4"/>
-              <g class="fade"><text x="321" y="280" font-family="JetBrains Mono, monospace" font-size="12" fill="#c9492f">90°</text></g>
-              <path class="draw" pathLength="1" d="M300 265 L300 155" stroke="#242220" stroke-width="2.6"/>
-              <g class="fade"><text x="308" y="170" font-family="JetBrains Mono, monospace" font-size="11.5" fill="#242220">eje (y)</text></g>
-              <path class="draw" pathLength="1" d="M60 265 L540 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
-              <path class="draw" pathLength="1" d="M60 200 L540 200" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
-              <path class="draw" pathLength="1" d="M255 265 A45 45 0 0 1 261.4 249.5" stroke="#c9492f" stroke-width="1.4"/>
-              <path class="draw" pathLength="1" d="M345 265 A45 45 0 0 0 338.6 249.5" stroke="#c9492f" stroke-width="1.4"/>
-              <g class="fade">
-                <text x="222" y="252" font-family="JetBrains Mono, monospace" font-size="12" fill="#c9492f">30°</text>
-                <text x="358" y="252" font-family="JetBrains Mono, monospace" font-size="12" fill="#c9492f">30°</text>
-              </g>
-              <path class="draw" pathLength="1" d="M300 265 L187.42 200" stroke="#242220" stroke-width="2.6"/>
-              <path class="draw" pathLength="1" d="M300 265 L412.58 200" stroke="#242220" stroke-width="2.6"/>
-              <path class="draw" pathLength="1" d="M187.42 15 L187.42 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
-              <path class="draw" pathLength="1" d="M412.58 15 L412.58 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
-              <path class="draw" pathLength="1" d="M187.42 200 L187.42 90" stroke="#242220" stroke-width="2.6"/>
-              <path class="draw" pathLength="1" d="M412.58 200 L412.58 90" stroke="#242220" stroke-width="2.6"/>
-              <path class="draw" pathLength="1" d="M60 90 L540 90" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
-              <path class="draw" pathLength="1" d="M300 155 L187.42 90" stroke="#242220" stroke-width="2.6"/>
-              <path class="draw" pathLength="1" d="M300 155 L412.58 90" stroke="#242220" stroke-width="2.6"/>
-              <path class="draw" pathLength="1" d="M187.42 90 L300 25" stroke="#242220" stroke-width="2.6"/>
-              <path class="draw" pathLength="1" d="M412.58 90 L300 25" stroke="#242220" stroke-width="2.6"/>
-              <g class="fade">
-                <polygon points="300,265 412.58,200 412.58,90 300,155" fill="#00000010"/>
-                <polygon points="300,265 300,155 187.42,90 187.42,200" fill="#0000001a"/>
-                <polygon points="300,155 412.58,90 300,25 187.42,90" fill="#00000008"/>
-              </g>
-              <g class="fade">
-                <path d="M300 265 L300 300" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
-                <path d="M412.58 200 L412.58 300" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
-                <path d="M187.42 200 L187.42 300" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
-                <line x1="300" y1="300" x2="412.58" y2="300" stroke="#c9492f" stroke-width="1.3"/>
-                <line x1="187.42" y1="300" x2="300" y2="300" stroke="#c9492f" stroke-width="1.3"/>
-                <line x1="300" y1="296" x2="300" y2="304" stroke="#c9492f" stroke-width="1.3"/>
-                <line x1="412.58" y1="296" x2="412.58" y2="304" stroke="#c9492f" stroke-width="1.3"/>
-                <line x1="187.42" y1="296" x2="187.42" y2="304" stroke="#c9492f" stroke-width="1.3"/>
-                <text x="356" y="317" font-family="JetBrains Mono, monospace" font-size="13" fill="#c9492f" text-anchor="middle">x</text>
-                <text x="243.7" y="317" font-family="JetBrains Mono, monospace" font-size="13" fill="#c9492f" text-anchor="middle">x</text>
-              </g>
-              <g class="fade">
-                <path d="M300 155 L472 155" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
-                <path d="M300 265 L472 265" stroke="#8a8578" stroke-width="1" stroke-dasharray="2,2"/>
-                <line x1="470" y1="155" x2="470" y2="265" stroke="#c9492f" stroke-width="1.3"/>
-                <line x1="466" y1="155" x2="474" y2="155" stroke="#c9492f" stroke-width="1.3"/>
-                <line x1="466" y1="265" x2="474" y2="265" stroke="#c9492f" stroke-width="1.3"/>
-                <text x="483" y="214" font-family="JetBrains Mono, monospace" font-size="13" fill="#c9492f" text-anchor="middle">y</text>
-              </g>
-              <g class="fade">
-                <text x="300" y="330" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="600" fill="#242220" text-anchor="middle">VOLUMEN TERMINADO — x = x' · caras en espejo parejas</text>
-              </g>
-            </svg>
-            <div class="controls">
-              <button class="btn primary" data-play="prismSVG">▶ Reproducir</button>
-              <button class="btn" data-step="prismSVG">Paso ⏭</button>
-              <button class="btn" data-back="prismSVG">⏮ Atrás</button>
-              <button class="btn" data-reset="prismSVG">↺ Reiniciar</button>
-              <div class="scrubber">
-                <span class="scrub-label">construcción</span>
-                <input type="range" id="prismRange" min="-1" max="26" value="-1">
-              </div>
-            </div>
-            <div class="legend" id="prismLegend">
-              <div class="lg-step mono">En espera</div>
-              <div class="lg-text">Tocá reproducir o arrastrá el control.</div>
-            </div>
+          </div>
+          <div class="legend" id="prismLegend">
+            <div class="lg-step mono">En espera</div>
+            <div class="lg-text">Arrastrá el control o tocá "Reproducir" — el mismo dibujo se construye del primer eje a la última cara, sin cortes.</div>
           </div>
         </div>
       </div>
 
-      <div>
-        <div class="figure-frame" style="flex:1;">
-          <span class="figure-badge ref">Referencia del material</span>
-          <img src="img/proceso/prisma-construccion-pasos.png" alt="Construcción del prisma en perspectiva: los cuatro pasos" loading="lazy" style="max-height:44vh;">
-          <div class="figure-cap">Los 4 pasos de construcción del prisma</div>
-        </div>
-        <div class="tip" style="margin-top:.7rem;"><b>Foco del ejercicio:</b> respetá el paralelismo con los ejes y verificá con las guías punteadas que las caras espejadas queden parejas (x = x'). Las cotas x e y comprueban que el volumen no salió deformado.</div>
+      <div class="notes">
+        <h3 style="font-size:1.1rem;margin-bottom:.8rem;">Los 5 movimientos, en orden</h3>
+        <ul>
+          <li><b>1. Línea de horizonte (LH)</b> — define la altura de ojo del observador. Todo lo demás se ubica en relación a ella.</li>
+          <li><b>2. Eje / arista frontal (y)</b> — perpendicular a la LH, a 90°. Es la columna vertebral de la figura y define la altura inicial.</li>
+          <li><b>3. Ángulo de 30° exactos</b> — dos rectas que nacen del pie del eje, con una guía horizontal en el nivel medio para comprobar que ambos lados quedan a la misma altura. Truco: dividí un ángulo recto en tres tercios; el primer tercio desde la mesa es tu 30°.</li>
+          <li><b>4. Paredes laterales</b> — verticales paralelas a la arista central. Las guías verticales punteadas confirman que ambas caen exactamente sobre el punto donde terminan las diagonales de base — si no coinciden, el prisma quedó torcido.</li>
+          <li><b>5. Tapa superior + cotas</b> — dos líneas paralelas a las aristas opuestas se cruzan en el punto posterior. Las cotas <b>x</b> (mitad del ancho, repetida a ambos lados) e <b>y</b> (altura) muestran que las dos caras laterales son geométricamente idénticas, solo espejadas.</li>
+        </ul>
+        <div class="tip"><b>Por qué tantas guías:</b> cada línea horizontal punteada conecta puntos que <em>deben</em> quedar a la misma altura, y cada vertical punteada marca por dónde <em>debe</em> pasar cada arista. Si al dibujar a mano una esquina no cae sobre su guía, ahí está el error de proporción — antes de repasar con tinta, volvé a mirar esas guías.</div>
       </div>
     </div>
   </div>
@@ -1380,6 +1390,7 @@
       <div class="eyebrow">3b — Elipses y círculos en perspectiva</div>
       <h2>Un círculo visto en perspectiva es una elipse</h2>
       <p>Para dibujarlo correctamente, se construye siempre dentro de un cuadrado en perspectiva —nunca a mano alzada libre.</p>
+      <p>La elipse debe ser tangente a los 4 lados exactamente en sus puntos medios — y las dos líneas que conectan esos puntos medios opuestos tienen que cruzarse justo en el centro real del cuadrado.</p>
     </div>
 
     <div class="dual">
@@ -1387,7 +1398,7 @@
         <div class="table-frame" style="flex:1;">
           <div class="paper">
             <div class="paper-label">
-              <span class="step-name mono">Elipse por cuadrado inscripto · vivo</span>
+              <span class="step-name mono">Elipse por cuadrado inscripto</span>
               <span class="step-count mono" id="ellipseCount">0 / 9</span>
             </div>
             <svg class="sketch" id="ellipseSVG" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
@@ -1408,15 +1419,18 @@
             </div>
           </div>
         </div>
+
+        <div class="tip"><b>El error más común:</b> trazar la línea que conecta los puntos medios de los lados inclinados sin verificar que ambos extremos sean realmente los puntos medios — si arranca desviada, la elipse completa queda descentrada y deja de ser tangente a un lado.</div>
       </div>
 
       <div>
         <div class="notes">
+          <h3>Cómo se construye:</h3>
           <ol>
             <li>Dibujá el cuadrado que circunscribe al círculo en perspectiva.</li>
             <li>Trazá las diagonales del cuadrado y conectá los puntos medios de los lados opuestos.</li>
             <li>Inscribí otro cuadrado más pequeño dentro del anterior.</li>
-            <li>La elipse debe pasar por los puntos medios del lado exterior al interior.</li>
+            <li>La elipse debe ser tangente a los 4 lados exactamente en sus puntos medios — y las dos líneas que conectan esos puntos medios opuestos tienen que cruzarse justo en el centro real del cuadrado.</li>
             <li>Dibujá la elipse limpia y simétrica respecto a ambos ejes.</li>
           </ol>
         </div>
@@ -1446,7 +1460,7 @@
         <div class="table-frame" style="flex:1;">
           <div class="paper">
             <div class="paper-label">
-              <span class="step-name mono">Cilindro por caja · vivo</span>
+              <span class="step-name mono">Cilindro por caja</span>
               <span class="step-count mono" id="cylCount">0 / 5</span>
             </div>
             <svg class="sketch" id="cylSVG" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
@@ -1468,7 +1482,8 @@
 
       <div>
         <div class="notes">
-          <ol start="6">
+          <h3>Cómo se construye:</h3>
+          <ol start="1">
             <li>Dibujá el prisma rectangular que contiene al cilindro.</li>
             <li>Construí las elipses en el plano frontal y posterior usando el método anterior.</li>
             <li>El eje del cilindro coincide con el eje menor de ambas elipses.</li>
@@ -1498,16 +1513,16 @@
 <section class="slide" id="s-tri">
   <div class="slide-wrap">
     <div class="sec-head">
-      <div class="eyebrow">3d — Complemento vivo: elipses en las tres caras</div>
+      <div class="eyebrow">3d — Elipses en las tres caras</div>
       <h2>Un mismo prisma, tres elipses tangentes y exactas</h2>
-      <p>Todo lo anterior junto: elipse construida por diagonales y diámetros conjugados en cada una de las tres caras visibles. Las tres son del mismo tamaño; solo cambia la rotación.</p>
+      <p>Todo lo anterior junto: el prisma en axonometría con una elipse construida — por diagonales y diámetros conjugados, sin aproximar a ojo — en cada una de sus tres caras visibles. <br />Las tres son del mismo tamaño; solo cambia su rotación según la orientación de la cara.</p>
     </div>
 
     <div class="split">
       <div class="table-frame">
         <div class="paper">
           <div class="paper-label">
-            <span class="step-name mono">Prisma + 3 elipses tangentes · vivo</span>
+            <span class="step-name mono">Prisma + 3 elipses tangentes</span>
             <span class="step-count mono" id="triCount">0 / 14</span>
           </div>
           <svg class="sketch" id="triEllipseSVG" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
@@ -1663,7 +1678,7 @@
         <div class="table-frame" style="flex:1;">
           <div class="paper">
             <div class="paper-label">
-              <span class="step-name mono">Soporte tipo L · vivo</span>
+              <span class="step-name mono">Soporte tipo L</span>
               <span class="step-count mono" id="bracketCount">0 / 10</span>
             </div>
             <svg class="sketch" id="bracketSVG" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg" style="max-height:28vh;">
@@ -1820,7 +1835,7 @@
         <div class="table-frame" style="flex:1;">
           <div class="paper">
             <div class="paper-label">
-              <span class="step-name mono">Brida de sujeción · vivo</span>
+              <span class="step-name mono">Brida de sujeción</span>
               <span class="step-count mono" id="bridaCount">0 / 9</span>
             </div>
             <svg class="sketch" id="bridaSVG" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg" style="max-height:28vh;">
@@ -2009,7 +2024,7 @@
       if(prev) prev(idx,total);
       if(idx < 0){
         legendBox.querySelector('.lg-step').textContent = 'En espera';
-        legendBox.querySelector('.lg-text').textContent = 'Tocá reproducir o arrastrá el control.';
+        legendBox.querySelector('.lg-text').textContent = 'Arrastrá el control o tocá "Reproducir" — el mismo dibujo se construye del primer eje a la última cara, sin cortes.';
         return;
       }
       const found = steps.find(s => idx >= s.range[0] && idx <= s.range[1]);
@@ -2021,11 +2036,11 @@
   }
 
   bindLegend('prismSVG','prismLegend', [
-    {range:[0,1],   title:'Paso 1 — Eje y punto de referencia', text:'Eje vertical y ángulos axonométricos (30°). La columna vertebral de la figura.'},
-    {range:[2,6],   title:'Paso 1 — Eje frontal (y)', text:'Perpendicular a la LH, a 90°. Define la altura inicial (cota y).'},
-    {range:[7,13],  title:'Paso 2 — Ángulo de 30° · prisma contenedor', text:'Guías horizontales verifican que ambos lados queden a la misma altura.'},
-    {range:[14,17], title:'Paso 2 — Paredes de la caja', text:'Verticales paralelas a los ejes; las guías confirman que cada pared cae sobre su esquina.'},
-    {range:[18,26], title:'Paso 4 — Definición de aristas y cotas', text:'Se cierra el volumen y se comprueba con las cotas x e y que las caras espejadas son parejas.'}
+    {range:[0,1],   title:'Paso 1 — Eje y punto de referencia (línea del horizonte)', text:'Trazá una línea horizontal suave (línea de construcción) de lado a lado. Define la línea del horizonte (LH) y el punto de referencia (PR) para la perspectiva axonométrica a 30°.'},
+    {range:[2,6],   title:'Paso 1 — Eje / Arista frontal (y)', text:'Trazá una línea vertical suave (línea de construcción) perpendicular a la LH, a 90°. Define la altura inicial (cota y).'},
+    {range:[7,13],  title:'Paso 2 — Ángulo de 30° · prisma contenedor', text:'Dos rectas nacen del pie del eje a 30° reales, con guías horizontales que verifican que ambos lados queden a la misma altura.'},
+    {range:[14,17], title:'Paso 3 — Paredes (laterales) de la caja', text:'Verticales paralelas a la arista central. Las guías punteadas confirman que cada pared cae exactamente sobre su esquina de base.'},
+    {range:[18,26], title:'Paso 4 — Definición de aristas y cotas', text:'Se cierra el volumen y se marcan las cotas x (mitad del ancho, repetida a ambos lados) e y (altura) para comprobar que las caras en espejo son parejas. Eje vertical y ángulos axonométricos (30°). La columna vertebral de la figura.'}
   ]);
 
   bindLegend('triEllipseSVG','triLegend', [

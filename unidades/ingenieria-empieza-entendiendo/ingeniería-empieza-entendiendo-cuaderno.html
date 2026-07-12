@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Ingeniería empieza Entendiendo — Guía Docente · Taller de Proyecto</title>
+<title>La Ingeniería empieza Entendiendo — Alumno · Taller de Proyecto</title>
 <style>
 :root{--navy:#0A0E2A;--mid:#1A2550;--lit:#253070;--cyan:#00D4FF;--cdim:#0097B8;--amber:#FFB800;--green:#00C896;--red:#FF4D6A;--purple:#9B59B6;--white:#FFFFFF;--off:#E8EDF5;--muted:#7A8BAA;--card:#131B3A;--clit:#1E2B4A;--light:#F0F4FA;--sw:255px;--r:10px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -128,6 +128,24 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
 .gtag2{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-bottom:4px}
 .gterm{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:4px}
 .gdef{font-size:11.5px;color:var(--muted);line-height:1.5}
+/* Actividad: ordenar el flujo */
+.flow-pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.fp{display:inline-flex;align-items:center;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;color:var(--off);background:var(--card);border:1px solid rgba(255,255,255,0.1);border-left:3px solid var(--gc,var(--amber));cursor:pointer;user-select:none;transition:opacity .18s,transform .18s,border-color .18s}
+.fp:hover{border-color:var(--gc,var(--amber));transform:translateY(-1px)}
+.fp.sel{opacity:.35}
+.fp.sel:hover{opacity:.55}
+.flow-row{display:flex;flex-wrap:wrap;gap:8px;min-height:54px;padding:14px;border-radius:var(--r);background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.13);align-items:center}
+.flow-row.empty{justify-content:center}
+.flow-row.empty::before{content:'Hacé clic en los términos de arriba para armar la fila…';color:var(--muted);font-size:12px;font-style:italic}
+.fq{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:20px;font-size:12px;font-weight:700;color:var(--white);background:var(--card);border:1px solid var(--gc,var(--amber));cursor:pointer;animation:fqin .2s ease}
+.fq .n{display:inline-flex;align-items:center;justify-content:center;width:21px;height:21px;border-radius:50%;background:var(--gc,var(--amber));color:var(--navy);font-size:11px;font-weight:800;flex-shrink:0}
+.fq .x{color:var(--muted);font-size:12px;font-weight:700;margin-left:1px}
+.fq:hover{border-color:var(--red)} .fq:hover .x{color:var(--red)}
+@keyframes fqin{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
+.flow-bar{display:flex;align-items:center;gap:16px;margin-top:14px;flex-wrap:wrap}
+.flow-count{font-size:12px;color:var(--muted)} .flow-count b{color:var(--amber)}
+.flow-reset{padding:7px 15px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:var(--off);font-family:inherit;transition:border-color .2s,color .2s}
+.flow-reset:hover{border-color:var(--red);color:var(--red)}
 /* Checklist */
 .cklist{display:flex;flex-direction:column;gap:7px}
 .ckitem{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--card);border-radius:8px;font-size:12.5px;color:var(--off);line-height:1.5;cursor:pointer;user-select:none;transition:background .2s;border:1px solid rgba(255,255,255,0.05)}
@@ -145,6 +163,7 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
 .print-hdr{display:none}
 @media print{#sb,#pb,#mt,#bt{display:none!important}body{background:#fff!important;color:#000!important;display:block!important;font-size:10pt}#main{margin-left:0!important}.sec{padding:12px 0!important;border-bottom:1px solid #ddd!important}.def,.cc,.ctbl,.wt,.ecard,.gi,.ckitem,.stbl{background:#f9f9f9!important;border-color:#ccc!important}.def p,.cc p,.wc,.gdef,.etext,.ckitem,.vrow .vt{color:#000!important}.ftext{color:#000!important}.print-hdr{display:block!important}}
 </style>
+<link rel="stylesheet" href="../../cuaderno/css/cuaderno.css">
 </head>
 <body>
 <div id="pb"><div id="pf"></div></div>
@@ -157,7 +176,7 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
 </div>
 
 <nav id="sb">
-  <div class="sbl"><a class="sb-back" href="../index.html">← Volver al inicio</a><div class="tag">La ingeniería empieza Entendiendo</div><h1>Guía Docente<br><span>La ingeniería empieza Entendiendo</span></h1></div>
+  <div class="sbl"><a class="sb-back" href="../../index.html">← Volver al inicio</a><div class="tag">La ingeniería empieza Entendiendo</div><h1>La ingeniería<br><span>empieza Entendiendo</span></h1></div>
   <div class="sbn"><strong id="sbn">—</strong>Unidad 1 · Introducción al Taller</div>
   <div class="nl">El proyecto</div>
   <a class="ni" href="#que-hacemos" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>¿Qué hacemos acá?</a>
@@ -171,20 +190,22 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
   <div class="nl">Herramientas</div>
   <a class="ni" href="#sensores" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span>Variables y sensores</a>
   <a class="ni" href="#ejemplo" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Ejemplo resuelto</a>
-  <div class="nl">Docente</div>
-  <a class="ni" href="#respuestas" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span>Respuestas y criterios</a>
+  <div class="nl">Mi trabajo</div>
+  <a class="ni" href="#trabajo" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Ejercicios prácticos</a>
   <div class="nl">Cierre</div>
   <a class="ni" href="#checklist" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Mi checklist</a>
   <a class="ni" href="#glosario" onclick="cSB()"><span class="nd" style="background:#7A8BAA"></span>Glosario</a>
+  <a class="ni" href="#actividad-flujo" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Actividad: ordenar el flujo</a>
+  <a class="ni" href="#autocorreccion" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Autocorrección</a>
   <div class="sbf">Electromecánica · Robótica<br>Automatización · IA</div>
 </nav>
 
 <main id="main">
 <section id="top">
   <div id="hero">
-    <div class="htag">La ingeniería empieza Entendiendo · Guía Docente</div>
-    <h2>Guía Docente<br><em>Unidad 1</em></h2>
-    <p>Guía de referencia para el docente. Incluye respuestas de ejercicios, criterios de evaluación y notas pedagógicas. No distribuir a alumnos.</p>
+    <div class="htag">La ingeniería empieza Entendiendo</div>
+    <h2>La ingeniería empieza<br><em>Entendiendo</em></h2>
+    <p>Tu carpeta completa — teoría, referencia y ejercicios en un solo lugar. Lo que escribís se guarda automáticamente en este dispositivo.</p>
     <div class="nrow">
       <label for="myname">Tu nombre:</label>
       <input type="text" id="myname" class="ninp" placeholder="Escribí tu nombre..." oninput="sN(this.value)" autocomplete="off">
@@ -372,66 +393,98 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
 </section>
 
 <!-- CHECKLIST -->
-
-<!-- RESPUESTAS EJERCICIOS -->
-<section class="sec" id="respuestas">
-  <div class="eyebrow"><div class="edot" style="background:#FF4D6A"></div><span class="etxt">Solo docente</span></div>
-  <h2>Respuestas de referencia — Ejercicios</h2>
-  <p class="desc">Respuestas modelo para los tres ejercicios de la Unidad 1. Usar como guía de corrección, no como respuesta única válida.</p>
-
-  <div style="margin-bottom:20px">
-    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 1 — Sistema interactivo · Ejemplo: aire acondicionado</div>
-    <div style="background:var(--card);border-radius:var(--r);padding:16px;border:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;gap:7px">
-      <div style="display:grid;grid-template-columns:110px 1fr;gap:10px"><span style="font-size:11px;font-weight:700;color:#00D4FF">Entorno:</span><span style="font-size:13px;color:var(--off)">Habitación cerrada con personas y sin ventilación</span></div>
-      <div style="display:grid;grid-template-columns:110px 1fr;gap:10px"><span style="font-size:11px;font-weight:700;color:#00D4FF">Sensor:</span><span style="font-size:13px;color:var(--off)">Sensor de temperatura (termistor o DHT22)</span></div>
-      <div style="display:grid;grid-template-columns:110px 1fr;gap:10px"><span style="font-size:11px;font-weight:700;color:#FFB800">Decisión:</span><span style="font-size:13px;color:var(--off)">¿La temperatura supera los 24°C configurados?</span></div>
-      <div style="display:grid;grid-template-columns:110px 1fr;gap:10px"><span style="font-size:11px;font-weight:700;color:#00C896">Acción:</span><span style="font-size:13px;color:var(--off)">Activa el compresor para enfriar</span></div>
-    </div>
-  </div>
+<!-- TRABAJO PRÁCTICO -->
+<section class="sec" id="trabajo">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Mi trabajo</span></div>
+  <h2>Mis ejercicios — Unidad 1</h2>
+  <p class="desc">Completá cada ejercicio. Tus respuestas se guardan automáticamente en este dispositivo.</p>
 
   <div style="margin-bottom:20px">
-    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 2 — "La luz molesta" · Respuesta modelo</div>
-    <div style="background:var(--card);border-radius:var(--r);padding:16px;border:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;gap:7px">
-      <div style="display:grid;grid-template-columns:130px 1fr;gap:10px"><span style="font-size:11px;font-weight:700;color:#00D4FF">Contexto:</span><span style="font-size:13px;color:var(--off)">Autopista, carriles de circulación, durante la noche (20:00–6:00 hs)</span></div>
-      <div style="display:grid;grid-template-columns:130px 1fr;gap:10px"><span style="font-size:11px;font-weight:700;color:#FFB800">Variable:</span><span style="font-size:13px;color:var(--off)">Ángulo y posición de los focos de los vehículos (en grados)</span></div>
-      <div style="display:grid;grid-template-columns:130px 1fr;gap:10px"><span style="font-size:11px;font-weight:700;color:#FF4D6A">Pto. de quiebre:</span><span style="font-size:13px;color:var(--off)">Ángulo de incidencia superior a 15° sobre el plano de visión del conductor</span></div>
-      <div style="display:grid;grid-template-columns:130px 1fr;gap:10px"><span style="font-size:11px;font-weight:700;color:#00C896">Enunciado:</span><span style="font-size:13px;color:var(--off)">"La posición y ángulo de los focos de vehículos en la autopista supera los 15° de incidencia visual, generando encandilamiento y riesgo de accidente durante la conducción nocturna."</span></div>
+    <div style="font-size:11px;font-weight:700;color:#7A8BAA;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">EJERCICIO 1 — Identificá el sistema interactivo</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:10px">Elegí un objeto o sistema que conozcas (heladera, semáforo, celular, etc.) y describí sus 4 partes.</div>
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <div style="display:grid;grid-template-columns:100px 1fr;gap:8px;align-items:center">
+        <span style="font-size:10px;font-weight:700;color:#00D4FF;text-transform:uppercase">Mi sistema:</span>
+        <input type="text" id="ej1-sistema" class="ninp" style="font-size:13px;padding:7px 12px" placeholder="¿Qué sistema elegiste?" oninput="sf('ej1-sistema',this.value)">
+      </div>
+      <div style="display:grid;grid-template-columns:100px 1fr;gap:8px;align-items:center">
+        <span style="font-size:10px;font-weight:700;color:#7A8BAA;text-transform:uppercase">Entorno:</span>
+        <input type="text" id="ej1-entorno" class="ninp" style="font-size:13px;padding:7px 12px" placeholder="¿Qué lo rodea?" oninput="sf('ej1-entorno',this.value)">
+      </div>
+      <div style="display:grid;grid-template-columns:100px 1fr;gap:8px;align-items:center">
+        <span style="font-size:10px;font-weight:700;color:#00D4FF;text-transform:uppercase">Sensor:</span>
+        <input type="text" id="ej1-sensor" class="ninp" style="font-size:13px;padding:7px 12px" placeholder="¿Qué detecta?" oninput="sf('ej1-sensor',this.value)">
+      </div>
+      <div style="display:grid;grid-template-columns:100px 1fr;gap:8px;align-items:center">
+        <span style="font-size:10px;font-weight:700;color:#FFB800;text-transform:uppercase">Decisión:</span>
+        <input type="text" id="ej1-decision" class="ninp" style="font-size:13px;padding:7px 12px" placeholder="¿Qué compara?" oninput="sf('ej1-decision',this.value)">
+      </div>
+      <div style="display:grid;grid-template-columns:100px 1fr;gap:8px;align-items:center">
+        <span style="font-size:10px;font-weight:700;color:#00C896;text-transform:uppercase">Acción:</span>
+        <input type="text" id="ej1-accion" class="ninp" style="font-size:13px;padding:7px 12px" placeholder="¿Qué hace?" oninput="sf('ej1-accion',this.value)">
+      </div>
     </div>
-    <div style="margin-top:10px;padding:10px 14px;background:rgba(255,184,0,0.06);border-radius:8px;font-size:12px;color:var(--muted)"><strong style="color:var(--amber)">Nota de evaluación:</strong> aceptar cualquier contexto coherente (autopista, aula con proyector, habitación). Lo importante es que el punto de quiebre tenga un valor concreto — no "cuando molesta mucho".</div>
   </div>
 
-  <div>
-    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 3 — Criterios de evaluación</div>
-    <div style="background:var(--card);border-radius:var(--r);padding:16px;border:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;gap:8px">
-      <div style="display:flex;align-items:flex-start;gap:10px"><span style="color:#00C896;font-size:14px;flex-shrink:0">✓</span><span style="font-size:13px;color:var(--off)">El problema vago no tiene números ni valores técnicos</span></div>
-      <div style="display:flex;align-items:flex-start;gap:10px"><span style="color:#00C896;font-size:14px;flex-shrink:0">✓</span><span style="font-size:13px;color:var(--off)">El contexto tiene lugar, momento y actores identificados</span></div>
-      <div style="display:flex;align-items:flex-start;gap:10px"><span style="color:#00C896;font-size:14px;flex-shrink:0">✓</span><span style="font-size:13px;color:var(--off)">La variable tiene una unidad de medida (dB, °C, lux, cm, etc.)</span></div>
-      <div style="display:flex;align-items:flex-start;gap:10px"><span style="color:#00C896;font-size:14px;flex-shrink:0">✓</span><span style="font-size:13px;color:var(--off)">El punto de quiebre es un número o condición objetiva — no "mucho" ni "excesivo"</span></div>
-      <div style="display:flex;align-items:flex-start;gap:10px"><span style="color:#00C896;font-size:14px;flex-shrink:0">✓</span><span style="font-size:13px;color:var(--off)">El enunciado es una sola oración que usa la fórmula sin adjetivos subjetivos</span></div>
-      <div style="display:flex;align-items:flex-start;gap:10px"><span style="color:#FF4D6A;font-size:14px;flex-shrink:0">✗</span><span style="font-size:13px;color:var(--muted)">No aceptar puntos de quiebre subjetivos aunque el contexto sea bueno</span></div>
+  <div style="margin-bottom:20px">
+    <div style="font-size:11px;font-weight:700;color:#7A8BAA;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">EJERCICIO 2 — Transformá el problema vago</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:10px">Tomá el problema vago "La luz molesta" y completá las 4 componentes.</div>
+    <div style="background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.07)">
+      <div style="display:grid;grid-template-columns:130px 1fr;border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div style="padding:11px 14px;border-right:1px solid rgba(255,255,255,0.05)"><span style="font-size:10px;font-weight:800;color:#00D4FF;text-transform:uppercase;letter-spacing:.06em">CONTEXTO</span></div>
+        <div style="padding:8px 14px"><input type="text" id="ej2-ctx" class="ninp" style="width:100%;font-size:13px;padding:7px 12px" placeholder="¿Dónde y cuándo ocurre?" oninput="sf('ej2-ctx',this.value)"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:130px 1fr;border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div style="padding:11px 14px;border-right:1px solid rgba(255,255,255,0.05)"><span style="font-size:10px;font-weight:800;color:#FFB800;text-transform:uppercase;letter-spacing:.06em">VARIABLE</span></div>
+        <div style="padding:8px 14px"><input type="text" id="ej2-var" class="ninp" style="width:100%;font-size:13px;padding:7px 12px" placeholder="¿Qué medimos?" oninput="sf('ej2-var',this.value)"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:130px 1fr;border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div style="padding:11px 14px;border-right:1px solid rgba(255,255,255,0.05)"><span style="font-size:10px;font-weight:800;color:#FF4D6A;text-transform:uppercase;letter-spacing:.06em">PTO. DE QUIEBRE</span></div>
+        <div style="padding:8px 14px"><input type="text" id="ej2-qbk" class="ninp" style="width:100%;font-size:13px;padding:7px 12px" placeholder="¿A partir de qué valor?" oninput="sf('ej2-qbk',this.value)"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:130px 1fr">
+        <div style="padding:11px 14px;border-right:1px solid rgba(255,255,255,0.05)"><span style="font-size:10px;font-weight:800;color:#00C896;text-transform:uppercase;letter-spacing:.06em">ENUNCIADO</span></div>
+        <div style="padding:8px 14px"><textarea id="ej2-enun" rows="2" style="width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:9px 12px;color:var(--off);font-size:13px;font-family:inherit;resize:vertical;outline:none" placeholder="En [contexto] ocurre [problema] cuando [variable] supera [quiebre], lo que genera [efecto]." oninput="sf('ej2-enun',this.value)"></textarea></div>
+      </div>
     </div>
   </div>
+
+  <div style="margin-bottom:20px">
+    <div style="font-size:11px;font-weight:700;color:#7A8BAA;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">EJERCICIO 3 — Mi problema propio</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:10px">Identificá un problema que hayas observado vos. Completá las 4 componentes y enuncialo técnicamente.</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Problema vago</div>
+        <input type="text" id="ej3-vago" class="ninp" style="width:100%;font-size:13px;padding:8px 13px" placeholder="Describilo como lo dirías en la calle..." oninput="sf('ej3-vago',this.value)">
+      </div>
+      <div><div style="font-size:10px;font-weight:700;color:#00D4FF;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Contexto</div><input type="text" id="ej3-ctx" class="ninp" style="width:100%;font-size:13px;padding:8px 13px" placeholder="¿Dónde y cuándo?" oninput="sf('ej3-ctx',this.value)"></div>
+      <div><div style="font-size:10px;font-weight:700;color:#FFB800;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Variable</div><input type="text" id="ej3-var" class="ninp" style="width:100%;font-size:13px;padding:8px 13px" placeholder="¿Qué medís?" oninput="sf('ej3-var',this.value)"></div>
+      <div><div style="font-size:10px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Punto de quiebre</div><input type="text" id="ej3-qbk" class="ninp" style="width:100%;font-size:13px;padding:8px 13px" placeholder="¿A partir de qué valor exacto?" oninput="sf('ej3-qbk',this.value)"></div>
+      <div><div style="font-size:10px;font-weight:700;color:#00C896;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Problema técnico (enunciado final)</div><textarea id="ej3-enun" rows="3" style="width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 13px;color:var(--off);font-size:13px;font-family:inherit;resize:vertical;outline:none" placeholder="En [contexto] ocurre [problema] cuando [variable] supera [quiebre], lo que genera [efecto]." oninput="sf('ej3-enun',this.value)"></textarea></div>
+    </div>
+  </div>
+
+  <div id="save-indicator" style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;background:rgba(0,200,150,0.08);border:1px solid rgba(0,200,150,0.2);border-radius:7px;font-size:12px;color:#00C896;opacity:0;transition:opacity .3s">✓ Guardado</div>
 </section>
 
-<!-- CHECKLIST DE EVALUACIÓN -->
 <section class="sec" id="checklist">
   <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">Autoevaluación</span></div>
-  <h2>Checklist de evaluación</h2>
-  <p class="desc">Criterios de evaluación conceptual para los alumnos.</p>
+  <h2>Mi checklist</h2>
+  <p class="desc">Verificá que entendiste los conceptos clave. Marcá solo lo que podés explicar con tus propias palabras.</p>
   <div class="cklist" id="cklist">
-    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Explica el flujo Entorno → Sensor → Decisión → Acción con un ejemplo propio.</span></label>
-    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Diferencia correctamente sensor, controlador y actuador.</span></label>
-    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Identifica por qué "hay mucho ruido" es un problema vago.</span></label>
-    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Nombra las 4 componentes del problema técnico de memoria.</span></label>
-    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Define punto de quiebre con un valor concreto — no subjetivo.</span></label>
-    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Transforma un problema vago en un problema técnico usando la fórmula.</span></label>
-    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Identifica al menos 5 variables y los sensores que las miden.</span></label>
-    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Explica qué es Industria 4.0 y su relación con la electromecánica.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Puedo explicar el flujo Entorno → Sensor → Decisión → Acción con un ejemplo propio.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Entiendo la diferencia entre sensor, controlador y actuador.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Puedo identificar por qué "hay mucho ruido" es un problema vago.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Conozco las 4 componentes del problema técnico y puedo nombrarlas de memoria.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Sé qué es un punto de quiebre y puedo dar un ejemplo con un número o condición concreta.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Puedo tomar un problema vago y transformarlo en un problema técnico usando la fórmula.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Conozco al menos 5 variables y los sensores que las miden.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Entiendo qué significa Industria 4.0 y cómo se relaciona con mi carrera.</span></label>
   </div>
   <div id="ck-res">
     <span id="ck-n" style="color:var(--amber);font-weight:800;font-size:18px">0</span>
     <span style="color:var(--muted);font-size:12.5px"> / 8 conceptos verificados</span>
-    <div id="ck-m" style="font-size:12px;color:var(--muted);margin-top:3px">Criterios pendientes de evaluación.</div>
+    <div id="ck-m" style="font-size:12px;color:var(--muted);margin-top:3px">Repasá los que todavía no podés explicar.</div>
   </div>
 </section>
 
@@ -458,19 +511,103 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
     La ingeniería empieza Entendiendo · 1er y 2do Año · Electromecánica · Robótica · Automatización · IA
   </div>
 </section>
+
+<!-- ACTIVIDAD: ordenar el glosario según el flujo -->
+<section class="sec" id="actividad-flujo">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Actividad final</span></div>
+  <h2>Ordená el glosario según el flujo de ejecución</h2>
+  <p class="desc">Hacé clic en cada término para sumarlo a la fila, en el orden en que aparecen dentro del flujo de un proyecto (desde el problema vago hasta el objetivo y su ejecución). Se numeran solos según el orden en que los elegís. Si sacás uno del medio, los demás se reacomodan. Volvé a hacer clic —en el término o en la fila— para quitarlo.</p>
+  <div class="flow-pool" id="flowPool"></div>
+  <div class="flow-row empty" id="flowRow"></div>
+  <div class="flow-bar">
+    <span class="flow-count">En la fila: <b id="flowN">0</b> / <span id="flowTot">0</span></span>
+    <button class="flow-reset" type="button" onclick="flowReset()">Reiniciar</button>
+  </div>
+</section>
+
+<section class="sec" id="autocorreccion">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Autocorrección</span></div>
+  <h2>Comprobá lo que entendiste</h2>
+  <p class="desc">Estos ejercicios se corrigen solos y al instante. Podés intentar las veces que quieras: lo que cuenta es tu mejor resultado. Abajo ves tu progreso por competencia — el mismo que después va a alimentar tu boletín.</p>
+
+  <script type="application/json" class="cd-ejercicio">
+  {
+    "v": 1, "id": "u1-e1", "tipo": "opcion-multiple", "competencias": ["u1-c2"],
+    "consigna": "¿Cuál de estos enunciados es un problema técnico bien formulado?",
+    "datos": {
+      "opciones": [
+        "Hay mucho ruido en la calle que molesta a la gente y genera problemas.",
+        "El nivel de ruido en Av. 9 de Julio supera los 70 dB los viernes de noche, perturbando el descanso de los habitantes.",
+        "El ruido en la ciudad es grave y hay que solucionarlo cuanto antes.",
+        "La gente siente que hay demasiado ruido últimamente."
+      ],
+      "correcta": 1,
+      "explicaciones": [
+        "\"Mucho\" es subjetivo y la \"y\" une dos problemas distintos — sigue siendo vago.",
+        "Tiene contexto, variable medible (dB), punto de quiebre (70 dB) y efecto no deseado. Una sola oración, sin adjetivos subjetivos.",
+        "\"Grave\" y \"cuanto antes\" son subjetivos: no hay variable ni punto de quiebre.",
+        "Una sensación no es una variable: no se puede medir con un sensor."
+      ]
+    }
+  }
+  </script>
+
+  <script type="application/json" class="cd-ejercicio">
+  {
+    "v": 1, "id": "u1-e2", "tipo": "verdadero-falso", "competencias": ["u1-c2"],
+    "consigna": "Marcá si cada afirmación sobre las 4 componentes es verdadera o falsa.",
+    "datos": {
+      "afirmaciones": [
+        { "texto": "El contexto es el escenario donde ocurre el problema, no el síntoma.", "verdadera": true },
+        { "texto": "\"Cuando el ruido ya es mucho\" es un punto de quiebre válido.", "verdadera": false,
+          "explicacion": "Un punto de quiebre nunca es subjetivo: tiene que ser un número, un estado lógico o un cambio concreto." },
+        { "texto": "La variable tiene que poder medirse directamente con un sensor.", "verdadera": true },
+        { "texto": "La componente PROBLEMA aporta información nueva que no estaba en las otras tres.", "verdadera": false,
+          "explicacion": "El PROBLEMA no genera información nueva: se reconstruye a partir de contexto, variable y punto de quiebre." }
+      ]
+    }
+  }
+  </script>
+
+  <script type="application/json" class="cd-ejercicio">
+  {
+    "v": 1, "id": "u1-e3", "tipo": "ordenar", "competencias": ["u1-c2"],
+    "consigna": "Ordená las 4 componentes según el orden correcto para identificarlas.",
+    "datos": { "items": ["CONTEXTO", "VARIABLE", "PUNTO DE QUIEBRE", "PROBLEMA"] }
+  }
+  </script>
+
+  <script type="application/json" class="cd-ejercicio">
+  {
+    "v": 1, "id": "u1-e4", "tipo": "ordenar", "competencias": ["u1-c1"],
+    "consigna": "Ordená el flujo de un sistema automático, desde que mide hasta que actúa.",
+    "datos": { "items": [
+      "El sensor mide la variable del entorno",
+      "El valor medido se compara con el punto de quiebre",
+      "El sistema decide si hay que intervenir",
+      "El actuador ejecuta la acción (motor, relé, buzzer…)"
+    ] }
+  }
+  </script>
+
+  <script type="application/json" class="cd-ejercicio">
+  {
+    "v": 1, "id": "u1-e5", "tipo": "numerico", "competencias": ["u1-c3"],
+    "consigna": "Un tanque de 200 cm de altura tiene un sensor de distancia HC-SR04 en la tapa, apuntando al agua. Queremos alertar cuando quede solo el 25% del agua. ¿Qué distancia debe medir el sensor en ese momento?",
+    "datos": { "respuesta": 150, "tolerancia": 5, "unidad": "cm",
+      "pista": "el HC-SR04 mide el espacio vacío entre la tapa y la superficie del agua, no el agua." }
+  }
+  </script>
+
+  <h3 style="margin-top:26px;font-size:14px;color:#00D4FF;text-transform:uppercase;letter-spacing:.06em">Mi progreso — Unidad 1</h3>
+  <div class="cd-progreso" data-unidad="u1"></div>
+</section>
 </main>
-
-
-<div style="position:fixed;bottom:0;left:var(--sw);right:0;background:#060918;border-top:1px solid rgba(0,212,255,0.12);padding:10px 24px;z-index:150;display:flex;align-items:center;gap:14px">
-  <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em">🎓 Guía Docente — La ingeniería empieza Entendiendo</span>
-  <button onclick="document.querySelectorAll('.fstep').forEach(s=>s.classList.add('open'));window.print()" style="padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #9B59B6;background:rgba(155,89,182,0.1);color:#9B59B6;font-family:inherit">🖨 Imprimir guía</button>
-</div>
-<div style="height:62px"></div>
 
 <script>
 const K='u1_';
-function sN(v){localStorage.setItem(K+'n',v);document.getElementById('sbn').textContent=v||'Docente';const p=document.getElementById('ph-n');if(p)p.textContent=v}
-function ck(inp){inp.closest('.ckitem').classList.toggle('checked',inp.checked);const all=document.querySelectorAll('#cklist input'),done=document.querySelectorAll('#cklist input:checked').length;document.getElementById('ck-n').textContent=done;const r=document.getElementById('ck-res'),m=document.getElementById('ck-m');if(done===all.length){r.style.borderColor='var(--green)';r.style.background='rgba(0,200,150,0.07)';m.textContent='✓ Todos los criterios evaluados.';m.style.color='var(--green)'}else if(done>=5){r.style.borderColor='var(--amber)';r.style.background='rgba(255,184,0,0.05)';m.textContent='Mayoría de criterios cumplidos — revisar los pendientes.';m.style.color='var(--amber)'}else{r.style.borderColor='';r.style.background='var(--card)';m.textContent='Criterios pendientes de evaluación.';m.style.color='var(--muted)'}const s=Array.from(all).map(i=>i.checked?'1':'0').join('');localStorage.setItem(K+'cl',s)}
+function sN(v){localStorage.setItem(K+'n',v);document.getElementById('sbn').textContent=v||'—';const p=document.getElementById('ph-n');if(p)p.textContent=v}
+function ck(inp){inp.closest('.ckitem').classList.toggle('checked',inp.checked);const all=document.querySelectorAll('#cklist input'),done=document.querySelectorAll('#cklist input:checked').length;document.getElementById('ck-n').textContent=done;const r=document.getElementById('ck-res'),m=document.getElementById('ck-m');if(done===all.length){r.style.borderColor='var(--green)';r.style.background='rgba(0,200,150,0.07)';m.textContent='¡Todos los conceptos verificados! Estás listo para la Unidad 2. 🎯';m.style.color='var(--green)'}else if(done>=5){r.style.borderColor='var(--amber)';r.style.background='rgba(255,184,0,0.05)';m.textContent='Bien encaminado — repasá los últimos conceptos.';m.style.color='var(--amber)'}else{r.style.borderColor='';r.style.background='var(--card)';m.textContent='Repasá los que todavía no podés explicar.';m.style.color='var(--muted)'}const s=Array.from(all).map(i=>i.checked?'1':'0').join('');localStorage.setItem(K+'cl',s)}
 function tSB(){document.getElementById('sb').classList.toggle('open')}
 function cSB(){if(window.innerWidth<=768)document.getElementById('sb').classList.remove('open')}
 window.addEventListener('scroll',()=>{const p=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;document.getElementById('pf').style.width=p+'%';document.getElementById('bt').classList.toggle('vis',window.scrollY>400)},{passive:true});
@@ -478,6 +615,42 @@ window.addEventListener('scroll',()=>{const p=window.scrollY/(document.documentE
 (function(sb,navs,secs){if(!sb||!navs.length||!secs.length)return;let cur=null;function follow(n){const t=n.offsetTop,b=t+n.offsetHeight,vT=sb.scrollTop,vB=vT+sb.clientHeight;if(t<vT+44||b>vB-44)sb.scrollTo({top:t-sb.clientHeight/2+n.offsetHeight/2,behavior:'smooth'})}function setA(id){if(id===cur)return;cur=id;navs.forEach(n=>{const on=n.getAttribute('href')==='#'+id;n.classList.toggle('active',on);if(on)follow(n)})}const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)setA(e.target.id)})},{rootMargin:'-12% 0px -80% 0px',threshold:0});secs.forEach(s=>io.observe(s));let best=null;secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*0.3)best=s});setA((best||secs[0]).id)})(document.getElementById('sb'),document.querySelectorAll('.ni'),document.querySelectorAll('section[id]'));
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();window.scrollTo({top:t.offsetTop-24,behavior:'smooth'})}})});
 window.addEventListener('load',()=>{const n=localStorage.getItem(K+'n')||'';if(n){document.getElementById('myname').value=n;document.getElementById('sbn').textContent=n;const p=document.getElementById('ph-n');if(p)p.textContent=n}const cl=localStorage.getItem(K+'cl');if(cl){document.querySelectorAll('#cklist input').forEach((i,idx)=>{if(cl[idx]==='1'){i.checked=true;i.closest('.ckitem').classList.add('checked')}});if(document.querySelector('#cklist input:checked'))document.querySelector('#cklist input').dispatchEvent(new Event('change'))}});
+
+/* Actividad: ordenar el glosario según el flujo (cola FIFO con renumeración dinámica) */
+const flowQ=[];let flowTerms=[];
+function flowRender(){
+  const pool=document.getElementById('flowPool'),row=document.getElementById('flowRow');
+  pool.querySelectorAll('.fp').forEach(p=>p.classList.toggle('sel',flowQ.includes(+p.dataset.id)));
+  row.innerHTML='';
+  flowQ.forEach((id,i)=>{const t=flowTerms[id],el=document.createElement('span');el.className='fq';el.style.setProperty('--gc',t.color);el.innerHTML='<span class="n">'+(i+1)+'</span>'+t.name+'<span class="x">✕</span>';el.onclick=()=>flowToggle(id);row.appendChild(el)});
+  row.classList.toggle('empty',flowQ.length===0);
+  document.getElementById('flowN').textContent=flowQ.length;
+  localStorage.setItem(K+'flow',JSON.stringify(flowQ));
+}
+function flowToggle(id){const i=flowQ.indexOf(id);if(i===-1)flowQ.push(id);else flowQ.splice(i,1);flowRender()}
+function flowReset(){flowQ.length=0;flowRender()}
+function flowInit(){
+  const pool=document.getElementById('flowPool');if(!pool)return;
+  flowTerms=Array.from(document.querySelectorAll('#glosario .gi')).map(gi=>({name:gi.querySelector('.gterm').textContent.trim(),color:(gi.style.getPropertyValue('--gc')||'#FFB800').trim()}));
+  document.getElementById('flowTot').textContent=flowTerms.length;
+  pool.innerHTML='';
+  flowTerms.forEach((t,id)=>{const p=document.createElement('span');p.className='fp';p.dataset.id=id;p.style.setProperty('--gc',t.color);p.textContent=t.name;p.onclick=()=>flowToggle(id);pool.appendChild(p)});
+  const s=localStorage.getItem(K+'flow');if(s){try{JSON.parse(s).forEach(id=>{if(id>=0&&id<flowTerms.length&&!flowQ.includes(id))flowQ.push(id)})}catch(e){}}
+  flowRender();
+}
+flowInit();
 </script>
+<!-- SEND BAR -->
+<div style="position:fixed;bottom:0;left:var(--sw);right:0;background:#060918;border-top:1px solid rgba(255,184,0,0.12);padding:10px 24px;z-index:150;display:flex;align-items:center;gap:12px">
+  <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em">📤 Entregá tu trabajo</span>
+  <button onclick="window.print()" style="padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #9B59B6;background:rgba(155,89,182,0.1);color:#9B59B6;font-family:inherit;transition:all .2s" onmouseover="this.style.background='rgba(155,89,182,0.22)'" onmouseout="this.style.background='rgba(155,89,182,0.1)'">🖨 Imprimir</button>
+  <button onclick="sendGmail()" style="padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #FFB800;background:rgba(255,184,0,0.1);color:#FFB800;font-family:inherit;transition:all .2s" onmouseover="this.style.background='rgba(255,184,0,0.22)'" onmouseout="this.style.background='rgba(255,184,0,0.1)'">✉ Enviar por Gmail</button>
+</div>
+<div style="height:62px"></div>
+<div style="height:62px"></div>
+<script src="../../cuaderno/js/niveles.js"></script>
+<script src="../../cuaderno/js/sdk.js"></script>
+<script src="../../cuaderno/js/motor.js"></script>
+<script>CuadernoMotor.init({unidad:'u1',competenciasUrl:'../cuaderno/competencias/u1.json'})</script>
 </body>
 </html>

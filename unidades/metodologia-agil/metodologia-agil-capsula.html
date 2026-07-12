@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metodología Ágil de Proyecto — Unidad 6 | Taller de Proyecto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0e1117; --bg-soft:#151a22; --bg-raised:#1c2330; --line:#ffffff0f;
+  --accent:#9B59B6; --amber:#FFB800; --cyan:#00D4FF; --green:#00C896; --red:#FF4D6A;
+  --text:#e8edf5; --text-dim:#7a8baa; --text-mid:#b0bacb; --radius:4px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+::selection{background:var(--accent);color:#fff}
+body{
+  background:radial-gradient(ellipse 1400px 800px at 15% -5%,#221a2c 0%,transparent 55%),
+             radial-gradient(ellipse 800px 600px at 90% 25%,#170d1f 0%,transparent 50%),var(--bg);
+  color:var(--text);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;
+  overflow-y:scroll;scroll-snap-type:y mandatory;
+}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;margin:0;color:#f0f4fa}
+.mono{font-family:'JetBrains Mono',monospace}
+.slide{min-height:100vh;width:100%;display:flex;align-items:center;justify-content:center;padding:4.5rem 2.8rem 2rem;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden}
+.slide+.slide{border-top:1px solid var(--line)}
+.slide.deepen{background:linear-gradient(180deg,#150e1a,#0e1117)}
+.slide-wrap{width:100%;max-width:1380px;margin:0 auto}
+.topbar{position:fixed;top:0;left:0;width:100%;height:3.2rem;background:rgba(14,17,23,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:60;display:flex;align-items:center;justify-content:space-between;padding:0 1.6rem}
+.brandmark{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.82rem;color:rgba(232,237,245,.7);display:flex;align-items:center;gap:.4rem;pointer-events:none}
+.brandmark span{color:var(--accent)}
+.slide-counter{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-dim);letter-spacing:.05em}
+.slide-counter b{color:var(--accent)}
+.progress-fill{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:61;transition:width .35s ease}
+.dotnav{position:fixed;right:1.3rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:.55rem;align-items:center}
+.dotnav button{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);border:none;padding:0;cursor:pointer;transition:all .2s}
+.dotnav button.deepen-dot{background:rgba(255,184,0,.3)}
+.dotnav button:hover{background:rgba(255,255,255,.45)}
+.dotnav button.active{background:var(--accent);transform:scale(1.6)}
+.arrownav{position:fixed;right:1.3rem;bottom:1.4rem;z-index:60;display:flex;gap:.45rem}
+.arrownav button{width:34px;height:34px;border-radius:50%;background:var(--bg-raised);border:1px solid rgba(255,255,255,.12);color:var(--text);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.arrownav button:hover{border-color:var(--accent);background:#2a1f33}
+.arrownav button:disabled{opacity:.2;cursor:default}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.eyebrow::before{content:'';display:block;width:1.8rem;height:1.5px;background:var(--accent)}
+.eyebrow.deep{color:var(--amber)}
+.eyebrow.deep::before{background:var(--amber)}
+h1.title{font-size:clamp(2.2rem,4.5vw,3.6rem);line-height:1.0;letter-spacing:-.015em;max-width:16ch}
+h1.title em{font-style:normal;color:var(--accent)}
+h2.title{font-size:clamp(1.2rem,2.2vw,1.6rem);max-width:42ch;margin-top:.7rem;color:var(--text-mid);font-weight:400}
+.sec-head{max-width:68ch;margin-bottom:1.4rem}
+.sec-head h2{font-size:clamp(1.3rem,2.2vw,1.8rem)}
+.sec-head p{color:var(--text-dim);margin-top:.45rem;font-size:.88rem;line-height:1.55}
+.sec-head.center{max-width:none;text-align:center;margin-left:auto;margin-right:auto}
+.sec-head.center .eyebrow{justify-content:center}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;align-items:center}
+.split.wide{grid-template-columns:1.15fr .85fr}
+.notes{color:var(--text-dim);font-size:.86rem}
+.notes ul{padding-left:1rem;margin:.5rem 0}
+.notes li{margin-bottom:.4rem;line-height:1.45}
+.notes li b{color:var(--text)}
+.tip{margin-top:.8rem;background:linear-gradient(180deg,#221a2c,#1a1420);border:1px solid rgba(155,89,182,.2);border-left:3px solid var(--accent);border-radius:var(--radius);padding:.65rem .9rem;font-size:.8rem;color:#d4c2e0;line-height:1.45}
+.tip b{color:var(--accent)}
+.consigna{background:var(--bg-raised);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:var(--radius);padding:.9rem 1.05rem;font-size:.88rem;color:var(--text-mid);line-height:1.5;margin:.65rem 0}
+.consigna b{color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.3rem}
+.svg-panel{background:var(--bg-raised);border:1px solid rgba(155,89,182,.14);border-radius:8px;padding:1.1rem 1.2rem 1rem;position:relative}
+.panel-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.55rem}
+.panel-label .pname{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.panel-label .pcount{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-dim)}
+svg.diagram{width:100%;height:auto;display:block;max-height:50vh}
+.fade{opacity:0}
+.controls{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-top:.7rem}
+.btn{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.03em;text-transform:uppercase;background:var(--bg-raised);color:var(--text);border:1px solid rgba(255,255,255,.12);padding:.38rem .7rem;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .15s}
+.btn:hover{background:#2a1f33;border-color:var(--accent)}
+.btn:active{transform:scale(.96)}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+.btn.primary:hover{filter:brightness(1.1)}
+.btn.deepen-btn{background:var(--amber);color:#1a1400;border-color:var(--amber);font-weight:700}
+.card-row{display:grid;gap:.8rem}
+.card-row.cols2{grid-template-columns:1fr 1fr}
+.card-row.cols3{grid-template-columns:repeat(3,1fr)}
+.card-row.cols4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;padding:.85rem 1rem}
+.card.good{border-left:3px solid var(--green)}
+.card.bad{border-left:3px solid var(--red)}
+.card.amber{border-left:3px solid var(--amber)}
+.card.purple{border-left:3px solid var(--accent)}
+.card.cyan{border-left:3px solid var(--cyan)}
+.card .c-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.35rem}
+.card.good .c-label{color:var(--green)}
+.card.bad .c-label{color:var(--red)}
+.card.amber .c-label{color:var(--amber)}
+.card.purple .c-label{color:var(--accent)}
+.card.cyan .c-label{color:var(--cyan)}
+.card h4{font-size:.94rem;margin-bottom:.3rem;color:#f0f4fa}
+.card p{font-size:.8rem;color:var(--text-dim);line-height:1.45}
+.step-box{background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;padding:.65rem 1rem;display:grid;grid-template-columns:2.5rem 1fr;column-gap:.7rem;align-items:start}
+.step-box .sn{font-family:'JetBrains Mono',monospace;font-size:1.5rem;color:var(--accent);line-height:1;padding-top:.1rem}
+.step-box h4{font-size:.92rem;margin-bottom:.18rem;color:#f0f4fa;line-height:1.2}
+.step-box p{font-size:.79rem;color:var(--text-dim);line-height:1.42}
+.divider{text-align:center;padding:2rem 0}
+.divider .dtag{display:inline-block;background:rgba(255,184,0,.1);border:1px solid rgba(255,184,0,.35);color:var(--amber);font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:.5rem 1.2rem;border-radius:20px;margin-bottom:1rem}
+.divider h2{font-size:clamp(1.6rem,3vw,2.4rem);color:#f0f4fa}
+.divider p{color:var(--text-dim);margin-top:.7rem;font-size:.95rem;max-width:52ch;margin-left:auto;margin-right:auto}
+.closing-mark{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;color:#f0f4fa}
+.closing-sub{color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:.82rem;margin-top:.8rem;letter-spacing:.04em}
+.hero-meta{display:flex;gap:4rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line)}
+.hero-meta div{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);width:28%}
+.hero-meta b{display:block;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;margin-bottom:.1rem}
+.timebar{display:flex;align-items:center;gap:.6rem;background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,.3);border-radius:20px;padding:.5rem 1rem;margin-top:1.3rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#a8d8c4;width:fit-content}
+@media(max-width:900px){.slide{padding:4rem 1.3rem 1.5rem}.split,.split.wide{grid-template-columns:1fr}.card-row.cols3,.card-row.cols4{grid-template-columns:1fr 1fr}.dotnav,.arrownav{display:none}svg.diagram{max-height:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<div class="topbar">
+  <div class="brandmark">TALLER DE PROYECTO &nbsp;·&nbsp; <span>UNIDAD 6</span></div>
+  <div class="slide-counter"><b id="slideCurrent">01</b> / <span id="slideTotal">10</span></div>
+</div>
+<nav class="dotnav" id="dotNav"></nav>
+<div class="arrownav">
+  <button id="prevBtn" aria-label="Anterior">↑</button>
+  <button id="nextBtn" aria-label="Siguiente">↓</button>
+</div>
+
+<!-- ═══ SLIDE 1 — HERO ═══ -->
+<section class="slide" id="s-hero">
+  <div class="slide-wrap">
+    <div class="eyebrow" style="margin-bottom:1.2rem">Unidad 6 — Metodología Ágil de Proyecto</div>
+    <h1 class="title">Organizarse <em>rápido</em> para construir ya.</h1>
+    <h2 class="title">Roles, Sprints y MVP — lo justo para arrancar a producir hoy mismo.</h2>
+    <div class="timebar">⏱ Núcleo: ~20 min &nbsp;·&nbsp; Después: a producir &nbsp;·&nbsp; Profundizar: opcional, por tu cuenta</div>
+    <div class="hero-meta">
+      <div><b>Navegación</b>↓ Espacio para avanzar &nbsp;·&nbsp; ↑ volver</div>
+      <div><b>Recorrido núcleo</b>Procesos → Scrum → Roles → MVP → A producir</div>
+      <div><b>Después de esta unidad</b>Arrancan su Sprint 1 en el taller</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 2 — MAPA DE PROCESOS (rápido) ═══ -->
+<section class="slide" id="s-mapa">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Contexto rápido</div>
+      <h2>El camino completo, de un vistazo</h2>
+      <p>Ya tienen problema, objetivos y solución (U1-U3). Esto es lo que falta hasta el MVP terminado.</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label"><span class="pname">Unidades 6 a 14</span><span class="pcount" id="mapaCount">0 / 5</span></div>
+      <svg class="diagram" id="mapaSVG" viewBox="0 0 900 130" xmlns="http://www.w3.org/2000/svg">
+        <g class="fade">
+          <rect x="10" y="35" width="160" height="60" rx="7" fill="rgba(155,89,182,.12)" stroke="#9B59B6" stroke-width="2"/>
+          <text x="90" y="60" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#9B59B6" text-anchor="middle">Metodología</text>
+          <text x="90" y="80" font-family="JetBrains Mono,monospace" font-size="9" fill="#9B59B6" text-anchor="middle">● U6 · AHORA</text>
+        </g>
+        <g class="fade">
+          <line x1="171" y1="65" x2="192" y2="65" stroke="#4a5580" stroke-width="1.6"/><polygon points="192,60 202,65 192,70" fill="#4a5580"/>
+          <rect x="203" y="42" width="150" height="46" rx="6" fill="#1c2330" stroke="#4a5580" stroke-width="1.2"/>
+          <text x="278" y="69" font-family="Space Grotesk,sans-serif" font-size="10.5" font-weight="600" fill="#7a8baa" text-anchor="middle">Gantt · U7</text>
+        </g>
+        <g class="fade">
+          <line x1="354" y1="65" x2="375" y2="65" stroke="#4a5580" stroke-width="1.6"/><polygon points="375,60 385,65 375,70" fill="#4a5580"/>
+          <rect x="386" y="42" width="150" height="46" rx="6" fill="#1c2330" stroke="#4a5580" stroke-width="1.2"/>
+          <text x="461" y="69" font-family="Space Grotesk,sans-serif" font-size="10.5" font-weight="600" fill="#7a8baa" text-anchor="middle">Diseño · U8-U11</text>
+        </g>
+        <g class="fade">
+          <line x1="537" y1="65" x2="558" y2="65" stroke="#4a5580" stroke-width="1.6"/><polygon points="558,60 568,65 558,70" fill="#4a5580"/>
+          <rect x="569" y="42" width="150" height="46" rx="6" fill="#1c2330" stroke="#4a5580" stroke-width="1.2"/>
+          <text x="644" y="69" font-family="Space Grotesk,sans-serif" font-size="10.5" font-weight="600" fill="#7a8baa" text-anchor="middle">Materiales · U12-13</text>
+        </g>
+        <g class="fade">
+          <line x1="720" y1="65" x2="741" y2="65" stroke="#4a5580" stroke-width="1.6"/><polygon points="741,60 751,65 741,70" fill="#4a5580"/>
+          <rect x="752" y="42" width="140" height="46" rx="6" fill="#1c2330" stroke="#4a5580" stroke-width="1.2"/>
+          <text x="822" y="69" font-family="Space Grotesk,sans-serif" font-size="10.5" font-weight="600" fill="#7a8baa" text-anchor="middle">MVP · U14</text>
+        </g>
+      </svg>
+      <div class="controls">
+        <button class="btn primary" data-play="mapaSVG">▶ Mostrar</button>
+        <button class="btn" data-reset="mapaSVG">↺</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 3 — SCRUM (1 slide, condensado) ═══ -->
+<section class="slide" id="s-scrum">
+  <div class="slide-wrap">
+    <div class="split wide">
+      <div>
+        <div class="eyebrow">Concepto 1 — Scrum</div>
+        <h2 style="font-size:clamp(1.4rem,2.4vw,2rem);margin-bottom:.9rem">Trabajar en ciclos cortos</h2>
+        <p class="notes" style="font-size:.9rem">Un <b>Sprint</b> es un bloque corto de trabajo (para nosotros: cada clase de 4hs) con un objetivo concreto. Se planifica, se ejecuta, se revisa.</p>
+        <div class="tip">💡 <strong>En este taller:</strong> cada una de las próximas clases ES un Sprint. Al final de cada una, revisamos qué se logró y ajustamos para la siguiente.</div>
+      </div>
+      <div class="svg-panel">
+        <div class="panel-label"><span class="pname">Ciclo del Sprint</span><span class="pcount" id="scrumCount">0 / 4</span></div>
+        <svg class="diagram" id="scrumSVG" viewBox="0 0 340 280" xmlns="http://www.w3.org/2000/svg">
+          <g class="fade"><circle cx="170" cy="140" r="95" fill="none" stroke="#9B59B6" stroke-width="2" stroke-dasharray="6,6"/></g>
+          <g class="fade"><rect x="120" y="15" width="100" height="46" rx="7" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.6"/><text x="170" y="35" font-family="JetBrains Mono,monospace" font-size="10" fill="#00D4FF" text-anchor="middle">1. Planificar</text><text x="170" y="49" font-family="Inter,sans-serif" font-size="8" fill="#7a8baa" text-anchor="middle">qué vamos a lograr</text></g>
+          <g class="fade"><rect x="245" y="115" width="100" height="46" rx="7" fill="rgba(255,184,0,.1)" stroke="#FFB800" stroke-width="1.6"/><text x="295" y="135" font-family="JetBrains Mono,monospace" font-size="10" fill="#FFB800" text-anchor="middle">2. Ejecutar</text><text x="295" y="149" font-family="Inter,sans-serif" font-size="8" fill="#7a8baa" text-anchor="middle">trabajo real</text></g>
+          <g class="fade"><rect x="120" y="215" width="100" height="46" rx="7" fill="rgba(0,200,150,.1)" stroke="#00C896" stroke-width="1.6"/><text x="170" y="235" font-family="JetBrains Mono,monospace" font-size="10" fill="#00C896" text-anchor="middle">3. Revisar</text><text x="170" y="249" font-family="Inter,sans-serif" font-size="8" fill="#7a8baa" text-anchor="middle">qué logramos</text></g>
+          <g class="fade"><rect x="-5" y="115" width="100" height="46" rx="7" fill="rgba(255,77,106,.08)" stroke="#FF4D6A" stroke-width="1.6"/><text x="45" y="135" font-family="JetBrains Mono,monospace" font-size="10" fill="#FF4D6A" text-anchor="middle">4. Ajustar</text><text x="45" y="149" font-family="Inter,sans-serif" font-size="8" fill="#7a8baa" text-anchor="middle">para el próximo</text></g>
+        </svg>
+        <div class="controls">
+          <button class="btn primary" data-play="scrumSVG">▶ Animar</button>
+          <button class="btn" data-reset="scrumSVG">↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 4 — ROLES (1 slide) ═══ -->
+<section class="slide" id="s-roles">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Concepto 2 — Roles</div>
+      <h2>4 roles para un equipo de 4-5</h2>
+      <p>Se eligen ahora, en 2 minutos. Se pueden ajustar más adelante si hace falta.</p>
+    </div>
+    <div class="card-row cols4">
+      <div class="card cyan"><div class="c-label">Diseño</div><h4>Planos y CAD</h4><p>Boceto, Tinkercad, vistas técnicas.</p></div>
+      <div class="card amber"><div class="c-label">Electrónica</div><h4>Sensores y Arduino</h4><p>Circuito, cableado, programación.</p></div>
+      <div class="card good"><div class="c-label">Construcción</div><h4>Herramientas</h4><p>Corte, ensamblaje, ajustes.</p></div>
+      <div class="card purple"><div class="c-label">Documentación</div><h4>Registro</h4><p>Fotos, carpeta, presentación final.</p></div>
+    </div>
+    <div class="consigna" style="margin-top:1.2rem"><b>Ahora — 2 minutos</b> Asignen los 4 roles en su equipo. Uno puede tener dos roles si son 4 en vez de 5.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 5 — MVP (1 slide) ═══ -->
+<section class="slide" id="s-mvp">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Concepto 3 — MVP</div>
+      <h2>Lo mínimo que tiene que funcionar</h2>
+      <p>Producto Mínimo Viable. No es la versión incompleta — es la versión más simple que ya resuelve el problema.</p>
+    </div>
+    <div class="card-row cols2">
+      <div class="card bad"><div class="c-label">✗ No es un MVP</div><p>Todas las funciones imaginables, carcasa perfecta, diseño final terminado. Eso es el producto final, no el mínimo.</p></div>
+      <div class="card good"><div class="c-label">✓ Sí es un MVP</div><p>Un sensor + un actuador + la lógica mínima que demuestra el objetivo SMART. Sin adornos.</p></div>
+    </div>
+    <div class="consigna" style="margin-top:1.2rem"><b>Ahora — 3 minutos</b> Escriban en una sola oración cuál es el MVP de su proyecto.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 6 — A PRODUCIR (fin del núcleo) ═══ -->
+<section class="slide" id="s-producir">
+  <div class="slide-wrap" style="text-align:center;max-width:760px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center">Fin de la parte teórica</div>
+    <h2 style="font-size:clamp(1.8rem,3.2vw,2.6rem);margin-bottom:1rem">Ahora, a producir.</h2>
+    <p style="color:var(--text-dim);font-size:.95rem;margin-bottom:1.5rem">Con roles y MVP definidos, arranquen su Sprint 1: empiecen a bocetar su idea en papel mientras avanzamos con la Unidad 7 (Gantt) en la próxima clase.</p>
+    <div class="consigna" style="text-align:left"><b>Consigna del Sprint 1</b> Bocetar a mano el MVP definido. Fotografiar el boceto final para la carpeta de proyecto.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 7 — DIVISOR PROFUNDIZAR ═══ -->
+<section class="slide deepen" id="s-divider">
+  <div class="slide-wrap">
+    <div class="divider">
+      <div class="dtag">🔍 Profundizar — opcional, por tu cuenta</div>
+      <h2>Lo que sigue es para el que quiere ir más allá</h2>
+      <p>No hace falta verlo en clase. Volvé a esta sección cuando tengas tiempo — en casa, o si el equipo termina antes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 8 — PROFUNDIZAR: KANBAN DETALLADO ═══ -->
+<section class="slide deepen" id="s-kanban">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow deep">Profundizar</div>
+      <h2>El tablero Kanban en detalle</h2>
+      <p>Una forma visual de ver en qué está cada tarea del equipo.</p>
+    </div>
+    <div class="card-row cols3">
+      <div class="card cyan"><div class="c-label">Por hacer</div><p>Tareas anotadas pero sin empezar. Ej: "cortar la carcasa base".</p></div>
+      <div class="card amber"><div class="c-label">Haciendo</div><p>En proceso ahora mismo. Máximo 1-2 tareas por persona a la vez.</p></div>
+      <div class="card good"><div class="c-label">Terminado</div><p>Verificado y funcionando, no solo "creo que está listo".</p></div>
+    </div>
+    <div class="tip">💡 <strong>Tip de equipo:</strong> usen post-its en una pared o una hoja dividida en 3 columnas. No hace falta ninguna app — lo visual y físico funciona mejor para un equipo de taller.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 9 — PROFUNDIZAR: CASOS REALES DE MVP ═══ -->
+<section class="slide deepen" id="s-casos">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow deep">Profundizar</div>
+      <h2>MVPs famosos que empezaron chiquitos</h2>
+      <p>Empresas reales que arrancaron probando lo mínimo, no el producto final.</p>
+    </div>
+    <div class="card-row cols2">
+      <div class="card purple"><div class="c-label">Caso 1</div><h4>Dropbox</h4><p>Antes de programar nada, su fundador grabó un video mostrando cómo funcionaría el producto. Con eso midieron el interés real antes de construir.</p></div>
+      <div class="card purple"><div class="c-label">Caso 2</div><h4>Zappos (venta de calzado online)</h4><p>El fundador sacó fotos de zapatos en tiendas físicas y los publicó online. Cuando alguien compraba, él mismo iba a comprarlo y enviarlo — sin inventario propio.</p></div>
+    </div>
+    <div class="tip">💡 <strong>El patrón se repite:</strong> probar la idea con lo mínimo posible, antes de invertir tiempo en la versión completa. Exactamente lo que van a hacer con su MVP físico.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 10 — CIERRE ═══ -->
+<section class="slide" id="s-cierre">
+  <div class="slide-wrap" style="text-align:center;max-width:700px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:1.4rem"><span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span>Cierre<span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span></div>
+    <div class="closing-mark">Equipo armado.<br>MVP definido.<br>A construir.</div>
+    <div class="closing-sub" style="margin-top:1.2rem">Taller de Proyecto &nbsp;·&nbsp; Unidad 6 — Metodología Ágil de Proyecto</div>
+    <div style="margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--line)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);margin-bottom:.4rem">PRÓXIMO</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent)">Unidad 7 — Planificación Temporal (Gantt)</div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const REDUCE = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  class Construction{
+    constructor(svg,{stepDuration=550}={}){
+      this.svg=svg; this.stepDuration=REDUCE?1:stepDuration;
+      this.elements=Array.from(svg.querySelectorAll('.fade'));
+      this.index=-1; this.timer=null; this.onChange=null;
+      this.setAll(false,{instant:true});
+    }
+    setAll(shown,{instant=false}={}){ this.elements.forEach(el=>this._set(el,shown,instant)); }
+    _set(el,shown,instant){ el.style.transition=instant?'none':`opacity ${this.stepDuration*.65}ms ease`; el.style.opacity=shown?'1':'0'; }
+    goto(target,{instantAll=false}={}){
+      clearInterval(this.timer);
+      target=Math.max(-1,Math.min(this.elements.length-1,target));
+      this.elements.forEach((el,i)=>{
+        const shown=i<=target, isEdge=(i===target&&!instantAll);
+        if(isEdge){ this._set(el,false,true); void el.getBoundingClientRect(); requestAnimationFrame(()=>requestAnimationFrame(()=>this._set(el,true,false))); }
+        else{ this._set(el,shown,true); }
+      });
+      this.index=target;
+      if(this.onChange)this.onChange(target,this.elements.length);
+    }
+    reset(){this.goto(-1)}
+    playAll(){ this.reset(); let i=0; const next=()=>{if(i>=this.elements.length)return; this.goto(i); i++; this.timer=setTimeout(next,this.stepDuration*.6);}; this.timer=setTimeout(next,100); }
+  }
+  const reg={};
+  document.querySelectorAll('svg.diagram').forEach(svg=>{ reg[svg.id]=new Construction(svg); });
+  document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.play].playAll()));
+  document.querySelectorAll('[data-reset]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.reset].reset()));
+  function bindCounter(svgId,elId){
+    const c=reg[svgId],el=document.getElementById(elId);
+    if(!c||!el)return;
+    const total=c.elements.length;
+    c.onChange=(idx)=>{el.textContent=(idx+1)+' / '+total};
+    el.textContent='0 / '+total;
+  }
+  bindCounter('mapaSVG','mapaCount');
+  bindCounter('scrumSVG','scrumCount');
+
+  const slides=Array.from(document.querySelectorAll('.slide'));
+  const dotNav=document.getElementById('dotNav');
+  const slideCurrentEl=document.getElementById('slideCurrent');
+  const slideTotalEl=document.getElementById('slideTotal');
+  const progressFill=document.getElementById('progressFill');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  let current=0;
+  slideTotalEl.textContent=String(slides.length).padStart(2,'0');
+  slides.forEach((sl,i)=>{
+    const b=document.createElement('button');
+    b.setAttribute('aria-label','Ir a pantalla '+(i+1));
+    if(sl.classList.contains('deepen')) b.classList.add('deepen-dot');
+    b.addEventListener('click',()=>goTo(i));
+    dotNav.appendChild(b);
+  });
+  const dots=Array.from(dotNav.children);
+  function setActive(i){
+    current=i;
+    dots.forEach((d,idx)=>d.classList.toggle('active',idx===i));
+    slideCurrentEl.textContent=String(i+1).padStart(2,'0');
+    progressFill.style.width=(((i+1)/slides.length)*100)+'%';
+    prevBtn.disabled=i===0; nextBtn.disabled=i===slides.length-1;
+  }
+  function goTo(i){ i=Math.max(0,Math.min(slides.length-1,i)); slides[i].scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'}); }
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>0.55){const idx=slides.indexOf(e.target);if(idx!==-1)setActive(idx);}});
+  },{threshold:[0.55]});
+  slides.forEach(sl=>io.observe(sl));
+  prevBtn.addEventListener('click',()=>goTo(current-1));
+  nextBtn.addEventListener('click',()=>goTo(current+1));
+  window.addEventListener('keydown',(e)=>{
+    const tag=(e.target&&e.target.tagName)||'';
+    if(tag==='INPUT'||tag==='TEXTAREA')return;
+    if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();goTo(current+1);}
+    else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();goTo(current-1);}
+    else if(e.key==='Home'){e.preventDefault();goTo(0);}
+    else if(e.key==='End'){e.preventDefault();goTo(slides.length-1);}
+  });
+  setActive(0);
+})();
+</script>
+</body>
+</html>

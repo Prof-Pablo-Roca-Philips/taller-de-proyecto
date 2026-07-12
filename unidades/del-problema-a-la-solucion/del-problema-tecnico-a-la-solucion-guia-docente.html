@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Del Problema a la Solución — Guía Docente · Taller de Proyecto</title>
+<style>
+:root{--navy:#0A0E2A;--mid:#1A2550;--lit:#253070;--cyan:#00D4FF;--cdim:#0097B8;--amber:#FFB800;--green:#00C896;--gdim:#007A5E;--red:#FF4D6A;--purple:#9B59B6;--white:#FFFFFF;--off:#E8EDF5;--muted:#7A8BAA;--card:#131B3A;--clit:#1E2B4A;--sw:255px;--r:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;display:flex;min-height:100vh}
+#sb{width:var(--sw);min-height:100vh;background:#060918;border-right:1px solid rgba(0,200,150,0.12);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sbl{padding:20px 16px 14px;border-bottom:1px solid rgba(0,200,150,0.1)}
+.sbl .tag{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--gdim);text-transform:uppercase;margin-bottom:5px}
+.sbl h1{font-size:13px;font-weight:800;color:var(--white);line-height:1.3}
+.sbl h1 span{color:var(--green)}
+.sbn{margin:10px 12px 0;background:rgba(0,200,150,0.05);border:1px solid rgba(0,200,150,0.12);border-radius:7px;padding:8px 11px;font-size:11.5px;color:var(--muted)}
+.sbn strong{color:var(--green);font-size:12px;display:block;margin-bottom:2px}
+.nl{padding:14px 16px 4px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 16px;text-decoration:none;color:var(--muted);font-size:12px;font-weight:500;border-left:3px solid transparent;transition:all .2s;cursor:pointer}
+.ni:hover{color:var(--white);background:rgba(0,200,150,0.05)}
+.ni.active{color:var(--green);border-left-color:var(--green);background:rgba(0,200,150,0.07)}
+.nd{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sbf{margin-top:auto;padding:12px 16px;border-top:1px solid rgba(255,255,255,0.05);font-size:11px;color:var(--muted);line-height:1.5}
+#main{margin-left:var(--sw);flex:1;padding-bottom:62px}
+#pb{position:fixed;top:0;left:var(--sw);right:0;height:3px;background:rgba(0,200,150,0.1);z-index:200}
+#pf{height:100%;background:var(--green);width:0%;transition:width .1s}
+#hero{background:linear-gradient(135deg,#0A0E2A 0%,#1A2550 55%,#0D1535 100%);padding:52px 48px 44px;position:relative;overflow:hidden;border-bottom:1px solid rgba(0,200,150,0.1)}
+#hero::before{content:'';position:absolute;top:-60px;right:-60px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(0,200,150,0.07) 0%,transparent 70%);pointer-events:none}
+.htag{display:inline-block;background:rgba(0,200,150,0.1);border:1px solid rgba(0,200,150,0.25);color:var(--green);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px}
+#hero h2{font-size:clamp(22px,3.5vw,38px);font-weight:900;color:var(--white);line-height:1.15;margin-bottom:8px}
+#hero h2 em{color:var(--green);font-style:normal}
+#hero p{font-size:13.5px;color:var(--muted);max-width:490px;margin-bottom:24px;line-height:1.7}
+.nrow{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.nrow label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.ninp{background:rgba(0,200,150,0.06);border:1.5px solid rgba(0,200,150,0.25);border-radius:8px;padding:9px 15px;color:var(--white);font-size:14px;font-weight:600;outline:none;min-width:200px;transition:border-color .2s;font-family:inherit}
+.ninp:focus{border-color:var(--green)}
+.ninp::placeholder{color:var(--muted);font-weight:400}
+.sec{padding:48px 48px 40px;border-bottom:1px solid rgba(255,255,255,0.04);scroll-margin-top:20px}
+.eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.edot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.etxt{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sec h2{font-size:clamp(17px,2.5vw,26px);font-weight:800;color:var(--white);margin-bottom:8px;line-height:1.2}
+.sec>.desc{color:var(--muted);font-size:13px;max-width:640px;margin-bottom:24px;line-height:1.65}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
+.cc{background:var(--card);border-radius:var(--r);padding:18px 20px;border:1px solid rgba(255,255,255,0.07);border-left:3px solid var(--ca,var(--green))}
+.cc h3{font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px}
+.cc p{font-size:12.5px;color:var(--muted);line-height:1.55}
+.def{background:var(--card);border:1px solid rgba(0,200,150,0.2);border-radius:var(--r);padding:22px 26px;margin-bottom:20px}
+.def p{font-size:15px;color:var(--off);line-height:1.75}
+.def strong{color:var(--green);font-weight:700}
+.def em{color:var(--amber);font-style:normal;font-weight:600}
+.rule{background:rgba(255,184,0,0.07);border:1px solid rgba(255,184,0,0.2);border-radius:var(--r);padding:13px 16px;margin-top:14px;font-size:13px;color:var(--off);line-height:1.6}
+.rule strong{color:var(--amber)}
+.rule.red{background:rgba(255,77,106,0.07);border-color:rgba(255,77,106,0.2)}
+.rule.red strong{color:var(--red)}
+.tip{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r);padding:13px 16px;margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.6}
+.tip strong{color:var(--off)}
+/* NO vs SI compare */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:18px}
+.cmp{background:var(--card);border-radius:var(--r);padding:16px 18px;border:1px solid rgba(255,255,255,0.07)}
+.cmp.bad{border-left:3px solid var(--red)}
+.cmp.good{border-left:3px solid var(--green)}
+.cmp .cmp-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.cmp.bad .cmp-label{color:var(--red)}
+.cmp.good .cmp-label{color:var(--green)}
+.cmp .cmp-quote{font-size:13.5px;color:var(--off);font-style:italic;line-height:1.5;margin-bottom:8px}
+.cmp .cmp-why{font-size:12px;color:var(--muted);line-height:1.5}
+/* checklist rows */
+.chklist{display:flex;flex-direction:column;gap:8px}
+.chkrow{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;padding:12px 15px;background:var(--card);border-radius:9px;border-left:3px solid var(--cc2,var(--cyan))}
+.chknum{width:30px;height:30px;border-radius:50%;background:var(--cc2,var(--cyan));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--navy)}
+.chkrow h4{font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px}
+.chkrow p{font-size:12px;color:var(--muted);line-height:1.45}
+/* three-col function/objective/restriction */
+.fortable{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.forcard{background:var(--card);border-radius:var(--r);padding:18px;border-top:3px solid var(--fc)}
+.forcard .for-t{font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--fc);margin-bottom:5px}
+.forcard .for-q{font-size:12px;font-style:italic;color:var(--off);margin-bottom:8px}
+.forcard .for-d{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.forcard .for-ej{font-size:11.5px;color:var(--off);background:rgba(255,255,255,0.04);border-radius:6px;padding:8px 11px;line-height:1.45}
+/* SMART rows */
+.smartlist{display:flex;flex-direction:column;gap:8px}
+.smartrow{display:grid;grid-template-columns:44px 130px 1fr;gap:12px;align-items:center;padding:11px 14px;background:var(--card);border-radius:9px;border-left:3px solid var(--sc,var(--cyan))}
+.smartL{width:38px;height:38px;border-radius:8px;background:var(--sc);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--navy)}
+.smartW{font-size:13px;font-weight:700;color:var(--sc)}
+.smartD{font-size:12px;color:var(--muted);line-height:1.45}
+/* two-phase ideation */
+.phases{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.phase{background:var(--card);border-radius:var(--r);padding:20px;border:1px solid rgba(255,255,255,0.07)}
+.phase.div{border-top:3px solid var(--cyan)}
+.phase.conv{border-top:3px solid var(--amber)}
+.phase h3{font-size:14px;font-weight:800;margin-bottom:8px}
+.phase.div h3{color:var(--cyan)}
+.phase.conv h3{color:var(--amber)}
+.phase p{font-size:12.5px;color:var(--muted);line-height:1.55;margin-bottom:10px}
+.phase .tools{font-size:11.5px;font-weight:700;font-style:italic}
+.phase.div .tools{color:var(--cyan)}
+.phase.conv .tools{color:var(--amber)}
+/* rules grid (brainstorm) */
+.rulesgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.brule{background:var(--card);border-radius:9px;padding:14px 16px;border-left:3px solid var(--bc,var(--cyan))}
+.brule h4{font-size:12.5px;font-weight:700;color:var(--bc);margin-bottom:4px}
+.brule p{font-size:11.5px;color:var(--muted);line-height:1.45}
+/* SCAMPER table */
+.scamper{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+.scrow{display:grid;grid-template-columns:52px 150px 1fr;align-items:center;border-bottom:1px solid rgba(255,255,255,0.05)}
+.scrow:last-child{border-bottom:none}
+.scL{margin:8px;width:36px;height:36px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--navy)}
+.scW{font-size:12.5px;font-weight:700}
+.scD{font-size:12px;color:var(--off);padding:10px 14px 10px 0}
+/* advanced tools */
+.advgrid{display:grid;grid-template-columns:1fr;gap:12px}
+.adv{background:var(--card);border-radius:var(--r);padding:18px 20px;border:1px solid rgba(255,255,255,0.07);border-left:3px solid var(--ac)}
+.adv-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.adv-t{font-size:14px;font-weight:800;color:var(--ac)}
+.adv-sub{font-size:11px;font-style:italic;color:var(--muted)}
+.adv-d{font-size:12.5px;color:var(--off);line-height:1.55;margin-bottom:8px}
+.adv-ej{font-size:11.5px;color:var(--muted);background:rgba(255,255,255,0.04);border-radius:6px;padding:8px 11px;line-height:1.5}
+.adv-ej strong{color:var(--off)}
+/* flow */
+.flowline{display:flex;flex-direction:column;gap:8px}
+.flowstep{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;padding:12px 16px;background:var(--card);border-radius:8px;border-left:3px solid var(--flc)}
+.flowstep .fs-t{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--flc)}
+.flowstep .fs-d{font-size:12.5px;color:var(--muted)}
+/* work exercises */
+.exlabel{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.exdesc{font-size:12.5px;color:var(--muted);margin-bottom:12px;line-height:1.55}
+.wfield{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:9px 13px;color:var(--off);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s}
+.wfield:focus{border-color:var(--green)}
+.wfield::placeholder{color:rgba(122,139,170,0.55);font-style:italic}
+textarea.wfield{resize:vertical;min-height:70px;line-height:1.55}
+.exblock{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+.exrow{display:grid;grid-template-columns:135px 1fr;border-bottom:1px solid rgba(255,255,255,0.05)}
+.exrow:last-child{border-bottom:none}
+.exrl{padding:11px 14px;border-right:1px solid rgba(255,255,255,0.05)}
+.exrl span{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.exrv{padding:8px 14px}
+/* checklist final */
+.cklist{display:flex;flex-direction:column;gap:7px}
+.ckitem{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--card);border-radius:8px;font-size:12.5px;color:var(--off);line-height:1.5;cursor:pointer;user-select:none;transition:background .2s;border:1px solid rgba(255,255,255,0.05)}
+.ckitem:hover{background:var(--clit)}
+.ckitem input{width:15px;height:15px;accent-color:var(--green);margin-top:2px;flex-shrink:0;cursor:pointer}
+.ckitem.checked{opacity:.5}.ckitem.checked span{text-decoration:line-through;color:var(--muted)}
+#ck-res{margin-top:13px;padding:12px 16px;border-radius:9px;font-size:13px;background:var(--card);border:1px solid rgba(255,255,255,0.07)}
+/* glosario */
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:9px}
+.gi{background:var(--card);border-radius:8px;padding:13px 15px;border-left:3px solid var(--gc,var(--green))}
+.gtag2{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-bottom:4px}
+.gterm{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:4px}
+.gdef{font-size:11.5px;color:var(--muted);line-height:1.5}
+#bt{position:fixed;bottom:74px;right:20px;width:36px;height:36px;background:var(--mid);border:1px solid rgba(0,200,150,0.25);border-radius:50%;color:var(--green);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;z-index:150}
+#bt.vis{opacity:1;pointer-events:auto}
+#mt{display:none;position:fixed;top:12px;left:12px;z-index:300;background:var(--mid);border:1px solid rgba(0,200,150,0.3);color:var(--green);font-size:17px;width:36px;height:36px;border-radius:8px;align-items:center;justify-content:center;cursor:pointer}
+#save-ind{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);background:rgba(0,200,150,0.1);border:1px solid rgba(0,200,150,0.3);border-radius:7px;padding:7px 14px;font-size:12px;color:var(--green);opacity:0;pointer-events:none;transition:opacity .3s;z-index:160}
+#save-ind.show{opacity:1}
+.sendbar{position:fixed;bottom:0;left:var(--sw);right:0;background:#060918;border-top:1px solid rgba(0,200,150,0.12);padding:10px 24px;z-index:150;display:flex;align-items:center;gap:12px}
+.sendbar .sblabel{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.sbtn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid;font-family:inherit;transition:all .2s}
+.sbtn.print{border-color:#9B59B6;background:rgba(155,89,182,0.1);color:#9B59B6}
+.sbtn.gmail{border-color:var(--green);background:rgba(0,200,150,0.1);color:var(--green)}
+@media(max-width:768px){:root{--sw:0px}#sb{transform:translateX(-255px);width:255px;transition:transform .3s}#sb.open{transform:translateX(0)}#main{margin-left:0}#mt{display:flex}.sec{padding:34px 20px 30px}#hero{padding:44px 20px 38px}.compare,.fortable,.phases,.rulesgrid{grid-template-columns:1fr}.smartrow{grid-template-columns:44px 1fr;row-gap:2px}.scrow{grid-template-columns:52px 1fr}.flowstep{grid-template-columns:1fr}#pb{left:0}.sendbar{left:0}}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(0,200,150,0.18);border-radius:3px}
+.print-hdr{display:none}
+@media print{#sb,#pb,#mt,#bt,#save-ind,.sendbar{display:none!important}body{background:#fff!important;color:#000!important;display:block!important;font-size:10pt}#main{margin-left:0!important;padding-bottom:0!important}.sec{padding:12px 0!important;border-bottom:1px solid #ddd!important}.def,.cc,.cmp,.chkrow,.forcard,.smartrow,.phase,.brule,.scamper,.adv,.flowstep,.gi,.ckitem,.exblock{background:#f9f9f9!important;border-color:#ccc!important}.def p,.cc p,.cmp-quote,.gdef,.ckitem,.exdesc,.scD,.adv-d{color:#000!important}.print-hdr{display:block!important}.wfield{border:1px solid #ccc!important;background:#fff!important}}
+</style>
+</head>
+<body>
+<div id="pb"><div id="pf"></div></div>
+<button id="mt" onclick="tSB()">☰</button>
+<button id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="save-ind">✓ Guardado</div>
+<div class="print-hdr" style="padding:0 0 12px;border-bottom:2px solid #000;margin-bottom:12px">
+  <div style="font-size:9pt;color:#555">TALLER DE PROYECTO · UNIDAD 3 — Del Problema a la Solución</div>
+  <div style="font-size:17pt;font-weight:800" id="ph-t">Guía Docente — Del Problema a la Solución</div>
+  <div style="font-size:9pt;color:#555" id="ph-n"></div>
+</div>
+
+<nav id="sb">
+  <div class="sbl"><div class="tag">Taller de Proyecto · Unidad 3</div><h1>Guía Docente<br><span>Del Problema a la Solución</span></h1></div>
+  <div class="sbn"><strong id="sbn">Docente</strong>Unidad 3 · Referencia y criterios</div>
+  <div class="nl">Parte 1 · Enunciar</div>
+  <a class="ni" href="#recorrido" onclick="cSB()"><span class="nd" style="background:#00C896"></span>¿Dónde estamos?</a>
+  <a class="ni" href="#enunciar" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span>La regla de oro</a>
+  <a class="ni" href="#control" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Las 5 preguntas de control</a>
+  <div class="nl">Parte 2 · Objetivos</div>
+  <a class="ni" href="#for" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Función · Objetivo · Restricción</a>
+  <a class="ni" href="#smart" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Objetivos SMART</a>
+  <div class="nl">Parte 3 · Idear</div>
+  <a class="ni" href="#ideacion" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Divergir y converger</a>
+  <a class="ni" href="#brainstorming" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Brainstorming</a>
+  <a class="ni" href="#scamper" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>SCAMPER</a>
+  <a class="ni" href="#avanzadas" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span>Herramientas para avanzar</a>
+  <div class="nl">Docente</div>
+  <a class="ni" href="#trabajo" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span>Respuestas y criterios</a>
+  <div class="nl">Cierre</div>
+  <a class="ni" href="#checklist" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Mi checklist</a>
+  <a class="ni" href="#glosario" onclick="cSB()"><span class="nd" style="background:#7A8BAA"></span>Glosario</a>
+  <div class="sbf">Electromecánica · Robótica<br>Automatización · IA</div>
+</nav>
+
+<main id="main">
+<section id="top">
+  <div id="hero">
+    <div class="htag">Unidad 3 · Guía Docente</div>
+    <h2>Del problema<br><em>a la solución</em></h2>
+    <p>Guía de referencia para el docente. Respuestas modelo y criterios de evaluación. No distribuir a los alumnos.</p>
+    <div class="nrow">
+      <label for="myname">Tu nombre:</label>
+      <input type="text" id="myname" class="ninp" placeholder="Escribí tu nombre..." oninput="sN(this.value)" autocomplete="off">
+    </div>
+  </div>
+</section>
+
+<!-- RECORRIDO -->
+<section class="sec" id="recorrido">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">Punto de partida</span></div>
+  <h2>¿Dónde estamos?</h2>
+  <p class="desc">Ya sabés transformar un problema vago en técnico (Unidad 2). Esta unidad cierra la etapa de análisis y es el puente hacia el diseño.</p>
+  <div class="flowline">
+    <div class="flowstep" style="--flc:#7A8BAA"><div class="fs-t">✓ Problema vago</div><div class="fs-d">Cómo lo describe alguien sin conocimiento técnico. (Visto)</div></div>
+    <div class="flowstep" style="--flc:#00D4FF"><div class="fs-t">✓ Preguntas disparadoras</div><div class="fs-d">La herramienta para extraer las 4 componentes. (Visto)</div></div>
+    <div class="flowstep" style="--flc:#9B59B6"><div class="fs-t">● Problema técnico</div><div class="fs-d">Enunciarlo con precisión profesional. (Ahora)</div></div>
+    <div class="flowstep" style="--flc:#FFB800"><div class="fs-t">● Objetivos</div><div class="fs-d">Qué queremos lograr, medible y verificable. (Ahora)</div></div>
+    <div class="flowstep" style="--flc:#00C896"><div class="fs-t">● Solución</div><div class="fs-d">Generar ideas y elegir la mejor. (Ahora)</div></div>
+    <div class="flowstep" style="--flc:#7A8BAA"><div class="fs-t">Diseño y construcción</div><div class="fs-d">Gantt, planos, prototipo. (Próxima unidad)</div></div>
+  </div>
+  <div class="tip">💡 <strong>Las 3 partes de esta unidad:</strong> (1) enunciar el problema técnico con criterio profesional, (2) definir objetivos SMART, (3) idear soluciones antes de elegir una.</div>
+</section>
+
+<!-- ENUNCIAR -->
+<section class="sec" id="enunciar">
+  <div class="eyebrow"><div class="edot" style="background:#9B59B6"></div><span class="etxt">Parte 1 · Enunciar</span></div>
+  <h2>La regla de oro del enunciado</h2>
+  <p class="desc">Ya sabés armar el enunciado con las 4 componentes. Ahora lo hacés con el criterio que separa a un técnico formado de un principiante.</p>
+  <div class="def"><p>Un buen enunciado <strong>describe el problema, NO la solución.</strong> Si tu enunciado ya menciona cómo resolverlo, estás <em>cerrando puertas antes de explorar.</em> El enunciado abre el espacio de soluciones posibles — no lo limita a una sola.</p></div>
+  <div class="compare">
+    <div class="cmp bad">
+      <div class="cmp-label">✗ Presupone la solución</div>
+      <div class="cmp-quote">"Necesitamos instalar un sensor DHT22 con Arduino en la sala de servidores para controlar el ventilador."</div>
+      <div class="cmp-why">El sistema ya viene elegido en el enunciado. ¿Y si la mejor solución era refrigeración líquida, reubicación de racks o gestión de carga térmica? Nunca lo vas a saber.</div>
+    </div>
+    <div class="cmp good">
+      <div class="cmp-label">✓ Describe el problema</div>
+      <div class="cmp-quote">"La temperatura en la sala de servidores supera los 28 °C por más de 15 min, generando apagado térmico de equipos críticos."</div>
+      <div class="cmp-why">Deja abierto el espacio de diseño: refrigeración activa, pasiva, gestión de carga, reubicación de equipos, aislación. Todas siguen en juego.</div>
+    </div>
+  </div>
+  <div class="rule">⚠️ <strong>El error #1 de los principiantes:</strong> meter la solución dentro del enunciado del problema. Un enunciado bien hecho podría resolverse de muchas maneras distintas.</div>
+</section>
+
+<!-- CONTROL -->
+<section class="sec" id="control">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Parte 1 · Verificar</span></div>
+  <h2>Las 5 preguntas de control</h2>
+  <p class="desc">Antes de dar por cerrado tu enunciado, pasalo por estas 5 preguntas. Si falla en alguna, reescribilo.</p>
+  <div class="chklist">
+    <div class="chkrow" style="--cc2:#00D4FF"><div class="chknum">1</div><div><h4>¿Tiene las 4 componentes?</h4><p>Contexto, variable, punto de quiebre y efecto no deseado, todos presentes.</p></div></div>
+    <div class="chkrow" style="--cc2:#FFB800"><div class="chknum">2</div><div><h4>¿Es una sola oración?</h4><p>Sin "y" que una dos problemas distintos. Un enunciado, un problema.</p></div></div>
+    <div class="chkrow" style="--cc2:#9B59B6"><div class="chknum">3</div><div><h4>¿Evita adjetivos subjetivos?</h4><p>Nada de "mucho", "grave", "excesivo". Solo datos medibles.</p></div></div>
+    <div class="chkrow" style="--cc2:#FF4D6A"><div class="chknum">4</div><div><h4>¿NO presupone la solución?</h4><p>Describe qué pasa, no cómo arreglarlo. Deja abierto el espacio de ideas.</p></div></div>
+    <div class="chkrow" style="--cc2:#00C896"><div class="chknum">5</div><div><h4>¿Se puede verificar?</h4><p>Otra persona podría medir si el problema existe usando tu enunciado.</p></div></div>
+  </div>
+</section>
+
+<!-- FUNCIÓN OBJETIVO RESTRICCIÓN -->
+<section class="sec" id="for">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Parte 2 · Objetivos</span></div>
+  <h2>Función · Objetivo · Restricción</h2>
+  <p class="desc">Antes de escribir objetivos, hay que distinguir tres cosas que los principiantes confunden. Entender la diferencia es lo que te hace pensar como ingeniero.</p>
+  <div class="fortable">
+    <div class="forcard" style="--fc:#00D4FF"><div class="for-t">Función</div><div class="for-q">¿Qué debe hacer?</div><div class="for-d">Lo que el sistema tiene que lograr. Su propósito principal.</div><div class="for-ej">Ej: "El sistema de control debe mantener el motor dentro de su rango de operación seguro."</div></div>
+    <div class="forcard" style="--fc:#FFB800"><div class="for-t">Objetivo</div><div class="for-q">¿Qué querés optimizar?</div><div class="for-d">Una propiedad a maximizar o minimizar. Siempre se puede medir.</div><div class="for-ej">Ej: "Minimizar el tiempo de respuesta ante una falla de temperatura del motor."</div></div>
+    <div class="forcard" style="--fc:#FF4D6A"><div class="for-t">Restricción</div><div class="for-q">¿Qué límite no podés cruzar?</div><div class="for-d">Un límite que la solución no debe violar nunca, pase lo que pase.</div><div class="for-ej">Ej: "El costo total de componentes no debe superar $85.000."</div></div>
+  </div>
+  <div class="tip">💡 <strong>En un proyecto de automatización:</strong> la función dice qué hace el sistema (operar el motor), el objetivo dice qué optimizás (tiempo de respuesta), la restricción dice los límites (costo, voltaje disponible, espacio).</div>
+</section>
+
+<!-- SMART -->
+<section class="sec" id="smart">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Parte 2 · El estándar</span></div>
+  <h2>Objetivos SMART</h2>
+  <p class="desc">Un objetivo bien escrito cumple estas 5 condiciones. Es el estándar profesional que se usa en la industria.</p>
+  <div class="smartlist">
+    <div class="smartrow" style="--sc:#00D4FF"><div class="smartL">S</div><div class="smartW">Específico</div><div class="smartD">Apunta a una sola cosa concreta, sin ambigüedad.</div></div>
+    <div class="smartrow" style="--sc:#FFB800"><div class="smartL">M</div><div class="smartW">Medible</div><div class="smartD">Se puede cuantificar. Tiene un número o condición verificable.</div></div>
+    <div class="smartrow" style="--sc:#00C896"><div class="smartL">A</div><div class="smartW">Alcanzable</div><div class="smartD">Es posible lograrlo con los recursos y el tiempo disponibles.</div></div>
+    <div class="smartrow" style="--sc:#9B59B6"><div class="smartL">R</div><div class="smartW">Relevante</div><div class="smartD">Resuelve realmente una parte del problema técnico.</div></div>
+    <div class="smartrow" style="--sc:#FF4D6A"><div class="smartL">T</div><div class="smartW">Temporal</div><div class="smartD">Tiene un plazo o momento de verificación definido.</div></div>
+  </div>
+  <div class="compare" style="margin-top:18px">
+    <div class="cmp bad"><div class="cmp-label">✗ Vago</div><div class="cmp-quote">"Que el motor de la faja no se sobrecaliente y el sistema lo detecte rápido."</div><div class="cmp-why">¿Cuánto es "rápido"? ¿Qué temperatura es "sobrecalentamiento"? ¿Qué instrumento lo verifica? No cumple ningún criterio SMART.</div></div>
+    <div class="cmp good"><div class="cmp-label">✓ SMART</div><div class="cmp-quote">"Detectar cuando la temperatura de la carcasa del motor supere los 72 °C (termocupla tipo K) y cortar la alimentación en menos de 500 ms."</div><div class="cmp-why">Específico (carcasa del motor), medible (72 °C / termocupla K), temporal (&lt; 500 ms). Verificable con instrumento.</div></div>
+  </div>
+  <div class="tip">💡 <strong>Truco:</strong> un objetivo de ingeniería arranca con verbo de acción — detectar, activar, cortar, medir, controlar, reducir, aislar. Y siempre tiene un número verificable con instrumento.</div>
+</section>
+
+<!-- IDEACIÓN -->
+<section class="sec" id="ideacion">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">Parte 3 · Idear</span></div>
+  <h2>Divergir y converger</h2>
+  <p class="desc">Ya tenés el problema y los objetivos. Ahora generás ideas — muchas, antes de elegir una. La ideación tiene dos fases opuestas.</p>
+  <div class="def"><p>La regla de oro de la ideación: <strong>primero generás, después evaluás.</strong> No juzgues las ideas mientras las creás. <em>La cantidad viene primero — la calidad se filtra después.</em></p></div>
+  <div class="phases">
+    <div class="phase div"><h3>🧠 Fase divergente</h3><p>Abrir. Generar tantas ideas como sea posible. Sin filtrar, sin criticar. Cuantas más, mejor. Acá vale todo, hasta lo que parece imposible.</p><div class="tools">Herramientas: Brainstorming · SCAMPER</div></div>
+    <div class="phase conv"><h3>✓ Fase convergente</h3><p>Cerrar. Evaluar las ideas contra los objetivos y elegir la mejor. Ahora sí, con criterio, comparando y descartando.</p><div class="tools">Herramientas: Matriz de Pugh (avanzado)</div></div>
+  </div>
+  <div class="rule red">⚠️ <strong>El error clásico:</strong> juzgar las ideas mientras se generan ("eso no sirve", "es imposible"). Eso mata la creatividad del equipo. Primero anotás todo, después evaluás.</div>
+</section>
+
+<!-- BRAINSTORMING -->
+<section class="sec" id="brainstorming">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Herramienta fundamental</span></div>
+  <h2>Brainstorming</h2>
+  <p class="desc">Generar la mayor cantidad de ideas posible en equipo, sin juzgar. La técnica más simple y la que más ideas produce, según los estudios con principiantes.</p>
+  <div class="rulesgrid">
+    <div class="brule" style="--bc:#00D4FF"><h4>1 · Cantidad sobre calidad</h4><p>Buscá muchas ideas. Cuantas más generes, más probable es que haya una buena entre ellas.</p></div>
+    <div class="brule" style="--bc:#00C896"><h4>2 · Prohibido criticar</h4><p>Ninguna idea se juzga durante la sesión. Ni "no sirve", ni "es imposible". Se anota todo.</p></div>
+    <div class="brule" style="--bc:#FFB800"><h4>3 · Bienvenidas las locuras</h4><p>Las ideas raras o exageradas abren caminos nuevos. A veces la idea absurda lleva a la brillante.</p></div>
+    <div class="brule" style="--bc:#9B59B6"><h4>4 · Combiná y mejorá</h4><p>Usá las ideas de otros como trampolín. Sumá, mezclá, transformá lo que ya está anotado.</p></div>
+  </div>
+  <div class="tip">⏱ <strong>En la práctica:</strong> 10 minutos, un anotador por equipo, meta de mínimo 15 ideas. Sin parar a discutir ninguna hasta que suene el tiempo.</div>
+</section>
+
+<!-- SCAMPER -->
+<section class="sec" id="scamper">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Herramienta fundamental</span></div>
+  <h2>SCAMPER</h2>
+  <p class="desc">7 preguntas para transformar una idea existente en una nueva. Cuando el brainstorming se traba, SCAMPER destraba. Cada letra es un gatillo mental.</p>
+  <div class="scamper">
+    <div class="scrow"><div class="scL" style="background:#00D4FF">S</div><div class="scW" style="color:#00D4FF">Sustituir</div><div class="scD">¿Qué componente, material o tecnología puedo reemplazar por uno equivalente o mejor?</div></div>
+    <div class="scrow"><div class="scL" style="background:#00C896">C</div><div class="scW" style="color:#00C896">Combinar</div><div class="scD">¿Qué dos funciones o módulos puedo integrar en un solo sistema?</div></div>
+    <div class="scrow"><div class="scL" style="background:#FFB800">A</div><div class="scW" style="color:#FFB800">Adaptar</div><div class="scD">¿Qué solución de otro campo de la ingeniería puedo adaptar a este problema?</div></div>
+    <div class="scrow"><div class="scL" style="background:#9B59B6">M</div><div class="scW" style="color:#9B59B6">Modificar</div><div class="scD">¿Qué parámetro puedo cambiar: frecuencia, voltaje, dimensión, velocidad, rango?</div></div>
+    <div class="scrow"><div class="scL" style="background:#FF4D6A">P</div><div class="scW" style="color:#FF4D6A">Poner otro uso</div><div class="scD">¿Este componente o sistema puede resolver también otro problema del proyecto?</div></div>
+    <div class="scrow"><div class="scL" style="background:#00D4FF">E</div><div class="scW" style="color:#00D4FF">Eliminar</div><div class="scD">¿Qué parte puedo eliminar o simplificar sin perder la función principal?</div></div>
+    <div class="scrow"><div class="scL" style="background:#00C896">R</div><div class="scW" style="color:#00C896">Reordenar</div><div class="scD">¿Qué pasa si invierto el flujo de señal, el orden de etapas o la lógica de control?</div></div>
+  </div>
+  <div style="margin-top:16px">
+    <div class="exlabel" style="color:var(--cyan)">SCAMPER en acción — brazo robótico clasificador de residuos (TCS3200)</div>
+    <div class="scamper">
+      <div class="scrow"><div class="scL" style="background:#00D4FF">S</div><div class="scW" style="color:#00D4FF">Sustituir</div><div class="scD">Sustituir el sensor de color TCS3200 por una cámara + OpenCV — más versátil, detecta forma y no solo color.</div></div>
+      <div class="scrow"><div class="scL" style="background:#00C896">C</div><div class="scW" style="color:#00C896">Combinar</div><div class="scD">Combinar el brazo con un conveyor de velocidad variable: el brazo clasifica mientras la cinta regula el flujo.</div></div>
+      <div class="scrow"><div class="scL" style="background:#FFB800">A</div><div class="scW" style="color:#FFB800">Adaptar</div><div class="scD">Adaptar la lógica de robots Pick &amp; Place industriales (Fanuc, KUKA) — agarre por visión en vez de posición fija.</div></div>
+      <div class="scrow"><div class="scL" style="background:#9B59B6">M</div><div class="scW" style="color:#9B59B6">Modificar</div><div class="scD">Ampliar el rango espectral del sensor a IR: detectar materiales opacos y translúcidos que el TCS3200 no diferencia.</div></div>
+      <div class="scrow"><div class="scL" style="background:#FF4D6A">P</div><div class="scW" style="color:#FF4D6A">Poner otro uso</div><div class="scD">El mismo brazo puede hacer control de calidad dimensional con sensor ultrasónico además de clasificar.</div></div>
+      <div class="scrow"><div class="scL" style="background:#00D4FF">E</div><div class="scW" style="color:#00D4FF">Eliminar</div><div class="scD">Eliminar el brazo: usar deflectores actuados por servomotores — más simple, más rápido, menos fallas mecánicas.</div></div>
+      <div class="scrow"><div class="scL" style="background:#00C896">R</div><div class="scW" style="color:#00C896">Reordenar</div><div class="scD">En vez de mover el residuo al contenedor correcto, mover el contenedor correcto debajo del punto de descarte.</div></div>
+    </div>
+  </div>
+  <div class="tip">💡 De <strong>una sola idea</strong> salieron 7 variantes reales. Cámara + OpenCV y deflectores servo ya existen en líneas industriales. TRIZ y deflectores también. Eso es SCAMPER aplicado a robótica.</div>
+</section>
+
+<!-- AVANZADAS -->
+<section class="sec" id="avanzadas">
+  <div class="eyebrow"><div class="edot" style="background:#9B59B6"></div><span class="etxt">Si querés ir más allá</span></div>
+  <h2>Herramientas para avanzar</h2>
+  <p class="desc">Estas son herramientas más potentes. No son obligatorias, pero si tu proyecto lo pide, acá están para que sepas que existen y cuándo usarlas.</p>
+  <div class="advgrid">
+    <div class="adv" style="--ac:#00D4FF">
+      <div class="adv-head"><span class="adv-t">Análisis Morfológico</span><span class="adv-sub">La Caja de Zwicky</span></div>
+      <div class="adv-d">Descomponés el problema en partes, generás ideas para cada parte y después combinás. Explora TODAS las soluciones posibles de forma sistemática, sin que se te escape ninguna.</div>
+      <div class="adv-ej"><strong>Ej:</strong> Sistema de seguimiento solar → (motor: DC / paso a paso / servo) × (sensor: LDR / encoder / GPS) × (control: Arduino / PLC / Raspberry). Cada combinación es una arquitectura distinta.</div>
+    </div>
+    <div class="adv" style="--ac:#FFB800">
+      <div class="adv-head"><span class="adv-t">TRIZ</span><span class="adv-sub">Teoría de resolución inventiva de problemas</span></div>
+      <div class="adv-d">40 principios de invención extraídos del análisis de millones de patentes. Cuando dos requisitos se contradicen entre sí, TRIZ te da caminos ya probados para resolver ese conflicto.</div>
+      <div class="adv-ej"><strong>Ej:</strong> "Quiero alta precisión del encoder pero bajo costo" — TRIZ tiene principios catalogados de millones de patentes para resolver exactamente ese conflicto.</div>
+    </div>
+    <div class="adv" style="--ac:#00C896">
+      <div class="adv-head"><span class="adv-t">Matriz de Pugh</span><span class="adv-sub">Para elegir, no para crear</span></div>
+      <div class="adv-d">Cuando ya tenés varias ideas, las puntuás contra tus objetivos en una tabla. La que mejor puntúa, gana. Convierte una decisión difícil en algo objetivo y defendible.</div>
+      <div class="adv-ej"><strong>Ej:</strong> 5 arquitecturas × 4 criterios (costo, precisión, robustez, complejidad de montaje) → puntaje total → decisión de diseño justificable ante el jurado.</div>
+    </div>
+  </div>
+  <div class="tip">💡 <strong>Cuándo usar cada una:</strong> Morfológico para crear de forma exhaustiva, TRIZ para resolver contradicciones difíciles, Pugh para elegir entre varias opciones con criterio. Las tres son opcionales — las fundamentales siguen siendo Brainstorming y SCAMPER.</div>
+</section>
+
+<section class="sec" id="trabajo">
+  <div class="eyebrow"><div class="edot" style="background:#FF4D6A"></div><span class="etxt">Solo docente</span></div>
+  <h2>Respuestas de referencia — Ejercicios</h2>
+  <p class="desc">Respuestas modelo para los 4 ejercicios con criterios de corrección. Lo importante es el criterio técnico, no la coincidencia exacta con el modelo.</p>
+
+  <div style="margin-bottom:22px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 1 — Revisión del enunciado</div>
+    <div class="cc" style="--ca:#9B59B6"><h3>Qué evaluar</h3><p>Verificar que las 5 preguntas estén respondidas honestamente. El punto crítico es el #4 (no presuponer solución). Si el enunciado nombra Arduino, DHT22, relay, servo, motor DC, ESP32 o cualquier componente → no pasa el control #4. Hay que devolvérselo para reescribir.</p></div>
+    <div class="tip" style="margin-top:10px"><strong>Enunciado modelo (faja transportadora):</strong> "La temperatura de la carcasa del motor de la faja transportadora supera los 72 °C durante ciclos de carga sostenida, generando disparo por protección térmica y paro no programado de la línea." — Cumple: 4 componentes, 1 oración, sin subjetivos, no nombra componentes, verificable con termocupla.</div>
+  </div>
+
+  <div style="margin-bottom:22px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 2 — Objetivos SMART (faja + motor)</div>
+    <div class="exblock">
+      <div class="exrow"><div class="exrl"><span style="color:#00D4FF">FUNCIÓN</span></div><div class="exrv" style="padding:11px 14px;font-size:13px;color:var(--off)">"El sistema de control debe mantener el motor de la faja dentro de su rango de temperatura de operación seguro."</div></div>
+      <div class="exrow"><div class="exrl"><span style="color:#FFB800">OBJETIVO 1</span></div><div class="exrv" style="padding:11px 14px;font-size:13px;color:var(--off)">"Detectar cuando la temperatura de la carcasa supere los 72 °C (termocupla tipo K, ±1 °C) en tiempo real."</div></div>
+      <div class="exrow"><div class="exrl"><span style="color:#FFB800">OBJETIVO 2</span></div><div class="exrv" style="padding:11px 14px;font-size:13px;color:var(--off)">"Enviar señal de corte al variador de frecuencia dentro de los 500 ms de detectada la falla."</div></div>
+      <div class="exrow"><div class="exrl"><span style="color:#FFB800">OBJETIVO 3</span></div><div class="exrv" style="padding:11px 14px;font-size:13px;color:var(--off)">"Registrar el evento (hora, temperatura, duración) en memoria no volátil para análisis posterior."</div></div>
+      <div class="exrow"><div class="exrl"><span style="color:#FF4D6A">RESTRICCIÓN</span></div><div class="exrv" style="padding:11px 14px;font-size:13px;color:var(--off)">"El sistema debe operar con la alimentación disponible en planta (220 V AC) sin fuente externa adicional."</div></div>
+    </div>
+    <div class="tip" style="margin-top:10px"><strong>Criterio de corrección:</strong> cada objetivo debe tener verbo de acción + magnitud medible + instrumento implícito o explícito. Si dice "mejorar" o "hacer que funcione" sin número → no es SMART. La restricción debe ser técnica (voltaje, corriente, dimensiones, costo), no de proceso.</div>
+  </div>
+
+  <div style="margin-bottom:22px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 3 — Brainstorming + SCAMPER</div>
+    <div class="cc" style="--ca:#00D4FF"><h3>Qué evaluar</h3><p>No se evalúa la calidad técnica de las ideas — se evalúan <strong>cantidad y diversidad</strong>. Objetivo: 15 ideas mínimas. Deben aparecer ideas "locas" o poco convencionales. Si todas son variantes de "poner un sensor de temperatura + relay", el equipo no aplicó bien el brainstorming. El SCAMPER debería aparecer con las 7 letras aplicadas a la mejor idea.</p></div>
+    <div class="tip" style="margin-top:10px"><strong>Señal de buen trabajo:</strong> mezcla de ideas obvias (termostato, relay) y creativas (enfriamiento líquido, monitoreo por IoT, modelo predictivo de temperatura). <strong>Señal de alerta:</strong> menos de 8 ideas, todas parecidas → autocensura. Pedir hacer la sesión de nuevo respetando la regla de "prohibido criticar".</div>
+  </div>
+
+  <div style="margin-bottom:10px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 4 — Elección justificada</div>
+    <div class="cc" style="--ca:#00C896"><h3>Qué evaluar</h3><p>Lo importante NO es qué solución eligieron — es que la <strong>justifiquen contra sus objetivos SMART del ejercicio 2</strong>. Una buena justificación menciona cómo la solución cumple objetivo 1, objetivo 2 y la restricción. Una justificación pobre dice "porque es la más fácil" o "porque ya la conocemos" sin criterio técnico.</p></div>
+    <div class="tip" style="margin-top:10px"><strong>Nivel avanzado:</strong> si algún equipo usó una Matriz de Pugh para puntuar opciones (aunque sea informal), destacarlo. Es pensamiento convergente profesional y merece reconocimiento explícito.</div>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<section class="sec" id="checklist">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">Autoevaluación</span></div>
+  <h2>Checklist de evaluación</h2>
+  <p class="desc">Criterios de evaluación para los alumnos. Marcá los que el alumno domina.</p>
+  <div class="cklist" id="cklist">
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Explica por qué el enunciado no debe presuponer componentes ni soluciones.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Aplica las 5 preguntas de control a un enunciado técnico.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Distingue función, objetivo y restricción con ejemplos de automatización.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Escribe objetivos SMART con magnitud medible e instrumento de verificación.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Diferencia la fase divergente de la convergente y cuándo usar cada una.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Aplica las 4 reglas del brainstorming en contexto de ingeniería.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Aplica las 7 letras de SCAMPER a una idea técnica del proyecto.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Identifica Morfológico, TRIZ y Pugh y sabe cuándo aplicar cada uno.</span></label>
+  </div>
+  <div id="ck-res"><span id="ck-n" style="color:var(--green);font-weight:800;font-size:18px">0</span><span style="color:var(--muted);font-size:12.5px"> / 8 conceptos verificados</span><div id="ck-m" style="font-size:12px;color:var(--muted);margin-top:3px">Criterios pendientes de evaluación.</div></div>
+</section>
+
+<!-- GLOSARIO -->
+<section class="sec" id="glosario">
+  <div class="eyebrow"><div class="edot" style="background:#7A8BAA"></div><span class="etxt">Referencia rápida</span></div>
+  <h2>Glosario — Unidad 3</h2>
+  <p class="desc">Los términos clave de la unidad, ordenados por aparición.</p>
+  <div class="ggrid">
+    <div class="gi" style="--gc:#9B59B6"><div class="gtag2" style="background:rgba(155,89,182,0.12);color:#9B59B6">Enunciar</div><div class="gterm">Enunciado del problema</div><div class="gdef">Descripción precisa del problema técnico que NO presupone la solución. Deja abierto el espacio de soluciones posibles.</div></div>
+    <div class="gi" style="--gc:#00D4FF"><div class="gtag2" style="background:rgba(0,212,255,0.1);color:#00D4FF">Objetivos</div><div class="gterm">Función</div><div class="gdef">Lo que el sistema debe hacer. Su propósito principal. Responde a "¿qué hace?".</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gtag2" style="background:rgba(255,184,0,0.12);color:#FFB800">Objetivos</div><div class="gterm">Objetivo</div><div class="gdef">Propiedad a maximizar o minimizar. Se mide. Responde a "¿qué tan bien lo hace?".</div></div>
+    <div class="gi" style="--gc:#FF4D6A"><div class="gtag2" style="background:rgba(255,77,106,0.1);color:#FF4D6A">Objetivos</div><div class="gterm">Restricción</div><div class="gdef">Límite que la solución no debe violar nunca. Responde a "¿dentro de qué límites?".</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gtag2" style="background:rgba(255,184,0,0.12);color:#FFB800">Objetivos</div><div class="gterm">SMART</div><div class="gdef">Marco para escribir objetivos: Específico, Medible, Alcanzable, Relevante, Temporal. El estándar profesional.</div></div>
+    <div class="gi" style="--gc:#00C896"><div class="gtag2" style="background:rgba(0,200,150,0.1);color:#00C896">Idear</div><div class="gterm">Divergir</div><div class="gdef">Fase de generar muchas ideas sin juzgarlas. Abrir el abanico de posibilidades.</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gtag2" style="background:rgba(255,184,0,0.12);color:#FFB800">Idear</div><div class="gterm">Converger</div><div class="gdef">Fase de evaluar las ideas y elegir la mejor. Cerrar hacia una decisión.</div></div>
+    <div class="gi" style="--gc:#00D4FF"><div class="gtag2" style="background:rgba(0,212,255,0.1);color:#00D4FF">Idear</div><div class="gterm">Brainstorming</div><div class="gdef">Técnica de generar muchas ideas en equipo sin criticarlas. Cantidad sobre calidad.</div></div>
+    <div class="gi" style="--gc:#00D4FF"><div class="gtag2" style="background:rgba(0,212,255,0.1);color:#00D4FF">Idear</div><div class="gterm">SCAMPER</div><div class="gdef">7 gatillos para transformar una idea: Sustituir, Combinar, Adaptar, Modificar, Poner otro uso, Eliminar, Reordenar.</div></div>
+    <div class="gi" style="--gc:#00D4FF"><div class="gtag2" style="background:rgba(0,212,255,0.1);color:#00D4FF">Avanzado</div><div class="gterm">Análisis Morfológico</div><div class="gdef">Caja de Zwicky. Descomponer el problema en partes, generar opciones para cada una y combinar sistemáticamente.</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gtag2" style="background:rgba(255,184,0,0.12);color:#FFB800">Avanzado</div><div class="gterm">TRIZ</div><div class="gdef">Teoría de resolución inventiva. 40 principios extraídos de patentes para resolver contradicciones técnicas.</div></div>
+    <div class="gi" style="--gc:#00C896"><div class="gtag2" style="background:rgba(0,200,150,0.1);color:#00C896">Avanzado</div><div class="gterm">Matriz de Pugh</div><div class="gdef">Tabla para comparar ideas contra criterios y elegir la mejor de forma objetiva. Se usa para converger.</div></div>
+  </div>
+  <div style="margin-top:24px;padding:12px 16px;background:var(--card);border-radius:var(--r);border:1px solid rgba(255,255,255,0.06);font-size:11.5px;color:var(--muted);text-align:center">Del Problema a la Solución · Unidad 3 · 1er y 2do Año · Electromecánica · Robótica · Automatización · IA</div>
+</section>
+</main>
+
+<div class="sendbar">
+  <span class="sblabel">🎓 Guía Docente — Unidad 3</span>
+  <button class="sbtn print" onclick="window.print()">🖨 Imprimir guía</button>
+</div>
+
+<script>
+const K='u3_';
+function sN(v){localStorage.setItem(K+'n',v);document.getElementById('sbn').textContent=v||'—';const p=document.getElementById('ph-n');if(p)p.textContent=v}
+let st;
+function flash(){const i=document.getElementById('save-ind');i.classList.add('show');clearTimeout(st);st=setTimeout(()=>i.classList.remove('show'),1300)}
+function sf(id,v){localStorage.setItem(K+id,v);flash()}
+function cw(inp,key){inp.closest('.ckitem').classList.toggle('checked',inp.checked);localStorage.setItem(K+key,inp.checked?'1':'0');flash()}
+function ck(inp){inp.closest('.ckitem').classList.toggle('checked',inp.checked);const all=document.querySelectorAll('#cklist input'),done=document.querySelectorAll('#cklist input:checked').length;document.getElementById('ck-n').textContent=done;const r=document.getElementById('ck-res'),m=document.getElementById('ck-m');if(done===all.length){r.style.borderColor='var(--green)';r.style.background='rgba(0,200,150,0.07)';m.textContent='✓ Todos los criterios evaluados.';m.style.color='var(--green)'}else if(done>=5){r.style.borderColor='var(--amber)';r.style.background='rgba(255,184,0,0.05)';m.textContent='Mayoría de criterios cumplidos.';m.style.color='var(--amber)'}else{r.style.borderColor='';r.style.background='var(--card)';m.textContent='Criterios pendientes de evaluación.';m.style.color='var(--muted)'}const s=Array.from(all).map(i=>i.checked?'1':'0').join('');localStorage.setItem(K+'cl',s)}
+function tSB(){document.getElementById('sb').classList.toggle('open')}
+function cSB(){if(window.innerWidth<=768)document.getElementById('sb').classList.remove('open')}
+const secs=document.querySelectorAll('section[id]'),navs=document.querySelectorAll('.ni');
+window.addEventListener('scroll',()=>{const p=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;document.getElementById('pf').style.width=p+'%';document.getElementById('bt').classList.toggle('vis',window.scrollY>400);let c='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-100)c=s.id});navs.forEach(n=>n.classList.toggle('active',n.getAttribute('href')==='#'+c))},{passive:true});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();window.scrollTo({top:t.offsetTop-24,behavior:'smooth'})}})});
+const WF=['e1-enun','e2-func','e2-o1','e2-o2','e2-o3','e2-rest','e3-ideas','e4-sol'];
+const WC=['e1c1','e1c2','e1c3','e1c4','e1c5'];
+function sendGmail(){const email=prompt('Email del docente:');if(!email||!email.includes('@'))return;const name=localStorage.getItem(K+'n')||'Sin nombre';const g=id=>localStorage.getItem(K+id)||'(sin respuesta)';const gc=id=>localStorage.getItem(K+id)==='1'?'✓':'✗';const body=['╔══ TALLER DE PROYECTO · UNIDAD 3 ══╗','Del Problema a la Solución','','Alumno/a: '+name,'Fecha: '+new Date().toLocaleDateString('es-AR'),'','── EJERCICIO 1 — Enunciado ──',g('e1-enun'),'',' '+gc('e1c1')+' 4 componentes   '+gc('e1c2')+' una oración   '+gc('e1c3')+' sin subjetivos',' '+gc('e1c4')+' no presupone solución   '+gc('e1c5')+' verificable','','── EJERCICIO 2 — Objetivos SMART ──','Función: '+g('e2-func'),'Objetivo 1: '+g('e2-o1'),'Objetivo 2: '+g('e2-o2'),'Objetivo 3: '+g('e2-o3'),'Restricción: '+g('e2-rest'),'','── EJERCICIO 3 — 10 ideas ──',g('e3-ideas'),'','── EJERCICIO 4 — Solución elegida ──',g('e4-sol')].join('\n');const sub=encodeURIComponent('[Taller de Proyecto U3] Respuestas — '+name);window.open('https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(email)+'&su='+sub+'&body='+encodeURIComponent(body),'_blank')}
+window.addEventListener('load',()=>{const n=localStorage.getItem(K+'n')||'';if(n){document.getElementById('myname').value=n;document.getElementById('sbn').textContent=n;const p=document.getElementById('ph-n');if(p)p.textContent=n}WF.forEach(id=>{const v=localStorage.getItem(K+id);if(v){const el=document.getElementById(id);if(el)el.value=v}});WC.forEach(key=>{if(localStorage.getItem(K+key)==='1'){const box=document.querySelector('[onchange*="'+key+'"]');if(box){box.checked=true;box.closest('.ckitem').classList.add('checked')}}});const cl=localStorage.getItem(K+'cl');if(cl){document.querySelectorAll('#cklist input').forEach((i,idx)=>{if(cl[idx]==='1'){i.checked=true;i.closest('.ckitem').classList.add('checked')}});if(document.querySelector('#cklist input:checked'))document.querySelector('#cklist input').dispatchEvent(new Event('change'))}});
+</script>
+</body>
+</html>

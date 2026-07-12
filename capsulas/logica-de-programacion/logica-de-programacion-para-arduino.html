@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lógica de Programación para Arduino | Taller de Proyecto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0e1117;
+  --bg-soft:  #151a22;
+  --bg-raised:#1c2330;
+  --line:     #ffffff0f;
+  --accent:   #00D4FF;
+  --accent2:  #0097B8;
+  --amber:    #FFB800;
+  --purple:   #9B59B6;
+  --cyan:     #00D4FF;
+  --green:    #00C896;
+  --red:      #FF4D6A;
+  --text:     #e8edf5;
+  --text-dim: #7a8baa;
+  --text-mid: #b0bacb;
+  --good:     #00C896;
+  --bad:      #FF4D6A;
+  --radius:   4px;
+  --shadow:   0 24px 48px -16px rgba(0,0,0,.6), 0 2px 0 rgba(255,255,255,.03) inset;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+::selection{background:var(--accent);color:#0a0e1a}
+body{
+  background: radial-gradient(ellipse 1400px 800px at 15% -5%,#16232e 0%,transparent 55%),
+              radial-gradient(ellipse 800px 600px at 90% 25%,#0d1a20 0%,transparent 50%),
+              var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;margin:0;color:#f0f4fa}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* ── SLIDE SYSTEM ─────────────────────────────────────────────── */
+.slide{
+  min-height:100vh;width:100%;
+  display:flex;align-items:center;justify-content:center;
+  padding:4.5rem 2.8rem 2rem;
+  scroll-snap-align:start;scroll-snap-stop:always;
+  position:relative;overflow:hidden;
+}
+.slide+.slide{border-top:1px solid var(--line)}
+.slide-wrap{width:100%;max-width:1380px;margin:0 auto}
+
+/* ── FIXED CHROME ─────────────────────────────────────────────── */
+.topbar{
+  position:fixed;top:0;left:0;width:100%;height:3.2rem;
+  background:rgba(14,17,23,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);z-index:60;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.6rem;
+}
+.brandmark{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.82rem;
+  color:rgba(232,237,245,.7);display:flex;align-items:center;gap:.4rem;pointer-events:none;
+}
+.brandmark span{color:var(--accent)}
+.slide-counter{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-dim);letter-spacing:.05em;
+}
+.slide-counter b{color:var(--accent)}
+.progress-fill{
+  position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:61;transition:width .35s ease;
+}
+.dotnav{
+  position:fixed;right:1.3rem;top:50%;transform:translateY(-50%);
+  z-index:60;display:flex;flex-direction:column;gap:.55rem;align-items:center;
+}
+.dotnav button{
+  width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);
+  border:none;padding:0;cursor:pointer;transition:background .2s,transform .2s;
+}
+.dotnav button:hover{background:rgba(255,255,255,.45)}
+.dotnav button.active{background:var(--accent);transform:scale(1.6)}
+.arrownav{position:fixed;right:1.3rem;bottom:1.4rem;z-index:60;display:flex;gap:.45rem}
+.arrownav button{
+  width:34px;height:34px;border-radius:50%;background:var(--bg-raised);
+  border:1px solid rgba(255,255,255,.12);color:var(--text);cursor:pointer;font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.arrownav button:hover{border-color:var(--accent);background:#1e2d24}
+.arrownav button:disabled{opacity:.2;cursor:default}
+
+/* ── TYPOGRAPHY ────────────────────────────────────────────────── */
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;
+  margin-bottom:.6rem;
+}
+.eyebrow::before{content:'';display:block;width:1.8rem;height:1.5px;background:var(--accent)}
+h1.title{font-size:clamp(2.2rem,4.5vw,3.6rem);line-height:1.0;letter-spacing:-.015em;max-width:16ch}
+h1.title em,h2.title em{font-style:normal;color:var(--accent)}
+h2.title{font-size:clamp(1.2rem,2.2vw,1.6rem);max-width:42ch;margin-top:.7rem;color:var(--text-mid);font-weight:400}
+.sec-head{max-width:68ch;margin-bottom:1.4rem}
+.sec-head h2{font-size:clamp(1.3rem,2.2vw,1.8rem)}
+.sec-head p{color:var(--text-dim);margin-top:.45rem;font-size:.88rem;line-height:1.55}
+.sec-head.center{max-width:none;text-align:center;margin-left:auto;margin-right:auto}
+.sec-head.center .eyebrow{justify-content:center}
+
+/* ── LAYOUT ────────────────────────────────────────────────────── */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;align-items:center}
+.split.wide{grid-template-columns:1.15fr .85fr}
+.split.flip{grid-template-columns:.85fr 1.15fr}
+.notes{color:var(--text-dim);font-size:.86rem}
+.notes ul,.notes ol{padding-left:1rem;margin:.5rem 0}
+.notes li{margin-bottom:.4rem;line-height:1.45}
+.notes li b{color:var(--text)}
+.notes h3{font-size:.96rem;margin-bottom:.5rem;color:#f0f4fa;font-family:'Space Grotesk',sans-serif}
+.notes p{margin:.45rem 0;line-height:1.5}
+
+/* ── CALLOUTS ──────────────────────────────────────────────────── */
+.tip{
+  margin-top:.8rem;
+  background:linear-gradient(180deg,#0a1f26,#081920);
+  border:1px solid rgba(0,212,255,.18);border-left:3px solid var(--accent);
+  border-radius:var(--radius);padding:.65rem .9rem;font-size:.8rem;color:#a8d4e0;line-height:1.45;
+}
+.tip b{color:var(--accent)}
+.warn{
+  margin-top:.8rem;
+  background:linear-gradient(180deg,#1f0e12,#190b0f);
+  border:1px solid rgba(255,77,106,.18);border-left:3px solid var(--red);
+  border-radius:var(--radius);padding:.65rem .9rem;font-size:.8rem;color:#e8aab5;line-height:1.45;
+}
+.warn b{color:var(--red)}
+.consigna{
+  background:var(--bg-raised);border:1px solid var(--line);border-left:3px solid var(--green);
+  border-radius:var(--radius);padding:.75rem .95rem;font-size:.84rem;color:var(--text-mid);
+  line-height:1.47;margin:.65rem 0;
+}
+.consigna b{
+  color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.68rem;
+  letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.28rem;
+}
+
+/* ── SVG PANEL ─────────────────────────────────────────────────── */
+.svg-panel{
+  background:var(--bg-raised);border:1px solid rgba(0,212,255,.14);
+  border-radius:8px;padding:1.1rem 1.2rem 1rem;position:relative;
+}
+.panel-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:.55rem;
+}
+.panel-label .pname{
+  font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--accent);
+}
+.panel-label .pcount{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-dim)}
+svg.diagram{width:100%;height:auto;display:block;max-height:52vh}
+.draw{fill:none}
+.fade{opacity:0}
+
+/* ── CONTROLS ──────────────────────────────────────────────────── */
+.controls{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-top:.7rem}
+.btn{
+  font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.03em;text-transform:uppercase;
+  background:var(--bg-raised);color:var(--text);border:1px solid rgba(255,255,255,.12);
+  padding:.38rem .7rem;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;
+  transition:all .15s;
+}
+.btn:hover{background:#1e2d33;border-color:var(--accent)}
+.btn:active{transform:scale(.96)}
+.btn.primary{background:var(--accent);color:#04141a;border-color:var(--accent);font-weight:600}
+.btn.primary:hover{filter:brightness(1.1)}
+.legend{
+  margin-top:.6rem;background:var(--bg-soft);border:1px solid var(--line);
+  border-radius:var(--radius);padding:.55rem .85rem;min-height:52px;
+}
+
+/* ── CARDS ─────────────────────────────────────────────────────── */
+.card-row{display:grid;gap:.8rem}
+.card-row.cols2{grid-template-columns:1fr 1fr}
+.card-row.cols3{grid-template-columns:repeat(3,1fr)}
+.card-row.cols4{grid-template-columns:repeat(4,1fr)}
+.card{
+  background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;
+  padding:.85rem 1rem;
+}
+.card.good{border-left:3px solid var(--green)}
+.card.bad{border-left:3px solid var(--red)}
+.card.amber{border-left:3px solid var(--amber)}
+.card.purple{border-left:3px solid var(--purple)}
+.card.cyan{border-left:3px solid var(--cyan)}
+.card .c-label{
+  font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:.35rem;
+}
+.card.good .c-label{color:var(--green)}
+.card.bad .c-label{color:var(--red)}
+.card.amber .c-label{color:var(--amber)}
+.card.purple .c-label{color:var(--purple)}
+.card.cyan .c-label{color:var(--cyan)}
+.card h4{font-size:.94rem;margin-bottom:.3rem;color:#f0f4fa}
+.card p{font-size:.8rem;color:var(--text-dim);line-height:1.45}
+.card .codeline{
+  margin-top:.5rem;background:#04090f;border-radius:5px;padding:.4rem .6rem;
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--accent);
+  overflow-x:auto;white-space:nowrap;
+}
+
+/* STEP BOXES (numbered) */
+.step-box{
+  background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;
+  padding:.65rem 1rem;display:grid;grid-template-columns:2.5rem 1fr;column-gap:.7rem;align-items:start;
+}
+.step-box .sn{
+  font-family:'JetBrains Mono',monospace;font-size:1.5rem;color:var(--accent);
+  line-height:1;padding-top:.1rem;
+}
+.step-box h4{font-size:.92rem;margin-bottom:.18rem;color:#f0f4fa;line-height:1.2}
+.step-box p{font-size:.79rem;color:var(--text-dim);line-height:1.42}
+
+/* CONCEPT rows (variables / operadores) */
+.concept-row{
+  display:grid;grid-template-columns:2.8rem 130px 1fr;align-items:center;gap:.85rem;
+  padding:.7rem .95rem;background:var(--bg-raised);border:1px solid var(--line);
+  border-radius:7px;border-left:3px solid var(--sc,var(--accent));
+}
+.concept-L{
+  width:38px;height:38px;border-radius:7px;background:var(--sc,var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',sans-serif;font-size:1.05rem;font-weight:700;color:#0a0e1a;
+}
+.concept-W{font-size:.85rem;font-weight:700;color:var(--sc,var(--accent));font-family:'Space Grotesk',sans-serif}
+.concept-D{font-size:.8rem;color:var(--text-dim);line-height:1.4}
+
+/* OPERATOR rows */
+.op-row{
+  display:grid;grid-template-columns:64px 130px 1fr;align-items:center;
+  border-bottom:1px solid var(--line);
+}
+.op-row:last-child{border-bottom:none}
+.op-L{
+  margin:7px;width:48px;height:32px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:700;color:#0a0e1a;
+}
+.op-W{font-size:.82rem;font-weight:700}
+.op-D{font-size:.8rem;color:var(--text-dim);padding:9px 12px 9px 0;line-height:1.4}
+
+/* CODE BLOCK (static, for exercises) */
+.codeblock{
+  background:#070c12;border:1px solid rgba(255,255,255,.08);border-radius:8px;
+  padding:.9rem 1.1rem;font-family:'JetBrains Mono',monospace;font-size:.82rem;
+  line-height:1.7;color:#c8d4e0;overflow-x:auto;
+}
+.codeblock .blank{
+  display:inline-block;min-width:70px;border-bottom:2px dashed var(--amber);
+  color:var(--amber);text-align:center;
+}
+.reveal-wrap{margin-top:.6rem}
+.reveal-answer{
+  display:none;margin-top:.6rem;padding:.6rem .85rem;
+  background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,.25);
+  border-left:3px solid var(--green);border-radius:var(--radius);
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#a8d8c4;
+}
+.reveal-answer.show{display:block}
+
+/* CLOSING */
+.closing-mark{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,3.2rem);
+  font-weight:700;color:#f0f4fa;
+}
+.closing-sub{
+  color:var(--text-dim);font-family:'JetBrains Mono',monospace;
+  font-size:.82rem;margin-top:.8rem;letter-spacing:.04em;
+}
+
+/* HERO META */
+.hero-meta{
+  display:flex;gap:4rem;flex-wrap:wrap;margin-top:2rem;
+  padding-top:1.4rem;border-top:1px solid var(--line);
+}
+.hero-meta div{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);width:28%}
+.hero-meta b{
+  display:block;color:var(--text);font-family:'Space Grotesk',sans-serif;
+  font-size:.9rem;font-weight:600;margin-bottom:.1rem;
+}
+
+/* MIXED-AUDIENCE TRACK CHIPS */
+.track-row{display:flex;gap:.9rem;margin-top:1.3rem;flex-wrap:wrap}
+.track-chip{
+  flex:1;min-width:220px;background:var(--bg-raised);border:1px solid var(--line);
+  border-radius:8px;padding:.8rem 1rem;
+}
+.track-chip.a{border-left:3px solid var(--green)}
+.track-chip.b{border-left:3px solid var(--amber)}
+.track-chip .tc-label{
+  font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.07em;
+  text-transform:uppercase;margin-bottom:.3rem;
+}
+.track-chip.a .tc-label{color:var(--green)}
+.track-chip.b .tc-label{color:var(--amber)}
+.track-chip p{font-size:.82rem;color:var(--text-mid);line-height:1.45}
+
+/* ── RESPONSIVE ────────────────────────────────────────────────── */
+@media(max-width:900px){
+  .slide{padding:4rem 1.3rem 1.5rem}
+  .split,.split.wide,.split.flip{grid-template-columns:1fr}
+  .card-row.cols3,.card-row.cols4{grid-template-columns:1fr 1fr}
+  .dotnav,.arrownav{display:none}
+  .concept-row{grid-template-columns:2.8rem 1fr}
+  .op-row{grid-template-columns:64px 1fr}
+  svg.diagram{max-height:none}
+  .track-row{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<div class="topbar">
+  <div class="brandmark">TALLER DE PROYECTO &nbsp;·&nbsp; <span>PUENTE · LÓGICA</span></div>
+  <div class="slide-counter"><b id="slideCurrent">01</b> / <span id="slideTotal">15</span></div>
+</div>
+<nav class="dotnav" id="dotNav"></nav>
+<div class="arrownav">
+  <button id="prevBtn" aria-label="Anterior">↑</button>
+  <button id="nextBtn" aria-label="Siguiente">↓</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 1 — HERO
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-hero">
+  <div class="slide-wrap">
+    <div class="eyebrow" style="margin-bottom:1.2rem">Cápsula puente — Lógica de Programación</div>
+    <h1 class="title">Pensar en código <em>antes</em> de tocar el hardware.</h1>
+    <h2 class="title">Variables, condicionales, loops y funciones — todo con sensores y actuadores reales, no con ejemplos genéricos.</h2>
+    <p style="color:var(--text-dim);font-size:.93rem;max-width:74ch;margin-top:1.1rem;line-height:1.6">
+      Ya tenés tu modelo 3D y tu circuito simulado en Tinkercad (Unidad 4). Antes de programarlo de verdad,
+      necesitás estos 4 conceptos. Esta cápsula está pensada para un curso mixto — no importa si programaste
+      antes o si es tu primera vez.
+    </p>
+    <div class="track-row">
+      <div class="track-chip a">
+        <div class="tc-label">✓ Si ya programaste</div>
+        <p>Repasá rápido cada sección y prestá atención a los ejemplos con sensores — ahí está lo nuevo.</p>
+      </div>
+      <div class="track-chip b">
+        <div class="tc-label">● Si es tu primera vez</div>
+        <p>Andá en orden, sin saltear nada. Cada concepto se apoya en el anterior.</p>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <div><b>Navegación</b>↓ / Espacio para avanzar &nbsp;·&nbsp; ↑ para volver &nbsp;·&nbsp; puntos a la derecha</div>
+      <div><b>Herramientas</b>Arduino IDE · Simulador de Tinkercad</div>
+      <div><b>Recorrido</b>Variables → Condicionales → Loops → Funciones → E/S → Mini-programa</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 2 — ROADMAP: dónde encaja esta cápsula
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-roadmap">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Contexto</div>
+      <h2>¿Dónde encaja esta cápsula?</h2>
+      <p>Es el puente entre el diseño (Unidad 4) y la construcción real (Unidad 5). Sin estos 4 conceptos, no podés programar el Arduino de tu proyecto.</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label">
+        <span class="pname">Flujo del proyecto</span>
+        <span class="pcount" id="roadmapCount">0 / 6</span>
+      </div>
+      <svg class="diagram" id="roadmapSVG" viewBox="0 0 900 160" xmlns="http://www.w3.org/2000/svg">
+        <g class="fade">
+          <rect x="10" y="40" width="140" height="80" rx="7" fill="#1c2330" stroke="#4a5580" stroke-width="1.2"/>
+          <text x="80" y="71" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#6a7a9a" text-anchor="middle">Metodología</text>
+          <text x="80" y="86" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#6a7a9a" text-anchor="middle">y Diseño</text>
+          <text x="80" y="108" font-family="JetBrains Mono,monospace" font-size="9" fill="#4a5580" text-anchor="middle">✓ UNIDAD 4</text>
+        </g>
+        <g class="fade">
+          <line x1="151" y1="80" x2="175" y2="80" stroke="#00D4FF" stroke-width="2"/>
+          <polygon points="175,74 187,80 175,86" fill="#00D4FF"/>
+        </g>
+        <g class="fade">
+          <rect x="188" y="28" width="150" height="104" rx="7" fill="rgba(0,212,255,.08)" stroke="#00D4FF" stroke-width="2"/>
+          <text x="263" y="58" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00D4FF" text-anchor="middle">Variables</text>
+          <text x="263" y="101" font-family="JetBrains Mono,monospace" font-size="9" fill="#00D4FF" text-anchor="middle">● AHORA</text>
+        </g>
+        <g class="fade">
+          <line x1="339" y1="80" x2="361" y2="80" stroke="#00D4FF" stroke-width="2"/>
+          <polygon points="361,74 373,80 361,86" fill="#00D4FF"/>
+        </g>
+        <g class="fade">
+          <rect x="374" y="28" width="150" height="104" rx="7" fill="rgba(0,212,255,.08)" stroke="#00D4FF" stroke-width="2"/>
+          <text x="449" y="58" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00D4FF" text-anchor="middle">Condicionales</text>
+          <text x="449" y="72" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00D4FF" text-anchor="middle">y Loops</text>
+          <text x="449" y="101" font-family="JetBrains Mono,monospace" font-size="9" fill="#00D4FF" text-anchor="middle">● AHORA</text>
+        </g>
+        <g class="fade">
+          <line x1="525" y1="80" x2="547" y2="80" stroke="#00D4FF" stroke-width="2"/>
+          <polygon points="547,74 559,80 547,86" fill="#00D4FF"/>
+        </g>
+        <g class="fade">
+          <rect x="560" y="28" width="150" height="104" rx="7" fill="rgba(0,212,255,.08)" stroke="#00D4FF" stroke-width="2"/>
+          <text x="635" y="58" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00D4FF" text-anchor="middle">Funciones</text>
+          <text x="635" y="72" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00D4FF" text-anchor="middle">y E/S</text>
+          <text x="635" y="101" font-family="JetBrains Mono,monospace" font-size="9" fill="#00D4FF" text-anchor="middle">● AHORA</text>
+        </g>
+        <g class="fade">
+          <line x1="711" y1="80" x2="732" y2="80" stroke="#4a5580" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <polygon points="732,75 742,80 732,85" fill="#4a5580"/>
+        </g>
+        <g class="fade">
+          <rect x="743" y="40" width="147" height="80" rx="7" fill="#1c2330" stroke="#4a5580" stroke-width="1.2" stroke-dasharray="5,3"/>
+          <text x="816" y="71" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#4a5580" text-anchor="middle">Materiales y</text>
+          <text x="816" y="86" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#4a5580" text-anchor="middle">Construcción</text>
+          <text x="816" y="108" font-family="JetBrains Mono,monospace" font-size="9" fill="#3a4060" text-anchor="middle">PRÓXIMO</text>
+        </g>
+      </svg>
+      <div class="controls">
+        <button class="btn primary" data-play="roadmapSVG">▶ Mostrar flujo</button>
+        <button class="btn" data-step="roadmapSVG">Paso ⏭</button>
+        <button class="btn" data-reset="roadmapSVG">↺</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 3 — VARIABLES (concepto + SVG animado)
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-variables">
+  <div class="slide-wrap">
+    <div class="split wide">
+      <div>
+        <div class="eyebrow">1 — Variables</div>
+        <h2 style="font-size:clamp(1.4rem,2.4vw,2rem);margin-bottom:.9rem">Una caja con nombre</h2>
+        <p class="notes" style="font-size:.9rem;margin-bottom:1rem">Una variable guarda un valor que puede cambiar. En Arduino, casi siempre ese valor viene de un sensor.</p>
+        <div class="card cyan">
+          <div class="c-label">Ejemplo real</div>
+          <p>Un sensor de temperatura mide 24°C. Guardás ese número en una variable llamada <code>temperatura</code> para poder usarlo después en tu código.</p>
+          <div class="codeline">int temperatura = 24;</div>
+        </div>
+        <div class="tip">💡 <strong>Por qué importa:</strong> sin variables, no podrías comparar el valor del sensor con un umbral, ni decidir nada. Toda la lógica del Arduino empieza guardando lo que el sensor midió.</div>
+      </div>
+      <div class="svg-panel">
+        <div class="panel-label">
+          <span class="pname">Del sensor a la variable</span>
+          <span class="pcount" id="varCount">0 / 6</span>
+        </div>
+        <svg class="diagram" id="varSVG" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+          <g class="fade">
+            <circle cx="80" cy="70" r="34" fill="rgba(255,184,0,.12)" stroke="#FFB800" stroke-width="1.6"/>
+            <text x="80" y="66" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#FFB800" text-anchor="middle">Sensor de</text>
+            <text x="80" y="79" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#FFB800" text-anchor="middle">temperatura</text>
+          </g>
+          <g class="fade">
+            <line x1="115" y1="70" x2="150" y2="70" stroke="#FFB800" stroke-width="1.6"/>
+            <polygon points="150,65 160,70 150,75" fill="#FFB800"/>
+            <text x="132" y="58" font-family="JetBrains Mono,monospace" font-size="8" fill="#FFB800" text-anchor="middle">mide</text>
+          </g>
+          <g class="fade">
+            <rect x="163" y="42" width="66" height="56" rx="6" fill="rgba(255,255,255,.05)" stroke="#7a8baa" stroke-width="1.2"/>
+            <text x="196" y="74" font-family="JetBrains Mono,monospace" font-size="16" font-weight="700" fill="#e8edf5" text-anchor="middle">24°C</text>
+          </g>
+          <g class="fade">
+            <line x1="196" y1="99" x2="196" y2="130" stroke="#00D4FF" stroke-width="1.6"/>
+            <polygon points="191,130 196,140 201,130" fill="#00D4FF"/>
+          </g>
+          <g class="fade">
+            <rect x="130" y="145" width="132" height="70" rx="8" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="2"/>
+            <text x="196" y="168" font-family="JetBrains Mono,monospace" font-size="9" fill="#00D4FF" text-anchor="middle">VARIABLE</text>
+            <text x="196" y="190" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#e8edf5" text-anchor="middle">temperatura</text>
+            <text x="196" y="205" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#00D4FF" text-anchor="middle">= 24</text>
+          </g>
+          <g class="fade">
+            <text x="330" y="90" font-family="Inter,sans-serif" font-size="10" fill="#7a8baa" text-anchor="middle">Ahora podés</text>
+            <text x="330" y="105" font-family="Inter,sans-serif" font-size="10" fill="#7a8baa" text-anchor="middle">comparar, sumar</text>
+            <text x="330" y="120" font-family="Inter,sans-serif" font-size="10" fill="#7a8baa" text-anchor="middle">o mostrar ese</text>
+            <text x="330" y="135" font-family="Inter,sans-serif" font-size="10" fill="#7a8baa" text-anchor="middle">valor cuando</text>
+            <text x="330" y="150" font-family="Inter,sans-serif" font-size="10" fill="#7a8baa" text-anchor="middle">quieras.</text>
+          </g>
+        </svg>
+        <div class="controls">
+          <button class="btn primary" data-play="varSVG">▶ Animar</button>
+          <button class="btn" data-step="varSVG">Paso ⏭</button>
+          <button class="btn" data-reset="varSVG">↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 4 — TIPOS DE DATOS
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-tipos">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Tipos de dato</div>
+      <h2>¿Qué tipo de variable necesito?</h2>
+      <p>El tipo depende de qué mide el sensor. Elegir mal el tipo es un error común de principiante.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="concept-row" style="--sc:#00D4FF"><div class="concept-L">int</div><div class="concept-W">Número entero</div><div class="concept-D">Distancia en cm, cantidad de vueltas. Ej: <code class="mono" style="color:#00D4FF">int distancia = 15;</code></div></div>
+      <div class="concept-row" style="--sc:#FFB800"><div class="concept-L">float</div><div class="concept-W">Número decimal</div><div class="concept-D">Temperatura, humedad. Ej: <code class="mono" style="color:#FFB800">float humedad = 63.5;</code></div></div>
+      <div class="concept-row" style="--sc:#00C896"><div class="concept-L">bool</div><div class="concept-W">Verdadero o falso</div><div class="concept-D">Presencia detectada o no. Ej: <code class="mono" style="color:#00C896">bool hayPersona = true;</code></div></div>
+      <div class="concept-row" style="--sc:#9B59B6"><div class="concept-L">Str</div><div class="concept-W">Texto (String)</div><div class="concept-D">Mensajes o estados. Ej: <code class="mono" style="color:#9B59B6">String estado = "OK";</code></div></div>
+    </div>
+    <div class="tip">💡 <strong>Regla práctica:</strong> un sensor de presencia (PIR) siempre es <code>bool</code>. Un sensor de temperatura o humedad casi siempre es <code>float</code>. Un sensor de distancia ultrasónico suele ser <code>int</code>.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 5 — CONDICIONALES (concepto + SVG animado, continuidad U3: motor 72°C)
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-condicionales">
+  <div class="slide-wrap">
+    <div class="split flip">
+      <div class="svg-panel">
+        <div class="panel-label">
+          <span class="pname">Decisión: motor de la faja</span>
+          <span class="pcount" id="condCount">0 / 7</span>
+        </div>
+        <svg class="diagram" id="condSVG" viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg">
+          <g class="fade">
+            <rect x="140" y="10" width="140" height="46" rx="7" fill="rgba(255,184,0,.1)" stroke="#FFB800" stroke-width="1.4"/>
+            <text x="210" y="30" font-family="JetBrains Mono,monospace" font-size="10" fill="#FFB800" text-anchor="middle">temperatura</text>
+            <text x="210" y="44" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#e8edf5" text-anchor="middle">= 78°C</text>
+          </g>
+          <g class="fade">
+            <line x1="210" y1="57" x2="210" y2="82" stroke="#7a8baa" stroke-width="1.4"/>
+          </g>
+          <g class="fade">
+            <polygon points="210,80 270,120 210,160 150,120" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.8"/>
+            <text x="210" y="116" font-family="JetBrains Mono,monospace" font-size="10" fill="#00D4FF" text-anchor="middle">temperatura</text>
+            <text x="210" y="130" font-family="JetBrains Mono,monospace" font-size="10" fill="#00D4FF" text-anchor="middle">&gt; 72 ?</text>
+          </g>
+          <g class="fade">
+            <line x1="150" y1="120" x2="90" y2="120" stroke="#00C896" stroke-width="1.6"/>
+            <polygon points="90,115 80,120 90,125" fill="#00C896"/>
+            <text x="118" y="112" font-family="JetBrains Mono,monospace" font-size="9" fill="#00C896" text-anchor="middle">SÍ</text>
+          </g>
+          <g class="fade">
+            <rect x="10" y="100" width="80" height="46" rx="6" fill="rgba(0,200,150,.1)" stroke="#00C896" stroke-width="1.4"/>
+            <text x="50" y="120" font-family="Inter,sans-serif" font-size="9" fill="#a8d8c4" text-anchor="middle">Cortar</text>
+            <text x="50" y="133" font-family="Inter,sans-serif" font-size="9" fill="#a8d8c4" text-anchor="middle">el motor</text>
+          </g>
+          <g class="fade">
+            <line x1="270" y1="120" x2="330" y2="120" stroke="#FF4D6A" stroke-width="1.6"/>
+            <polygon points="330,115 340,120 330,125" fill="#FF4D6A"/>
+            <text x="302" y="112" font-family="JetBrains Mono,monospace" font-size="9" fill="#FF4D6A" text-anchor="middle">NO</text>
+          </g>
+          <g class="fade">
+            <rect x="330" y="100" width="80" height="46" rx="6" fill="rgba(255,77,106,.08)" stroke="#FF4D6A" stroke-width="1.4"/>
+            <text x="370" y="120" font-family="Inter,sans-serif" font-size="9" fill="#e8aab5" text-anchor="middle">Seguir</text>
+            <text x="370" y="133" font-family="Inter,sans-serif" font-size="9" fill="#e8aab5" text-anchor="middle">funcionando</text>
+          </g>
+          <g class="fade">
+            <rect x="70" y="200" width="280" height="66" rx="7" fill="#04090f" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+            <text x="90" y="222" font-family="JetBrains Mono,monospace" font-size="10" fill="#c586c0">if</text>
+            <text x="112" y="222" font-family="JetBrains Mono,monospace" font-size="10" fill="#e8edf5">(temperatura &gt; 72) {</text>
+            <text x="105" y="240" font-family="JetBrains Mono,monospace" font-size="10" fill="#4fc1e9">cortarMotor</text>
+            <text x="185" y="240" font-family="JetBrains Mono,monospace" font-size="10" fill="#e8edf5">();</text>
+            <text x="90" y="256" font-family="JetBrains Mono,monospace" font-size="10" fill="#e8edf5">}</text>
+          </g>
+        </svg>
+        <div class="controls">
+          <button class="btn primary" data-play="condSVG">▶ Evaluar</button>
+          <button class="btn" data-step="condSVG">Paso ⏭</button>
+          <button class="btn" data-reset="condSVG">↺</button>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">2 — Condicionales</div>
+        <h2 style="font-size:clamp(1.3rem,2.2vw,1.8rem);margin-bottom:.9rem">Si se cumple algo, hacé una acción</h2>
+        <div class="notes">
+          <p>Un condicional (<code>if</code>) compara un valor y decide qué hacer. Es la herramienta que convierte una simple lectura de sensor en una decisión automática.</p>
+          <div class="tip" style="margin-top:.8rem"><b>Recordá esta unión:</b> este es el mismo umbral (72°C, motor de la faja) que vimos en Unidad 3. Ahí lo enunciamos como problema técnico — acá lo convertimos en código real.</div>
+          <div class="consigna" style="margin-top:.8rem"><b>Practicá</b> Completá el condicional para un sensor de humedad: si la humedad del suelo baja de 40%, activar el riego.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 6 — OPERADORES DE COMPARACIÓN
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-operadores">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Operadores</div>
+      <h2>Los 6 operadores de comparación</h2>
+      <p>Los usás siempre dentro de un <code>if</code>, comparando una variable con un valor.</p>
+    </div>
+    <div class="svg-panel" style="padding:0;overflow:hidden">
+      <div class="op-row"><div class="op-L" style="background:#00D4FF">&gt;</div><div class="op-W" style="color:#00D4FF">Mayor que</div><div class="op-D">Ej: <code>temperatura &gt; 72</code> — se activa cuando supera el umbral.</div></div>
+      <div class="op-row"><div class="op-L" style="background:#FFB800">&lt;</div><div class="op-W" style="color:#FFB800">Menor que</div><div class="op-D">Ej: <code>humedad &lt; 40</code> — se activa cuando cae por debajo.</div></div>
+      <div class="op-row"><div class="op-L" style="background:#00C896">==</div><div class="op-W" style="color:#00C896">Igual a</div><div class="op-D">Ej: <code>estado == true</code> — compara si son exactamente iguales.</div></div>
+      <div class="op-row"><div class="op-L" style="background:#9B59B6">!=</div><div class="op-W" style="color:#9B59B6">Distinto de</div><div class="op-D">Ej: <code>sensor != 0</code> — se activa cuando hay cualquier lectura.</div></div>
+      <div class="op-row"><div class="op-L" style="background:#FF4D6A">&gt;=</div><div class="op-W" style="color:#FF4D6A">Mayor o igual</div><div class="op-D">Ej: <code>nivel &gt;= 100</code> — incluye el valor límite.</div></div>
+      <div class="op-row"><div class="op-L" style="background:#00D4FF">&lt;=</div><div class="op-W" style="color:#00D4FF">Menor o igual</div><div class="op-D">Ej: <code>bateria &lt;= 20</code> — incluye el valor límite.</div></div>
+    </div>
+    <div class="warn">⚠ <b>Ojo con el = vs ==:</b> un solo <code>=</code> asigna un valor ("guardá esto acá"), dos <code>==</code> comparan ("¿son iguales?"). Confundirlos es el error #1 de los que arrancan con Arduino.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 7 — LOOPS (concepto + SVG animado)
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-loops">
+  <div class="slide-wrap">
+    <div class="split wide">
+      <div>
+        <div class="eyebrow">3 — Loops</div>
+        <h2 style="font-size:clamp(1.4rem,2.4vw,2rem);margin-bottom:.9rem">Repetir sin que se lo pidas de nuevo</h2>
+        <p class="notes" style="font-size:.9rem;margin-bottom:1rem">Arduino ya repite <code>loop()</code> solo, para siempre, mientras esté encendido. Adentro de esa función podés agregar tus propias repeticiones con <code>for</code> o <code>while</code>.</p>
+        <div class="card-row cols2">
+          <div class="card cyan">
+            <div class="c-label">loop() — automático</div>
+            <p>Se ejecuta una y otra vez sin parar. Ahí va la lectura constante de tus sensores.</p>
+          </div>
+          <div class="card amber">
+            <div class="c-label">for — contado</div>
+            <p>Repite una cantidad exacta de veces. Ej: tomar 10 lecturas y promediarlas.</p>
+          </div>
+        </div>
+        <div class="tip">💡 <strong>Ejemplo real:</strong> leer un sensor de distancia 5 veces seguidas y promediar el resultado reduce el ruido de la medición — mucho más confiable que una sola lectura.</div>
+      </div>
+      <div class="svg-panel">
+        <div class="panel-label">
+          <span class="pname">Loop leyendo un sensor</span>
+          <span class="pcount" id="loopCount">0 / 6</span>
+        </div>
+        <svg class="diagram" id="loopSVG" viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg">
+          <g class="fade">
+            <circle cx="190" cy="110" r="80" fill="none" stroke="#00D4FF" stroke-width="2" stroke-dasharray="6,6"/>
+            <polygon points="255,65 268,75 253,82" fill="#00D4FF"/>
+          </g>
+          <g class="fade">
+            <rect x="150" y="80" width="80" height="60" rx="7" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.6"/>
+            <text x="190" y="105" font-family="JetBrains Mono,monospace" font-size="9" fill="#00D4FF" text-anchor="middle">leer</text>
+            <text x="190" y="120" font-family="JetBrains Mono,monospace" font-size="9" fill="#00D4FF" text-anchor="middle">sensor()</text>
+          </g>
+          <g class="fade">
+            <text x="190" y="210" font-family="JetBrains Mono,monospace" font-size="11" fill="#7a8baa" text-anchor="middle">Vuelta 1</text>
+          </g>
+          <g class="fade">
+            <text x="190" y="210" font-family="JetBrains Mono,monospace" font-size="11" fill="#7a8baa" text-anchor="middle">Vuelta 2</text>
+          </g>
+          <g class="fade">
+            <text x="190" y="210" font-family="JetBrains Mono,monospace" font-size="11" fill="#7a8baa" text-anchor="middle">Vuelta 3</text>
+          </g>
+          <g class="fade">
+            <text x="190" y="235" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">...y así todo el tiempo,</text>
+            <text x="190" y="248" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">sin que hagas nada más.</text>
+          </g>
+        </svg>
+        <div class="controls">
+          <button class="btn primary" data-play="loopSVG">▶ Animar</button>
+          <button class="btn" data-step="loopSVG">Paso ⏭</button>
+          <button class="btn" data-reset="loopSVG">↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 8 — FUNCIONES BÁSICAS
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-funciones">
+  <div class="slide-wrap">
+    <div class="split flip">
+      <div class="svg-panel">
+        <div class="panel-label">
+          <span class="pname">Esqueleto de todo programa Arduino</span>
+          <span class="pcount" id="funcCount">0 / 8</span>
+        </div>
+        <svg class="diagram" id="funcSVG" viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg">
+          <g class="fade">
+            <rect x="10" y="10" width="400" height="70" rx="7" fill="rgba(155,89,182,.08)" stroke="#9B59B6" stroke-width="1.6"/>
+            <text x="26" y="35" font-family="JetBrains Mono,monospace" font-size="11" fill="#c586c0">void</text>
+            <text x="66" y="35" font-family="JetBrains Mono,monospace" font-size="11" fill="#4fc1e9">setup</text>
+            <text x="106" y="35" font-family="JetBrains Mono,monospace" font-size="11" fill="#e8edf5">() {</text>
+            <text x="36" y="55" font-family="JetBrains Mono,monospace" font-size="10" fill="#6a9955">// se ejecuta 1 sola vez, al encender</text>
+            <text x="26" y="70" font-family="JetBrains Mono,monospace" font-size="11" fill="#e8edf5">}</text>
+          </g>
+          <g class="fade">
+            <rect x="10" y="90" width="400" height="90" rx="7" fill="rgba(0,212,255,.08)" stroke="#00D4FF" stroke-width="1.6"/>
+            <text x="26" y="115" font-family="JetBrains Mono,monospace" font-size="11" fill="#c586c0">void</text>
+            <text x="66" y="115" font-family="JetBrains Mono,monospace" font-size="11" fill="#4fc1e9">loop</text>
+            <text x="100" y="115" font-family="JetBrains Mono,monospace" font-size="11" fill="#e8edf5">() {</text>
+            <text x="36" y="135" font-family="JetBrains Mono,monospace" font-size="10" fill="#6a9955">// se repite para siempre</text>
+            <text x="36" y="152" font-family="JetBrains Mono,monospace" font-size="10" fill="#4fc1e9">leerTemperatura</text>
+            <text x="150" y="152" font-family="JetBrains Mono,monospace" font-size="10" fill="#e8edf5">();</text>
+            <text x="26" y="172" font-family="JetBrains Mono,monospace" font-size="11" fill="#e8edf5">}</text>
+          </g>
+          <g class="fade">
+            <line x1="210" y1="182" x2="210" y2="200" stroke="#7a8baa" stroke-width="1.4"/>
+          </g>
+          <g class="fade">
+            <rect x="10" y="200" width="400" height="70" rx="7" fill="rgba(0,200,150,.08)" stroke="#00C896" stroke-width="1.6"/>
+            <text x="26" y="225" font-family="JetBrains Mono,monospace" font-size="11" fill="#c586c0">float</text>
+            <text x="72" y="225" font-family="JetBrains Mono,monospace" font-size="11" fill="#4fc1e9">leerTemperatura</text>
+            <text x="196" y="225" font-family="JetBrains Mono,monospace" font-size="11" fill="#e8edf5">() {</text>
+            <text x="36" y="245" font-family="JetBrains Mono,monospace" font-size="10" fill="#e8edf5">return analogRead(A0);</text>
+            <text x="26" y="262" font-family="JetBrains Mono,monospace" font-size="11" fill="#e8edf5">}</text>
+          </g>
+        </svg>
+        <div class="controls">
+          <button class="btn primary" data-play="funcSVG">▶ Construir</button>
+          <button class="btn" data-step="funcSVG">Paso ⏭</button>
+          <button class="btn" data-reset="funcSVG">↺</button>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">4 — Funciones básicas</div>
+        <h2 style="font-size:clamp(1.3rem,2.2vw,1.8rem);margin-bottom:.9rem">setup(), loop(), y las tuyas propias</h2>
+        <div class="notes">
+          <p>Todo programa de Arduino necesita <code>setup()</code> (corre 1 vez) y <code>loop()</code> (corre para siempre). Además, podés crear tus propias funciones para ordenar el código.</p>
+          <ul style="margin-top:.7rem">
+            <li><b>setup()</b> — configurás pines, inicializás sensores. Una sola vez.</li>
+            <li><b>loop()</b> — la lógica principal, se repite sin parar.</li>
+            <li><b>Función propia</b> — como <code>leerTemperatura()</code>, agrupa código que usás varias veces.</li>
+          </ul>
+          <div class="tip" style="margin-top:.8rem"><b>Por qué separar en funciones:</b> si necesitás leer la temperatura en 3 lugares distintos del código, escribís la función una vez y la llamás las 3 veces. Menos errores, más orden.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 9 — ENTRADA (sensor)
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-entrada">
+  <div class="slide-wrap">
+    <div class="split wide">
+      <div>
+        <div class="eyebrow">5 — Entrada</div>
+        <h2 style="font-size:clamp(1.4rem,2.4vw,2rem);margin-bottom:.9rem">Leer un sensor</h2>
+        <p class="notes" style="font-size:.9rem;margin-bottom:1rem">Hay dos formas de leer, según el tipo de sensor.</p>
+        <div class="card-row cols2">
+          <div class="card cyan">
+            <div class="c-label">digitalRead()</div>
+            <p>Lee solo 0 o 1 (sí/no). Ej: sensor de presencia PIR.</p>
+            <div class="codeline">digitalRead(2);</div>
+          </div>
+          <div class="card amber">
+            <div class="c-label">analogRead()</div>
+            <p>Lee un rango de 0 a 1023. Ej: fotoresistor (LDR), sensor de humedad.</p>
+            <div class="codeline">analogRead(A0);</div>
+          </div>
+        </div>
+        <div class="tip">💡 <strong>Ejemplo real:</strong> un LDR (fotoresistor) conectado al pin A0 devuelve un número más alto cuanta más luz recibe. Eso te permite decidir si encender una luz automática.</div>
+      </div>
+      <div class="svg-panel">
+        <div class="panel-label">
+          <span class="pname">Sensor → Arduino → variable</span>
+          <span class="pcount" id="inCount">0 / 6</span>
+        </div>
+        <svg class="diagram" id="inSVG" viewBox="0 0 380 220" xmlns="http://www.w3.org/2000/svg">
+          <g class="fade">
+            <circle cx="60" cy="110" r="34" fill="rgba(255,184,0,.12)" stroke="#FFB800" stroke-width="1.6"/>
+            <text x="60" y="106" font-family="Space Grotesk,sans-serif" font-size="9" font-weight="700" fill="#FFB800" text-anchor="middle">LDR</text>
+            <text x="60" y="119" font-family="Space Grotesk,sans-serif" font-size="9" font-weight="700" fill="#FFB800" text-anchor="middle">(luz)</text>
+          </g>
+          <g class="fade">
+            <line x1="95" y1="110" x2="140" y2="110" stroke="#FFB800" stroke-width="1.6"/>
+            <polygon points="140,105 150,110 140,115" fill="#FFB800"/>
+          </g>
+          <g class="fade">
+            <rect x="153" y="80" width="90" height="60" rx="7" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.6"/>
+            <text x="198" y="105" font-family="JetBrains Mono,monospace" font-size="9" fill="#00D4FF" text-anchor="middle">Arduino</text>
+            <text x="198" y="122" font-family="JetBrains Mono,monospace" font-size="9" fill="#e8edf5" text-anchor="middle">pin A0</text>
+          </g>
+          <g class="fade">
+            <line x1="243" y1="110" x2="280" y2="110" stroke="#00C896" stroke-width="1.6"/>
+            <polygon points="280,105 290,110 280,115" fill="#00C896"/>
+          </g>
+          <g class="fade">
+            <rect x="293" y="82" width="80" height="56" rx="7" fill="rgba(0,200,150,.1)" stroke="#00C896" stroke-width="1.6"/>
+            <text x="333" y="105" font-family="JetBrains Mono,monospace" font-size="9" fill="#00C896" text-anchor="middle">luz</text>
+            <text x="333" y="120" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#e8edf5" text-anchor="middle">= 620</text>
+          </g>
+          <g class="fade">
+            <text x="198" y="175" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a8baa" text-anchor="middle">luz = analogRead(A0);</text>
+          </g>
+        </svg>
+        <div class="controls">
+          <button class="btn primary" data-play="inSVG">▶ Animar</button>
+          <button class="btn" data-step="inSVG">Paso ⏭</button>
+          <button class="btn" data-reset="inSVG">↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 10 — SALIDA (actuador)
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-salida">
+  <div class="slide-wrap">
+    <div class="split flip">
+      <div class="svg-panel">
+        <div class="panel-label">
+          <span class="pname">Variable → Arduino → actuador</span>
+          <span class="pcount" id="outCount">0 / 6</span>
+        </div>
+        <svg class="diagram" id="outSVG" viewBox="0 0 380 220" xmlns="http://www.w3.org/2000/svg">
+          <g class="fade">
+            <rect x="10" y="82" width="80" height="56" rx="7" fill="rgba(255,77,106,.08)" stroke="#FF4D6A" stroke-width="1.6"/>
+            <text x="50" y="105" font-family="JetBrains Mono,monospace" font-size="9" fill="#FF4D6A" text-anchor="middle">activar</text>
+            <text x="50" y="120" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#e8edf5" text-anchor="middle">= true</text>
+          </g>
+          <g class="fade">
+            <line x1="90" y1="110" x2="130" y2="110" stroke="#FF4D6A" stroke-width="1.6"/>
+            <polygon points="130,105 140,110 130,115" fill="#FF4D6A"/>
+          </g>
+          <g class="fade">
+            <rect x="143" y="80" width="90" height="60" rx="7" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.6"/>
+            <text x="188" y="105" font-family="JetBrains Mono,monospace" font-size="9" fill="#00D4FF" text-anchor="middle">Arduino</text>
+            <text x="188" y="122" font-family="JetBrains Mono,monospace" font-size="9" fill="#e8edf5" text-anchor="middle">pin 8</text>
+          </g>
+          <g class="fade">
+            <line x1="233" y1="110" x2="270" y2="110" stroke="#00C896" stroke-width="1.6"/>
+            <polygon points="270,105 280,110 270,115" fill="#00C896"/>
+          </g>
+          <g class="fade">
+            <circle cx="325" cy="110" r="34" fill="rgba(0,200,150,.15)" stroke="#00C896" stroke-width="2"/>
+            <text x="325" y="106" font-family="Space Grotesk,sans-serif" font-size="9" font-weight="700" fill="#00C896" text-anchor="middle">Relay /</text>
+            <text x="325" y="119" font-family="Space Grotesk,sans-serif" font-size="9" font-weight="700" fill="#00C896" text-anchor="middle">motor ON</text>
+          </g>
+          <g class="fade">
+            <text x="188" y="175" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a8baa" text-anchor="middle">digitalWrite(8, HIGH);</text>
+          </g>
+        </svg>
+        <div class="controls">
+          <button class="btn primary" data-play="outSVG">▶ Animar</button>
+          <button class="btn" data-step="outSVG">Paso ⏭</button>
+          <button class="btn" data-reset="outSVG">↺</button>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">6 — Salida</div>
+        <h2 style="font-size:clamp(1.3rem,2.2vw,1.8rem);margin-bottom:.9rem">Activar un actuador</h2>
+        <div class="notes">
+          <p>Igual que con la entrada, hay dos formas de escribir según lo que necesites.</p>
+          <div class="card-row cols2" style="margin-top:.8rem">
+            <div class="card cyan">
+              <div class="c-label">digitalWrite()</div>
+              <p>Prende o apaga (todo o nada). Ej: relay, LED, buzzer.</p>
+              <div class="codeline">digitalWrite(8, HIGH);</div>
+            </div>
+            <div class="card amber">
+              <div class="c-label">analogWrite()</div>
+              <p>Controla intensidad (PWM, 0-255). Ej: velocidad de un motor, brillo de un LED.</p>
+              <div class="codeline">analogWrite(9, 180);</div>
+            </div>
+          </div>
+          <div class="tip" style="margin-top:.8rem">💡 <strong>Ejemplo real:</strong> un servomotor que abre una válvula de riego usa <code>digitalWrite</code> para encenderlo, o <code>analogWrite</code> si necesitás controlar la velocidad de un motor DC.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 11 — EJERCICIOS INTERACTIVOS (click para revelar)
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-ejercicios">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Practicá</div>
+      <h2>Completá el código</h2>
+      <p>Dos ejercicios cortos. Pensá tu respuesta antes de tocar "Ver solución".</p>
+    </div>
+    <div class="card-row cols2">
+      <div class="card cyan">
+        <div class="c-label">Ejercicio 1 — Riego automático</div>
+        <p style="margin-bottom:.5rem">Si la humedad del suelo baja de 40, activar la bomba de riego.</p>
+        <div class="codeblock">if (humedad <span class="blank">___</span> 40) {<br>&nbsp;&nbsp;digitalWrite(<span class="blank">___</span>, HIGH);<br>}</div>
+        <div class="reveal-wrap">
+          <button class="btn" onclick="toggleReveal('r1')">Ver solución</button>
+          <div class="reveal-answer" id="r1">
+            <code>if (humedad &lt; 40) {<br>&nbsp;&nbsp;digitalWrite(bombaPin, HIGH);<br>}</code>
+          </div>
+        </div>
+      </div>
+      <div class="card amber">
+        <div class="c-label">Ejercicio 2 — Alarma de temperatura</div>
+        <p style="margin-bottom:.5rem">Leer la temperatura y guardarla en una variable de tipo decimal.</p>
+        <div class="codeblock"><span class="blank">___</span> temperatura = <span class="blank">___</span>(A0);</div>
+        <div class="reveal-wrap">
+          <button class="btn" onclick="toggleReveal('r2')">Ver solución</button>
+          <div class="reveal-answer" id="r2">
+            <code>float temperatura = analogRead(A0);</code>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="consigna" style="margin-top:1rem"><b>Extra — para el que ya sabe programar</b> Adaptá el ejercicio 1 para que también apague la bomba cuando la humedad supere el 70% (agregá un segundo condicional).</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 12 — TODO JUNTO (flujo conceptual)
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-flujo">
+  <div class="slide-wrap">
+    <div class="sec-head center" style="text-align:center;max-width:none;margin-bottom:1.4rem">
+      <div class="eyebrow" style="justify-content:center"><span style="display:block;width:1.8rem;height:1.5px;background:var(--accent)"></span>Síntesis<span style="display:block;width:1.8rem;height:1.5px;background:var(--accent)"></span></div>
+      <h2>Los 4 conceptos, conectados</h2>
+      <p>Así se combinan variable, condicional, loop y función en cualquier programa de Arduino.</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label">
+        <span class="pname">Sensor → variable → condición → actuador</span>
+        <span class="pcount" id="allCount">0 / 5</span>
+      </div>
+      <svg class="diagram" id="allSVG" viewBox="0 0 900 180" xmlns="http://www.w3.org/2000/svg">
+        <g class="fade">
+          <rect x="10" y="45" width="160" height="90" rx="9" fill="rgba(255,184,0,.08)" stroke="#FFB800" stroke-width="1.6"/>
+          <text x="90" y="80" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#FFB800" text-anchor="middle">SENSOR</text>
+          <text x="90" y="100" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">analogRead()</text>
+          <text x="90" y="114" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">digitalRead()</text>
+        </g>
+        <g class="fade">
+          <line x1="171" y1="90" x2="196" y2="90" stroke="#00D4FF" stroke-width="2"/>
+          <polygon points="196,84 208,90 196,96" fill="#00D4FF"/>
+          <rect x="209" y="45" width="160" height="90" rx="9" fill="rgba(0,212,255,.08)" stroke="#00D4FF" stroke-width="1.6"/>
+          <text x="289" y="80" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00D4FF" text-anchor="middle">VARIABLE</text>
+          <text x="289" y="100" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">guarda el</text>
+          <text x="289" y="114" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">valor leído</text>
+        </g>
+        <g class="fade">
+          <line x1="370" y1="90" x2="395" y2="90" stroke="#9B59B6" stroke-width="2"/>
+          <polygon points="395,84 407,90 395,96" fill="#9B59B6"/>
+          <rect x="408" y="45" width="160" height="90" rx="9" fill="rgba(155,89,182,.08)" stroke="#9B59B6" stroke-width="1.6"/>
+          <text x="488" y="80" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#9B59B6" text-anchor="middle">CONDICIONAL</text>
+          <text x="488" y="100" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">if (valor &gt;</text>
+          <text x="488" y="114" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">umbral)</text>
+        </g>
+        <g class="fade">
+          <line x1="569" y1="90" x2="594" y2="90" stroke="#00C896" stroke-width="2"/>
+          <polygon points="594,84 606,90 594,96" fill="#00C896"/>
+          <rect x="607" y="45" width="160" height="90" rx="9" fill="rgba(0,200,150,.12)" stroke="#00C896" stroke-width="2"/>
+          <text x="687" y="80" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00C896" text-anchor="middle">ACTUADOR</text>
+          <text x="687" y="100" font-family="Inter,sans-serif" font-size="9" fill="#a8d8c4" text-anchor="middle">digitalWrite()</text>
+          <text x="687" y="114" font-family="Inter,sans-serif" font-size="9" fill="#a8d8c4" text-anchor="middle">analogWrite()</text>
+        </g>
+        <g class="fade">
+          <path d="M 800 90 C 850 90, 850 30, 750 20 C 650 10, 200 10, 90 20 C 40 25, 20 40, 15 45" fill="none" stroke="#4a5580" stroke-width="1.4" stroke-dasharray="4,3"/>
+          <polygon points="10,50 18,42 22,52" fill="#4a5580"/>
+          <text x="450" y="18" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a8baa" text-anchor="middle">todo esto adentro de loop() — se repite para siempre</text>
+        </g>
+      </svg>
+      <div class="controls">
+        <button class="btn primary" data-play="allSVG">▶ Animar</button>
+        <button class="btn" data-step="allSVG">Paso ⏭</button>
+        <button class="btn" data-reset="allSVG">↺</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 13 — MINI-PROGRAMA FINAL (puente directo a Unidad 5)
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-miniprograma">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Puente directo a Unidad 5</div>
+      <h2>El mini-programa completo</h2>
+      <p>Lee un sensor de temperatura, evalúa si supera un umbral, y activa un actuador. Esto es literalmente lo que vas a programar en tu MVP.</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label">
+        <span class="pname">Programa completo — construcción línea por línea</span>
+        <span class="pcount" id="miniCount">0 / 14</span>
+      </div>
+      <svg class="diagram" id="miniSVG" viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" style="max-height:56vh">
+        <g class="fade"><text x="20" y="26" font-family="JetBrains Mono,monospace" font-size="12" fill="#6a9955">// Mini-programa: control de temperatura del motor</text></g>
+        <g class="fade"><text x="20" y="50" font-family="JetBrains Mono,monospace" font-size="13" fill="#4fc1e9">const</text><text x="66" y="50" font-family="JetBrains Mono,monospace" font-size="13" fill="#e8edf5">int relayPin = 8;</text></g>
+        <g class="fade"><text x="20" y="72" font-family="JetBrains Mono,monospace" font-size="13" fill="#c586c0">float</text><text x="70" y="72" font-family="JetBrains Mono,monospace" font-size="13" fill="#e8edf5">temperatura;</text></g>
+        <g class="fade"><text x="20" y="104" font-family="JetBrains Mono,monospace" font-size="13" fill="#c586c0">void</text><text x="60" y="104" font-family="JetBrains Mono,monospace" font-size="13" fill="#4fc1e9">setup</text><text x="98" y="104" font-family="JetBrains Mono,monospace" font-size="13" fill="#e8edf5">() {</text></g>
+        <g class="fade"><text x="40" y="126" font-family="JetBrains Mono,monospace" font-size="13" fill="#e8edf5">pinMode(relayPin, OUTPUT);</text></g>
+        <g class="fade"><text x="20" y="148" font-family="JetBrains Mono,monospace" font-size="13" fill="#e8edf5">}</text></g>
+        <g class="fade"><text x="20" y="180" font-family="JetBrains Mono,monospace" font-size="13" fill="#c586c0">void</text><text x="60" y="180" font-family="JetBrains Mono,monospace" font-size="13" fill="#4fc1e9">loop</text><text x="94" y="180" font-family="JetBrains Mono,monospace" font-size="13" fill="#e8edf5">() {</text></g>
+        <g class="fade"><text x="40" y="202" font-family="JetBrains Mono,monospace" font-size="13" fill="#e8edf5">temperatura = analogRead(A0);</text></g>
+        <g class="fade"><text x="40" y="228" font-family="JetBrains Mono,monospace" font-size="13" fill="#c586c0">if</text><text x="58" y="228" font-family="JetBrains Mono,monospace" font-size="13" fill="#e8edf5">(temperatura &gt; 72) {</text></g>
+        <g class="fade"><text x="60" y="250" font-family="JetBrains Mono,monospace" font-size="13" fill="#e8edf5">digitalWrite(relayPin, HIGH);</text></g>
+        <g class="fade"><text x="40" y="272" font-family="JetBrains Mono,monospace" font-size="13" fill="#e8edf5">}</text></g>
+        <g class="fade"><text x="20" y="294" font-family="JetBrains Mono,monospace" font-size="13" fill="#e8edf5">}</text></g>
+        <g class="fade">
+          <rect x="400" y="40" width="220" height="260" rx="8" fill="rgba(0,200,150,.06)" stroke="#00C896" stroke-width="1.4"/>
+          <text x="510" y="65" font-family="JetBrains Mono,monospace" font-size="9" fill="#00C896" text-anchor="middle">EQUIVALE A</text>
+          <circle cx="440" cy="110" r="26" fill="rgba(255,184,0,.12)" stroke="#FFB800" stroke-width="1.4"/>
+          <text x="440" y="114" font-family="JetBrains Mono,monospace" font-size="9" fill="#FFB800" text-anchor="middle">sensor</text>
+          <line x1="466" y1="110" x2="500" y2="110" stroke="#7a8baa" stroke-width="1.3"/>
+          <text x="530" y="90" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">lee</text>
+          <text x="540" y="114" font-family="JetBrains Mono,monospace" font-size="10" fill="#e8edf5">78°C</text>
+          <line x1="510" y1="136" x2="510" y2="165" stroke="#7a8baa" stroke-width="1.3"/>
+          <polygon points="505,165 510,175 515,165" fill="#7a8baa"/>
+          <rect x="460" y="180" width="100" height="34" rx="6" fill="rgba(155,89,182,.1)" stroke="#9B59B6" stroke-width="1.3"/>
+          <text x="510" y="201" font-family="JetBrains Mono,monospace" font-size="9" fill="#9B59B6" text-anchor="middle">&gt; 72? SÍ</text>
+          <line x1="510" y1="214" x2="510" y2="240" stroke="#7a8baa" stroke-width="1.3"/>
+          <polygon points="505,240 510,250 515,240" fill="#7a8baa"/>
+          <circle cx="510" cy="268" r="24" fill="rgba(0,200,150,.15)" stroke="#00C896" stroke-width="1.6"/>
+          <text x="510" y="264" font-family="Space Grotesk,sans-serif" font-size="8" font-weight="700" fill="#00C896" text-anchor="middle">RELAY</text>
+          <text x="510" y="276" font-family="Space Grotesk,sans-serif" font-size="8" font-weight="700" fill="#00C896" text-anchor="middle">ON</text>
+        </g>
+      </svg>
+      <div class="controls">
+        <button class="btn primary" data-play="miniSVG">▶ Construir el programa</button>
+        <button class="btn" data-step="miniSVG">Paso ⏭</button>
+        <button class="btn" data-reset="miniSVG">↺</button>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:.9rem">💡 <strong>Esto es todo lo que necesitás:</strong> 2 variables, 1 función setup, 1 función loop, 1 condicional. Con estos bloques armás la lógica de casi cualquier MVP de automatización.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 14 — EJERCICIO GRUPAL
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-ejercicio-grupal">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Ejercicio grupal</div>
+      <h2>Adaptalo a tu propio proyecto</h2>
+      <p>Tomen el mini-programa y reemplacen el sensor y el actuador por los de su MVP.</p>
+    </div>
+    <div class="card-row cols3">
+      <div class="step-box"><div class="sn">1</div><div><h4>Identifiquen su sensor</h4><p>¿Qué mide? ¿digitalRead o analogRead? ¿Qué tipo de variable necesitan?</p></div></div>
+      <div class="step-box"><div class="sn">2</div><div><h4>Definan su umbral</h4><p>El mismo número que usaron en el objetivo SMART de la Unidad 3.</p></div></div>
+      <div class="step-box"><div class="sn">3</div><div><h4>Identifiquen su actuador</h4><p>¿digitalWrite o analogWrite? ¿Qué pin van a usar?</p></div></div>
+    </div>
+    <div class="consigna" style="margin-top:1rem"><b>Consigna</b> Escriban en su cuaderno las 4 líneas clave: la variable, la lectura del sensor, el condicional con su umbral, y la activación del actuador. Van a necesitar exactamente esto para arrancar la Unidad 5.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 15 — CIERRE
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-cierre">
+  <div class="slide-wrap" style="text-align:center;max-width:700px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:1.4rem"><span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span>Cierre<span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span></div>
+    <div class="closing-mark">Ya podés programar<br>tu propio MVP.</div>
+    <div class="closing-sub" style="margin-top:1.2rem;font-size:.9rem">Taller de Proyecto &nbsp;·&nbsp; Cápsula puente — Lógica de Programación</div>
+    <div style="margin-top:2rem;display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap">
+      <div style="background:var(--bg-raised);border:1px solid rgba(0,212,255,.3);border-radius:8px;padding:.7rem 1.1rem;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:#00D4FF">✓ Variables y tipos de dato</div>
+      <div style="background:var(--bg-raised);border:1px solid rgba(255,184,0,.3);border-radius:8px;padding:.7rem 1.1rem;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:#FFB800">✓ Condicionales y operadores</div>
+      <div style="background:var(--bg-raised);border:1px solid rgba(0,200,150,.35);border-radius:8px;padding:.7rem 1.1rem;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:#00C896">✓ Loops y funciones</div>
+      <div style="background:var(--bg-raised);border:1px solid rgba(155,89,182,.3);border-radius:8px;padding:.7rem 1.1rem;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:#9B59B6">✓ Entrada y salida real</div>
+    </div>
+    <div style="margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--line)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);margin-bottom:.4rem">PRÓXIMO</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:#FF4D6A">Unidad 5 — Materiales, Construcción y Validación</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--text-dim);margin-top:.3rem">Herramientas · Electrónica real · Seguridad · Ensamblaje · Prueba del MVP</div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const REDUCE = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* ── CONSTRUCTION ENGINE (idéntico a las cápsulas anteriores) ── */
+  class Construction{
+    constructor(svg,{stepDuration=550}={}){
+      this.svg=svg; this.stepDuration=REDUCE?1:stepDuration;
+      this.elements=Array.from(svg.querySelectorAll('.draw,.fade'));
+      this.index=-1; this.timer=null; this.onChange=null;
+      this.elements.forEach(el=>this._prep(el));
+      this.setAll(false,{instant:true});
+    }
+    _prep(el){
+      if(!el.classList.contains('draw'))return;
+      if(!el.hasAttribute('stroke-dasharray')){
+        el.removeAttribute('pathLength'); el.style.vectorEffect='none';
+        let len=1; try{len=el.getTotalLength()||1}catch(e){}
+        el._len=len; el.style.strokeDasharray=len+' '+(len*2);
+      }else{ el._len=parseFloat(el.getAttribute('stroke-dasharray'))||1; }
+    }
+    setAll(shown,{instant=false}={}){ this.elements.forEach(el=>this._set(el,shown,instant)); }
+    _set(el,shown,instant){
+      if(el.classList.contains('draw')){
+        el.style.transition=instant?'none':`stroke-dashoffset ${this.stepDuration}ms cubic-bezier(.4,0,.2,1)`;
+        el.style.strokeDashoffset=shown?'0':(el._len||1);
+      }else{
+        el.style.transition=instant?'none':`opacity ${this.stepDuration*.65}ms ease`;
+        el.style.opacity=shown?'1':'0';
+      }
+    }
+    goto(target,{instantAll=false}={}){
+      clearInterval(this.timer);
+      target=Math.max(-1,Math.min(this.elements.length-1,target));
+      this.elements.forEach((el,i)=>{
+        const shown=i<=target, isEdge=(i===target&&!instantAll);
+        if(isEdge){
+          this._set(el,false,true); void el.getBoundingClientRect();
+          requestAnimationFrame(()=>requestAnimationFrame(()=>this._set(el,true,false)));
+        }else{ this._set(el,shown,true); }
+      });
+      this.index=target;
+      if(this.onChange)this.onChange(target,this.elements.length);
+    }
+    reset(){this.goto(-1)}
+    step(){this.goto(this.index+1)}
+    back(){this.goto(this.index-1)}
+    playAll(){
+      this.reset(); let i=0;
+      const next=()=>{if(i>=this.elements.length)return; this.goto(i); i++; this.timer=setTimeout(next,this.stepDuration*.6);};
+      this.timer=setTimeout(next,100);
+    }
+  }
+
+  /* ── REGISTRY ─────────────────────────────────────────────── */
+  const reg={};
+  document.querySelectorAll('svg.diagram').forEach(svg=>{ reg[svg.id]=new Construction(svg); });
+  document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.play].playAll()));
+  document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.step].step()));
+  document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.back].back()));
+  document.querySelectorAll('[data-reset]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.reset].reset()));
+
+  function bindCounter(svgId,elId){
+    const c=reg[svgId],el=document.getElementById(elId);
+    if(!c||!el)return;
+    const total=c.elements.length;
+    c.onChange=(idx)=>{el.textContent=(idx+1)+' / '+total};
+    el.textContent='0 / '+total;
+  }
+  bindCounter('roadmapSVG','roadmapCount');
+  bindCounter('varSVG','varCount');
+  bindCounter('condSVG','condCount');
+  bindCounter('loopSVG','loopCount');
+  bindCounter('funcSVG','funcCount');
+  bindCounter('inSVG','inCount');
+  bindCounter('outSVG','outCount');
+  bindCounter('allSVG','allCount');
+  bindCounter('miniSVG','miniCount');
+
+  /* ── REVEAL TOGGLES (ejercicios) ─────────────────────────── */
+  window.toggleReveal = function(id){
+    const el = document.getElementById(id);
+    if(el) el.classList.toggle('show');
+  };
+
+  /* ── SLIDE NAV ────────────────────────────────────────────── */
+  const slides=Array.from(document.querySelectorAll('.slide'));
+  const dotNav=document.getElementById('dotNav');
+  const slideCurrentEl=document.getElementById('slideCurrent');
+  const slideTotalEl=document.getElementById('slideTotal');
+  const progressFill=document.getElementById('progressFill');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  let current=0;
+  slideTotalEl.textContent=String(slides.length).padStart(2,'0');
+  slides.forEach((sl,i)=>{
+    const b=document.createElement('button');
+    b.setAttribute('aria-label','Ir a pantalla '+(i+1));
+    b.addEventListener('click',()=>goTo(i));
+    dotNav.appendChild(b);
+  });
+  const dots=Array.from(dotNav.children);
+  function setActive(i){
+    current=i;
+    dots.forEach((d,idx)=>d.classList.toggle('active',idx===i));
+    slideCurrentEl.textContent=String(i+1).padStart(2,'0');
+    progressFill.style.width=(((i+1)/slides.length)*100)+'%';
+    prevBtn.disabled=i===0; nextBtn.disabled=i===slides.length-1;
+  }
+  function goTo(i){
+    i=Math.max(0,Math.min(slides.length-1,i));
+    slides[i].scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'});
+  }
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>0.55){const idx=slides.indexOf(e.target);if(idx!==-1)setActive(idx);}});
+  },{threshold:[0.55]});
+  slides.forEach(sl=>io.observe(sl));
+  prevBtn.addEventListener('click',()=>goTo(current-1));
+  nextBtn.addEventListener('click',()=>goTo(current+1));
+  window.addEventListener('keydown',(e)=>{
+    const tag=(e.target&&e.target.tagName)||'';
+    if(tag==='INPUT'||tag==='TEXTAREA')return;
+    if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();goTo(current+1);}
+    else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();goTo(current-1);}
+    else if(e.key==='Home'){e.preventDefault();goTo(0);}
+    else if(e.key==='End'){e.preventDefault();goTo(slides.length-1);}
+  });
+  setActive(0);
+})();
+</script>
+</body>
+</html>

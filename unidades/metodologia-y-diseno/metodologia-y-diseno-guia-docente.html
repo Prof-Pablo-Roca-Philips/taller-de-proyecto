@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metodología y Diseño — Guía Docente · Taller de Proyecto</title>
+<style>
+:root{--navy:#0A0E2A;--mid:#1A2550;--lit:#253070;--cyan:#00D4FF;--cdim:#0097B8;--amber:#FFB800;--green:#00C896;--red:#FF4D6A;--purple:#9B59B6;--pdim:#7A4495;--white:#FFFFFF;--off:#E8EDF5;--muted:#7A8BAA;--card:#131B3A;--clit:#1E2B4A;--sw:255px;--r:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;display:flex;min-height:100vh}
+#sb{width:var(--sw);min-height:100vh;background:#060918;border-right:1px solid rgba(155,89,182,0.12);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sbl{padding:20px 16px 14px;border-bottom:1px solid rgba(155,89,182,0.1)}
+.sbl .tag{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--pdim);text-transform:uppercase;margin-bottom:5px}
+.sbl h1{font-size:13px;font-weight:800;color:var(--white);line-height:1.3}
+.sbl h1 span{color:var(--purple)}
+.sbn{margin:10px 12px 0;background:rgba(155,89,182,0.06);border:1px solid rgba(155,89,182,0.14);border-radius:7px;padding:8px 11px;font-size:11.5px;color:var(--muted)}
+.sbn strong{color:var(--purple);font-size:12px;display:block;margin-bottom:2px}
+.nl{padding:14px 16px 4px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 16px;text-decoration:none;color:var(--muted);font-size:12px;font-weight:500;border-left:3px solid transparent;transition:all .2s;cursor:pointer}
+.ni:hover{color:var(--white);background:rgba(155,89,182,0.06)}
+.ni.active{color:var(--purple);border-left-color:var(--purple);background:rgba(155,89,182,0.08)}
+.nd{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sbf{margin-top:auto;padding:12px 16px;border-top:1px solid rgba(255,255,255,0.05);font-size:11px;color:var(--muted);line-height:1.5}
+#main{margin-left:var(--sw);flex:1;padding-bottom:62px}
+#pb{position:fixed;top:0;left:var(--sw);right:0;height:3px;background:rgba(155,89,182,0.1);z-index:200}
+#pf{height:100%;background:var(--purple);width:0%;transition:width .1s}
+#hero{background:linear-gradient(135deg,#0A0E2A 0%,#1A2550 55%,#0D1535 100%);padding:52px 48px 44px;position:relative;overflow:hidden;border-bottom:1px solid rgba(155,89,182,0.1)}
+#hero::before{content:'';position:absolute;top:-60px;right:-60px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(155,89,182,0.09) 0%,transparent 70%);pointer-events:none}
+.htag{display:inline-block;background:rgba(155,89,182,0.1);border:1px solid rgba(155,89,182,0.3);color:var(--purple);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px}
+#hero h2{font-size:clamp(22px,3.5vw,38px);font-weight:900;color:var(--white);line-height:1.15;margin-bottom:8px}
+#hero h2 em{color:var(--purple);font-style:normal}
+#hero p{font-size:13.5px;color:var(--muted);max-width:490px;margin-bottom:24px;line-height:1.7}
+.nrow{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.nrow label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.ninp{background:rgba(155,89,182,0.06);border:1.5px solid rgba(155,89,182,0.3);border-radius:8px;padding:9px 15px;color:var(--white);font-size:14px;font-weight:600;outline:none;min-width:200px;transition:border-color .2s;font-family:inherit}
+.ninp:focus{border-color:var(--purple)}
+.ninp::placeholder{color:var(--muted);font-weight:400}
+.sec{padding:48px 48px 40px;border-bottom:1px solid rgba(255,255,255,0.04);scroll-margin-top:20px}
+.eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.edot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.etxt{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sec h2{font-size:clamp(17px,2.5vw,26px);font-weight:800;color:var(--white);margin-bottom:8px;line-height:1.2}
+.sec>.desc{color:var(--muted);font-size:13px;max-width:640px;margin-bottom:24px;line-height:1.65}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.cc{background:var(--card);border-radius:var(--r);padding:18px 20px;border:1px solid rgba(255,255,255,0.07);border-left:3px solid var(--ca,var(--purple))}
+.cc h3{font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px}
+.cc p{font-size:12.5px;color:var(--muted);line-height:1.55}
+.def{background:var(--card);border:1px solid rgba(155,89,182,0.2);border-radius:var(--r);padding:22px 26px;margin-bottom:20px}
+.def p{font-size:15px;color:var(--off);line-height:1.75}
+.def strong{color:var(--purple);font-weight:700}
+.def em{color:var(--amber);font-style:normal;font-weight:600}
+.rule{background:rgba(255,184,0,0.07);border:1px solid rgba(255,184,0,0.2);border-radius:var(--r);padding:13px 16px;margin-top:14px;font-size:13px;color:var(--off);line-height:1.6}
+.rule strong{color:var(--amber)}
+.tip{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r);padding:13px 16px;margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.6}
+.tip strong{color:var(--off)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:18px}
+.cmp{background:var(--card);border-radius:var(--r);padding:16px 18px;border:1px solid rgba(255,255,255,0.07)}
+.cmp.bad{border-left:3px solid var(--red)}
+.cmp.good{border-left:3px solid var(--green)}
+.cmp .cmp-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.cmp.bad .cmp-label{color:var(--red)}
+.cmp.good .cmp-label{color:var(--green)}
+.cmp .cmp-txt{font-size:13px;color:var(--off);line-height:1.5}
+/* Roadmap flow */
+.flowline{display:flex;flex-direction:column;gap:8px}
+.flowstep{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;padding:12px 16px;background:var(--card);border-radius:8px;border-left:3px solid var(--flc,var(--purple))}
+.flowstep .fs-t{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--flc,var(--purple))}
+.flowstep .fs-d{font-size:12.5px;color:var(--muted)}
+/* Roles */
+.rolegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.rolecard{background:var(--card);border-radius:var(--r);padding:16px;border-top:3px solid var(--rc)}
+.rolecard h4{font-size:12.5px;font-weight:700;color:var(--rc);margin-bottom:5px}
+.rolecard p{font-size:11.5px;color:var(--muted);line-height:1.45}
+/* Gantt table */
+.gantt{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+.gantt table{width:100%;border-collapse:collapse;font-size:11.5px}
+.gantt th{background:var(--mid);padding:8px 10px;color:var(--purple);font-weight:700;text-align:left;font-size:10px;text-transform:uppercase}
+.gantt td{padding:7px 10px;border-top:1px solid rgba(255,255,255,0.05)}
+.gantt .bar{height:16px;border-radius:4px;display:inline-block}
+/* Process chips */
+.procgrid{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.procchip{background:var(--card);border:1.5px solid var(--pc,var(--purple));border-radius:8px;padding:10px 14px;flex:1;min-width:140px;text-align:center}
+.procchip .pn{font-size:18px;font-weight:800;color:var(--pc,var(--purple))}
+.procchip .pt{font-size:11px;font-weight:700;color:var(--off);margin-top:2px}
+.procchip .pd{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.35}
+/* Sensor/inventory table */
+.stbl{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+.stbl table{width:100%;border-collapse:collapse}
+.stbl th{background:var(--mid);padding:9px 13px;text-align:left;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--purple);border-bottom:1px solid rgba(155,89,182,0.15)}
+.stbl td{padding:9px 13px;font-size:12.5px;color:var(--off);border-bottom:1px solid rgba(255,255,255,0.04)}
+.stbl tr:last-child td{border-bottom:none}
+.stbl tr:hover td{background:rgba(155,89,182,0.03)}
+/* Work exercises */
+.exlabel{font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.exdesc{font-size:12.5px;color:var(--muted);margin-bottom:12px;line-height:1.55}
+.wfield{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:9px 13px;color:var(--off);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s}
+.wfield:focus{border-color:var(--purple)}
+.wfield::placeholder{color:rgba(122,139,170,0.55);font-style:italic}
+textarea.wfield{resize:vertical;min-height:70px;line-height:1.55}
+.exblock{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+.exrow{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid rgba(255,255,255,0.05)}
+.exrow:last-child{border-bottom:none}
+.exrl{padding:11px 14px;border-right:1px solid rgba(255,255,255,0.05)}
+.exrl span{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.exrv{padding:8px 14px}
+/* checklist final */
+.cklist{display:flex;flex-direction:column;gap:7px}
+.ckitem{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--card);border-radius:8px;font-size:12.5px;color:var(--off);line-height:1.5;cursor:pointer;user-select:none;transition:background .2s;border:1px solid rgba(255,255,255,0.05)}
+.ckitem:hover{background:var(--clit)}
+.ckitem input{width:15px;height:15px;accent-color:var(--purple);margin-top:2px;flex-shrink:0;cursor:pointer}
+.ckitem.checked{opacity:.5}.ckitem.checked span{text-decoration:line-through;color:var(--muted)}
+#ck-res{margin-top:13px;padding:12px 16px;border-radius:9px;font-size:13px;background:var(--card);border:1px solid rgba(255,255,255,0.07)}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:9px}
+.gi{background:var(--card);border-radius:8px;padding:13px 15px;border-left:3px solid var(--gc,var(--purple))}
+.gtag2{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-bottom:4px}
+.gterm{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:4px}
+.gdef{font-size:11.5px;color:var(--muted);line-height:1.5}
+#bt{position:fixed;bottom:74px;right:20px;width:36px;height:36px;background:var(--mid);border:1px solid rgba(155,89,182,0.3);border-radius:50%;color:var(--purple);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;z-index:150}
+#bt.vis{opacity:1;pointer-events:auto}
+#mt{display:none;position:fixed;top:12px;left:12px;z-index:300;background:var(--mid);border:1px solid rgba(155,89,182,0.3);color:var(--purple);font-size:17px;width:36px;height:36px;border-radius:8px;align-items:center;justify-content:center;cursor:pointer}
+#save-ind{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);background:rgba(155,89,182,0.1);border:1px solid rgba(155,89,182,0.3);border-radius:7px;padding:7px 14px;font-size:12px;color:var(--purple);opacity:0;pointer-events:none;transition:opacity .3s;z-index:160}
+#save-ind.show{opacity:1}
+.sendbar{position:fixed;bottom:0;left:var(--sw);right:0;background:#060918;border-top:1px solid rgba(155,89,182,0.12);padding:10px 24px;z-index:150;display:flex;align-items:center;gap:12px}
+.sendbar .sblabel{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.sbtn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid;font-family:inherit;transition:all .2s}
+.sbtn.print{border-color:#9B59B6;background:rgba(155,89,182,0.1);color:#9B59B6}
+.sbtn.gmail{border-color:var(--purple);background:rgba(155,89,182,0.1);color:var(--purple)}
+@media(max-width:768px){:root{--sw:0px}#sb{transform:translateX(-255px);width:255px;transition:transform .3s}#sb.open{transform:translateX(0)}#main{margin-left:0}#mt{display:flex}.sec{padding:34px 20px 30px}#hero{padding:44px 20px 38px}.compare,.rolegrid{grid-template-columns:1fr}#pb{left:0}.sendbar{left:0}}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(155,89,182,0.18);border-radius:3px}
+.print-hdr{display:none}
+@media print{#sb,#pb,#mt,#bt,#save-ind,.sendbar{display:none!important}body{background:#fff!important;color:#000!important;display:block!important;font-size:10pt}#main{margin-left:0!important;padding-bottom:0!important}.sec{padding:12px 0!important;border-bottom:1px solid #ddd!important}.def,.cc,.cmp,.flowstep,.rolecard,.gantt,.stbl,.gi,.ckitem,.exblock,.procchip{background:#f9f9f9!important;border-color:#ccc!important}.def p,.cc p,.cmp-txt,.gdef,.ckitem,.exdesc{color:#000!important}.print-hdr{display:block!important}}
+</style>
+</head>
+<body>
+<div id="pb"><div id="pf"></div></div>
+<button id="mt" onclick="tSB()">☰</button>
+<button id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="save-ind">✓ Guardado</div>
+<div class="print-hdr" style="padding:0 0 12px;border-bottom:2px solid #000;margin-bottom:12px">
+  <div style="font-size:9pt;color:#555">TALLER DE PROYECTO · UNIDAD 4 — Metodología y Diseño</div>
+  <div style="font-size:17pt;font-weight:800">Guía Docente — Metodología y Diseño</div>
+  <div style="font-size:9pt;color:#555" id="ph-n"></div>
+</div>
+
+<nav id="sb">
+  <div class="sbl"><div class="tag">Taller de Proyecto · Unidad 4</div><h1>Guía Docente<br><span>Metodología y Diseño</span></h1></div>
+  <div class="sbn"><strong id="sbn">Docente</strong>Unidad 4 · Referencia y criterios</div>
+  <div class="nl">Bloque A · Metodología</div>
+  <a class="ni" href="#recorrido" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span>¿Dónde estamos?</a>
+  <a class="ni" href="#procesos" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Mapa de procesos</a>
+  <a class="ni" href="#scrum" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Scrum, sprints y roles</a>
+  <a class="ni" href="#mvp" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Concepto de MVP</a>
+  <a class="ni" href="#gantt" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span>Diagrama de Gantt</a>
+  <div class="nl">Bloque B · Diseño</div>
+  <a class="ni" href="#boceto" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Boceto y Tinkercad</a>
+  <a class="ni" href="#logica" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span>Puente: lógica de programación</a>
+  <a class="ni" href="#vistas" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Vistas y planos</a>
+  <a class="ni" href="#despiece" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Despiece</a>
+  <a class="ni" href="#inventario" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Inventario</a>
+  <div class="nl">Bloque C · Factibilidad</div>
+  <a class="ni" href="#presupuesto" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Presupuesto</a>
+  <div class="nl">Docente</div>
+  <a class="ni" href="#trabajo" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span>Respuestas y criterios</a>
+  <div class="nl">Cierre</div>
+  <a class="ni" href="#checklist" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Mi checklist</a>
+  <a class="ni" href="#glosario" onclick="cSB()"><span class="nd" style="background:#7A8BAA"></span>Glosario</a>
+  <div class="sbf">Electromecánica · Robótica<br>Automatización · IA</div>
+</nav>
+
+<main id="main">
+<section id="top">
+  <div id="hero">
+    <div class="htag">Unidad 4 · Guía Docente</div>
+    <h2>Metodología<br><em>y Diseño</em></h2>
+    <p>Guía de referencia para el docente. Respuestas modelo y criterios de evaluación. No distribuir a los alumnos.</p>
+    <div class="nrow">
+      <label for="myname">Tu nombre:</label>
+      <input type="text" id="myname" class="ninp" placeholder="Escribí tu nombre..." oninput="sN(this.value)" autocomplete="off">
+    </div>
+  </div>
+</section>
+
+<!-- RECORRIDO -->
+<section class="sec" id="recorrido">
+  <div class="eyebrow"><div class="edot" style="background:#9B59B6"></div><span class="etxt">Punto de partida</span></div>
+  <h2>¿Dónde estamos?</h2>
+  <p class="desc">Ya tenés el problema técnico, los objetivos SMART y la solución elegida (Unidad 3). Ahora la planificás y la diseñás hasta tener el plano listo para construir.</p>
+  <div class="flowline">
+    <div class="flowstep" style="--flc:#7A8BAA"><div class="fs-t">✓ Análisis del problema</div><div class="fs-d">Problema técnico bien enunciado. (Visto)</div></div>
+    <div class="flowstep" style="--flc:#00C896"><div class="fs-t">✓ Objetivos y solución</div><div class="fs-d">SMART + Brainstorming + SCAMPER. (Visto)</div></div>
+    <div class="flowstep" style="--flc:#9B59B6"><div class="fs-t">● Metodología y MVP</div><div class="fs-d">Scrum, roles, MVP, Gantt. (Ahora)</div></div>
+    <div class="flowstep" style="--flc:#00D4FF"><div class="fs-t">● Diseño y planos</div><div class="fs-d">Boceto, Tinkercad, vistas, despiece, inventario. (Ahora)</div></div>
+    <div class="flowstep" style="--flc:#FFB800"><div class="fs-t">● Presupuesto</div><div class="fs-d">Mercado, proveedores, decisión costo-tiempo. (Ahora)</div></div>
+    <div class="flowstep" style="--flc:#7A8BAA"><div class="fs-t">Materiales y construcción</div><div class="fs-d">Herramientas, electrónica, ensamblaje. (Unidad 5)</div></div>
+  </div>
+</section>
+
+<!-- MAPA DE PROCESOS -->
+<section class="sec" id="procesos">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Bloque A</span></div>
+  <h2>El mapa completo del proyecto</h2>
+  <p class="desc">Antes de planificar, hay que ver todo el camino de una vez: desde la solución elegida hasta el producto terminado.</p>
+  <div class="procgrid">
+    <div class="procchip" style="--pc:#00D4FF"><div class="pn">1</div><div class="pt">Diseño</div><div class="pd">Boceto → Tinkercad → planos → despiece → inventario</div></div>
+    <div class="procchip" style="--pc:#FFB800"><div class="pn">2</div><div class="pt">Factibilidad</div><div class="pd">Presupuesto, proveedores, decisión costo-tiempo</div></div>
+    <div class="procchip" style="--pc:#00C896"><div class="pn">3</div><div class="pt">Materiales</div><div class="pd">Herramientas, electrónica, seguridad industrial</div></div>
+    <div class="procchip" style="--pc:#9B59B6"><div class="pn">4</div><div class="pt">Construcción</div><div class="pd">Ensamblaje, control de calidad, ajustes</div></div>
+    <div class="procchip" style="--pc:#FF4D6A"><div class="pn">5</div><div class="pt">Validación</div><div class="pd">Prueba de MVP, feedback, iteración</div></div>
+  </div>
+  <div class="rule">⚠️ <strong>Por qué importa:</strong> si no ves el mapa completo desde el día 1, vas a tomar decisiones de diseño que te complican la construcción semanas después.</div>
+</section>
+
+<!-- SCRUM ROLES -->
+<section class="sec" id="scrum">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Trabajo en equipo</span></div>
+  <h2>Scrum, Sprints y roles de equipo</h2>
+  <p class="desc">La metodología ágil que organiza el trabajo en ciclos cortos, con entregas frecuentes y ajustes constantes.</p>
+  <div class="def"><p>Un <strong>Sprint</strong> es un ciclo corto de trabajo (1-2 semanas) con un objetivo concreto y entregable al final. Se planifica, se ejecuta, se revisa y se ajusta — y empieza el siguiente ciclo.</p></div>
+  <div class="grid4" style="margin-bottom:18px">
+    <div class="cc" style="--ca:#00D4FF"><h3>1. Planificar</h3><p>Definir qué se va a lograr en este ciclo.</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>2. Ejecutar</h3><p>Hacer el trabajo del equipo.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>3. Revisar</h3><p>Ver qué se logró y qué no.</p></div>
+    <div class="cc" style="--ca:#FF4D6A"><h3>4. Ajustar</h3><p>Corregir el rumbo para el próximo ciclo.</p></div>
+  </div>
+  <h3 style="font-size:14px;color:var(--off);margin-bottom:10px">Roles sugeridos en un equipo de 4-5</h3>
+  <div class="rolegrid">
+    <div class="rolecard" style="--rc:#00D4FF"><h4>Líder de diseño</h4><p>Planos, boceto, modelado CAD.</p></div>
+    <div class="rolecard" style="--rc:#FFB800"><h4>Líder de electrónica</h4><p>Sensores, Arduino, cableado.</p></div>
+    <div class="rolecard" style="--rc:#00C896"><h4>Líder de construcción</h4><p>Herramientas, ensamblaje.</p></div>
+    <div class="rolecard" style="--rc:#9B59B6"><h4>Líder de documentación</h4><p>Registro, carpeta, presentación.</p></div>
+  </div>
+  <div class="tip">💡 <strong>Tablero simple:</strong> tres columnas — Por hacer / Haciendo / Terminado. Cada tarea es una tarjeta que se mueve de izquierda a derecha.</div>
+</section>
+
+<!-- MVP -->
+<section class="sec" id="mvp">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">Concepto clave</span></div>
+  <h2>¿Qué es un MVP?</h2>
+  <p class="desc">Producto Mínimo Viable — lo mínimo que tiene que funcionar para demostrar que la solución es posible.</p>
+  <div class="def"><p>MVP <strong>no es</strong> la versión incompleta del producto. <em>Es la versión más simple que ya resuelve el problema.</em></p></div>
+  <div class="compare">
+    <div class="cmp bad"><div class="cmp-label">✗ No es un MVP</div><div class="cmp-txt">Un prototipo con todas las funciones imaginables, cada sensor posible, la carcasa perfecta y el diseño final terminado. Eso no es mínimo — es el producto final.</div></div>
+    <div class="cmp good"><div class="cmp-label">✓ Sí es un MVP</div><div class="cmp-txt">Un sensor + un actuador + la lógica mínima que demuestra que el objetivo SMART se cumple. Ejemplo: para riego automático, sensor de humedad + bomba + Arduino. Sin app, sin carcasa estética.</div></div>
+  </div>
+  <div class="rule">⚠️ <strong>Definí tu MVP antes de bocetar.</strong> Eso acota todo lo que sigue — sketch, inventario y presupuesto se hacen sobre el MVP, no sobre la versión soñada.</div>
+</section>
+
+<!-- GANTT -->
+<section class="sec" id="gantt">
+  <div class="eyebrow"><div class="edot" style="background:#FF4D6A"></div><span class="etxt">Planificación temporal</span></div>
+  <h2>Diagrama de Gantt</h2>
+  <p class="desc">La herramienta para planificar el tiempo: qué se hace, cuándo, y qué depende de qué.</p>
+  <div class="gantt">
+    <table>
+      <thead><tr><th>Tarea</th><th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>S5</th><th>S6</th><th>S7</th></tr></thead>
+      <tbody>
+        <tr><td>Diseño y planos</td><td colspan="2"><span class="bar" style="background:#00D4FF;width:100%"></span></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Presupuesto</td><td></td><td colspan="1"><span class="bar" style="background:#FFB800;width:100%"></span></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Compra materiales</td><td></td><td></td><td colspan="1"><span class="bar" style="background:#9B59B6;width:100%"></span></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Electrónica</td><td></td><td></td><td></td><td colspan="2"><span class="bar" style="background:#00C896;width:100%"></span></td><td></td><td></td></tr>
+        <tr><td>Ensamblaje</td><td></td><td></td><td></td><td></td><td colspan="2"><span class="bar" style="background:#FF4D6A;width:100%"></span></td><td></td></tr>
+        <tr><td>Prueba MVP</td><td></td><td></td><td></td><td></td><td></td><td></td><td><span class="bar" style="background:#0097B8;width:100%"></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip">💡 <strong>Clave:</strong> identificá las dependencias — no podés cablear sin materiales, no podés ensamblar sin cablear. El Gantt muestra esos cuellos de botella antes de que te sorprendan.</div>
+</section>
+
+<!-- BOCETO + TINKERCAD -->
+<section class="sec" id="boceto">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Bloque B · De la idea al modelo</span></div>
+  <h2>Boceto y Tinkercad</h2>
+  <p class="desc">El camino: boceto en papel → modelo digital en Tinkercad → impresión 3D o corte real.</p>
+  <div class="grid3">
+    <div class="cc" style="--ca:#FFB800"><h3>1. Boceto a mano</h3><p>Ya lo practicaron. Primera forma, proporciones, ideas rápidas sin herramientas.</p></div>
+    <div class="cc" style="--ca:#00D4FF"><h3>2. Tinkercad</h3><p>Modelo 3D digital exacto. Medidas reales, simulación de circuitos con Arduino incluida.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>3. Salida física</h3><p>Impresión 3D para piezas propias, o exportación de medidas para corte láser.</p></div>
+  </div>
+  <div class="tip">🖥 <strong>Tinkercad:</strong> web, gratis, con simulador de circuitos Arduino incluido — podés probar tu lógica de sensor/actuador antes de tocar un cable real. Exportá a STL para imprimir en 3D.</div>
+</section>
+
+<!-- PUENTE LÓGICA -->
+<section class="sec" id="logica">
+  <div class="eyebrow"><div class="edot" style="background:#9B59B6"></div><span class="etxt">Puente necesario</span></div>
+  <h2>Lógica de programación — lo mínimo</h2>
+  <p class="desc">Tinkercad ya simula código para tu circuito. Antes de seguir, un repaso mínimo de los 4 conceptos que vas a necesitar.</p>
+  <div class="grid4">
+    <div class="cc" style="--ca:#00D4FF"><h3>Variables</h3><p>Guardan un valor que cambia. Ej: la temperatura leída por el sensor.</p><div class="tip" style="margin-top:8px;font-family:monospace;font-size:11px">int temp = 0;</div></div>
+    <div class="cc" style="--ca:#FFB800"><h3>Condicionales</h3><p>Si se cumple algo, hacé una acción. Ej: si temp &gt; 72, cortar motor.</p><div class="tip" style="margin-top:8px;font-family:monospace;font-size:11px">if (temp &gt; 72) {'{'}...{'}'}</div></div>
+    <div class="cc" style="--ca:#00C896"><h3>Loops</h3><p>Repetir una acción todo el tiempo. Ej: leer el sensor constantemente.</p><div class="tip" style="margin-top:8px;font-family:monospace;font-size:11px">while (true) {'{'}...{'}'}</div></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>Entrada / Salida</h3><p>Leer un sensor o activar un actuador. Las dos operaciones básicas.</p><div class="tip" style="margin-top:8px;font-family:monospace;font-size:11px">digitalRead / Write()</div></div>
+  </div>
+  <div class="rule">📚 <strong>Si necesitás más profundidad:</strong> existe una cápsula completa de Lógica de Programación para Arduino, con ejercicios interactivos. Consultá a tu docente si tu equipo la necesita.</div>
+</section>
+
+<!-- VISTAS Y PLANOS -->
+<section class="sec" id="vistas">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Documentación técnica</span></div>
+  <h2>Vistas técnicas y planos</h2>
+  <p class="desc">Del boceto libre al plano normalizado — donde cada medida es exacta y verificable.</p>
+  <div class="grid4">
+    <div class="cc" style="--ca:#00D4FF"><h3>Vista de planta</h3><p>Desde arriba. Muestra el largo y ancho del objeto.</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>Vista de frente</h3><p>De frente. Muestra el ancho y la altura.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>Vista de perfil</h3><p>Desde el costado. Muestra la profundidad y la altura.</p></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>Isométrica</h3><p>Vista 3D a 30°. Da una idea completa del volumen.</p></div>
+  </div>
+  <div class="rule">⚠️ <strong>Regla de oro del plano:</strong> toda medida debe coincidir exactamente con el modelo digital y el material real disponible. Un plano sin cotas no sirve para construir — es solo una ilustración.</div>
+</section>
+
+<!-- DESPIECE -->
+<section class="sec" id="despiece">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">De conjunto a piezas</span></div>
+  <h2>Despiece</h2>
+  <p class="desc">El plano que descompone el conjunto en cada pieza individual, numerada y lista para el inventario.</p>
+  <div class="cklist">
+    <label class="ckitem" style="cursor:default"><span style="width:15px;height:15px;flex-shrink:0">✓</span><span>Cada pieza numerada, sin excepción</span></label>
+    <label class="ckitem" style="cursor:default"><span style="width:15px;height:15px;flex-shrink:0">✓</span><span>Referencia clara entre número y nombre</span></label>
+    <label class="ckitem" style="cursor:default"><span style="width:15px;height:15px;flex-shrink:0">✓</span><span>Piezas compradas y piezas fabricadas diferenciadas</span></label>
+    <label class="ckitem" style="cursor:default"><span style="width:15px;height:15px;flex-shrink:0">✓</span><span>Material de cada pieza especificado</span></label>
+    <label class="ckitem" style="cursor:default"><span style="width:15px;height:15px;flex-shrink:0">✓</span><span>Cantidad necesaria de cada una</span></label>
+  </div>
+</section>
+
+<!-- INVENTARIO -->
+<section class="sec" id="inventario">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">Lista maestra</span></div>
+  <h2>Inventario completo y descriptivo</h2>
+  <p class="desc">Cada pieza del despiece, con cantidad, material y origen.</p>
+  <div class="stbl">
+    <table>
+      <thead><tr><th>#</th><th>Pieza</th><th>Material</th><th>Cant.</th><th>Origen</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Carcasa superior</td><td>PLA (impresión 3D)</td><td>1</td><td>Fabricada</td></tr>
+        <tr><td>2</td><td>Arduino Uno</td><td>—</td><td>1</td><td>Comprada</td></tr>
+        <tr><td>3</td><td>Sensor de humedad</td><td>—</td><td>1</td><td>Comprada</td></tr>
+        <tr><td>4</td><td>Carcasa base</td><td>MDF 3mm (láser)</td><td>1</td><td>Fabricada</td></tr>
+        <tr><td>5</td><td>Tornillo M3x10</td><td>Acero</td><td>6</td><td>Comprada</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip">💡 <strong>Clave:</strong> la columna "Origen" separa lo que hay que comprar de lo que hay que fabricar. Esto define directamente el presupuesto y el plan de compras.</div>
+</section>
+
+<!-- PRESUPUESTO -->
+<section class="sec" id="presupuesto">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Bloque C · Factibilidad</span></div>
+  <h2>Presupuesto y factibilidad</h2>
+  <p class="desc">El inventario dice qué necesitás. El presupuesto dice si es viable conseguirlo a tiempo y al costo correcto.</p>
+  <div class="grid3">
+    <div class="cc" style="--ca:#00D4FF"><h3>1. Investigación de mercado</h3><p>¿Qué opciones existen? ¿Qué precios manejan distintos proveedores?</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>2. Identificación de proveedores</h3><p>¿Dónde comprar cada pieza? Local, online, tiempo de entrega.</p></div>
+    <div class="cc" style="--ca:#FF4D6A"><h3>3. Cuellos de botella</h3><p>¿Qué componente tarda más en llegar? Eso define tu cronograma real.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>4. Costo-beneficio</h3><p>¿Vale la pena pagar más por algo que llega antes?</p></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>5. Decisión final</h3><p>Costo vs tiempo de espera. La decisión que balancea ambos.</p></div>
+  </div>
+  <div class="rule">⚠️ <strong>Ejemplo real:</strong> un sensor específico puede ser el más barato pero tardar 3 semanas en llegar. Si tu proyecto tiene 2 semanas de plazo, el sensor "más caro pero disponible ya" es la decisión correcta.</div>
+</section>
+
+<!-- RESPUESTAS DOCENTE -->
+<section class="sec" id="trabajo">
+  <div class="eyebrow"><div class="edot" style="background:#FF4D6A"></div><span class="etxt">Solo docente</span></div>
+  <h2>Respuestas de referencia — Ejercicios</h2>
+  <p class="desc">Respuestas modelo para los 4 ejercicios. Usar como guía de corrección, no como respuesta única válida.</p>
+
+  <div style="margin-bottom:22px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 1 — Roles y MVP</div>
+    <div class="cc" style="--ca:#9B59B6"><h3>Qué evaluar</h3><p>Los 4 roles deben estar cubiertos, sin que una sola persona concentre dos roles críticos (ej. diseño + electrónica). El MVP debe ser UNA oración concreta con sensor + actuador + lógica mínima — no una lista de funciones. Si el MVP incluye "pantalla", "app" o "carcasa estética", devolver: eso no es mínimo.</p></div>
+  </div>
+
+  <div style="margin-bottom:22px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 2 — Gantt inicial</div>
+    <div class="cc" style="--ca:#FFB800"><h3>Qué evaluar</h3><p>Deben aparecer al menos 5 tareas con semana de inicio y fin. La clave es que identifiquen al menos UNA dependencia explícita (ej. "no podemos ensamblar hasta tener los materiales"). Si no marcan ninguna dependencia, señalarlo — es el objetivo pedagógico central de este ejercicio.</p></div>
+  </div>
+
+  <div style="margin-bottom:22px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 3 — Boceto y Tinkercad</div>
+    <div class="cc" style="--ca:#00D4FF"><h3>Qué evaluar</h3><p>Verificar que el modelo en Tinkercad tenga medidas reales (no solo formas sin escala). El boceto debe coincidir conceptualmente con el modelo 3D — si son muy distintos, indica que no bocetaron antes de modelar, sino que fueron directo a la pantalla (señal de alerta pedagógica).</p></div>
+  </div>
+
+  <div style="margin-bottom:10px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 4 — Inventario inicial</div>
+    <div class="cc" style="--ca:#00C896"><h3>Qué evaluar</h3><p>Cada pieza debe tener material y origen (comprada/fabricada) diferenciados. Este inventario es preliminar — no hace falta que esté completo al 100%, pero sí debe reflejar el MVP definido en el ejercicio 1, no una versión más ambiciosa.</p></div>
+    <div class="tip" style="margin-top:10px"><strong>Nota:</strong> comparar este inventario contra el MVP del ejercicio 1 — si tiene piezas que no corresponden al MVP mínimo, señalar el desvío de alcance (scope creep).</div>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<section class="sec" id="checklist">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">Autoevaluación</span></div>
+  <h2>Checklist de evaluación</h2>
+  <p class="desc">Criterios de evaluación para los alumnos. Marcá los que el alumno domina.</p>
+  <div class="cklist" id="cklist">
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Explica qué es un Sprint y cómo funciona un tablero Kanban simple.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Distingue un MVP de una versión completa del producto.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Arma un Gantt básico identificando dependencias entre tareas.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Explica el camino boceto → Tinkercad → salida física.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Identifica las 4 vistas técnicas básicas.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Arma un despiece numerado y un inventario a partir de él.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Explica qué es un cuello de botella en el presupuesto.</span></label>
+  </div>
+  <div id="ck-res"><span id="ck-n" style="color:var(--purple);font-weight:800;font-size:18px">0</span><span style="color:var(--muted);font-size:12.5px"> / 7 conceptos verificados</span><div id="ck-m" style="font-size:12px;color:var(--muted);margin-top:3px">Criterios pendientes de evaluación.</div></div>
+</section>
+
+<!-- GLOSARIO -->
+<section class="sec" id="glosario">
+  <div class="eyebrow"><div class="edot" style="background:#7A8BAA"></div><span class="etxt">Referencia rápida</span></div>
+  <h2>Glosario — Unidad 4</h2>
+  <div class="ggrid">
+    <div class="gi" style="--gc:#9B59B6"><div class="gtag2" style="background:rgba(155,89,182,0.15);color:#9B59B6">Metodología</div><div class="gterm">Sprint</div><div class="gdef">Ciclo corto de trabajo (1-2 semanas) con objetivo concreto y entregable al final.</div></div>
+    <div class="gi" style="--gc:#00C896"><div class="gtag2" style="background:rgba(0,200,150,0.1);color:#00C896">Concepto</div><div class="gterm">MVP</div><div class="gdef">Producto Mínimo Viable. La versión más simple que ya resuelve el problema.</div></div>
+    <div class="gi" style="--gc:#FF4D6A"><div class="gtag2" style="background:rgba(255,77,106,0.1);color:#FF4D6A">Planificación</div><div class="gterm">Diagrama de Gantt</div><div class="gdef">Herramienta visual que muestra tareas, duración y dependencias en el tiempo.</div></div>
+    <div class="gi" style="--gc:#00D4FF"><div class="gtag2" style="background:rgba(0,212,255,0.1);color:#00D4FF">Diseño</div><div class="gterm">Tinkercad</div><div class="gdef">Software gratuito de modelado 3D con simulador de circuitos Arduino incluido.</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gtag2" style="background:rgba(255,184,0,0.12);color:#FFB800">Diseño</div><div class="gterm">Despiece</div><div class="gdef">Plano que descompone el conjunto en piezas individuales numeradas.</div></div>
+    <div class="gi" style="--gc:#00C896"><div class="gtag2" style="background:rgba(0,200,150,0.1);color:#00C896">Diseño</div><div class="gterm">Inventario</div><div class="gdef">Lista completa de piezas con material, cantidad y origen (comprada/fabricada).</div></div>
+    <div class="gi" style="--gc:#FF4D6A"><div class="gtag2" style="background:rgba(255,77,106,0.1);color:#FF4D6A">Factibilidad</div><div class="gterm">Cuello de botella</div><div class="gdef">El componente o proceso que más tiempo tarda y define el cronograma real.</div></div>
+  </div>
+  <div style="margin-top:24px;padding:12px 16px;background:var(--card);border-radius:var(--r);border:1px solid rgba(255,255,255,0.06);font-size:11.5px;color:var(--muted);text-align:center">Metodología y Diseño · Unidad 4 · 1er y 2do Año · Electromecánica · Robótica · Automatización · IA</div>
+</section>
+</main>
+
+<div class="sendbar">
+  <span class="sblabel">🎓 Guía Docente — Unidad 4</span>
+  <button class="sbtn print" onclick="window.print()">🖨 Imprimir guía</button>
+</div>
+
+<script>
+const K='u4_';
+function sN(v){localStorage.setItem(K+'n',v);document.getElementById('sbn').textContent=v||'—'}
+let st;
+function flash(){const i=document.getElementById('save-ind');i.classList.add('show');clearTimeout(st);st=setTimeout(()=>i.classList.remove('show'),1300)}
+function sf(id,v){localStorage.setItem(K+id,v);flash()}
+function ck(inp){inp.closest('.ckitem').classList.toggle('checked',inp.checked);const all=document.querySelectorAll('#cklist input'),done=document.querySelectorAll('#cklist input:checked').length;document.getElementById('ck-n').textContent=done;const r=document.getElementById('ck-res'),m=document.getElementById('ck-m');if(done===all.length){r.style.borderColor='var(--purple)';r.style.background='rgba(155,89,182,0.07)';m.textContent='✓ Todos los criterios evaluados.';m.style.color='var(--purple)'}else if(done>=5){r.style.borderColor='var(--amber)';r.style.background='rgba(255,184,0,0.05)';m.textContent='Mayoría de criterios cumplidos.';m.style.color='var(--amber)'}else{r.style.borderColor='';r.style.background='var(--card)';m.textContent='Criterios pendientes de evaluación.';m.style.color='var(--muted)'}const s=Array.from(all).map(i=>i.checked?'1':'0').join('');localStorage.setItem(K+'cl',s)}
+function tSB(){document.getElementById('sb').classList.toggle('open')}
+function cSB(){if(window.innerWidth<=768)document.getElementById('sb').classList.remove('open')}
+const secs=document.querySelectorAll('section[id]'),navs=document.querySelectorAll('.ni');
+window.addEventListener('scroll',()=>{const p=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;document.getElementById('pf').style.width=p+'%';document.getElementById('bt').classList.toggle('vis',window.scrollY>400);let c='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-100)c=s.id});navs.forEach(n=>n.classList.toggle('active',n.getAttribute('href')==='#'+c))},{passive:true});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();window.scrollTo({top:t.offsetTop-24,behavior:'smooth'})}})});
+const WF=['e1-rol1','e1-rol2','e1-rol3','e1-rol4','e1-mvp','e2-gantt','e3-boceto','e4-inv'];
+function sendGmail(){const email=prompt('Email del docente:');if(!email||!email.includes('@'))return;const name=localStorage.getItem(K+'n')||'Sin nombre';const g=id=>localStorage.getItem(K+id)||'(sin respuesta)';const body=['╔══ TALLER DE PROYECTO · UNIDAD 4 ══╗','Metodología y Diseño','','Alumno/a: '+name,'Fecha: '+new Date().toLocaleDateString('es-AR'),'','── EJERCICIO 1 — Roles y MVP ──','Líder diseño: '+g('e1-rol1'),'Líder electrónica: '+g('e1-rol2'),'Líder construcción: '+g('e1-rol3'),'Líder documentación: '+g('e1-rol4'),'MVP: '+g('e1-mvp'),'','── EJERCICIO 2 — Gantt ──',g('e2-gantt'),'','── EJERCICIO 3 — Boceto y Tinkercad ──',g('e3-boceto'),'','── EJERCICIO 4 — Inventario ──',g('e4-inv')].join('\\n');const sub=encodeURIComponent('[Taller de Proyecto U4] Respuestas — '+name);window.open('https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(email)+'&su='+sub+'&body='+encodeURIComponent(body),'_blank')}
+window.addEventListener('load',()=>{const n=localStorage.getItem(K+'n')||'';if(n){document.getElementById('myname').value=n;document.getElementById('sbn').textContent=n}WF.forEach(id=>{const v=localStorage.getItem(K+id);if(v){const el=document.getElementById(id);if(el)el.value=v}});const cl=localStorage.getItem(K+'cl');if(cl){document.querySelectorAll('#cklist input').forEach((i,idx)=>{if(cl[idx]==='1'){i.checked=true;i.closest('.ckitem').classList.add('checked')}});if(document.querySelector('#cklist input:checked'))document.querySelector('#cklist input').dispatchEvent(new Event('change'))}});
+</script>
+</body>
+</html>

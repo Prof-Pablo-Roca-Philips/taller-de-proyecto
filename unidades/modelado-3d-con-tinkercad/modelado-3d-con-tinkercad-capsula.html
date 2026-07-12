@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelado 3D con Tinkercad — Unidad 8 | Taller de Proyecto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1117;--bg-raised:#1c2330;--line:#ffffff0f;--accent:#00D4FF;--amber:#FFB800;--green:#00C896;--red:#FF4D6A;--purple:#9B59B6;--text:#e8edf5;--text-dim:#7a8baa;--text-mid:#b0bacb;--radius:4px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+::selection{background:var(--accent);color:#04141a}
+body{background:radial-gradient(ellipse 1400px 800px at 15% -5%,#16232e 0%,transparent 55%),radial-gradient(ellipse 800px 600px at 90% 25%,#0d1a20 0%,transparent 50%),var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-y:scroll;scroll-snap-type:y mandatory}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;margin:0;color:#f0f4fa}
+.mono{font-family:'JetBrains Mono',monospace}
+.slide{min-height:100vh;width:100%;display:flex;align-items:center;justify-content:center;padding:4.5rem 2.8rem 2rem;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden}
+.slide+.slide{border-top:1px solid var(--line)}
+.slide.deepen{background:linear-gradient(180deg,#0f1a1f,#0e1117)}
+.slide-wrap{width:100%;max-width:1380px;margin:0 auto}
+.topbar{position:fixed;top:0;left:0;width:100%;height:3.2rem;background:rgba(14,17,23,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:60;display:flex;align-items:center;justify-content:space-between;padding:0 1.6rem}
+.brandmark{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.82rem;color:rgba(232,237,245,.7);display:flex;align-items:center;gap:.4rem;pointer-events:none}
+.brandmark span{color:var(--accent)}
+.slide-counter{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-dim)}
+.slide-counter b{color:var(--accent)}
+.progress-fill{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:61;transition:width .35s ease}
+.dotnav{position:fixed;right:1.3rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:.55rem;align-items:center}
+.dotnav button{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);border:none;padding:0;cursor:pointer;transition:all .2s}
+.dotnav button.deepen-dot{background:rgba(155,89,182,.4)}
+.dotnav button.active{background:var(--accent);transform:scale(1.6)}
+.arrownav{position:fixed;right:1.3rem;bottom:1.4rem;z-index:60;display:flex;gap:.45rem}
+.arrownav button{width:34px;height:34px;border-radius:50%;background:var(--bg-raised);border:1px solid rgba(255,255,255,.12);color:var(--text);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.arrownav button:hover{border-color:var(--accent);background:#1e2d33}
+.arrownav button:disabled{opacity:.2;cursor:default}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.eyebrow::before{content:'';display:block;width:1.8rem;height:1.5px;background:var(--accent)}
+.eyebrow.deep{color:var(--purple)}
+.eyebrow.deep::before{background:var(--purple)}
+h1.title{font-size:clamp(2.2rem,4.5vw,3.6rem);line-height:1.0;letter-spacing:-.015em;max-width:16ch}
+h1.title em{font-style:normal;color:var(--accent)}
+h2.title{font-size:clamp(1.2rem,2.2vw,1.6rem);max-width:42ch;margin-top:.7rem;color:var(--text-mid);font-weight:400}
+.sec-head{max-width:68ch;margin-bottom:1.4rem}
+.sec-head h2{font-size:clamp(1.3rem,2.2vw,1.8rem)}
+.sec-head p{color:var(--text-dim);margin-top:.45rem;font-size:.88rem;line-height:1.55}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;align-items:center}
+.split.wide{grid-template-columns:1.15fr .85fr}
+.notes{color:var(--text-dim);font-size:.86rem}
+.tip{margin-top:.8rem;background:linear-gradient(180deg,#0a1f26,#081920);border:1px solid rgba(0,212,255,.18);border-left:3px solid var(--accent);border-radius:var(--radius);padding:.65rem .9rem;font-size:.8rem;color:#a8d4e0;line-height:1.45}
+.tip b{color:var(--accent)}
+.consigna{background:var(--bg-raised);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:var(--radius);padding:.9rem 1.05rem;font-size:.88rem;color:var(--text-mid);line-height:1.5;margin:.65rem 0}
+.consigna b{color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.3rem}
+.svg-panel{background:var(--bg-raised);border:1px solid rgba(0,212,255,.14);border-radius:8px;padding:1.1rem 1.2rem 1rem}
+.panel-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.55rem}
+.panel-label .pname{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.panel-label .pcount{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-dim)}
+svg.diagram{width:100%;height:auto;display:block;max-height:50vh}
+.fade{opacity:0}
+.controls{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-top:.7rem}
+.btn{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.03em;text-transform:uppercase;background:var(--bg-raised);color:var(--text);border:1px solid rgba(255,255,255,.12);padding:.38rem .7rem;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .15s}
+.btn:hover{background:#1e2d33;border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#04141a;border-color:var(--accent);font-weight:700}
+.card-row{display:grid;gap:.8rem}
+.card-row.cols2{grid-template-columns:1fr 1fr}
+.card-row.cols3{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;padding:.85rem 1rem}
+.card.good{border-left:3px solid var(--green)}
+.card.bad{border-left:3px solid var(--red)}
+.card.amber{border-left:3px solid var(--amber)}
+.card.purple{border-left:3px solid var(--purple)}
+.card.cyan{border-left:3px solid var(--accent)}
+.card .c-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.35rem}
+.card.good .c-label{color:var(--green)}
+.card.bad .c-label{color:var(--red)}
+.card.amber .c-label{color:var(--amber)}
+.card.purple .c-label{color:var(--purple)}
+.card.cyan .c-label{color:var(--accent)}
+.card h4{font-size:.94rem;margin-bottom:.3rem;color:#f0f4fa}
+.card p{font-size:.8rem;color:var(--text-dim);line-height:1.45}
+.divider{text-align:center;padding:2rem 0}
+.divider .dtag{display:inline-block;background:rgba(155,89,182,.1);border:1px solid rgba(155,89,182,.35);color:var(--purple);font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:.5rem 1.2rem;border-radius:20px;margin-bottom:1rem}
+.divider h2{font-size:clamp(1.6rem,3vw,2.4rem)}
+.divider p{color:var(--text-dim);margin-top:.7rem;font-size:.95rem;max-width:52ch;margin-left:auto;margin-right:auto}
+.closing-mark{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;color:#f0f4fa}
+.closing-sub{color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:.82rem;margin-top:.8rem}
+.hero-meta{display:flex;gap:4rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line)}
+.hero-meta div{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);width:28%}
+.hero-meta b{display:block;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;margin-bottom:.1rem}
+.timebar{display:flex;align-items:center;gap:.6rem;background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,.3);border-radius:20px;padding:.5rem 1rem;margin-top:1.3rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#a8d8c4;width:fit-content}
+@media(max-width:900px){.slide{padding:4rem 1.3rem 1.5rem}.split,.split.wide{grid-template-columns:1fr}.card-row.cols3{grid-template-columns:1fr 1fr}.dotnav,.arrownav{display:none}svg.diagram{max-height:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<div class="topbar"><div class="brandmark">TALLER DE PROYECTO &nbsp;·&nbsp; <span>UNIDAD 8</span></div><div class="slide-counter"><b id="slideCurrent">01</b> / <span id="slideTotal">9</span></div></div>
+<nav class="dotnav" id="dotNav"></nav>
+<div class="arrownav"><button id="prevBtn" aria-label="Anterior">↑</button><button id="nextBtn" aria-label="Siguiente">↓</button></div>
+
+<section class="slide" id="s-hero">
+  <div class="slide-wrap">
+    <div class="eyebrow" style="margin-bottom:1.2rem">Unidad 8 — Modelado 3D</div>
+    <h1 class="title">Del boceto al <em>modelo digital</em>.</h1>
+    <h2 class="title">Tinkercad: gratis, en el navegador, con simulador de circuitos incluido.</h2>
+    <div class="timebar">⏱ Núcleo: ~20 min &nbsp;·&nbsp; Después: modelar su MVP &nbsp;·&nbsp; Profundizar: opcional</div>
+    <div class="hero-meta">
+      <div><b>Navegación</b>↓ avanzar &nbsp;·&nbsp; ↑ volver</div>
+      <div><b>Recorrido</b>Qué es → Del boceto al modelo → A modelar</div>
+      <div><b>Requisito previo</b>Boceto a mano hecho (Sprint 1)</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s-que-es">
+  <div class="slide-wrap">
+    <div class="split wide">
+      <div>
+        <div class="eyebrow">Concepto 1</div>
+        <h2 style="font-size:clamp(1.4rem,2.4vw,2rem);margin-bottom:.9rem">¿Qué es Tinkercad?</h2>
+        <p class="notes" style="font-size:.9rem">Software de diseño 3D gratuito y web, con 3 módulos: diseño 3D, simulador de circuitos con Arduino, y programación por bloques.</p>
+        <div class="card-row cols2" style="margin-top:.9rem">
+          <div class="card cyan"><div class="c-label">3D Design</div><p>Combinás formas básicas para armar tu pieza. Exportás a STL para imprimir.</p></div>
+          <div class="card amber"><div class="c-label">Circuits</div><p>Simulás tu sensor + Arduino + actuador antes de tocar un cable real.</p></div>
+        </div>
+        <div class="tip">💡 <strong>Por qué probarlo antes:</strong> si tu circuito simulado funciona, el real casi seguro también. Te ahorra componentes quemados.</div>
+      </div>
+      <div class="svg-panel">
+        <div class="panel-label"><span class="pname">Boceto → modelo → salida</span><span class="pcount" id="flowCount">0 / 4</span></div>
+        <svg class="diagram" id="flowSVG" viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+          <g class="fade"><rect x="10" y="70" width="100" height="60" rx="7" fill="rgba(255,184,0,.1)" stroke="#FFB800" stroke-width="1.6"/><text x="60" y="95" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#FFB800" text-anchor="middle">Boceto</text><text x="60" y="112" font-family="Inter,sans-serif" font-size="8" fill="#7a8baa" text-anchor="middle">a mano</text></g>
+          <g class="fade"><line x1="111" y1="100" x2="135" y2="100" stroke="#00D4FF" stroke-width="2"/><polygon points="135,94 147,100 135,106" fill="#00D4FF"/></g>
+          <g class="fade"><rect x="148" y="60" width="110" height="80" rx="7" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="2"/><text x="203" y="90" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#00D4FF" text-anchor="middle">Tinkercad</text><text x="203" y="107" font-family="Inter,sans-serif" font-size="8" fill="#e8edf5" text-anchor="middle">modelo 3D</text><text x="203" y="120" font-family="Inter,sans-serif" font-size="8" fill="#e8edf5" text-anchor="middle">con medidas</text></g>
+          <g class="fade"><line x1="259" y1="100" x2="283" y2="100" stroke="#00C896" stroke-width="2"/><polygon points="283,94 295,100 283,106" fill="#00C896"/><rect x="296" y="70" width="80" height="60" rx="7" fill="rgba(0,200,150,.12)" stroke="#00C896" stroke-width="2"/><text x="336" y="95" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#00C896" text-anchor="middle">STL /</text><text x="336" y="112" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#00C896" text-anchor="middle">Impresión</text></g>
+        </svg>
+        <div class="controls"><button class="btn primary" data-play="flowSVG">▶ Animar</button><button class="btn" data-reset="flowSVG">↺</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s-medidas">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Concepto 2</div>
+      <h2>Medidas reales, no a ojo</h2>
+      <p>La diferencia entre un boceto y un modelo: acá las medidas importan de verdad.</p>
+    </div>
+    <div class="card-row cols3">
+      <div class="card cyan"><div class="c-label">1</div><h4>Medí el componente real</h4><p>Si va un Arduino adentro, medilo con una regla antes de modelar la carcasa.</p></div>
+      <div class="card amber"><div class="c-label">2</div><h4>Dejá margen</h4><p>Sumá 1-2mm de holgura — nada encaja perfecto al primer intento.</p></div>
+      <div class="card good"><div class="c-label">3</div><h4>Exportá a escala real</h4><p>1 unidad en Tinkercad = 1mm real. Verificá antes de exportar.</p></div>
+    </div>
+    <div class="tip">💡 <strong>Error común:</strong> modelar "a ojo" sin medir el componente real. La pieza sale linda en pantalla y no entra el Arduino.</div>
+  </div>
+</section>
+
+<section class="slide" id="s-modelar">
+  <div class="slide-wrap" style="text-align:center;max-width:760px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center">Fin de la parte teórica</div>
+    <h2 style="font-size:clamp(1.8rem,3.2vw,2.6rem);margin-bottom:1rem">Ahora, a modelar.</h2>
+    <p style="color:var(--text-dim);font-size:.95rem;margin-bottom:1.5rem">Abran Tinkercad y empiecen a construir la carcasa de su MVP a partir del boceto.</p>
+    <div class="consigna" style="text-align:left"><b>Consigna — resto de la clase</b> Midan sus componentes reales, y modelen al menos la forma base de su carcasa con las medidas correctas.</div>
+  </div>
+</section>
+
+<section class="slide deepen" id="s-divider">
+  <div class="slide-wrap"><div class="divider"><div class="dtag">🔍 Profundizar — opcional</div><h2>Para el que quiere ir más allá</h2><p>Volvé a esto en casa, en tu cuenta de Tinkercad.</p></div></div>
+</section>
+
+<section class="slide deepen" id="s-circuitos">
+  <div class="slide-wrap">
+    <div class="sec-head"><div class="eyebrow deep">Profundizar</div><h2>Simulador de circuitos</h2><p>Antes de cablear de verdad, probá tu lógica en el módulo Circuits.</p></div>
+    <div class="card-row cols2">
+      <div class="card purple"><div class="c-label">Arrastrar componentes</div><p>Arduino, sensores, protoboard, LEDs — todo desde la biblioteca de Tinkercad.</p></div>
+      <div class="card purple"><div class="c-label">Programar con bloques</div><p>Codeblocks te deja escribir la lógica sin sintaxis — ideal para probar rápido.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide deepen" id="s-tips">
+  <div class="slide-wrap">
+    <div class="sec-head"><div class="eyebrow deep">Profundizar</div><h2>Tips avanzados de modelado</h2></div>
+    <div class="consigna"><b>Atajos útiles</b> Usá el modo "agrupar" para combinar formas en una pieza sólida. Usá "hueco" (transparente) para restar material y hacer perforaciones exactas donde van los cables.</div>
+  </div>
+</section>
+
+<section class="slide" id="s-cierre">
+  <div class="slide-wrap" style="text-align:center;max-width:700px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:1.4rem"><span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span>Cierre<span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span></div>
+    <div class="closing-mark">Modelo digital<br>en marcha.</div>
+    <div class="closing-sub" style="margin-top:1.2rem">Taller de Proyecto &nbsp;·&nbsp; Unidad 8 — Modelado 3D con Tinkercad</div>
+    <div style="margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--line)"><div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);margin-bottom:.4rem">PRÓXIMO</div><div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent)">Unidad 9 — Vistas, Planos y Despiece</div></div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const REDUCE=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  class Construction{
+    constructor(svg,{stepDuration=550}={}){this.svg=svg;this.stepDuration=REDUCE?1:stepDuration;this.elements=Array.from(svg.querySelectorAll('.fade'));this.index=-1;this.timer=null;this.onChange=null;this.setAll(false,{instant:true});}
+    setAll(shown,{instant=false}={}){this.elements.forEach(el=>this._set(el,shown,instant));}
+    _set(el,shown,instant){el.style.transition=instant?'none':`opacity ${this.stepDuration*.65}ms ease`;el.style.opacity=shown?'1':'0';}
+    goto(target,{instantAll=false}={}){clearInterval(this.timer);target=Math.max(-1,Math.min(this.elements.length-1,target));this.elements.forEach((el,i)=>{const shown=i<=target,isEdge=(i===target&&!instantAll);if(isEdge){this._set(el,false,true);void el.getBoundingClientRect();requestAnimationFrame(()=>requestAnimationFrame(()=>this._set(el,true,false)));}else{this._set(el,shown,true);}});this.index=target;if(this.onChange)this.onChange(target,this.elements.length);}
+    reset(){this.goto(-1)}
+    playAll(){this.reset();let i=0;const next=()=>{if(i>=this.elements.length)return;this.goto(i);i++;this.timer=setTimeout(next,this.stepDuration*.6);};this.timer=setTimeout(next,100);}
+  }
+  const reg={};
+  document.querySelectorAll('svg.diagram').forEach(svg=>{reg[svg.id]=new Construction(svg);});
+  document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.play].playAll()));
+  document.querySelectorAll('[data-reset]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.reset].reset()));
+  function bindCounter(svgId,elId){const c=reg[svgId],el=document.getElementById(elId);if(!c||!el)return;const total=c.elements.length;c.onChange=(idx)=>{el.textContent=(idx+1)+' / '+total};el.textContent='0 / '+total;}
+  bindCounter('flowSVG','flowCount');
+  const slides=Array.from(document.querySelectorAll('.slide'));
+  const dotNav=document.getElementById('dotNav'),slideCurrentEl=document.getElementById('slideCurrent'),slideTotalEl=document.getElementById('slideTotal'),progressFill=document.getElementById('progressFill'),prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn');
+  let current=0;
+  slideTotalEl.textContent=String(slides.length).padStart(2,'0');
+  slides.forEach((sl,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','Ir a pantalla '+(i+1));if(sl.classList.contains('deepen'))b.classList.add('deepen-dot');b.addEventListener('click',()=>goTo(i));dotNav.appendChild(b);});
+  const dots=Array.from(dotNav.children);
+  function setActive(i){current=i;dots.forEach((d,idx)=>d.classList.toggle('active',idx===i));slideCurrentEl.textContent=String(i+1).padStart(2,'0');progressFill.style.width=(((i+1)/slides.length)*100)+'%';prevBtn.disabled=i===0;nextBtn.disabled=i===slides.length-1;}
+  function goTo(i){i=Math.max(0,Math.min(slides.length-1,i));slides[i].scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'});}
+  const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>0.55){const idx=slides.indexOf(e.target);if(idx!==-1)setActive(idx);}});},{threshold:[0.55]});
+  slides.forEach(sl=>io.observe(sl));
+  prevBtn.addEventListener('click',()=>goTo(current-1));
+  nextBtn.addEventListener('click',()=>goTo(current+1));
+  window.addEventListener('keydown',(e)=>{const tag=(e.target&&e.target.tagName)||'';if(tag==='INPUT'||tag==='TEXTAREA')return;if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();goTo(current+1);}else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();goTo(current-1);}else if(e.key==='Home'){e.preventDefault();goTo(0);}else if(e.key==='End'){e.preventDefault();goTo(slides.length-1);}});
+  setActive(0);
+})();
+</script>
+</body>
+</html>

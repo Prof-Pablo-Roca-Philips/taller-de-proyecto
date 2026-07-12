@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planificación Temporal — Unidad 7 | Taller de Proyecto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1117;--bg-raised:#1c2330;--line:#ffffff0f;--accent:#FFB800;--cyan:#00D4FF;--green:#00C896;--red:#FF4D6A;--purple:#9B59B6;--text:#e8edf5;--text-dim:#7a8baa;--text-mid:#b0bacb;--radius:4px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+::selection{background:var(--accent);color:#1a1400}
+body{background:radial-gradient(ellipse 1400px 800px at 15% -5%,#2a2010 0%,transparent 55%),radial-gradient(ellipse 800px 600px at 90% 25%,#1f1608 0%,transparent 50%),var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-y:scroll;scroll-snap-type:y mandatory}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;margin:0;color:#f0f4fa}
+.mono{font-family:'JetBrains Mono',monospace}
+.slide{min-height:100vh;width:100%;display:flex;align-items:center;justify-content:center;padding:4.5rem 2.8rem 2rem;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden}
+.slide+.slide{border-top:1px solid var(--line)}
+.slide.deepen{background:linear-gradient(180deg,#1a1508,#0e1117)}
+.slide-wrap{width:100%;max-width:1380px;margin:0 auto}
+.topbar{position:fixed;top:0;left:0;width:100%;height:3.2rem;background:rgba(14,17,23,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:60;display:flex;align-items:center;justify-content:space-between;padding:0 1.6rem}
+.brandmark{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.82rem;color:rgba(232,237,245,.7);display:flex;align-items:center;gap:.4rem;pointer-events:none}
+.brandmark span{color:var(--accent)}
+.slide-counter{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-dim)}
+.slide-counter b{color:var(--accent)}
+.progress-fill{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:61;transition:width .35s ease}
+.dotnav{position:fixed;right:1.3rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:.55rem;align-items:center}
+.dotnav button{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);border:none;padding:0;cursor:pointer;transition:all .2s}
+.dotnav button.deepen-dot{background:rgba(255,77,106,.35)}
+.dotnav button.active{background:var(--accent);transform:scale(1.6)}
+.arrownav{position:fixed;right:1.3rem;bottom:1.4rem;z-index:60;display:flex;gap:.45rem}
+.arrownav button{width:34px;height:34px;border-radius:50%;background:var(--bg-raised);border:1px solid rgba(255,255,255,.12);color:var(--text);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.arrownav button:hover{border-color:var(--accent);background:#332a15}
+.arrownav button:disabled{opacity:.2;cursor:default}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.eyebrow::before{content:'';display:block;width:1.8rem;height:1.5px;background:var(--accent)}
+.eyebrow.deep{color:var(--red)}
+.eyebrow.deep::before{background:var(--red)}
+h1.title{font-size:clamp(2.2rem,4.5vw,3.6rem);line-height:1.0;letter-spacing:-.015em;max-width:16ch}
+h1.title em{font-style:normal;color:var(--accent)}
+h2.title{font-size:clamp(1.2rem,2.2vw,1.6rem);max-width:42ch;margin-top:.7rem;color:var(--text-mid);font-weight:400}
+.sec-head{max-width:68ch;margin-bottom:1.4rem}
+.sec-head h2{font-size:clamp(1.3rem,2.2vw,1.8rem)}
+.sec-head p{color:var(--text-dim);margin-top:.45rem;font-size:.88rem;line-height:1.55}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;align-items:center}
+.split.wide{grid-template-columns:1.15fr .85fr}
+.notes{color:var(--text-dim);font-size:.86rem}
+.tip{margin-top:.8rem;background:linear-gradient(180deg,#2a2010,#221a0c);border:1px solid rgba(255,184,0,.2);border-left:3px solid var(--accent);border-radius:var(--radius);padding:.65rem .9rem;font-size:.8rem;color:#e0d4a8;line-height:1.45}
+.tip b{color:var(--accent)}
+.consigna{background:var(--bg-raised);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:var(--radius);padding:.9rem 1.05rem;font-size:.88rem;color:var(--text-mid);line-height:1.5;margin:.65rem 0}
+.consigna b{color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.3rem}
+.svg-panel{background:var(--bg-raised);border:1px solid rgba(255,184,0,.14);border-radius:8px;padding:1.1rem 1.2rem 1rem}
+.panel-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.55rem}
+.panel-label .pname{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.panel-label .pcount{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-dim)}
+svg.diagram{width:100%;height:auto;display:block;max-height:50vh}
+.fade{opacity:0}
+.controls{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-top:.7rem}
+.btn{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.03em;text-transform:uppercase;background:var(--bg-raised);color:var(--text);border:1px solid rgba(255,255,255,.12);padding:.38rem .7rem;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .15s}
+.btn:hover{background:#332a15;border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#1a1400;border-color:var(--accent);font-weight:700}
+.card-row{display:grid;gap:.8rem}
+.card-row.cols2{grid-template-columns:1fr 1fr}
+.card-row.cols3{grid-template-columns:repeat(3,1fr)}
+.card-row.cols4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;padding:.85rem 1rem}
+.card.good{border-left:3px solid var(--green)}
+.card.bad{border-left:3px solid var(--red)}
+.card.amber{border-left:3px solid var(--accent)}
+.card.purple{border-left:3px solid var(--purple)}
+.card.cyan{border-left:3px solid var(--cyan)}
+.card .c-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.35rem}
+.card.good .c-label{color:var(--green)}
+.card.bad .c-label{color:var(--red)}
+.card.amber .c-label{color:var(--accent)}
+.card.purple .c-label{color:var(--purple)}
+.card.cyan .c-label{color:var(--cyan)}
+.card h4{font-size:.94rem;margin-bottom:.3rem;color:#f0f4fa}
+.card p{font-size:.8rem;color:var(--text-dim);line-height:1.45}
+.divider{text-align:center;padding:2rem 0}
+.divider .dtag{display:inline-block;background:rgba(255,77,106,.1);border:1px solid rgba(255,77,106,.35);color:var(--red);font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:.5rem 1.2rem;border-radius:20px;margin-bottom:1rem}
+.divider h2{font-size:clamp(1.6rem,3vw,2.4rem)}
+.divider p{color:var(--text-dim);margin-top:.7rem;font-size:.95rem;max-width:52ch;margin-left:auto;margin-right:auto}
+.closing-mark{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;color:#f0f4fa}
+.closing-sub{color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:.82rem;margin-top:.8rem}
+.hero-meta{display:flex;gap:4rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line)}
+.hero-meta div{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);width:28%}
+.hero-meta b{display:block;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;margin-bottom:.1rem}
+.timebar{display:flex;align-items:center;gap:.6rem;background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,.3);border-radius:20px;padding:.5rem 1rem;margin-top:1.3rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#a8d8c4;width:fit-content}
+.gtbl{background:var(--bg-raised);border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.gtbl table{width:100%;border-collapse:collapse;font-size:.78rem}
+.gtbl th{background:#241c0a;padding:.5rem .7rem;color:var(--accent);text-align:left;font-size:.68rem;text-transform:uppercase}
+.gtbl td{padding:.4rem .5rem;border-top:1px solid var(--line)}
+@media(max-width:900px){.slide{padding:4rem 1.3rem 1.5rem}.split,.split.wide{grid-template-columns:1fr}.card-row.cols3,.card-row.cols4{grid-template-columns:1fr 1fr}.dotnav,.arrownav{display:none}svg.diagram{max-height:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<div class="topbar"><div class="brandmark">TALLER DE PROYECTO &nbsp;·&nbsp; <span>UNIDAD 7</span></div><div class="slide-counter"><b id="slideCurrent">01</b> / <span id="slideTotal">10</span></div></div>
+<nav class="dotnav" id="dotNav"></nav>
+<div class="arrownav"><button id="prevBtn" aria-label="Anterior">↑</button><button id="nextBtn" aria-label="Siguiente">↓</button></div>
+
+<section class="slide" id="s-hero">
+  <div class="slide-wrap">
+    <div class="eyebrow" style="margin-bottom:1.2rem">Unidad 7 — Planificación Temporal</div>
+    <h1 class="title">Antes de construir, <em>calendarizar</em>.</h1>
+    <h2 class="title">El Gantt: qué se hace, cuándo, y qué depende de qué.</h2>
+    <div class="timebar">⏱ Núcleo: ~20 min &nbsp;·&nbsp; Después: armar su Gantt real &nbsp;·&nbsp; Profundizar: opcional</div>
+    <div class="hero-meta">
+      <div><b>Navegación</b>↓ avanzar &nbsp;·&nbsp; ↑ volver</div>
+      <div><b>Recorrido</b>Qué es → Cómo se arma → Dependencias → A planificar</div>
+      <div><b>Requisito previo</b>Roles y MVP definidos (U6)</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s-que-es">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Concepto 1</div>
+      <h2>¿Qué es un diagrama de Gantt?</h2>
+      <p>Una tabla visual: filas son tareas, columnas son tiempo, barras muestran cuánto dura cada una.</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label"><span class="pname">Gantt de ejemplo — 7 clases</span><span class="pcount" id="ganttCount">0 / 6</span></div>
+      <svg class="diagram" id="ganttSVG" viewBox="0 0 780 220" xmlns="http://www.w3.org/2000/svg">
+        <g class="fade"><text x="10" y="20" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a8baa">Clase 1</text><text x="110" y="20" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a8baa">2</text><text x="210" y="20" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a8baa">3</text><text x="310" y="20" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a8baa">4</text><text x="410" y="20" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a8baa">5</text><text x="510" y="20" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a8baa">6</text><text x="610" y="20" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a8baa">7</text></g>
+        <g class="fade"><text x="10" y="55" font-family="Inter,sans-serif" font-size="11" fill="#e8edf5">Diseño y boceto</text><rect x="150" y="40" width="180" height="22" rx="4" fill="#00D4FF"/></g>
+        <g class="fade"><text x="10" y="90" font-family="Inter,sans-serif" font-size="11" fill="#e8edf5">Modelado 3D</text><rect x="250" y="75" width="180" height="22" rx="4" fill="#FFB800"/></g>
+        <g class="fade"><text x="10" y="125" font-family="Inter,sans-serif" font-size="11" fill="#e8edf5">Compra materiales</text><rect x="350" y="110" width="120" height="22" rx="4" fill="#9B59B6"/></g>
+        <g class="fade"><text x="10" y="160" font-family="Inter,sans-serif" font-size="11" fill="#e8edf5">Electrónica</text><rect x="430" y="145" width="180" height="22" rx="4" fill="#00C896"/></g>
+        <g class="fade"><text x="10" y="195" font-family="Inter,sans-serif" font-size="11" fill="#e8edf5">Ensamblaje y MVP</text><rect x="530" y="180" width="180" height="22" rx="4" fill="#FF4D6A"/></g>
+      </svg>
+      <div class="controls"><button class="btn primary" data-play="ganttSVG">▶ Animar</button><button class="btn" data-reset="ganttSVG">↺</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s-armar">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Concepto 2</div>
+      <h2>Cómo armar el tuyo — 3 pasos</h2>
+      <p>No hace falta software especial. Una hoja cuadriculada o una tabla simple alcanza.</p>
+    </div>
+    <div class="card-row cols3">
+      <div class="card cyan"><div class="c-label">1</div><h4>Listar tareas</h4><p>Todo lo que falta hacer hasta el MVP terminado. Sean concretos: "cortar carcasa", no "hacer el proyecto".</p></div>
+      <div class="card amber"><div class="c-label">2</div><h4>Estimar duración</h4><p>¿Cuántas clases necesita cada tarea? Sean realistas — mejor sobrestimar un poco.</p></div>
+      <div class="card good"><div class="c-label">3</div><h4>Marcar dependencias</h4><p>¿Qué tarea no puede empezar hasta que termine otra? Eso define el orden real.</p></div>
+    </div>
+    <div class="tip">💡 <strong>Ejemplo de dependencia:</strong> no podés cablear el circuito hasta tener los materiales comprados. El Gantt lo muestra antes de que te sorprenda a mitad de clase.</div>
+  </div>
+</section>
+
+<section class="slide" id="s-planificar">
+  <div class="slide-wrap" style="text-align:center;max-width:760px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center">Fin de la parte teórica</div>
+    <h2 style="font-size:clamp(1.8rem,3.2vw,2.6rem);margin-bottom:1rem">Ahora, armen su Gantt.</h2>
+    <p style="color:var(--text-dim);font-size:.95rem;margin-bottom:1.5rem">Con las 7 clases que quedan, listen sus tareas reales y ubíquenlas en el tiempo disponible.</p>
+    <div class="consigna" style="text-align:left"><b>Consigna — 15 minutos</b> En una hoja o tabla: listen mínimo 5 tareas, estimen cuántas clases necesita cada una, y marquen al menos 1 dependencia.</div>
+  </div>
+</section>
+
+<section class="slide deepen" id="s-divider">
+  <div class="slide-wrap">
+    <div class="divider">
+      <div class="dtag">🔍 Profundizar — opcional</div>
+      <h2>Para el que quiere ir más allá</h2>
+      <p>Volvé a esto en casa o si tu equipo termina antes que los demás.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide deepen" id="s-ruta-critica">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow deep">Profundizar</div>
+      <h2>La ruta crítica</h2>
+      <p>La secuencia de tareas que, si se atrasa una, atrasa todo el proyecto.</p>
+    </div>
+    <div class="card-row cols2">
+      <div class="card bad"><div class="c-label">Tarea crítica</div><p>Si "compra de materiales" se atrasa, TODO lo que sigue se atrasa también. Es la más importante de vigilar.</p></div>
+      <div class="card good"><div class="c-label">Tarea con holgura</div><p>Si "documentar el proceso" se atrasa un poco, no afecta el resto — tiene margen.</p></div>
+    </div>
+    <div class="tip">💡 <strong>Tip profesional:</strong> identificá cuál es tu tarea crítica y priorizala. Es la que define si terminás a tiempo o no.</div>
+  </div>
+</section>
+
+<section class="slide deepen" id="s-recursos">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow deep">Profundizar</div>
+      <h2>Recursos compartidos</h2>
+      <p>Cuando dos tareas necesitan la misma herramienta o máquina al mismo tiempo.</p>
+    </div>
+    <div class="consigna"><b>Ejemplo real</b> Si dos equipos necesitan la impresora 3D el mismo día, uno tiene que esperar. Eso también es una dependencia — de recursos, no solo de tareas. Anticipalo en tu Gantt reservando franjas.</div>
+  </div>
+</section>
+
+<section class="slide" id="s-cierre">
+  <div class="slide-wrap" style="text-align:center;max-width:700px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:1.4rem"><span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span>Cierre<span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span></div>
+    <div class="closing-mark">Tiempo mapeado.<br>A diseñar.</div>
+    <div class="closing-sub" style="margin-top:1.2rem">Taller de Proyecto &nbsp;·&nbsp; Unidad 7 — Planificación Temporal</div>
+    <div style="margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--line)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);margin-bottom:.4rem">PRÓXIMO</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent)">Unidad 8 — Modelado 3D con Tinkercad</div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const REDUCE=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  class Construction{
+    constructor(svg,{stepDuration=550}={}){this.svg=svg;this.stepDuration=REDUCE?1:stepDuration;this.elements=Array.from(svg.querySelectorAll('.fade'));this.index=-1;this.timer=null;this.onChange=null;this.setAll(false,{instant:true});}
+    setAll(shown,{instant=false}={}){this.elements.forEach(el=>this._set(el,shown,instant));}
+    _set(el,shown,instant){el.style.transition=instant?'none':`opacity ${this.stepDuration*.65}ms ease`;el.style.opacity=shown?'1':'0';}
+    goto(target,{instantAll=false}={}){clearInterval(this.timer);target=Math.max(-1,Math.min(this.elements.length-1,target));this.elements.forEach((el,i)=>{const shown=i<=target,isEdge=(i===target&&!instantAll);if(isEdge){this._set(el,false,true);void el.getBoundingClientRect();requestAnimationFrame(()=>requestAnimationFrame(()=>this._set(el,true,false)));}else{this._set(el,shown,true);}});this.index=target;if(this.onChange)this.onChange(target,this.elements.length);}
+    reset(){this.goto(-1)}
+    playAll(){this.reset();let i=0;const next=()=>{if(i>=this.elements.length)return;this.goto(i);i++;this.timer=setTimeout(next,this.stepDuration*.6);};this.timer=setTimeout(next,100);}
+  }
+  const reg={};
+  document.querySelectorAll('svg.diagram').forEach(svg=>{reg[svg.id]=new Construction(svg);});
+  document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.play].playAll()));
+  document.querySelectorAll('[data-reset]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.reset].reset()));
+  function bindCounter(svgId,elId){const c=reg[svgId],el=document.getElementById(elId);if(!c||!el)return;const total=c.elements.length;c.onChange=(idx)=>{el.textContent=(idx+1)+' / '+total};el.textContent='0 / '+total;}
+  bindCounter('ganttSVG','ganttCount');
+  const slides=Array.from(document.querySelectorAll('.slide'));
+  const dotNav=document.getElementById('dotNav'),slideCurrentEl=document.getElementById('slideCurrent'),slideTotalEl=document.getElementById('slideTotal'),progressFill=document.getElementById('progressFill'),prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn');
+  let current=0;
+  slideTotalEl.textContent=String(slides.length).padStart(2,'0');
+  slides.forEach((sl,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','Ir a pantalla '+(i+1));if(sl.classList.contains('deepen'))b.classList.add('deepen-dot');b.addEventListener('click',()=>goTo(i));dotNav.appendChild(b);});
+  const dots=Array.from(dotNav.children);
+  function setActive(i){current=i;dots.forEach((d,idx)=>d.classList.toggle('active',idx===i));slideCurrentEl.textContent=String(i+1).padStart(2,'0');progressFill.style.width=(((i+1)/slides.length)*100)+'%';prevBtn.disabled=i===0;nextBtn.disabled=i===slides.length-1;}
+  function goTo(i){i=Math.max(0,Math.min(slides.length-1,i));slides[i].scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'});}
+  const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>0.55){const idx=slides.indexOf(e.target);if(idx!==-1)setActive(idx);}});},{threshold:[0.55]});
+  slides.forEach(sl=>io.observe(sl));
+  prevBtn.addEventListener('click',()=>goTo(current-1));
+  nextBtn.addEventListener('click',()=>goTo(current+1));
+  window.addEventListener('keydown',(e)=>{const tag=(e.target&&e.target.tagName)||'';if(tag==='INPUT'||tag==='TEXTAREA')return;if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();goTo(current+1);}else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();goTo(current-1);}else if(e.key==='Home'){e.preventDefault();goTo(0);}else if(e.key==='End'){e.preventDefault();goTo(slides.length-1);}});
+  setActive(0);
+})();
+</script>
+</body>
+</html>

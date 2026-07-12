@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materiales, Construcción y Validación — Guía Docente · Taller de Proyecto</title>
+<style>
+:root{--navy:#0A0E2A;--mid:#1A2550;--lit:#253070;--cyan:#00D4FF;--cdim:#0097B8;--amber:#FFB800;--green:#00C896;--gdim:#007A5E;--red:#FF4D6A;--rdim:#C23652;--purple:#9B59B6;--white:#FFFFFF;--off:#E8EDF5;--muted:#7A8BAA;--card:#131B3A;--clit:#1E2B4A;--sw:255px;--r:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;display:flex;min-height:100vh}
+#sb{width:var(--sw);min-height:100vh;background:#060918;border-right:1px solid rgba(255,77,106,0.12);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sbl{padding:20px 16px 14px;border-bottom:1px solid rgba(255,77,106,0.1)}
+.sbl .tag{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--rdim);text-transform:uppercase;margin-bottom:5px}
+.sbl h1{font-size:13px;font-weight:800;color:var(--white);line-height:1.3}
+.sbl h1 span{color:var(--red)}
+.sbn{margin:10px 12px 0;background:rgba(255,77,106,0.06);border:1px solid rgba(255,77,106,0.14);border-radius:7px;padding:8px 11px;font-size:11.5px;color:var(--muted)}
+.sbn strong{color:var(--red);font-size:12px;display:block;margin-bottom:2px}
+.nl{padding:14px 16px 4px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 16px;text-decoration:none;color:var(--muted);font-size:12px;font-weight:500;border-left:3px solid transparent;transition:all .2s;cursor:pointer}
+.ni:hover{color:var(--white);background:rgba(255,77,106,0.06)}
+.ni.active{color:var(--red);border-left-color:var(--red);background:rgba(255,77,106,0.08)}
+.nd{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sbf{margin-top:auto;padding:12px 16px;border-top:1px solid rgba(255,255,255,0.05);font-size:11px;color:var(--muted);line-height:1.5}
+#main{margin-left:var(--sw);flex:1;padding-bottom:62px}
+#pb{position:fixed;top:0;left:var(--sw);right:0;height:3px;background:rgba(255,77,106,0.1);z-index:200}
+#pf{height:100%;background:var(--red);width:0%;transition:width .1s}
+#hero{background:linear-gradient(135deg,#0A0E2A 0%,#1A2550 55%,#0D1535 100%);padding:52px 48px 44px;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,77,106,0.1)}
+#hero::before{content:'';position:absolute;top:-60px;right:-60px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(255,77,106,0.09) 0%,transparent 70%);pointer-events:none}
+.htag{display:inline-block;background:rgba(255,77,106,0.1);border:1px solid rgba(255,77,106,0.3);color:var(--red);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px}
+#hero h2{font-size:clamp(22px,3.5vw,36px);font-weight:900;color:var(--white);line-height:1.15;margin-bottom:8px}
+#hero h2 em{color:var(--red);font-style:normal}
+#hero p{font-size:13.5px;color:var(--muted);max-width:490px;margin-bottom:24px;line-height:1.7}
+.nrow{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.nrow label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.ninp{background:rgba(255,77,106,0.06);border:1.5px solid rgba(255,77,106,0.3);border-radius:8px;padding:9px 15px;color:var(--white);font-size:14px;font-weight:600;outline:none;min-width:200px;transition:border-color .2s;font-family:inherit}
+.ninp:focus{border-color:var(--red)}
+.ninp::placeholder{color:var(--muted);font-weight:400}
+.sec{padding:48px 48px 40px;border-bottom:1px solid rgba(255,255,255,0.04);scroll-margin-top:20px}
+.eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.edot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.etxt{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sec h2{font-size:clamp(17px,2.5vw,26px);font-weight:800;color:var(--white);margin-bottom:8px;line-height:1.2}
+.sec>.desc{color:var(--muted);font-size:13px;max-width:640px;margin-bottom:24px;line-height:1.65}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.cc{background:var(--card);border-radius:var(--r);padding:18px 20px;border:1px solid rgba(255,255,255,0.07);border-left:3px solid var(--ca,var(--red))}
+.cc h3{font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px}
+.cc p{font-size:12.5px;color:var(--muted);line-height:1.55}
+.def{background:var(--card);border:1px solid rgba(255,77,106,0.2);border-radius:var(--r);padding:22px 26px;margin-bottom:20px}
+.def p{font-size:15px;color:var(--off);line-height:1.75}
+.def strong{color:var(--red);font-weight:700}
+.def em{color:var(--amber);font-style:normal;font-weight:600}
+.rule{background:rgba(255,77,106,0.08);border:1.5px solid rgba(255,77,106,0.3);border-radius:var(--r);padding:14px 18px;margin-top:14px;font-size:13px;color:var(--off);line-height:1.6}
+.rule strong{color:var(--red)}
+.safety{background:rgba(255,77,106,0.1);border:2px solid var(--red);border-radius:var(--r);padding:18px 22px;margin:16px 0}
+.safety .s-title{font-size:12px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.safety ul{padding-left:0;list-style:none}
+.safety li{font-size:13px;color:var(--off);line-height:1.6;padding:5px 0 5px 22px;position:relative}
+.safety li::before{content:'⚠';position:absolute;left:0;color:var(--red)}
+.tip{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r);padding:13px 16px;margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.6}
+.tip strong{color:var(--off)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:18px}
+.cmp{background:var(--card);border-radius:var(--r);padding:16px 18px;border:1px solid rgba(255,255,255,0.07)}
+.cmp.bad{border-left:3px solid var(--red)}
+.cmp.good{border-left:3px solid var(--green)}
+.cmp .cmp-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.cmp.bad .cmp-label{color:var(--red)}
+.cmp.good .cmp-label{color:var(--green)}
+.cmp .cmp-txt{font-size:13px;color:var(--off);line-height:1.5}
+.flowline{display:flex;flex-direction:column;gap:8px}
+.flowstep{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;padding:12px 16px;background:var(--card);border-radius:8px;border-left:3px solid var(--flc,var(--red))}
+.flowstep .fs-t{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--flc,var(--red))}
+.flowstep .fs-d{font-size:12.5px;color:var(--muted)}
+.procgrid{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.procchip{background:var(--card);border:1.5px solid var(--pc,var(--red));border-radius:8px;padding:10px 14px;flex:1;min-width:140px;text-align:center}
+.procchip .pn{font-size:18px;font-weight:800;color:var(--pc,var(--red))}
+.procchip .pt{font-size:11px;font-weight:700;color:var(--off);margin-top:2px}
+.procchip .pd{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.35}
+.stepgrid{display:flex;flex-direction:column;gap:8px}
+.steprow{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center;padding:11px 15px;background:var(--card);border-radius:9px;border-left:3px solid var(--stc,var(--red))}
+.stepnum{width:32px;height:32px;border-radius:50%;background:var(--stc,var(--red));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--white)}
+.steprow h4{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:2px}
+.steprow p{font-size:11.5px;color:var(--muted);line-height:1.4}
+.exlabel{font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.exdesc{font-size:12.5px;color:var(--muted);margin-bottom:12px;line-height:1.55}
+.wfield{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:9px 13px;color:var(--off);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s}
+.wfield:focus{border-color:var(--red)}
+.wfield::placeholder{color:rgba(122,139,170,0.55);font-style:italic}
+textarea.wfield{resize:vertical;min-height:70px;line-height:1.55}
+.exblock{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+.exrow{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid rgba(255,255,255,0.05)}
+.exrow:last-child{border-bottom:none}
+.exrl{padding:11px 14px;border-right:1px solid rgba(255,255,255,0.05)}
+.exrl span{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.exrv{padding:8px 14px}
+.cklist{display:flex;flex-direction:column;gap:7px}
+.ckitem{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--card);border-radius:8px;font-size:12.5px;color:var(--off);line-height:1.5;cursor:pointer;user-select:none;transition:background .2s;border:1px solid rgba(255,255,255,0.05)}
+.ckitem:hover{background:var(--clit)}
+.ckitem input{width:15px;height:15px;accent-color:var(--red);margin-top:2px;flex-shrink:0;cursor:pointer}
+.ckitem.checked{opacity:.5}.ckitem.checked span{text-decoration:line-through;color:var(--muted)}
+#ck-res{margin-top:13px;padding:12px 16px;border-radius:9px;font-size:13px;background:var(--card);border:1px solid rgba(255,255,255,0.07)}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:9px}
+.gi{background:var(--card);border-radius:8px;padding:13px 15px;border-left:3px solid var(--gc,var(--red))}
+.gtag2{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-bottom:4px}
+.gterm{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:4px}
+.gdef{font-size:11.5px;color:var(--muted);line-height:1.5}
+#bt{position:fixed;bottom:74px;right:20px;width:36px;height:36px;background:var(--mid);border:1px solid rgba(255,77,106,0.3);border-radius:50%;color:var(--red);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;z-index:150}
+#bt.vis{opacity:1;pointer-events:auto}
+#mt{display:none;position:fixed;top:12px;left:12px;z-index:300;background:var(--mid);border:1px solid rgba(255,77,106,0.3);color:var(--red);font-size:17px;width:36px;height:36px;border-radius:8px;align-items:center;justify-content:center;cursor:pointer}
+#save-ind{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);background:rgba(255,77,106,0.1);border:1px solid rgba(255,77,106,0.3);border-radius:7px;padding:7px 14px;font-size:12px;color:var(--red);opacity:0;pointer-events:none;transition:opacity .3s;z-index:160}
+#save-ind.show{opacity:1}
+.sendbar{position:fixed;bottom:0;left:var(--sw);right:0;background:#060918;border-top:1px solid rgba(255,77,106,0.12);padding:10px 24px;z-index:150;display:flex;align-items:center;gap:12px}
+.sendbar .sblabel{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.sbtn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid;font-family:inherit;transition:all .2s}
+.sbtn.print{border-color:#9B59B6;background:rgba(155,89,182,0.1);color:#9B59B6}
+.sbtn.gmail{border-color:var(--red);background:rgba(255,77,106,0.1);color:var(--red)}
+@media(max-width:768px){:root{--sw:0px}#sb{transform:translateX(-255px);width:255px;transition:transform .3s}#sb.open{transform:translateX(0)}#main{margin-left:0}#mt{display:flex}.sec{padding:34px 20px 30px}#hero{padding:44px 20px 38px}.compare{grid-template-columns:1fr}#pb{left:0}.sendbar{left:0}}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,77,106,0.18);border-radius:3px}
+.print-hdr{display:none}
+@media print{#sb,#pb,#mt,#bt,#save-ind,.sendbar{display:none!important}body{background:#fff!important;color:#000!important;display:block!important;font-size:10pt}#main{margin-left:0!important;padding-bottom:0!important}.sec{padding:12px 0!important;border-bottom:1px solid #ddd!important}.def,.cc,.cmp,.flowstep,.steprow,.gi,.ckitem,.exblock,.procchip,.safety{background:#f9f9f9!important;border-color:#ccc!important}.def p,.cc p,.cmp-txt,.gdef,.ckitem,.exdesc,.safety li{color:#000!important}.print-hdr{display:block!important}}
+</style>
+</head>
+<body>
+<div id="pb"><div id="pf"></div></div>
+<button id="mt" onclick="tSB()">☰</button>
+<button id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="save-ind">✓ Guardado</div>
+<div class="print-hdr" style="padding:0 0 12px;border-bottom:2px solid #000;margin-bottom:12px">
+  <div style="font-size:9pt;color:#555">TALLER DE PROYECTO · UNIDAD 5 — Materiales, Construcción y Validación</div>
+  <div style="font-size:17pt;font-weight:800">Guía Docente — Materiales, Construcción y Validación</div>
+  <div style="font-size:9pt;color:#555" id="ph-n"></div>
+</div>
+
+<nav id="sb">
+  <div class="sbl"><div class="tag">Taller de Proyecto · Unidad 5</div><h1>Guía Docente<br><span>Materiales y Construcción</span></h1></div>
+  <div class="sbn"><strong id="sbn">Docente</strong>Unidad 5 · Referencia y criterios</div>
+  <div class="nl">Bloque D · Materiales</div>
+  <a class="ni" href="#recorrido" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span>¿Dónde estamos?</a>
+  <a class="ni" href="#ferreteria" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Ferretería y herramientas</a>
+  <a class="ni" href="#electronica" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Electricidad y electrónica</a>
+  <a class="ni" href="#arduino" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Arduino y sensores</a>
+  <a class="ni" href="#soldadura" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span>Soldadura</a>
+  <a class="ni" href="#laser" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Corte láser</a>
+  <a class="ni" href="#taladro" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Taladro e impresora 3D</a>
+  <a class="ni" href="#seguridad" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span>Seguridad industrial</a>
+  <div class="nl">Bloque E · Construcción</div>
+  <a class="ni" href="#ensamblaje" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Ensamblaje en cascada</a>
+  <a class="ni" href="#calidad" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Calidad y riesgos</a>
+  <div class="nl">Bloque F · Validación</div>
+  <a class="ni" href="#mvp-prueba" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Prueba del MVP</a>
+  <a class="ni" href="#registro" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span>Registro y documentación</a>
+  <div class="nl">Docente</div>
+  <a class="ni" href="#trabajo" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span>Respuestas y criterios</a>
+  <div class="nl">Cierre</div>
+  <a class="ni" href="#checklist" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Mi checklist</a>
+  <a class="ni" href="#glosario" onclick="cSB()"><span class="nd" style="background:#7A8BAA"></span>Glosario</a>
+  <div class="sbf">Electromecánica · Robótica<br>Automatización · IA</div>
+</nav>
+
+<main id="main">
+<section id="top">
+  <div id="hero">
+    <div class="htag">Unidad 5 · Guía Docente</div>
+    <h2>Materiales,<br><em>Construcción y Validación</em></h2>
+    <p>Guía de referencia para el docente. Respuestas modelo y criterios de evaluación. No distribuir a los alumnos.</p>
+    <div class="nrow">
+      <label for="myname">Tu nombre:</label>
+      <input type="text" id="myname" class="ninp" placeholder="Escribí tu nombre..." oninput="sN(this.value)" autocomplete="off">
+    </div>
+  </div>
+</section>
+
+<!-- RECORRIDO -->
+<section class="sec" id="recorrido">
+  <div class="eyebrow"><div class="edot" style="background:#FF4D6A"></div><span class="etxt">Punto de partida</span></div>
+  <h2>¿Dónde estamos?</h2>
+  <p class="desc">Diseño, planos, inventario y presupuesto listos (Unidad 4). Ahora construimos el MVP real, con herramientas reales.</p>
+  <div class="flowline">
+    <div class="flowstep" style="--flc:#7A8BAA"><div class="fs-t">✓ Análisis y solución</div><div class="fs-d">Problema, objetivos, ideación. (Visto)</div></div>
+    <div class="flowstep" style="--flc:#7A8BAA"><div class="fs-t">✓ Metodología y diseño</div><div class="fs-d">Scrum, MVP, planos, inventario, presupuesto. (Visto)</div></div>
+    <div class="flowstep" style="--flc:#FF4D6A"><div class="fs-t">● Materiales y seguridad</div><div class="fs-d">Herramientas, electrónica, máquinas, EPP. (Ahora)</div></div>
+    <div class="flowstep" style="--flc:#FFB800"><div class="fs-t">● Construcción</div><div class="fs-d">Ensamblaje, calidad, riesgos. (Ahora)</div></div>
+    <div class="flowstep" style="--flc:#00C896"><div class="fs-t">● Validación</div><div class="fs-d">Prueba del MVP, feedback, documentación. (Ahora)</div></div>
+    <div class="flowstep" style="--flc:#7A8BAA"><div class="fs-t">Pitch Elevator</div><div class="fs-d">Presentación final frente a jurado. (Próximo)</div></div>
+  </div>
+</section>
+
+<!-- FERRETERÍA -->
+<section class="sec" id="ferreteria">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Bloque D</span></div>
+  <h2>Ferretería y herramientas manuales</h2>
+  <p class="desc">Lo básico que todo técnico tiene que saber usar antes de tocar una máquina.</p>
+  <div class="grid4">
+    <div class="cc" style="--ca:#00D4FF"><h3>Tornillería y anclajes</h3><p>Tornillos, tuercas, arandelas, insertos. Tamaños normalizados (M3, M4).</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>Destornilladores</h3><p>Phillips (cruz) y plano, en tamaños PH0 a PH2 según el tornillo.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>Pinzas</h3><p>Punta fina, universal y de corte (alicate). Cada una para un trabajo distinto.</p></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>Herramientas de corte</h3><p>Cutter, tijera, regla metálica, tabla de corte para proteger la mesa.</p></div>
+  </div>
+  <div class="tip">💡 <strong>Regla básica de taller:</strong> cada herramienta vuelve a su lugar después de usarla. Un cutter perdido en la mesa es un accidente esperando pasar. Orden = seguridad.</div>
+</section>
+
+<!-- ELECTRÓNICA -->
+<section class="sec" id="electronica">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Componentes</span></div>
+  <h2>Electricidad y electrónica</h2>
+  <p class="desc">Antes de armar un circuito, hay que saber leer la hoja de datos de cada componente.</p>
+  <div class="def"><p>Un <strong>datasheet</strong> es la hoja de datos técnica de un componente. Antes de elegir un sensor, hay que leerla: voltaje de operación, rango de medición, precisión, interfaz de comunicación.</p></div>
+  <div class="grid4">
+    <div class="cc" style="--ca:#00D4FF"><h3>Resistencias</h3><p>Limitan la corriente en el circuito.</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>LEDs</h3><p>Indicadores luminosos de bajo consumo.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>Capacitores</h3><p>Almacenan carga eléctrica temporalmente.</p></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>Transistores</h3><p>Actúan como interruptores electrónicos.</p></div>
+  </div>
+</section>
+
+<!-- ARDUINO -->
+<section class="sec" id="arduino">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">El corazón del sistema</span></div>
+  <h2>Arduino, sensores y alimentación</h2>
+  <p class="desc">Cómo se conectan sensores, protoboard y fuentes de energía.</p>
+  <div class="grid4">
+    <div class="cc" style="--ca:#00D4FF"><h3>Arduino</h3><p>El microcontrolador. Lee sensores, ejecuta lógica, activa actuadores.</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>Protoboard</h3><p>Placa de pruebas sin soldadura. Ideal para prototipar antes de fijar.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>Sensores</h3><p>Miden variables del entorno: temperatura, humedad, distancia, luz.</p></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>Alimentación</h3><p>Pilas, baterías recargables o mini transformadores según el consumo.</p></div>
+  </div>
+  <div class="rule">⚠️ <strong>Cuidado con la alimentación:</strong> cada componente tiene un voltaje de operación específico (revisá el datasheet). Conectar 9V a un sensor de 5V lo quema en segundos.</div>
+</section>
+
+<!-- SOLDADURA -->
+<section class="sec" id="soldadura">
+  <div class="eyebrow"><div class="edot" style="background:#FF4D6A"></div><span class="etxt">Habilidad manual</span></div>
+  <h2>Soldadura: soldador y estaño</h2>
+  <p class="desc">La habilidad manual que fija las conexiones eléctricas de forma permanente.</p>
+  <div class="stepgrid">
+    <div class="steprow" style="--stc:#00D4FF"><div class="stepnum">1</div><div><h4>Preparar</h4><p>Componentes limpios, soldador a temperatura, buena ventilación.</p></div></div>
+    <div class="steprow" style="--stc:#FFB800"><div class="stepnum">2</div><div><h4>Calentar</h4><p>Apoyar la punta en la unión a soldar, no directamente en el estaño.</p></div></div>
+    <div class="steprow" style="--stc:#00C896"><div class="stepnum">3</div><div><h4>Aplicar estaño</h4><p>El estaño se derrite por el calor de la pieza, no del soldador.</p></div></div>
+    <div class="steprow" style="--stc:#9B59B6"><div class="stepnum">4</div><div><h4>Enfriar</h4><p>No soplar ni mover la unión — debe enfriar sola para quedar sólida.</p></div></div>
+  </div>
+  <div class="safety">
+    <div class="s-title">⚠ Seguridad obligatoria</div>
+    <ul>
+      <li>El soldador trabaja a 300-400°C — nunca tocar la punta</li>
+      <li>Ventilación siempre activa — el humo de estaño no se respira</li>
+      <li>Soporte metálico para apoyar el soldador caliente, nunca la mesa</li>
+    </ul>
+  </div>
+</section>
+
+<!-- LASER -->
+<section class="sec" id="laser">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Máquina del taller</span></div>
+  <h2>Corte láser</h2>
+  <p class="desc">Cómo funciona, qué materiales corta, y las reglas de seguridad no negociables.</p>
+  <div class="def"><p>Un haz de luz concentrado quema o funde el material siguiendo el trazado del diseño digital, con precisión de décimas de milímetro. <strong>Materiales típicos:</strong> MDF, acrílico, cartón, madera fina. <em>NUNCA PVC (libera gas tóxico).</em></p></div>
+  <div class="safety">
+    <div class="s-title">⚠ Seguridad obligatoria</div>
+    <ul>
+      <li>Nunca dejar la máquina sin supervisión mientras corta</li>
+      <li>Ventilación y extracción de humos siempre activa</li>
+      <li>No abrir la tapa durante el corte</li>
+      <li>Material fijado firme antes de empezar</li>
+      <li>Solo docente autoriza y opera el encendido</li>
+    </ul>
+  </div>
+</section>
+
+<!-- TALADRO + 3D -->
+<section class="sec" id="taladro">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Dos lógicas de fabricación</span></div>
+  <h2>Taladro de mesa e impresora 3D</h2>
+  <p class="desc">Dos máquinas distintas: quitar material vs. agregar material.</p>
+  <div class="compare">
+    <div class="cmp" style="border-left:3px solid #FFB800">
+      <div class="cmp-label" style="color:#FFB800">🔩 Taladro de mesa</div>
+      <div class="cmp-txt">Perfora agujeros precisos y perpendiculares. Se usa para tornillería, ejes y pasacables.</div>
+    </div>
+    <div class="cmp" style="border-left:3px solid #00C896">
+      <div class="cmp-label" style="color:#00C896">🖨 Impresora 3D</div>
+      <div class="cmp-txt">Agrega material capa por capa (PLA) siguiendo el modelo exportado desde Tinkercad.</div>
+    </div>
+  </div>
+  <div class="safety">
+    <div class="s-title">⚠ Seguridad — Taladro</div>
+    <ul>
+      <li>Pieza sujeta con mordaza — NUNCA con la mano</li>
+      <li>Velocidad según el material (madera rápido, metal lento)</li>
+      <li>Gafas de protección obligatorias</li>
+      <li>Pelo atado, sin mangas sueltas ni guantes</li>
+    </ul>
+  </div>
+  <div class="safety">
+    <div class="s-title">⚠ Seguridad — Impresora 3D</div>
+    <ul>
+      <li>No tocar la boquilla caliente (200°C aprox.)</li>
+      <li>Tiempo de impresión: horas, no minutos — planificar con tiempo</li>
+      <li>Retirar la pieza solo cuando la mesa esté fría</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SEGURIDAD -->
+<section class="sec" id="seguridad">
+  <div class="eyebrow"><div class="edot" style="background:#FF4D6A"></div><span class="etxt">Lo no negociable</span></div>
+  <h2>Seguridad industrial y EPP</h2>
+  <p class="desc">Los elementos de protección personal y las reglas de oro del taller.</p>
+  <div class="grid4">
+    <div class="cc" style="--ca:#00D4FF"><h3>Gafas de protección</h3><p>Obligatorias con cualquier máquina que corte, perfore o proyecte partículas.</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>Guantes</h3><p>Para manipular piezas cortadas o calientes — nunca cerca de partes giratorias.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>Pelo atado y ropa ajustada</h3><p>Nada suelto cerca de taladro, láser o cualquier mecanismo con movimiento.</p></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>Ventilación activa</h3><p>Soldadura, láser e impresión 3D liberan humos que no se deben respirar directo.</p></div>
+  </div>
+  <div class="safety">
+    <div class="s-title">🛡 Las 3 reglas de oro del taller</div>
+    <ul>
+      <li>Ninguna máquina se enciende sin autorización docente presente</li>
+      <li>Si no sabés cómo usar algo, preguntás — nunca "probás a ver"</li>
+      <li>Un accidente evitado vale más que un proyecto terminado a tiempo</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ENSAMBLAJE -->
+<section class="sec" id="ensamblaje">
+  <div class="eyebrow"><div class="edot" style="background:#FFB800"></div><span class="etxt">Bloque E</span></div>
+  <h2>Ensamblaje: pensamiento en cascada</h2>
+  <p class="desc">El orden de armado importa tanto como las piezas mismas.</p>
+  <div class="compare">
+    <div class="cmp bad">
+      <div class="cmp-label">✗ Sin pensar en cascada</div>
+      <div class="cmp-txt">Atornillás la tapa superior primero. Después te das cuenta de que el cableado interno no se puede acceder sin desarmar la tapa que acabás de cerrar. Resultado: desarmar, rehacer, perder tiempo.</div>
+    </div>
+    <div class="cmp good">
+      <div class="cmp-label">✓ Pensando en cascada</div>
+      <div class="cmp-txt">Preguntás antes: "¿qué necesito acceder después de esto?" Cableás y probás el circuito ANTES de cerrar cualquier tapa. Resultado: cada paso habilita el siguiente.</div>
+    </div>
+  </div>
+  <div class="tip">💡 <strong>Pregunta clave antes de cada paso:</strong> "¿esto me va a bloquear el acceso a algo que necesito después?"</div>
+</section>
+
+<!-- CALIDAD Y RIESGOS -->
+<section class="sec" id="calidad">
+  <div class="eyebrow"><div class="edot" style="background:#00D4FF"></div><span class="etxt">Dos hábitos clave</span></div>
+  <h2>Control de calidad y gestión de riesgos</h2>
+  <p class="desc">Lo que separa un proyecto que funciona de uno que casi funciona.</p>
+  <div class="compare">
+    <div class="cmp" style="border-left:3px solid #00D4FF">
+      <div class="cmp-label" style="color:#00D4FF">Control de calidad y tolerancias</div>
+      <div class="cmp-txt">Ninguna pieza cortada o impresa encaja perfecta al 100%. Verificá cada pieza antes de armar el conjunto. Si algo no encaja, medí antes de forzar.</div>
+    </div>
+    <div class="cmp bad">
+      <div class="cmp-label">Puntos de falla comunes</div>
+      <div class="cmp-txt">Cables sueltos o mal soldados → falso contacto. Alimentación incorrecta → componente quemado. Piezas sin tolerancia → mecanismo trabado.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRUEBA MVP -->
+<section class="sec" id="mvp-prueba">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">Bloque F</span></div>
+  <h2>Prueba del MVP: el Scrum en acción</h2>
+  <p class="desc">Acá vuelve el ciclo de Sprints de la Unidad 4 — ahora aplicado a probar y mejorar el MVP real.</p>
+  <div class="grid4">
+    <div class="cc" style="--ca:#00D4FF"><h3>1. Probar</h3><p>Encender el MVP y verificar si cumple el objetivo SMART.</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>2. Observar</h3><p>¿Qué funcionó? ¿Qué no? Sin justificar, solo registrar.</p></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>3. Recibir feedback</h3><p>Compañeros y docente dan su análisis crítico constructivo.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>4. Ajustar</h3><p>Corregir lo que falló. Volver al paso 1 — nuevo sprint.</p></div>
+  </div>
+  <div class="tip">🔄 <strong>El ciclo se repite:</strong> no hay "terminado" de una vez. Cada sprint de prueba mejora el MVP hasta que cumple los objetivos SMART definidos en la Unidad 3.</div>
+</section>
+
+<!-- REGISTRO -->
+<section class="sec" id="registro">
+  <div class="eyebrow"><div class="edot" style="background:#9B59B6"></div><span class="etxt">Documentación</span></div>
+  <h2>Registro fotográfico y documentación</h2>
+  <p class="desc">Todo el proceso de construcción alimenta la carpeta de proyecto final.</p>
+  <div class="grid4">
+    <div class="cc" style="--ca:#00D4FF"><h3>Antes de empezar</h3><p>Foto del inventario completo, piezas ordenadas y etiquetadas.</p></div>
+    <div class="cc" style="--ca:#FFB800"><h3>Durante el proceso</h3><p>Cada etapa de ensamblaje, especialmente donde algo falló y se corrigió.</p></div>
+    <div class="cc" style="--ca:#00C896"><h3>MVP funcionando</h3><p>Video corto o foto del sistema completo cumpliendo el objetivo.</p></div>
+    <div class="cc" style="--ca:#9B59B6"><h3>Sprints de mejora</h3><p>Registro de cada ciclo de prueba-feedback-ajuste realizado.</p></div>
+  </div>
+  <div class="tip">📸 <strong>Por qué importa:</strong> la carpeta de proyecto y el Pitch Elevator necesitan evidencia visual del proceso, no solo el resultado final.</div>
+</section>
+
+<!-- RESPUESTAS DOCENTE -->
+<section class="sec" id="trabajo">
+  <div class="eyebrow"><div class="edot" style="background:#FF4D6A"></div><span class="etxt">Solo docente</span></div>
+  <h2>Respuestas de referencia — Ejercicios</h2>
+  <p class="desc">Criterios de corrección para los 4 ejercicios. Esta unidad tiene componente de seguridad física — la corrección no es solo conceptual.</p>
+
+  <div style="margin-bottom:22px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 1 — Checklist de seguridad</div>
+    <div class="cc" style="--ca:#FF4D6A"><h3>Qué evaluar</h3><p><strong>No negociable:</strong> las 4 casillas deben estar tildadas ANTES de autorizar el uso de cualquier máquina o soldador. Si el equipo no puede marcar alguna, no avanza a la construcción hasta resolverlo. Esta checklist es una condición de habilitación, no un ejercicio opcional.</p></div>
+  </div>
+
+  <div style="margin-bottom:22px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 2 — Secuencia en cascada</div>
+    <div class="cc" style="--ca:#FFB800"><h3>Qué evaluar</h3><p>Cada paso debe justificar por qué va en ese orden ("porque necesito acceder a X después"). Si la secuencia no menciona ningún motivo de orden, señalar: repetir el ejercicio pensando qué se bloquea con cada paso. El ejemplo clásico es cablear/probar ANTES de cerrar cualquier tapa.</p></div>
+  </div>
+
+  <div style="margin-bottom:22px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 3 — Sprint de prueba</div>
+    <div class="cc" style="--ca:#00C896"><h3>Qué evaluar</h3><p>"Observamos" debe ser descriptivo, no evaluativo ("el sensor tardó 3 segundos en responder", no "anduvo mal"). El feedback debe venir de un tercero (compañero u docente), no ser autoevaluación. Los ajustes pendientes deben ser accionables y concretos, listos para el próximo sprint.</p></div>
+  </div>
+
+  <div style="margin-bottom:10px">
+    <div style="font-size:11px;font-weight:700;color:#FF4D6A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding:8px 14px;background:rgba(255,77,106,0.07);border-radius:8px">EJERCICIO 4 — Puntos de falla</div>
+    <div class="cc" style="--ca:#00D4FF"><h3>Qué evaluar</h3><p>Deben identificar al menos un riesgo específico de SU proyecto, no genérico. Si responden con la lista general vista en clase sin adaptarla a su MVP, pedir que lo piensen en el contexto real de su construcción.</p></div>
+    <div class="tip" style="margin-top:10px"><strong>Nota:</strong> este ejercicio es una buena oportunidad para prevenir fallas antes de que ocurran — revisar los riesgos identificados antes de la prueba final del MVP.</div>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<section class="sec" id="checklist">
+  <div class="eyebrow"><div class="edot" style="background:#00C896"></div><span class="etxt">Autoevaluación</span></div>
+  <h2>Checklist de evaluación</h2>
+  <p class="desc">Criterios de evaluación para los alumnos. Marcá los que el alumno domina.</p>
+  <div class="cklist" id="cklist">
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Identifica las herramientas manuales básicas y su uso.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Lee un datasheet básico de un componente electrónico.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Explica los pasos de una soldadura correcta y sus riesgos.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Aplica las reglas de seguridad del corte láser, taladro e impresora 3D.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Aplica el pensamiento en cascada al planificar un ensamblaje.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Explica qué es una tolerancia y por qué "casi encaja" no alcanza.</span></label>
+    <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Aplica el ciclo probar-observar-feedback-ajustar al MVP.</span></label>
+  </div>
+  <div id="ck-res"><span id="ck-n" style="color:var(--red);font-weight:800;font-size:18px">0</span><span style="color:var(--muted);font-size:12.5px"> / 7 conceptos verificados</span><div id="ck-m" style="font-size:12px;color:var(--muted);margin-top:3px">Criterios pendientes de evaluación.</div></div>
+</section>
+
+<!-- GLOSARIO -->
+<section class="sec" id="glosario">
+  <div class="eyebrow"><div class="edot" style="background:#7A8BAA"></div><span class="etxt">Referencia rápida</span></div>
+  <h2>Glosario — Unidad 5</h2>
+  <div class="ggrid">
+    <div class="gi" style="--gc:#00D4FF"><div class="gtag2" style="background:rgba(0,212,255,0.1);color:#00D4FF">Componente</div><div class="gterm">Datasheet</div><div class="gdef">Hoja de datos técnica de un componente: voltaje, rango, precisión, interfaz.</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gtag2" style="background:rgba(255,184,0,0.12);color:#FFB800">Electrónica</div><div class="gterm">Protoboard</div><div class="gdef">Placa de pruebas sin soldadura para prototipar circuitos.</div></div>
+    <div class="gi" style="--gc:#FF4D6A"><div class="gtag2" style="background:rgba(255,77,106,0.1);color:#FF4D6A">Seguridad</div><div class="gterm">EPP</div><div class="gdef">Elementos de Protección Personal: gafas, guantes, ropa ajustada.</div></div>
+    <div class="gi" style="--gc:#FFB800"><div class="gtag2" style="background:rgba(255,184,0,0.12);color:#FFB800">Construcción</div><div class="gterm">Pensamiento en cascada</div><div class="gdef">Planificar el orden de armado según qué necesitás acceder después.</div></div>
+    <div class="gi" style="--gc:#00D4FF"><div class="gtag2" style="background:rgba(0,212,255,0.1);color:#00D4FF">Calidad</div><div class="gterm">Tolerancia</div><div class="gdef">Margen de error aceptable entre una medida y su valor real.</div></div>
+    <div class="gi" style="--gc:#00C896"><div class="gtag2" style="background:rgba(0,200,150,0.1);color:#00C896">Validación</div><div class="gterm">Sprint de prueba</div><div class="gdef">Ciclo de probar, observar, recibir feedback y ajustar el MVP.</div></div>
+  </div>
+  <div style="margin-top:24px;padding:12px 16px;background:var(--card);border-radius:var(--r);border:1px solid rgba(255,255,255,0.06);font-size:11.5px;color:var(--muted);text-align:center">Materiales, Construcción y Validación · Unidad 5 · 1er y 2do Año · Electromecánica · Robótica · Automatización · IA</div>
+</section>
+</main>
+
+<div class="sendbar">
+  <span class="sblabel">🎓 Guía Docente — Unidad 5</span>
+  <button class="sbtn print" onclick="window.print()">🖨 Imprimir guía</button>
+</div>
+
+<script>
+const K='u5_';
+function sN(v){localStorage.setItem(K+'n',v);document.getElementById('sbn').textContent=v||'—'}
+let st;
+function flash(){const i=document.getElementById('save-ind');i.classList.add('show');clearTimeout(st);st=setTimeout(()=>i.classList.remove('show'),1300)}
+function sf(id,v){localStorage.setItem(K+id,v);flash()}
+function cw(inp,key){inp.closest('.ckitem').classList.toggle('checked',inp.checked);localStorage.setItem(K+key,inp.checked?'1':'0');flash()}
+function ck(inp){inp.closest('.ckitem').classList.toggle('checked',inp.checked);const all=document.querySelectorAll('#cklist input'),done=document.querySelectorAll('#cklist input:checked').length;document.getElementById('ck-n').textContent=done;const r=document.getElementById('ck-res'),m=document.getElementById('ck-m');if(done===all.length){r.style.borderColor='var(--red)';r.style.background='rgba(255,77,106,0.07)';m.textContent='✓ Todos los criterios evaluados.';m.style.color='var(--red)'}else if(done>=5){r.style.borderColor='var(--amber)';r.style.background='rgba(255,184,0,0.05)';m.textContent='Mayoría de criterios cumplidos.';m.style.color='var(--amber)'}else{r.style.borderColor='';r.style.background='var(--card)';m.textContent='Criterios pendientes de evaluación.';m.style.color='var(--muted)'}const s=Array.from(all).map(i=>i.checked?'1':'0').join('');localStorage.setItem(K+'cl',s)}
+function tSB(){document.getElementById('sb').classList.toggle('open')}
+function cSB(){if(window.innerWidth<=768)document.getElementById('sb').classList.remove('open')}
+const secs=document.querySelectorAll('section[id]'),navs=document.querySelectorAll('.ni');
+window.addEventListener('scroll',()=>{const p=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;document.getElementById('pf').style.width=p+'%';document.getElementById('bt').classList.toggle('vis',window.scrollY>400);let c='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-100)c=s.id});navs.forEach(n=>n.classList.toggle('active',n.getAttribute('href')==='#'+c))},{passive:true});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();window.scrollTo({top:t.offsetTop-24,behavior:'smooth'})}})});
+const WF=['e2-secuencia','e3-probar','e3-observar','e3-feedback','e3-ajustes','e4-riesgos'];
+const WC=['e1c1','e1c2','e1c3','e1c4'];
+function sendGmail(){const email=prompt('Email del docente:');if(!email||!email.includes('@'))return;const name=localStorage.getItem(K+'n')||'Sin nombre';const g=id=>localStorage.getItem(K+id)||'(sin respuesta)';const gc=id=>localStorage.getItem(K+id)==='1'?'✓':'✗';const body=['╔══ TALLER DE PROYECTO · UNIDAD 5 ══╗','Materiales, Construcción y Validación','','Alumno/a: '+name,'Fecha: '+new Date().toLocaleDateString('es-AR'),'','── EJERCICIO 1 — Checklist de seguridad ──',' '+gc('e1c1')+' Gafas   '+gc('e1c2')+' Ropa/pelo   '+gc('e1c3')+' Soporte soldador   '+gc('e1c4')+' Supervisión docente','','── EJERCICIO 2 — Secuencia en cascada ──',g('e2-secuencia'),'','── EJERCICIO 3 — Sprint de prueba ──','Probamos: '+g('e3-probar'),'Observamos: '+g('e3-observar'),'Feedback: '+g('e3-feedback'),'Ajustes: '+g('e3-ajustes'),'','── EJERCICIO 4 — Riesgos identificados ──',g('e4-riesgos')].join('\\n');const sub=encodeURIComponent('[Taller de Proyecto U5] Respuestas — '+name);window.open('https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(email)+'&su='+sub+'&body='+encodeURIComponent(body),'_blank')}
+window.addEventListener('load',()=>{const n=localStorage.getItem(K+'n')||'';if(n){document.getElementById('myname').value=n;document.getElementById('sbn').textContent=n}WF.forEach(id=>{const v=localStorage.getItem(K+id);if(v){const el=document.getElementById(id);if(el)el.value=v}});WC.forEach(key=>{if(localStorage.getItem(K+key)==='1'){const box=document.querySelector('[onchange*="'+key+'"]');if(box){box.checked=true;box.closest('.ckitem').classList.add('checked')}}});const cl=localStorage.getItem(K+'cl');if(cl){document.querySelectorAll('#cklist input').forEach((i,idx)=>{if(cl[idx]==='1'){i.checked=true;i.closest('.ckitem').classList.add('checked')}});if(document.querySelector('#cklist input:checked'))document.querySelector('#cklist input').dispatchEvent(new Event('change'))}});
+</script>
+</body>
+</html>
