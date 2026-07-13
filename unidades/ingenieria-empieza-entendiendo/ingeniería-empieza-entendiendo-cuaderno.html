@@ -9,7 +9,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;display:flex;min-height:100vh}
-#sb{width:var(--sw);height:100vh;background:#060918;border-right:1px solid rgba(0,212,255,0.1);position:fixed;top:0;left:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;z-index:100;display:flex;flex-direction:column}
+#sb{width:var(--sw);height:100vh;background:#060918;border-right:1px solid rgba(0,212,255,0.1);position:fixed;top:0;left:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;z-index:100;display:flex;flex-direction:column;transform:translateX(-var(--sw));transition:transform .3s ease}#sb.open{transform:translateX(0)}#nb{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;opacity:0;pointer-events:none;transition:opacity .25s ease}#nb.show{opacity:1;pointer-events:auto}
 #sb::-webkit-scrollbar{width:6px}#sb::-webkit-scrollbar-thumb{background:rgba(255,184,0,0.18);border-radius:3px}
 .sbl{padding:20px 16px 14px;border-bottom:1px solid rgba(0,212,255,0.08);position:sticky;top:0;background:#060918;z-index:3}
 .sb-back{display:inline-flex;align-items:center;gap:6px;margin-bottom:10px;padding:5px 11px;border-radius:20px;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--amber);background:rgba(255,184,0,0.08);border:1px solid rgba(255,184,0,0.22);text-decoration:none;transition:background .2s,transform .2s}
@@ -25,8 +25,8 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
 .ni.active{color:var(--amber);border-left-color:var(--amber);background:rgba(255,184,0,0.07)}
 .nd{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .sbf{margin-top:auto;padding:12px 16px;border-top:1px solid rgba(255,255,255,0.05);font-size:11px;color:var(--muted);line-height:1.5}
-#main{margin-left:var(--sw);flex:1}
-#pb{position:fixed;top:0;left:var(--sw);right:0;height:3px;background:rgba(255,184,0,0.1);z-index:200}
+#main{margin-left:0;flex:1}
+#pb{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(255,184,0,0.1);z-index:200}
 #pf{height:100%;background:var(--amber);width:0%;transition:width .1s}
 #hero{background:linear-gradient(135deg,#0A0E2A 0%,#1A2550 55%,#0D1535 100%);padding:52px 48px 44px;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,184,0,0.1)}
 #hero::before{content:'';position:absolute;top:-60px;right:-60px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(255,184,0,0.07) 0%,transparent 70%);pointer-events:none}
@@ -157,17 +157,17 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
 #bt{position:fixed;bottom:20px;right:20px;width:36px;height:36px;background:var(--mid);border:1px solid rgba(255,184,0,0.25);border-radius:50%;color:var(--amber);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;z-index:150}
 #bt.vis{opacity:1;pointer-events:auto}
 /* Mobile */
-#mt{display:none;position:fixed;top:12px;left:12px;z-index:300;background:var(--mid);border:1px solid rgba(255,184,0,0.3);color:var(--amber);font-size:17px;width:36px;height:36px;border-radius:8px;align-items:center;justify-content:center;cursor:pointer}
-@media(max-width:768px){:root{--sw:0px}#sb{transform:translateX(-255px);width:255px;transition:transform .3s}#sb.open{transform:translateX(0)}#main{margin-left:0}#mt{display:flex}.sec{padding:34px 20px 30px}#hero{padding:44px 20px 38px}.crow{grid-template-columns:1fr}#pb{left:0}.ebody{grid-template-columns:1fr}.eno{border-right:none;border-bottom:1px solid rgba(255,255,255,0.05)}}
+#mt{display:flex;position:fixed;top:12px;left:12px;z-index:300;background:var(--mid);border:1px solid rgba(255,184,0,0.3);color:var(--amber);font-size:17px;width:36px;height:36px;border-radius:8px;align-items:center;justify-content:center;cursor:pointer}
+@media(max-width:768px){.sec{padding:34px 20px 30px}#hero{padding:44px 20px 38px}.crow{grid-template-columns:1fr}.ebody{grid-template-columns:1fr}.eno{border-right:none;border-bottom:1px solid rgba(255,255,255,0.05)}}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,184,0,0.18);border-radius:3px}
 .print-hdr{display:none}
-@media print{#sb,#pb,#mt,#bt{display:none!important}body{background:#fff!important;color:#000!important;display:block!important;font-size:10pt}#main{margin-left:0!important}.sec{padding:12px 0!important;border-bottom:1px solid #ddd!important}.def,.cc,.ctbl,.wt,.ecard,.gi,.ckitem,.stbl{background:#f9f9f9!important;border-color:#ccc!important}.def p,.cc p,.wc,.gdef,.etext,.ckitem,.vrow .vt{color:#000!important}.ftext{color:#000!important}.print-hdr{display:block!important}}
+@media print{#sb,#nb,#pb,#mt,#bt{display:none!important}body{background:#fff!important;color:#000!important;display:block!important;font-size:10pt}#main{margin-left:0!important}.sec{padding:12px 0!important;border-bottom:1px solid #ddd!important}.def,.cc,.ctbl,.wt,.ecard,.gi,.ckitem,.stbl{background:#f9f9f9!important;border-color:#ccc!important}.def p,.cc p,.wc,.gdef,.etext,.ckitem,.vrow .vt{color:#000!important}.ftext{color:#000!important}.print-hdr{display:block!important}}
 </style>
 <link rel="stylesheet" href="../../cuaderno/css/cuaderno.css">
 </head>
 <body>
 <div id="pb"><div id="pf"></div></div>
-<button id="mt" onclick="tSB()">☰</button>
+<button id="mt" type="button" aria-expanded="false" aria-controls="sb" aria-label="Abrir menú" onclick="tSB()">☰</button>
 <button id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <div class="print-hdr" style="padding:0 0 12px;border-bottom:2px solid #000;margin-bottom:12px">
   <div style="font-size:9pt;color:#555">TALLER DE PROYECTO · UNIDAD 1 — Introducción</div>
@@ -175,7 +175,8 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
   <div style="font-size:9pt;color:#555" id="ph-n"></div>
 </div>
 
-<nav id="sb">
+<div id="nb" onclick="cSB()"></div>
+<nav id="sb" aria-hidden="true">
   <div class="sbl"><a class="sb-back" href="../../index.html">← Volver al inicio</a><div class="tag">La ingeniería empieza Entendiendo</div><h1>La ingeniería<br><span>empieza Entendiendo</span></h1></div>
   <div class="sbn"><strong id="sbn">—</strong>Unidad 1 · Introducción al Taller</div>
   <div class="nl">El proyecto</div>
@@ -608,8 +609,9 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
 const K='u1_';
 function sN(v){localStorage.setItem(K+'n',v);document.getElementById('sbn').textContent=v||'—';const p=document.getElementById('ph-n');if(p)p.textContent=v}
 function ck(inp){inp.closest('.ckitem').classList.toggle('checked',inp.checked);const all=document.querySelectorAll('#cklist input'),done=document.querySelectorAll('#cklist input:checked').length;document.getElementById('ck-n').textContent=done;const r=document.getElementById('ck-res'),m=document.getElementById('ck-m');if(done===all.length){r.style.borderColor='var(--green)';r.style.background='rgba(0,200,150,0.07)';m.textContent='¡Todos los conceptos verificados! Estás listo para la Unidad 2. 🎯';m.style.color='var(--green)'}else if(done>=5){r.style.borderColor='var(--amber)';r.style.background='rgba(255,184,0,0.05)';m.textContent='Bien encaminado — repasá los últimos conceptos.';m.style.color='var(--amber)'}else{r.style.borderColor='';r.style.background='var(--card)';m.textContent='Repasá los que todavía no podés explicar.';m.style.color='var(--muted)'}const s=Array.from(all).map(i=>i.checked?'1':'0').join('');localStorage.setItem(K+'cl',s)}
-function tSB(){document.getElementById('sb').classList.toggle('open')}
-function cSB(){if(window.innerWidth<=768)document.getElementById('sb').classList.remove('open')}
+function tSB(){const sb=document.getElementById('sb'),nb=document.getElementById('nb'),mt=document.getElementById('mt');const open=sb.classList.toggle('open');nb.classList.toggle('show',open);mt.setAttribute('aria-expanded',open?'true':'false');sb.setAttribute('aria-hidden',open?'false':'true');if(open){document.addEventListener('keydown',escSB);(sb.querySelector('.sb-back,.ni')||mt).focus({preventScroll:true})}else{document.removeEventListener('keydown',escSB);mt.focus({preventScroll:true})}}
+function cSB(){const sb=document.getElementById('sb');if(!sb.classList.contains('open'))return;sb.classList.remove('open');document.getElementById('nb').classList.remove('show');document.getElementById('mt').setAttribute('aria-expanded','false');sb.setAttribute('aria-hidden','true');document.removeEventListener('keydown',escSB)}
+function escSB(e){if(e.key==='Escape')cSB()}
 window.addEventListener('scroll',()=>{const p=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;document.getElementById('pf').style.width=p+'%';document.getElementById('bt').classList.toggle('vis',window.scrollY>400)},{passive:true});
 /* NAV ninja: scrollspy con IntersectionObserver + auto-follow del item activo en el sidebar */
 (function(sb,navs,secs){if(!sb||!navs.length||!secs.length)return;let cur=null;function follow(n){const t=n.offsetTop,b=t+n.offsetHeight,vT=sb.scrollTop,vB=vT+sb.clientHeight;if(t<vT+44||b>vB-44)sb.scrollTo({top:t-sb.clientHeight/2+n.offsetHeight/2,behavior:'smooth'})}function setA(id){if(id===cur)return;cur=id;navs.forEach(n=>{const on=n.getAttribute('href')==='#'+id;n.classList.toggle('active',on);if(on)follow(n)})}const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)setA(e.target.id)})},{rootMargin:'-12% 0px -80% 0px',threshold:0});secs.forEach(s=>io.observe(s));let best=null;secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*0.3)best=s});setA((best||secs[0]).id)})(document.getElementById('sb'),document.querySelectorAll('.ni'),document.querySelectorAll('section[id]'));

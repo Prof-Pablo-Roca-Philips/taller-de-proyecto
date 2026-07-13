@@ -9,16 +9,16 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;display:flex;min-height:100vh}
-#sb{width:var(--sw);min-height:100vh;background:#060918;border-right:1px solid rgba(155,89,182,0.12);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
-.sbl{padding:18px 15px 12px;border-bottom:1px solid rgba(155,89,182,0.1)}
+#sb{width:var(--sw);min-height:100vh;background:#060918;border-right:1px solid rgba(155,89,182,0.12);position:fixed;top:0;left:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column;transform:translateX(-var(--sw));transition:transform .3s ease}#sb.open{transform:translateX(0)}#nb{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;opacity:0;pointer-events:none;transition:opacity .25s ease}#nb.show{opacity:1;pointer-events:auto}#mt{display:flex;position:fixed;top:12px;left:12px;z-index:300;background:var(--mid);border:1px solid rgba(155,89,182,0.3);color:var(--purple);font-size:17px;width:36px;height:36px;border-radius:8px;align-items:center;justify-content:center;cursor:pointer}
+.sbl{padding:18px 15px 12px;border-bottom:1px solid rgba(155,89,182,0.1)}.sb-back{display:inline-flex;align-items:center;gap:6px;margin-bottom:10px;padding:5px 11px;border-radius:20px;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--purple);background:rgba(155,89,182,0.08);border:1px solid rgba(155,89,182,0.22);text-decoration:none;transition:background .2s,transform .2s}.sb-back:hover{background:rgba(155,89,182,0.16);transform:translateX(-2px)}
 .sbl .tag{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--pdim);text-transform:uppercase;margin-bottom:4px}
 .sbl h1{font-size:13px;font-weight:800;color:var(--white)}
 .sbl h1 span{color:var(--purple)}
 .ni{display:flex;align-items:center;gap:8px;padding:7px 15px;text-decoration:none;color:var(--muted);font-size:12px;font-weight:500;border-left:3px solid transparent;cursor:pointer}
 .ni:hover{color:var(--white);background:rgba(155,89,182,0.06)}
-.ni.active{color:var(--purple);border-left-color:var(--purple);background:rgba(155,89,182,0.08)}
+.ni.active{color:var(--purple);border-left-color:var(--purple);background:rgba(155,89,182,0.08)}.nd{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .sbf{margin-top:auto;padding:12px 15px;border-top:1px solid rgba(255,255,255,0.05);font-size:10.5px;color:var(--muted)}
-#main{margin-left:var(--sw);flex:1;padding-bottom:62px}
+#main{margin-left:0;flex:1;padding-bottom:62px}
 #hero{background:linear-gradient(135deg,#0A0E2A 0%,#1A2550 55%,#0D1535 100%);padding:40px 40px 34px;border-bottom:1px solid rgba(155,89,182,0.1)}
 .htag{display:inline-block;background:rgba(155,89,182,0.1);border:1px solid rgba(155,89,182,0.3);color:var(--purple);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 11px;border-radius:20px;margin-bottom:12px}
 #hero h2{font-size:clamp(20px,3vw,32px);font-weight:900;color:var(--white)}
@@ -44,22 +44,24 @@ body{background:var(--navy);color:var(--off);font-family:'Segoe UI',system-ui,sa
 .gi{background:var(--card);border-radius:8px;padding:11px 13px;border-left:3px solid var(--gc,var(--purple))}
 .gterm{font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px}
 .gdef{font-size:11px;color:var(--muted);line-height:1.45}
-.sendbar{position:fixed;bottom:0;left:var(--sw);right:0;background:#060918;border-top:1px solid rgba(155,89,182,0.12);padding:9px 20px;z-index:150;display:flex;align-items:center;gap:10px}
+.sendbar{position:fixed;bottom:0;left:0;right:0;background:#060918;border-top:1px solid rgba(155,89,182,0.12);padding:9px 20px;z-index:150;display:flex;align-items:center;gap:10px}
 .sendbar .sblabel{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase}
 .sbtn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid;font-family:inherit}
 .sbtn.print{border-color:#9B59B6;background:rgba(155,89,182,0.1);color:#9B59B6}
 .sbtn.gmail{border-color:var(--purple);background:rgba(155,89,182,0.1);color:var(--purple)}
-@media(max-width:768px){:root{--sw:0px}#sb{display:none}#main{margin-left:0}.sendbar{left:0}}
-@media print{#sb,.sendbar{display:none!important}body{background:#fff!important;color:#000!important}#main{margin-left:0!important}.cc,.gi,.stbl{background:#f9f9f9!important}.cc p,.gdef{color:#000!important}.stbl input{color:#000!important}}
+@media(max-width:768px){}
+@media print{#sb,#nb,#mt,.sendbar{display:none!important}body{background:#fff!important;color:#000!important}#main{margin-left:0!important}.cc,.gi,.stbl{background:#f9f9f9!important}.cc p,.gdef{color:#000!important}.stbl input{color:#000!important}}
 </style>
 </head>
 <body>
-<nav id="sb">
-  <div class="sbl"><div class="tag">Unidad 10</div><h1>Inventario<br><span>y Recursos</span></h1></div>
-  <a class="ni active" href="#top">Inicio</a>
-  <a class="ni" href="#que-es">Lista maestra</a>
-  <a class="ni" href="#trabajo">Mi trabajo</a>
-  <a class="ni" href="#glosario">Glosario</a>
+<button id="mt" type="button" aria-expanded="false" aria-controls="sb" aria-label="Abrir menú" onclick="tSB()">☰</button>
+<div id="nb" onclick="cSB()"></div>
+<nav id="sb" aria-hidden="true">
+  <div class="sbl"><a class="sb-back" href="../../index.html#unidad-10">← Volver al inicio</a><div class="tag">Unidad 10</div><h1>Inventario<br><span>y Recursos</span></h1></div>
+  <a class="ni" href="#top" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span>Inicio</a>
+  <a class="ni" href="#que-es" onclick="cSB()"><span class="nd" style="background:#FFB800"></span>Lista maestra</a>
+  <a class="ni" href="#trabajo" onclick="cSB()"><span class="nd" style="background:#00C896"></span>Mi trabajo</a>
+  <a class="ni" href="#glosario" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span>Glosario</a>
   <div class="sbf">Taller de Proyecto<br>1er y 2do año</div>
 </nav>
 <main id="main">
@@ -128,6 +130,10 @@ function sendGmail(){
   window.open('https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(email)+'&su='+encodeURIComponent('[Taller de Proyecto U10] Respuestas')+'&body='+encodeURIComponent(rows.join('\\n')),'_blank');
 }
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})}));
+function tSB(){const sb=document.getElementById('sb'),nb=document.getElementById('nb'),mt=document.getElementById('mt');const open=sb.classList.toggle('open');nb.classList.toggle('show',open);mt.setAttribute('aria-expanded',open?'true':'false');sb.setAttribute('aria-hidden',open?'false':'true');if(open){document.addEventListener('keydown',escSB);(sb.querySelector('.sb-back,.ni')||mt).focus({preventScroll:true})}else{document.removeEventListener('keydown',escSB);mt.focus({preventScroll:true})}}
+function cSB(){const sb=document.getElementById('sb');if(!sb.classList.contains('open'))return;sb.classList.remove('open');document.getElementById('nb').classList.remove('show');document.getElementById('mt').setAttribute('aria-expanded','false');sb.setAttribute('aria-hidden','true');document.removeEventListener('keydown',escSB)}
+function escSB(e){if(e.key==='Escape')cSB()}
+(function(sb,navs,secs){if(!sb||!navs.length||!secs.length)return;let cur=null;function follow(n){const t=n.offsetTop,b=t+n.offsetHeight,vT=sb.scrollTop,vB=vT+sb.clientHeight;if(t<vT+44||b>vB-44)sb.scrollTo({top:t-sb.clientHeight/2+n.offsetHeight/2,behavior:'smooth'})}function setA(id){if(id===cur)return;cur=id;navs.forEach(n=>{const on=n.getAttribute('href')==='#'+id;n.classList.toggle('active',on);if(on)follow(n)})}const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)setA(e.target.id)})},{rootMargin:'-12% 0px -80% 0px',threshold:0});secs.forEach(s=>io.observe(s));let best=null;secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*0.3)best=s});setA((best||secs[0]).id)})(document.getElementById('sb'),document.querySelectorAll('.ni'),document.querySelectorAll('section[id]'));
 </script>
 </body>
 </html>

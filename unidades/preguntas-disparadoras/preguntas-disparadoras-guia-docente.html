@@ -21,7 +21,7 @@
     --muted:    #7A8BAA;
     --card:     #131B3A;
     --card-lit: #1E2B4A;
-    --sidebar-w: 260px;
+    --sw: 255px;
     --radius: 10px;
     font-size: 16px;
   }
@@ -38,8 +38,8 @@
   }
 
   /* ── SIDEBAR ──────────────────────────────────────────────────── */
-  #sidebar {
-    width: var(--sidebar-w);
+  #sb {
+    width: var(--sw);
     height: 100vh;
     overscroll-behavior: contain;
     scrollbar-width: thin;
@@ -51,9 +51,14 @@
     z-index: 100;
     display: flex;
     flex-direction: column;
+    transform: translateX(-var(--sw));
+    transition: transform .3s ease;
   }
+  #sb.open { transform: translateX(0); }
+  #nb{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;opacity:0;pointer-events:none;transition:opacity .25s ease}
+  #nb.show{opacity:1;pointer-events:auto}
 
-  .sidebar-logo {
+  .sbl {
     padding: 24px 20px 16px;
     border-bottom: 1px solid rgba(0,212,255,0.1);
     position: sticky;
@@ -61,11 +66,11 @@
     background: #080C20;
     z-index: 3;
   }
-  #sidebar::-webkit-scrollbar { width: 6px; }
-  #sidebar::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.18); border-radius: 3px; }
-  .sidebar-back { display:inline-flex; align-items:center; gap:6px; margin-bottom:12px; padding:5px 11px; border-radius:20px; font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--cyan); background:rgba(0,212,255,0.08); border:1px solid rgba(0,212,255,0.22); text-decoration:none; transition:background .2s, transform .2s; }
-  .sidebar-back:hover { background:rgba(0,212,255,0.16); transform:translateX(-2px); }
-  .sidebar-logo .tag {
+  #sb::-webkit-scrollbar { width: 6px; }
+  #sb::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.18); border-radius: 3px; }
+  .sb-back { display:inline-flex; align-items:center; gap:6px; margin-bottom:12px; padding:5px 11px; border-radius:20px; font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--cyan); background:rgba(0,212,255,0.08); border:1px solid rgba(0,212,255,0.22); text-decoration:none; transition:background .2s, transform .2s; }
+  .sb-back:hover { background:rgba(0,212,255,0.16); transform:translateX(-2px); }
+  .sbl .tag {
     font-size: 9px;
     font-weight: 700;
     letter-spacing: .12em;
@@ -73,15 +78,15 @@
     text-transform: uppercase;
     margin-bottom: 6px;
   }
-  .sidebar-logo h1 {
+  .sbl h1 {
     font-size: 15px;
     font-weight: 800;
     color: var(--white);
     line-height: 1.3;
   }
-  .sidebar-logo h1 span { color: var(--cyan); }
+  .sbl h1 span { color: var(--cyan); }
 
-  .nav-section-label {
+  .nl {
     padding: 18px 20px 6px;
     font-size: 9px;
     font-weight: 700;
@@ -90,7 +95,7 @@
     color: var(--muted);
   }
 
-  .nav-item {
+  .ni {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -103,16 +108,16 @@
     transition: all .2s;
     cursor: pointer;
   }
-  .nav-item:hover {
+  .ni:hover {
     color: var(--white);
     background: rgba(0,212,255,0.06);
   }
-  .nav-item.active {
+  .ni.active {
     color: var(--cyan);
     border-left-color: var(--cyan);
     background: rgba(0,212,255,0.08);
   }
-  .nav-dot {
+  .nd {
     width: 7px; height: 7px;
     border-radius: 50%;
     flex-shrink: 0;
@@ -122,7 +127,7 @@
     font-size: 12px;
   }
 
-  .sidebar-footer {
+  .sbf {
     margin-top: auto;
     padding: 16px 20px;
     border-top: 1px solid rgba(255,255,255,0.06);
@@ -133,7 +138,7 @@
 
   /* ── MAIN ─────────────────────────────────────────────────────── */
   #main {
-    margin-left: var(--sidebar-w);
+    margin-left: 0;
     flex: 1;
     min-height: 100vh;
   }
@@ -667,7 +672,7 @@
   /* ── PROGRESS BAR ─────────────────────────────────────────────── */
   #progress-bar {
     position: fixed;
-    top: 0; left: var(--sidebar-w);
+    top: 0; left: 0;
     right: 0; height: 3px;
     background: rgba(0,212,255,0.12);
     z-index: 200;
@@ -680,8 +685,8 @@
   }
 
   /* ── MOBILE TOGGLE ─────────────────────────────────────────────── */
-  #menu-toggle {
-    display: none;
+  #mt {
+    display: flex;
     position: fixed;
     top: 12px; left: 12px;
     z-index: 300;
@@ -697,15 +702,9 @@
 
   /* ── RESPONSIVE ───────────────────────────────────────────────── */
   @media (max-width: 768px) {
-    :root { --sidebar-w: 0px; }
-    #sidebar { transform: translateX(-260px); width: 260px; transition: transform .3s; }
-    #sidebar.open { transform: translateX(0); --sidebar-w: 260px; }
-    #main { margin-left: 0; }
-    #menu-toggle { display: flex; }
     .section { padding: 40px 24px 36px; }
     #hero { padding: 56px 24px 48px; }
     .comp-row { grid-template-columns: 1fr; }
-    #progress-bar { left: 0; }
   }
 
   /* ── SCROLLBAR ─────────────────────────────────────────────────── */
@@ -768,76 +767,77 @@
 <div id="progress-bar"><div id="progress-fill"></div></div>
 
 <!-- MENU TOGGLE MOBILE -->
-<button id="menu-toggle" onclick="toggleSidebar()" aria-label="Menú">☰</button>
+<button id="mt" type="button" aria-expanded="false" aria-controls="sb" aria-label="Abrir menú" onclick="tSB()">☰</button>
 
 <!-- BACK TO TOP -->
 <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">↑</button>
 
 <!-- ── SIDEBAR ─────────────────────────────────────────────────── -->
-<nav id="sidebar">
-  <div class="sidebar-logo">
-    <a class="sidebar-back" href="../../index.html">← Volver al inicio</a>
+<div id="nb" onclick="cSB()"></div>
+<nav id="sb" aria-hidden="true">
+  <div class="sbl">
+    <a class="sb-back" href="../../index.html">← Volver al inicio</a>
     <div class="tag">Taller de Proyecto · 1er Año</div>
     <h1>Preguntas<br><span>Disparadoras</span></h1>
   </div>
 
-  <div class="nav-section-label">Fundamentos</div>
-  <a class="nav-item" href="#intro" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#00D4FF"></span> ¿Qué es una pregunta disparadora?
+  <div class="nl">Fundamentos</div>
+  <a class="ni" href="#intro" onclick="cSB()">
+    <span class="nd" style="background:#00D4FF"></span> ¿Qué es una pregunta disparadora?
   </a>
-  <a class="nav-item" href="#flujo" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#FFB800"></span> El flujo del proyecto
-  </a>
-
-  <div class="nav-section-label">Herramientas</div>
-  <a class="nav-item" href="#tipos" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#9B59B6"></span> Los 6 tipos
-  </a>
-  <a class="nav-item" href="#ejes" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#00C896"></span> Los 3 ejes
-  </a>
-  <a class="nav-item" href="#componentes" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#FF4D6A"></span> Las 4 componentes
-  </a>
-  <a class="nav-item" href="#formula" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#00C896"></span> Fórmula del problema técnico
+  <a class="ni" href="#flujo" onclick="cSB()">
+    <span class="nd" style="background:#FFB800"></span> El flujo del proyecto
   </a>
 
-  <div class="nav-section-label">Fase 1 — Análisis</div>
-  <a class="nav-item" href="#fase1" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#00D4FF"></span> Los 5 pasos
+  <div class="nl">Herramientas</div>
+  <a class="ni" href="#tipos" onclick="cSB()">
+    <span class="nd" style="background:#9B59B6"></span> Los 6 tipos
   </a>
-  <a class="nav-item nav-sub" href="#fase1-p1" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#253070"></span> Problema original
+  <a class="ni" href="#ejes" onclick="cSB()">
+    <span class="nd" style="background:#00C896"></span> Los 3 ejes
   </a>
-  <a class="nav-item nav-sub" href="#fase1-p2" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#253070"></span> Contexto
+  <a class="ni" href="#componentes" onclick="cSB()">
+    <span class="nd" style="background:#FF4D6A"></span> Las 4 componentes
   </a>
-  <a class="nav-item nav-sub" href="#fase1-p3" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#253070"></span> Impacto
-  </a>
-  <a class="nav-item nav-sub" href="#fase1-p4" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#253070"></span> Variables
-  </a>
-  <a class="nav-item nav-sub" href="#fase1-p5" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#253070"></span> Problema técnico definitivo
+  <a class="ni" href="#formula" onclick="cSB()">
+    <span class="nd" style="background:#00C896"></span> Fórmula del problema técnico
   </a>
 
-  <div class="nav-section-label">Ejemplo y práctica</div>
-  <a class="nav-item" href="#ejemplo" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#FFB800"></span> Ejemplo completo
+  <div class="nl">Fase 1 — Análisis</div>
+  <a class="ni" href="#fase1" onclick="cSB()">
+    <span class="nd" style="background:#00D4FF"></span> Los 5 pasos
   </a>
-  <a class="nav-item" href="#proyectos" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#00C896"></span> Proyectos de referencia
+  <a class="ni nav-sub" href="#fase1-p1" onclick="cSB()">
+    <span class="nd" style="background:#253070"></span> Problema original
   </a>
-  <a class="nav-item" href="#checklist" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#FF4D6A"></span> Checklist de autoevaluación
+  <a class="ni nav-sub" href="#fase1-p2" onclick="cSB()">
+    <span class="nd" style="background:#253070"></span> Contexto
   </a>
-  <a class="nav-item" href="#glosario" onclick="closeSidebar()">
-    <span class="nav-dot" style="background:#9B59B6"></span> Glosario
+  <a class="ni nav-sub" href="#fase1-p3" onclick="cSB()">
+    <span class="nd" style="background:#253070"></span> Impacto
+  </a>
+  <a class="ni nav-sub" href="#fase1-p4" onclick="cSB()">
+    <span class="nd" style="background:#253070"></span> Variables
+  </a>
+  <a class="ni nav-sub" href="#fase1-p5" onclick="cSB()">
+    <span class="nd" style="background:#253070"></span> Problema técnico definitivo
   </a>
 
-  <div class="sidebar-footer">
+  <div class="nl">Ejemplo y práctica</div>
+  <a class="ni" href="#ejemplo" onclick="cSB()">
+    <span class="nd" style="background:#FFB800"></span> Ejemplo completo
+  </a>
+  <a class="ni" href="#proyectos" onclick="cSB()">
+    <span class="nd" style="background:#00C896"></span> Proyectos de referencia
+  </a>
+  <a class="ni" href="#checklist" onclick="cSB()">
+    <span class="nd" style="background:#FF4D6A"></span> Checklist de autoevaluación
+  </a>
+  <a class="ni" href="#glosario" onclick="cSB()">
+    <span class="nd" style="background:#9B59B6"></span> Glosario
+  </a>
+
+  <div class="sbf">
     Electromecánica · Robótica · IA<br>
     Industria 4.0 · 2025
   </div>
@@ -1443,7 +1443,7 @@
 <script>
   // ── NAVIGATION ACTIVE STATE ────────────────────────────────────
   const sections = document.querySelectorAll('section[id], .fase-step[id], .proyecto-card[id]');
-  const navItems = document.querySelectorAll('.nav-item');
+  const navItems = document.querySelectorAll('.ni');
 
   /* NAV ninja: scrollspy con IntersectionObserver + auto-follow del item activo en el sidebar */
   (function(sb, navs, secs){
@@ -1454,7 +1454,7 @@
     const io = new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting) setA(e.target.id); }); }, { rootMargin:'-12% 0px -80% 0px', threshold:0 });
     secs.forEach(s=>io.observe(s));
     let best=null; secs.forEach(s=>{ if(s.getBoundingClientRect().top<innerHeight*0.3) best=s; }); setA((best||secs[0]).id);
-  })(document.getElementById('sidebar'), navItems, sections);
+  })(document.getElementById('sb'), navItems, sections);
 
   // ── PROGRESS BAR ───────────────────────────────────────────────
   function updateProgress() {
@@ -1473,13 +1473,25 @@
   }, { passive: true });
 
   // ── SIDEBAR TOGGLE ─────────────────────────────────────────────
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
+  function tSB(){
+    const sb=document.getElementById('sb'), nb=document.getElementById('nb'), mt=document.getElementById('mt');
+    const open=sb.classList.toggle('open');
+    nb.classList.toggle('show',open);
+    mt.setAttribute('aria-expanded',open?'true':'false');
+    sb.setAttribute('aria-hidden',open?'false':'true');
+    if(open){document.addEventListener('keydown',escSB);(sb.querySelector('.sb-back,.ni')||mt).focus({preventScroll:true});}
+    else{document.removeEventListener('keydown',escSB);mt.focus({preventScroll:true});}
   }
-  function closeSidebar() {
-    if (window.innerWidth <= 768)
-      document.getElementById('sidebar').classList.remove('open');
+  function cSB(){
+    const sb=document.getElementById('sb');
+    if(!sb.classList.contains('open'))return;
+    sb.classList.remove('open');
+    document.getElementById('nb').classList.remove('show');
+    document.getElementById('mt').setAttribute('aria-expanded','false');
+    sb.setAttribute('aria-hidden','true');
+    document.removeEventListener('keydown',escSB);
   }
+  function escSB(e){if(e.key==='Escape')cSB();}
 
   // ── FASE ACCORDION ─────────────────────────────────────────────
   function toggleFase(header) {

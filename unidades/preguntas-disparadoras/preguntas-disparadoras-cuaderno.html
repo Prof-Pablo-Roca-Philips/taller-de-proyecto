@@ -21,7 +21,7 @@
   --muted:    #7A8BAA;
   --card:     #131B3A;
   --card-lit: #1E2B4A;
-  --sidebar-w: 240px;
+  --sw: 255px;
   --radius: 10px;
 }
 
@@ -37,8 +37,8 @@ body {
 }
 
 /* ── SIDEBAR ──────────────────────────────────────────────────── */
-#sidebar {
-  width: var(--sidebar-w);
+#sb {
+  width: var(--sw);
   height: 100vh;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -50,8 +50,13 @@ body {
   z-index: 100;
   display: flex;
   flex-direction: column;
+  transform: translateX(-var(--sw));
+  transition: transform .3s ease;
 }
-.sidebar-logo {
+#sb.open { transform: translateX(0); }
+#nb{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;opacity:0;pointer-events:none;transition:opacity .25s ease}
+#nb.show{opacity:1;pointer-events:auto}
+.sbl {
   padding: 22px 18px 16px;
   border-bottom: 1px solid rgba(0,212,255,0.08);
   position: sticky;
@@ -59,19 +64,19 @@ body {
   background: #060918;
   z-index: 3;
 }
-#sidebar::-webkit-scrollbar { width: 6px; }
-#sidebar::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.18); border-radius: 3px; }
-.sidebar-back { display:inline-flex; align-items:center; gap:6px; margin-bottom:12px; padding:5px 11px; border-radius:20px; font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--cyan); background:rgba(0,212,255,0.08); border:1px solid rgba(0,212,255,0.22); text-decoration:none; transition:background .2s, transform .2s; }
-.sidebar-back:hover { background:rgba(0,212,255,0.16); transform:translateX(-2px); }
-.sidebar-logo .tag {
+#sb::-webkit-scrollbar { width: 6px; }
+#sb::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.18); border-radius: 3px; }
+.sb-back { display:inline-flex; align-items:center; gap:6px; margin-bottom:12px; padding:5px 11px; border-radius:20px; font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--cyan); background:rgba(0,212,255,0.08); border:1px solid rgba(0,212,255,0.22); text-decoration:none; transition:background .2s, transform .2s; }
+.sb-back:hover { background:rgba(0,212,255,0.16); transform:translateX(-2px); }
+.sbl .tag {
   font-size: 9px; font-weight: 700; letter-spacing: .12em;
   color: var(--cyan-dim); text-transform: uppercase; margin-bottom: 6px;
 }
-.sidebar-logo h1 { font-size: 14px; font-weight: 800; color: var(--white); line-height: 1.3; }
-.sidebar-logo h1 span { color: var(--cyan); }
+.sbl h1 { font-size: 14px; font-weight: 800; color: var(--white); line-height: 1.3; }
+.sbl h1 span { color: var(--cyan); }
 
 /* Student name badge in sidebar */
-.student-badge {
+.sbn {
   margin: 14px 14px 0;
   background: rgba(0,212,255,0.06);
   border: 1px solid rgba(0,212,255,0.15);
@@ -80,14 +85,14 @@ body {
   font-size: 12px;
   color: var(--muted);
 }
-.student-badge strong { color: var(--cyan); font-size: 13px; display: block; margin-bottom: 2px; }
+.sbn strong { color: var(--cyan); font-size: 13px; display: block; margin-bottom: 2px; }
 
-.nav-section-label {
+.nl {
   padding: 16px 18px 5px;
   font-size: 9px; font-weight: 700; letter-spacing: .12em;
   text-transform: uppercase; color: var(--muted);
 }
-.nav-item {
+.ni {
   display: flex; align-items: center; gap: 9px;
   padding: 8px 18px;
   text-decoration: none; color: var(--muted);
@@ -95,9 +100,9 @@ body {
   border-left: 3px solid transparent;
   transition: all .2s; cursor: pointer;
 }
-.nav-item:hover { color: var(--white); background: rgba(0,212,255,0.05); }
-.nav-item.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0,212,255,0.07); }
-.nav-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.ni:hover { color: var(--white); background: rgba(0,212,255,0.05); }
+.ni.active { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0,212,255,0.07); }
+.nd { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
 /* Progress in sidebar */
 .sidebar-progress {
@@ -122,14 +127,14 @@ body {
 }
 .prog-fraction { font-size: 11px; color: var(--cyan); font-weight: 700; }
 
-.sidebar-footer {
+.sbf {
   margin-top: auto; padding: 14px 18px;
   border-top: 1px solid rgba(255,255,255,0.05);
   font-size: 11px; color: var(--muted); line-height: 1.5;
 }
 
 /* ── MAIN ─────────────────────────────────────────────────────── */
-#main { margin-left: var(--sidebar-w); flex: 1; }
+#main { margin-left: 0; flex: 1; }
 
 /* ── HERO ─────────────────────────────────────────────────────── */
 #hero {
@@ -410,14 +415,14 @@ body {
 
 /* ── PROGRESS TOP ─────────────────────────────────────────────── */
 #progress-bar {
-  position: fixed; top: 0; left: var(--sidebar-w); right: 0; height: 3px;
+  position: fixed; top: 0; left: 0; right: 0; height: 3px;
   background: rgba(0,212,255,0.1); z-index: 200;
 }
 #progress-fill { height: 100%; background: var(--cyan); width: 0%; transition: width .1s; }
 
 /* ── MOBILE TOGGLE ─────────────────────────────────────────────── */
-#menu-toggle {
-  display: none; position: fixed; top: 12px; left: 12px; z-index: 300;
+#mt {
+  display: flex; position: fixed; top: 12px; left: 12px; z-index: 300;
   background: var(--navy-mid); border: 1px solid rgba(0,212,255,0.3);
   color: var(--cyan); font-size: 18px;
   width: 38px; height: 38px; border-radius: 8px;
@@ -426,7 +431,7 @@ body {
 
 /* ── BACK TO TOP ──────────────────────────────────────────────── */
 #back-top {
-  position: fixed; bottom: 20px; left: calc(var(--sidebar-w) + 20px);
+  position: fixed; bottom: 20px; left: 20px;
   width: 38px; height: 38px; background: var(--navy-mid);
   border: 1px solid rgba(0,212,255,0.25); border-radius: 50%;
   color: var(--cyan); font-size: 16px;
@@ -438,17 +443,10 @@ body {
 
 /* ── RESPONSIVE ───────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  :root { --sidebar-w: 0px; }
-  #sidebar { transform: translateX(-240px); width: 240px; transition: transform .3s; }
-  #sidebar.open { transform: translateX(0); }
-  #main { margin-left: 0; }
-  #menu-toggle { display: flex; }
   .section { padding: 36px 22px 32px; }
   #hero { padding: 48px 22px 40px; }
   .comp-work-row { grid-template-columns: 1fr; }
   .disp-row { grid-template-columns: 1fr; }
-  #progress-bar { left: 0; }
-  #back-top { left: 20px; }
 }
 
 ::-webkit-scrollbar { width: 5px; }
@@ -472,7 +470,7 @@ body {
 
   /* ── PRINT / PDF ──────────────────────────────────────────────── */
   @media print {
-    #sidebar, #progress-bar, #menu-toggle, #back-top,
+    #sb, #nb, #progress-bar, #mt, #back-top,
     #save-indicator, .export-bar, .section-eyebrow,
     .ref-card, .tipo-grid, .tipo-card, .formula-box,
     .comp-work-row .comp-work-label .comp-hint,
@@ -517,7 +515,7 @@ body {
 
   /* ── EXPORT BAR ──────────────────────────────────────────────── */
   .export-bar {
-    position: fixed; bottom: 0; left: var(--sidebar-w); right: 0;
+    position: fixed; bottom: 0; left: 0; right: 0;
     background: #080C20; border-top: 1px solid rgba(0,212,255,0.15);
     z-index: 150; padding: 10px 28px;
   }
@@ -546,7 +544,6 @@ body {
   /* Push main content up so export bar doesn't cover it */
   #main { padding-bottom: 62px; }
   @media (max-width: 768px) {
-    .export-bar { left: 0; }
     .export-bar-inner { flex-wrap: wrap; gap: 8px; }
     .export-label { width: 100%; }
   }
@@ -598,19 +595,20 @@ body {
 </div>
 
 <div id="progress-bar"><div id="progress-fill"></div></div>
-<button id="menu-toggle" onclick="toggleSidebar()">☰</button>
+<button id="mt" type="button" aria-expanded="false" aria-controls="sb" aria-label="Abrir menú" onclick="tSB()">☰</button>
 <div id="save-indicator">✓ Guardado</div>
 <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <!-- ── SIDEBAR ─────────────────────────────────────────────────── -->
-<nav id="sidebar">
-  <div class="sidebar-logo">
-    <a class="sidebar-back" href="../../index.html">← Volver al inicio</a>
+<div id="nb" onclick="cSB()"></div>
+<nav id="sb" aria-hidden="true">
+  <div class="sbl">
+    <a class="sb-back" href="../../index.html">← Volver al inicio</a>
     <div class="tag">Taller de Proyecto · 1er Año</div>
     <h1>Preguntas Disparadoras</h1>
   </div>
 
-  <div class="student-badge">
+  <div class="sbn">
     <strong id="sidebar-name">—</strong>
     Mi espacio de trabajo
   </div>
@@ -621,31 +619,31 @@ body {
     <span class="prog-fraction" id="sidebar-frac">0 / 0 campos completados</span>
   </div>
 
-  <div class="nav-section-label">Referencia</div>
-  <a class="nav-item" href="#ref-flujo" onclick="closeSidebar()"><span class="nav-dot" style="background:#FFB800"></span> El flujo del proyecto</a>
-  <a class="nav-item" href="#ref-tipos" onclick="closeSidebar()"><span class="nav-dot" style="background:#9B59B6"></span> Los 6 tipos de pregunta</a>
-  <a class="nav-item" href="#ref-ejes" onclick="closeSidebar()"><span class="nav-dot" style="background:#00C896"></span> Los 3 ejes</a>
-  <a class="nav-item" href="#ref-componentes" onclick="closeSidebar()"><span class="nav-dot" style="background:#FF4D6A"></span> Las 4 componentes</a>
-  <a class="nav-item" href="#ref-formula" onclick="closeSidebar()"><span class="nav-dot" style="background:#00C896"></span> Fórmula del problema técnico</a>
+  <div class="nl">Referencia</div>
+  <a class="ni" href="#ref-flujo" onclick="cSB()"><span class="nd" style="background:#FFB800"></span> El flujo del proyecto</a>
+  <a class="ni" href="#ref-tipos" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span> Los 6 tipos de pregunta</a>
+  <a class="ni" href="#ref-ejes" onclick="cSB()"><span class="nd" style="background:#00C896"></span> Los 3 ejes</a>
+  <a class="ni" href="#ref-componentes" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span> Las 4 componentes</a>
+  <a class="ni" href="#ref-formula" onclick="cSB()"><span class="nd" style="background:#00C896"></span> Fórmula del problema técnico</a>
 
 
-  <a class="nav-item" href="#instrucciones" onclick="closeSidebar()"><span class="nav-dot" style="background:#4A5580"></span> Instrucciones atómicas</a>
-  <a class="nav-item" href="#errores" onclick="closeSidebar()"><span class="nav-dot" style="background:#FF4D6A"></span> Errores comunes</a>
-  <a class="nav-item" href="#sensores" onclick="closeSidebar()"><span class="nav-dot" style="background:#9B59B6"></span> Variables y sensores</a>
-  <a class="nav-item" href="#ejemplo" onclick="closeSidebar()"><span class="nav-dot" style="background:#FFB800"></span> Ejemplo completo resuelto</a>
+  <a class="ni" href="#instrucciones" onclick="cSB()"><span class="nd" style="background:#4A5580"></span> Instrucciones atómicas</a>
+  <a class="ni" href="#errores" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span> Errores comunes</a>
+  <a class="ni" href="#sensores" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span> Variables y sensores</a>
+  <a class="ni" href="#ejemplo" onclick="cSB()"><span class="nd" style="background:#FFB800"></span> Ejemplo completo resuelto</a>
 
-  <div class="nav-section-label">Mi trabajo</div>
-  <a class="nav-item" href="#trabajo-fase1" onclick="closeSidebar()"><span class="nav-dot" style="background:#00D4FF"></span> Fase 1 — Análisis del problema</a>
-  <a class="nav-item" href="#trabajo-disparadoras" onclick="closeSidebar()"><span class="nav-dot" style="background:#FFB800"></span> Mis preguntas disparadoras</a>
-  <a class="nav-item" href="#trabajo-tecnico" onclick="closeSidebar()"><span class="nav-dot" style="background:#00C896"></span> Mi problema técnico</a>
-  <a class="nav-item" href="#trabajo-objetivos" onclick="closeSidebar()"><span class="nav-dot" style="background:#9B59B6"></span> Mis objetivos</a>
-  <a class="nav-item" href="#trabajo-solucion" onclick="closeSidebar()"><span class="nav-dot" style="background:#FF4D6A"></span> Mi solución propuesta</a>
+  <div class="nl">Mi trabajo</div>
+  <a class="ni" href="#trabajo-fase1" onclick="cSB()"><span class="nd" style="background:#00D4FF"></span> Fase 1 — Análisis del problema</a>
+  <a class="ni" href="#trabajo-disparadoras" onclick="cSB()"><span class="nd" style="background:#FFB800"></span> Mis preguntas disparadoras</a>
+  <a class="ni" href="#trabajo-tecnico" onclick="cSB()"><span class="nd" style="background:#00C896"></span> Mi problema técnico</a>
+  <a class="ni" href="#trabajo-objetivos" onclick="cSB()"><span class="nd" style="background:#9B59B6"></span> Mis objetivos</a>
+  <a class="ni" href="#trabajo-solucion" onclick="cSB()"><span class="nd" style="background:#FF4D6A"></span> Mi solución propuesta</a>
 
-  <div class="nav-section-label">Cierre</div>
-  <a class="nav-item" href="#checklist" onclick="closeSidebar()"><span class="nav-dot" style="background:#00C896"></span> Checklist de autoevaluación</a>
-  <a class="nav-item" href="#glosario" onclick="closeSidebar()"><span class="nav-dot" style="background:#7A8BAA"></span> Glosario</a>
+  <div class="nl">Cierre</div>
+  <a class="ni" href="#checklist" onclick="cSB()"><span class="nd" style="background:#00C896"></span> Checklist de autoevaluación</a>
+  <a class="ni" href="#glosario" onclick="cSB()"><span class="nd" style="background:#7A8BAA"></span> Glosario</a>
 
-  <div class="sidebar-footer">Electromecánica · Robótica · Automatización · IA</div>
+  <div class="sbf">Electromecánica · Robótica · Automatización · IA</div>
 </nav>
 
 <!-- ── MAIN ─────────────────────────────────────────────────────── -->
@@ -1497,14 +1495,29 @@ function markEje() {
 }
 
 // ── SIDEBAR ────────────────────────────────────────────────────
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
-function closeSidebar() {
-  if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+function tSB(){
+  const sb=document.getElementById('sb'), nb=document.getElementById('nb'), mt=document.getElementById('mt');
+  const open=sb.classList.toggle('open');
+  nb.classList.toggle('show',open);
+  mt.setAttribute('aria-expanded',open?'true':'false');
+  sb.setAttribute('aria-hidden',open?'false':'true');
+  if(open){document.addEventListener('keydown',escSB);(sb.querySelector('.sb-back,.ni')||mt).focus({preventScroll:true});}
+  else{document.removeEventListener('keydown',escSB);mt.focus({preventScroll:true});}
 }
+function cSB(){
+  const sb=document.getElementById('sb');
+  if(!sb.classList.contains('open'))return;
+  sb.classList.remove('open');
+  document.getElementById('nb').classList.remove('show');
+  document.getElementById('mt').setAttribute('aria-expanded','false');
+  sb.setAttribute('aria-hidden','true');
+  document.removeEventListener('keydown',escSB);
+}
+function escSB(e){if(e.key==='Escape')cSB();}
 
 // ── SCROLL / NAV ACTIVE ─────────────────────────────────────── 
 const sections = document.querySelectorAll('section[id], .fase-step[id]');
-const navItems = document.querySelectorAll('.nav-item');
+const navItems = document.querySelectorAll('.ni');
 
 window.addEventListener('scroll', () => {
   const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
@@ -1520,7 +1533,7 @@ window.addEventListener('scroll', () => {
   const io = new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting) setA(e.target.id); }); }, { rootMargin:'-12% 0px -80% 0px', threshold:0 });
   secs.forEach(s=>io.observe(s));
   let best=null; secs.forEach(s=>{ if(s.getBoundingClientRect().top<innerHeight*0.3) best=s; }); setA((best||secs[0]).id);
-})(document.getElementById('sidebar'), navItems, sections);
+})(document.getElementById('sb'), navItems, sections);
 
 // ── SMOOTH SCROLL ──────────────────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(a => {
