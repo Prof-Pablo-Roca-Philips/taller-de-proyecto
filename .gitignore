@@ -8,3 +8,9 @@ Desktop.ini
 .vscode/
 .idea/
 *~
+
+# Cloudflare Worker (cuaderno/) — nunca credenciales ni cache local
+worker/.wrangler/
+worker/.dev.vars
+.env
+.env.local

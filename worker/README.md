@@ -32,6 +32,16 @@ verificado server-side (firma RS256, expiración, proyecto y dominio escolar).
 
 ## Deploy (cuando exista el proyecto Firebase — ver ../cuaderno/SETUP.md)
 
+⚠️ **Este proyecto va entero con la cuenta docente de Cloudflare, nunca la personal**
+(auditado 2026-07-12: hoy no hay nada desplegado en ninguna cuenta). Ojo: `wrangler login`
+es sesión de MÁQUINA completa, compartida con otros proyectos (ej. `jarvis-core` usa la
+personal) — no hacer `wrangler login`/`deploy` a secas sin revisar `npx wrangler whoami`
+primero.
+
+Deploy aislado (no toca el login global — ver `../cuaderno/SETUP.md` paso 2 para crear
+el token la primera vez):
+
 ```bash
-npx wrangler deploy
+cp .env.example .env    # una sola vez — pegar el token de la cuenta docente
+./deploy.sh
 ```
