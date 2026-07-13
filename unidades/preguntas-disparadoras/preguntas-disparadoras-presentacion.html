@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preguntas Disparadoras | Taller de Proyecto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0e1117;
+  --bg-raised:#1c2330;
+  --line:     #ffffff0f;
+  --accent:   #00D4FF;
+  --accent2:  #0097B8;
+  --amber:    #FFB800;
+  --purple:   #9B59B6;
+  --green:    #00C896;
+  --red:      #FF4D6A;
+  --text:     #e8edf5;
+  --text-dim: #7a8baa;
+  --text-mid: #b0bacb;
+  --radius:   4px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+::selection{background:var(--accent);color:#04141a}
+body{
+  background: radial-gradient(ellipse 1400px 800px at 15% -5%,#16232e 0%,transparent 55%),
+              radial-gradient(ellipse 800px 600px at 90% 25%,#0d1a20 0%,transparent 50%),
+              var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;margin:0;color:#f0f4fa}
+.mono{font-family:'JetBrains Mono',monospace}
+
+.slide{min-height:100vh;width:100%;display:flex;align-items:center;justify-content:center;padding:4.5rem 2.8rem 2rem;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden}
+.slide+.slide{border-top:1px solid var(--line)}
+.slide-wrap{width:100%;max-width:1380px;margin:0 auto}
+
+.topbar{position:fixed;top:0;left:0;width:100%;height:3.2rem;background:rgba(14,17,23,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:60;display:flex;align-items:center;justify-content:space-between;padding:0 1.6rem}
+.brandmark{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.82rem;color:rgba(232,237,245,.7);display:flex;align-items:center;gap:.4rem;pointer-events:none}
+.brandmark span{color:var(--accent)}
+.slide-counter{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-dim);letter-spacing:.05em}
+.slide-counter b{color:var(--accent)}
+.progress-fill{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:61;transition:width .35s ease}
+.dotnav{position:fixed;right:1.3rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:.5rem;align-items:center}
+.dotnav button{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);border:none;padding:0;cursor:pointer;transition:background .2s,transform .2s}
+.dotnav button:hover{background:rgba(255,255,255,.45)}
+.dotnav button.active{background:var(--accent);transform:scale(1.6)}
+.arrownav{position:fixed;right:1.3rem;bottom:1.4rem;z-index:60;display:flex;gap:.45rem}
+.arrownav button{width:34px;height:34px;border-radius:50%;background:var(--bg-raised);border:1px solid rgba(255,255,255,.12);color:var(--text);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.arrownav button:hover{border-color:var(--accent);background:#1e2d33}
+.arrownav button:disabled{opacity:.2;cursor:default}
+
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.eyebrow::before{content:'';display:block;width:1.8rem;height:1.5px;background:var(--accent)}
+h1.title{font-size:clamp(2.1rem,4.3vw,3.4rem);line-height:1.02;letter-spacing:-.015em;max-width:16ch}
+h1.title em{font-style:normal;color:var(--accent)}
+h2.title{font-size:clamp(1.15rem,2.1vw,1.5rem);max-width:44ch;margin-top:.7rem;color:var(--text-mid);font-weight:400}
+.sec-head{max-width:72ch;margin-bottom:1.3rem}
+.sec-head h2{font-size:clamp(1.25rem,2.1vw,1.7rem)}
+.sec-head p{color:var(--text-dim);margin-top:.4rem;font-size:.87rem;line-height:1.5}
+.sec-head.center{max-width:none;text-align:center;margin-left:auto;margin-right:auto}
+.sec-head.center .eyebrow{justify-content:center}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;align-items:center}
+.split.wide{grid-template-columns:1.15fr .85fr}
+.notes{color:var(--text-dim);font-size:.86rem}
+
+.tip{margin-top:.75rem;background:linear-gradient(180deg,#0a1f26,#081920);border:1px solid rgba(0,212,255,.18);border-left:3px solid var(--accent);border-radius:var(--radius);padding:.6rem .85rem;font-size:.79rem;color:#a8d4e0;line-height:1.42}
+.tip b{color:var(--accent)}
+.warn{margin-top:.75rem;background:linear-gradient(180deg,#1f0e12,#190b0f);border:1px solid rgba(255,77,106,.18);border-left:3px solid var(--red);border-radius:var(--radius);padding:.6rem .85rem;font-size:.79rem;color:#e8aab5;line-height:1.42}
+.warn b{color:var(--red)}
+.consigna{background:var(--bg-raised);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:var(--radius);padding:.8rem 1rem;font-size:.83rem;color:var(--text-mid);line-height:1.48;margin:.6rem 0}
+.consigna b{color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.28rem}
+
+.svg-panel{background:var(--bg-raised);border:1px solid rgba(0,212,255,.14);border-radius:8px;padding:1.05rem 1.15rem .95rem}
+.panel-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.5rem}
+.panel-label .pname{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.panel-label .pcount{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text-dim)}
+svg.diagram{width:100%;height:auto;display:block;max-height:50vh}
+.fade{opacity:0}
+
+.controls{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-top:.65rem}
+.btn{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.03em;text-transform:uppercase;background:var(--bg-raised);color:var(--text);border:1px solid rgba(255,255,255,.12);padding:.36rem .65rem;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .15s}
+.btn:hover{background:#1e2d33;border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#04141a;border-color:var(--accent);font-weight:700}
+
+.card-row{display:grid;gap:.75rem}
+.card-row.cols2{grid-template-columns:1fr 1fr}
+.card-row.cols3{grid-template-columns:repeat(3,1fr)}
+.card-row.cols4{grid-template-columns:repeat(4,1fr)}
+.card-row.cols6{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;padding:.8rem .95rem}
+.card.good{border-left:3px solid var(--green)}
+.card.bad{border-left:3px solid var(--red)}
+.card.amber{border-left:3px solid var(--amber)}
+.card.purple{border-left:3px solid var(--purple)}
+.card.cyan{border-left:3px solid var(--accent)}
+.card .c-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.32rem}
+.card.good .c-label{color:var(--green)}
+.card.bad .c-label{color:var(--red)}
+.card.amber .c-label{color:var(--amber)}
+.card.purple .c-label{color:var(--purple)}
+.card.cyan .c-label{color:var(--accent)}
+.card h4{font-size:.9rem;margin-bottom:.28rem;color:#f0f4fa}
+.card p{font-size:.78rem;color:var(--text-dim);line-height:1.42}
+.card .ex{margin-top:.5rem;font-size:.72rem;color:var(--text);font-style:italic;background:rgba(255,255,255,.04);border-radius:5px;padding:.4rem .55rem;line-height:1.4}
+
+/* tipo card (header colored) */
+.tipo-card{background:var(--bg-raised);border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.tipo-h{padding:.5rem .8rem;font-size:.82rem;font-weight:800;color:#04141a}
+.tipo-b{padding:.65rem .8rem}
+.tipo-b p{font-size:.73rem;color:var(--text-dim);margin-bottom:.4rem;line-height:1.4}
+.tipo-ex{font-size:.68rem;color:var(--text);font-style:italic;background:rgba(255,255,255,.04);border-radius:5px;padding:.35rem .55rem;line-height:1.4}
+
+/* eje card */
+.eje-card{background:var(--bg-raised);border-radius:8px;padding:1rem 1.1rem;border-top:3px solid var(--ec,var(--accent))}
+.eje-num{width:30px;height:30px;border-radius:50%;background:var(--ec,var(--accent));display:flex;align-items:center;justify-content:center;font-weight:800;color:#04141a;font-size:.85rem;margin-bottom:.6rem}
+.eje-card h4{font-size:.85rem;margin-bottom:.35rem}
+.eje-card p{font-size:.76rem;color:var(--text-dim);margin-bottom:.5rem;line-height:1.4}
+.eje-ex{font-size:.72rem;color:var(--text);font-style:italic;background:rgba(255,255,255,.04);border-radius:5px;padding:.45rem .6rem;line-height:1.4;margin-bottom:.5rem}
+.eje-result{display:inline-block;padding:.2rem .65rem;border-radius:20px;font-size:.68rem;font-weight:700;background:rgba(255,255,255,.06);color:var(--ec,var(--accent))}
+
+/* comp-row (from U1, reused) */
+.comp-row{display:grid;grid-template-columns:150px 1fr 1fr;gap:1rem;align-items:start;padding:.85rem 1rem;background:var(--bg-raised);border-radius:8px;border-left:3px solid var(--cc,var(--accent));margin-bottom:.55rem}
+.comp-badge{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:800;letter-spacing:.06em;color:var(--cc,var(--accent))}
+.comp-q{font-size:.82rem;color:var(--text);font-style:italic;line-height:1.45}
+.comp-trap{font-size:.68rem;color:rgba(255,77,106,.7);margin-top:.32rem;line-height:1.38}
+.comp-v{font-size:.75rem;color:var(--text-dim);line-height:1.4}
+
+/* formula box */
+.fbox{background:var(--bg);border:2px solid var(--green);border-radius:8px;padding:1.15rem 1.4rem;margin:.9rem 0}
+.flabel{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:.55rem}
+.ftext{font-size:.94rem;color:var(--text);line-height:1.8}
+.fc2{color:var(--accent);font-weight:700} .fp2{color:var(--amber);font-weight:700}
+.fv2{color:var(--purple);font-weight:700} .fq2{color:var(--red);font-weight:700} .fe2{color:var(--green);font-weight:700}
+.vlist{display:flex;flex-direction:column;gap:.4rem;margin-top:.7rem}
+.vrow{display:flex;align-items:flex-start;gap:.55rem;padding:.5rem .8rem;border-radius:7px;font-size:.79rem}
+.vrow.ok{background:rgba(0,200,150,.08);color:var(--green)}
+.vrow.bad{background:rgba(255,77,106,.08);color:var(--red);font-weight:600}
+.vrow .vt{color:var(--text)} .vrow.bad .vt{color:var(--red)}
+
+/* Fase 5-step compact rows */
+.step5-row{display:grid;grid-template-columns:42px 150px 1fr;gap:.8rem;align-items:center;padding:.7rem .9rem;background:var(--bg-raised);border-radius:8px;border-left:3px solid var(--sc,var(--accent));margin-bottom:.5rem}
+.step5-n{width:30px;height:30px;border-radius:50%;background:var(--sc,var(--accent));display:flex;align-items:center;justify-content:center;font-weight:800;color:#04141a;font-size:.85rem}
+.step5-t{font-size:.82rem;font-weight:700;color:var(--sc,var(--accent))}
+.step5-d{font-size:.78rem;color:var(--text-dim);line-height:1.4}
+
+/* Walkthrough (from U1, reused) */
+.wt{background:var(--bg-raised);border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.wh{background:#0a1f26;padding:.65rem 1.05rem;display:flex;align-items:center;gap:.65rem}
+.wtg{font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.3);padding:.18rem .55rem;border-radius:20px}
+.wh p{font-size:.82rem;color:var(--text);font-style:italic}
+.ws{display:grid;grid-template-columns:125px 1fr;align-items:start;border-top:1px solid var(--line)}
+.wl{padding:.65rem .8rem;font-size:.63rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-right:1px solid var(--line)}
+.wc{padding:.65rem 1rem;font-size:.82rem;color:var(--text);line-height:1.45}
+.wc.res{background:rgba(0,200,150,.06);border-left:2px solid var(--green)}
+
+/* Ronda card */
+.ronda-card{background:var(--bg-raised);border-radius:8px;padding:1rem 1.15rem;border:1px solid var(--line)}
+.ronda-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rc,var(--accent));background:rgba(255,255,255,.05);padding:.25rem .6rem;border-radius:20px;margin-bottom:.6rem}
+.ronda-card h4{font-size:.92rem;margin-bottom:.5rem}
+.ronda-steps{display:flex;flex-direction:column;gap:.4rem}
+.ronda-step{display:flex;gap:.5rem;align-items:flex-start;font-size:.78rem;color:var(--text-dim);line-height:1.4}
+.ronda-step b{color:var(--rc,var(--accent));flex-shrink:0}
+
+/* Ejercicio fill-in (from U1, reused + extended) */
+.exblock{background:var(--bg-raised);border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.exhead{padding:.65rem .95rem;background:rgba(0,212,255,.06);font-size:.82rem;color:var(--text);font-weight:700}
+.exrow{display:grid;grid-template-columns:130px 1fr;border-top:1px solid var(--line)}
+.exrl{padding:.55rem .75rem;font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--accent);border-right:1px solid var(--line)}
+.exv{padding:.45rem .75rem}
+.exv input,.exv textarea{width:100%;background:transparent;border:none;border-bottom:1px dashed rgba(255,255,255,.15);color:var(--text);font-size:.8rem;padding:.22rem 0;outline:none;font-style:italic;font-family:inherit;resize:none}
+.exv textarea{border-bottom:none}
+.exv input:focus,.exv textarea:focus{border-bottom-color:var(--accent)}
+.exv input::placeholder,.exv textarea::placeholder{color:var(--text-dim)}
+
+/* proyecto compact card */
+.proy-card{background:var(--bg-raised);border-radius:8px;padding:.9rem 1.05rem;border-left:3px solid var(--pc,var(--accent))}
+.proy-tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pc,var(--accent));margin-bottom:.3rem}
+.proy-card h4{font-size:.86rem;margin-bottom:.4rem}
+.proy-card p{font-size:.72rem;color:var(--text-dim);line-height:1.4}
+.proy-card .pv{color:var(--text);font-weight:600}
+
+/* checklist */
+.cklist{display:flex;flex-direction:column;gap:.45rem}
+.ckitem{display:flex;align-items:flex-start;gap:.55rem;padding:.55rem .8rem;background:var(--bg-raised);border-radius:7px;font-size:.78rem;color:var(--text);line-height:1.42;cursor:pointer;border:1px solid var(--line)}
+.ckitem input{width:14px;height:14px;accent-color:var(--accent);margin-top:2px;flex-shrink:0;cursor:pointer}
+.ckitem.checked{opacity:.5} .ckitem.checked span{text-decoration:line-through}
+#ck-res{margin-top:.7rem;padding:.65rem .9rem;border-radius:8px;font-size:.78rem;background:var(--bg-raised);border:1px solid var(--line)}
+
+/* glossary */
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.55rem}
+.gi{background:var(--bg-raised);border-radius:8px;padding:.7rem .85rem;border-left:3px solid var(--gc,var(--accent))}
+.gterm{font-size:.78rem;font-weight:700;color:#f0f4fa;margin-bottom:.2rem}
+.gdef{font-size:.71rem;color:var(--text-dim);line-height:1.42}
+
+.divider{text-align:center;padding:2rem 0}
+.closing-mark{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.7rem,3.6vw,3rem);font-weight:700;color:#f0f4fa}
+.closing-sub{color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:.8rem;margin-top:.75rem;letter-spacing:.04em}
+
+.hero-meta{display:flex;gap:3.5rem;flex-wrap:wrap;margin-top:1.8rem;padding-top:1.3rem;border-top:1px solid var(--line)}
+.hero-meta div{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-dim);width:28%}
+.hero-meta b{display:block;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;margin-bottom:.1rem}
+
+@media(max-width:900px){
+  .slide{padding:4rem 1.3rem 1.5rem}
+  .split,.split.wide{grid-template-columns:1fr}
+  .card-row.cols3,.card-row.cols4,.card-row.cols6{grid-template-columns:1fr 1fr}
+  .dotnav,.arrownav{display:none}
+  svg.diagram{max-height:none}
+  .comp-row,.step5-row{grid-template-columns:1fr}
+  .exrow{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<div class="topbar">
+  <div class="brandmark">TALLER DE PROYECTO &nbsp;·&nbsp; <span>UNIDAD 2</span></div>
+  <div class="slide-counter"><b id="slideCurrent">01</b> / <span id="slideTotal">17</span></div>
+</div>
+<nav class="dotnav" id="dotNav"></nav>
+<div class="arrownav">
+  <button id="prevBtn" aria-label="Anterior">↑</button>
+  <button id="nextBtn" aria-label="Siguiente">↓</button>
+</div>
+
+<!-- ═══ SLIDE 1 — HERO ═══ -->
+<section class="slide" id="s-hero">
+  <div class="slide-wrap">
+    <div class="eyebrow" style="margin-bottom:1.1rem">Unidad 2 — Preguntas Disparadoras</div>
+    <h1 class="title">Del problema vago<br>al <em>problema técnico</em>.</h1>
+    <h2 class="title">La herramienta que cierra el "???" que dejamos abierto en la Unidad 1.</h2>
+    <p style="color:var(--text-dim);font-size:.9rem;max-width:70ch;margin-top:1rem;line-height:1.55">
+      Ya sabemos qué es un problema vago y cuáles son las 4 componentes de un problema técnico.
+      Lo que falta es la herramienta que las extrae: las preguntas disparadoras. Hoy cerramos ese nodo.
+    </p>
+    <div class="hero-meta">
+      <div><b>Navegación</b>↓ avanzar &nbsp;·&nbsp; ↑ volver</div>
+      <div><b>Recorrido</b>Qué es → Tipos → Ejes → 4 Componentes → 5 Pasos → Ejercicios</div>
+      <div><b>Cierra</b>El "???" de la Unidad 1</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 2 — EL FLUJO QUE YA CONOCEN ═══ -->
+<section class="slide" id="s-flujo">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Repaso</div>
+      <h2>El flujo que ya conocen</h2>
+      <p>El mismo flujograma de la Unidad 1. Hoy cerramos exactamente el nodo del "???".</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label"><span class="pname">Flujo completo del proyecto</span><span class="pcount" id="flujoCount">0 / 7</span></div>
+      <svg class="diagram" id="flujoSVG" viewBox="0 0 980 130" xmlns="http://www.w3.org/2000/svg">
+        <g class="fade"><rect x="10" y="35" width="110" height="60" rx="7" fill="#1c2330" stroke="#4a5580" stroke-width="1.4"/><text x="65" y="60" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#7a8baa" text-anchor="middle">Problema</text><text x="65" y="75" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#7a8baa" text-anchor="middle">vago</text></g>
+        <g class="fade"><line x1="121" y1="65" x2="142" y2="65" stroke="#7a8baa" stroke-width="1.6"/><polygon points="142,60 152,65 142,70" fill="#7a8baa"/></g>
+        <g class="fade"><rect x="153" y="20" width="110" height="90" rx="7" fill="rgba(255,184,0,.15)" stroke="#FFB800" stroke-width="2.4"/><text x="208" y="60" font-family="Space Grotesk,sans-serif" font-size="26" font-weight="800" fill="#FFB800" text-anchor="middle">???</text><text x="208" y="95" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#FFB800" text-anchor="middle">HOY CERRAMOS ESTO</text></g>
+        <g class="fade"><line x1="264" y1="65" x2="285" y2="65" stroke="#00D4FF" stroke-width="2"/><polygon points="285,59 297,65 285,71" fill="#00D4FF"/></g>
+        <g class="fade"><rect x="298" y="30" width="120" height="70" rx="7" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.8"/><text x="358" y="60" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#00D4FF" text-anchor="middle">4</text><text x="358" y="75" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#00D4FF" text-anchor="middle">Componentes</text></g>
+        <g class="fade"><line x1="419" y1="65" x2="440" y2="65" stroke="#9B59B6" stroke-width="2"/><polygon points="440,59 452,65 440,71" fill="#9B59B6"/></g>
+        <g class="fade"><rect x="453" y="30" width="130" height="70" rx="7" fill="rgba(155,89,182,.1)" stroke="#9B59B6" stroke-width="1.8"/><text x="518" y="70" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#9B59B6" text-anchor="middle">Problema técnico</text></g>
+        <g class="fade"><line x1="584" y1="65" x2="605" y2="65" stroke="#FF4D6A" stroke-width="2"/><polygon points="605,59 617,65 605,71" fill="#FF4D6A"/></g>
+        <g class="fade"><rect x="618" y="30" width="110" height="70" rx="7" fill="rgba(255,77,106,.1)" stroke="#FF4D6A" stroke-width="1.8"/><text x="673" y="70" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#FF4D6A" text-anchor="middle">Objetivo</text></g>
+        <g class="fade"><line x1="729" y1="65" x2="750" y2="65" stroke="#00C896" stroke-width="2"/><polygon points="750,59 762,65 750,71" fill="#00C896"/></g>
+        <g class="fade"><rect x="763" y="20" width="200" height="90" rx="7" fill="rgba(0,200,150,.16)" stroke="#00C896" stroke-width="2.2"/><text x="863" y="70" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700" fill="#00C896" text-anchor="middle">Solución</text></g>
+      </svg>
+      <div class="controls"><button class="btn primary" data-play="flujoSVG">▶ Mostrar flujo</button><button class="btn" data-reset="flujoSVG">↺</button></div>
+    </div>
+    <div class="warn" style="margin-top:.9rem">⚠️ <strong>Regla de oro:</strong> una buena pregunta disparadora ya contiene el problema bien enunciado. Si la pregunta es vaga, el proyecto va a ser vago.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 3 — QUÉ ES UNA PREGUNTA DISPARADORA ═══ -->
+<section class="slide" id="s-que-es">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Fundamento central</div>
+      <h2>¿Qué es una pregunta disparadora?</h2>
+      <p>El punto de partida de todo proyecto técnico bien diseñado.</p>
+    </div>
+    <div class="tip" style="background:linear-gradient(180deg,#1c2330,#171d28);border-color:rgba(255,255,255,.1);border-left-color:var(--accent);color:var(--text)">
+      Una pregunta disparadora es una pregunta <strong style="color:var(--accent)">abierta y precisa</strong> que despierta curiosidad y da inicio a un proyecto. No se responde con sí o no: <em style="color:var(--amber);font-style:normal">obliga a investigar, definir o crear algo</em>.
+    </div>
+    <div class="card-row cols3" style="margin-top:.9rem">
+      <div class="card cyan"><div class="c-label">◎ Abierta</div><p>No admite sí o no como respuesta. Abre un campo de indagación que lleva a explorar, investigar o construir.</p></div>
+      <div class="card amber"><div class="c-label">⚡ Precisa</div><p>Sin ambigüedad. La respuesta tiene que poder medirse o verificarse. Si puede ser cualquier cosa, está mal formulada.</p></div>
+      <div class="card good"><div class="c-label">→ Orientada</div><p>Apunta a un destino: un informe, una solución técnica o un producto físico. Define hacia dónde va el proyecto.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 4 — LOS 6 TIPOS ═══ -->
+<section class="slide" id="s-tipos">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Herramienta 1</div>
+      <h2>Los 6 tipos de preguntas disparadoras</h2>
+      <p>El inicio de la pregunta no es decorativo — cambia el ángulo de indagación y el tipo de respuesta que vas a obtener.</p>
+    </div>
+    <div class="card-row cols6">
+      <div class="tipo-card"><div class="tipo-h" style="background:#00D4FF">¿Cómo...?</div><div class="tipo-b"><p>Busca crear un proceso o solución.</p><div class="tipo-ex">"¿Cómo diseñamos un sensor que detecte fallos antes de que ocurran?"</div></div></div>
+      <div class="tipo-card"><div class="tipo-h" style="background:#FFB800">¿Por qué...?</div><div class="tipo-b"><p>Investiga causas y razones.</p><div class="tipo-ex">"¿Por qué las fábricas usan robots en vez de personas?"</div></div></div>
+      <div class="tipo-card"><div class="tipo-h" style="background:#00C896">¿Para qué...?</div><div class="tipo-b"><p>Explora el propósito del proyecto.</p><div class="tipo-ex">"¿Para qué necesitamos un sistema de IA que monitoree una línea de producción?"</div></div></div>
+      <div class="tipo-card"><div class="tipo-h" style="background:#9B59B6;color:#fff">¿Qué harías...?</div><div class="tipo-b"><p>Imagina soluciones posibles.</p><div class="tipo-ex">"¿Qué harías para que un brazo clasifique reciclables automáticamente?"</div></div></div>
+      <div class="tipo-card"><div class="tipo-h" style="background:#FF4D6A;color:#fff">¿De qué manera...?</div><div class="tipo-b"><p>Busca métodos y posibilidades múltiples.</p><div class="tipo-ex">"¿De qué manera usar energía solar para alimentar sensores?"</div></div></div>
+      <div class="tipo-card"><div class="tipo-h" style="background:#0097B8">¿Cuál es...?</div><div class="tipo-b"><p>Compara opciones con criterios técnicos.</p><div class="tipo-ex">"¿Cuál es la mejor forma de conectar sensores a una app central?"</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 5 — LOS 3 EJES ═══ -->
+<section class="slide" id="s-ejes">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Herramienta 2</div>
+      <h2>Los 3 ejes disparadores</h2>
+      <p>La pregunta no solo abre el proyecto — define hacia dónde va y qué entregable se produce al final.</p>
+    </div>
+    <div class="card-row cols3">
+      <div class="eje-card" style="--ec:#00D4FF"><div class="eje-num">1</div><h4>Respuesta a una pregunta</h4><p>Investigamos para entender algo. Culmina en conocimiento documentado.</p><div class="eje-ex">"¿Por qué los paneles con seguimiento generan hasta 40% más energía?"</div><span class="eje-result">→ Informe</span></div>
+      <div class="eje-card" style="--ec:#FFB800"><div class="eje-num">2</div><h4>Resolución de un problema</h4><p>Solucionamos un desafío concreto. Culmina en un diseño o sistema funcional.</p><div class="eje-ex">"¿Cómo detectar y reducir errores en una línea antes de que se propaguen?"</div><span class="eje-result">→ Diseño / Sensor</span></div>
+      <div class="eje-card" style="--ec:#00C896"><div class="eje-num">3</div><h4>Creación de un producto</h4><p>Inventamos algo tangible. Culmina en un prototipo físico o digital.</p><div class="eje-ex">"¿De qué manera construir un brazo que clasifique residuos por material?"</div><span class="eje-result">→ Prototipo</span></div>
+    </div>
+    <div class="tip">💡 <strong>Tip:</strong> elegir el eje correcto antes de formular la pregunta ahorra rehacer el proyecto a mitad de camino. Preguntate primero: ¿qué quiero producir al final?</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 6 — PREGUNTA → 4 COMPONENTES ═══ -->
+<section class="slide" id="s-componentes">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Herramienta 3 — el nodo central</div>
+      <h2>Cada pregunta extrae una componente</h2>
+      <p>Cada pregunta disparadora apunta a extraer exactamente una componente del problema vago. Si la respuesta sigue siendo vaga, la pregunta estaba mal hecha.</p>
+    </div>
+    <div class="comp-row" style="--cc:#00D4FF">
+      <div class="comp-badge">CONTEXTO</div>
+      <div><div class="comp-q">"¿En qué sistema, espacio o ámbito ocurre esto, y quién está involucrado?"</div><div class="comp-trap">⚠ Trampa: confundir el contexto con el problema. El contexto es el escenario, no el síntoma.</div></div>
+      <div class="comp-v">Debe poder <strong>delimitarse o dibujarse</strong>. Si sigue siendo "en la sociedad", es demasiado amplio.</div>
+    </div>
+    <div class="comp-row" style="--cc:#FFB800">
+      <div class="comp-badge">VARIABLE</div>
+      <div><div class="comp-q">"¿Qué es lo único que, si lo mido u observo, me dice si el problema está presente?"</div><div class="comp-trap">⚠ Trampa: elegir un síntoma, no la causa. Preguntate: ¿si esta variable cambia, el problema desaparece?</div></div>
+      <div class="comp-v">Tiene que ser <strong>observable o medible</strong> directamente.</div>
+    </div>
+    <div class="comp-row" style="--cc:#FF4D6A">
+      <div class="comp-badge">PTO. DE QUIEBRE</div>
+      <div><div class="comp-q">"¿En qué valor o condición de esa variable digo que el problema empieza (o termina)?"</div><div class="comp-trap">⚠ Trampa: dejarlo subjetivo. "Cuando ya es mucho" no es un quiebre.</div></div>
+      <div class="comp-v">Un número, un estado lógico (sí/no), o un cambio discreto. <strong>Nunca subjetivo.</strong></div>
+    </div>
+    <div class="comp-row" style="--cc:#00C896">
+      <div class="comp-badge">PROBLEMA</div>
+      <div><div class="comp-q">"Dado ese contexto, variable y quiebre, ¿qué efecto no deseado ocurre?"</div><div class="comp-trap">⚠ Esta componente no genera información nueva: reconstruye el problema a partir de las tres anteriores.</div></div>
+      <div class="comp-v">Una sola oración, <strong>sin "y"</strong>, sin adjetivos valorativos.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 7 — FÓRMULA ═══ -->
+<section class="slide" id="s-formula">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Herramienta 4</div>
+      <h2>Fórmula del problema técnico</h2>
+      <p>Una vez identificadas las 4 componentes, el enunciado se construye siguiendo esta estructura.</p>
+    </div>
+    <div class="fbox">
+      <div class="flabel">Estructura</div>
+      <div class="ftext">En <span class="fc2">[CONTEXTO]</span> ocurre <span class="fp2">[PROBLEMA]</span> cuando <span class="fv2">[VARIABLE]</span> supera <span class="fq2">[PUNTO DE QUIEBRE]</span>, lo que genera <span class="fe2">[EFECTO NO DESEADO]</span>.</div>
+    </div>
+    <div class="vlist">
+      <div class="vrow ok"><span>✓</span><span class="vt">Una sola oración — no usar "y" para unir dos problemas distintos.</span></div>
+      <div class="vrow ok"><span>✓</span><span class="vt">Sin adjetivos subjetivos: no "mucho", "grave", "excesivo", "peligroso".</span></div>
+      <div class="vrow ok"><span>✓</span><span class="vt">Cada término entre corchetes ya debe estar definido en los pasos anteriores.</span></div>
+      <div class="vrow bad"><span>✗</span><span class="vt">NO: "Hay mucho calor en la oficina que molesta a la gente y genera problemas."</span></div>
+      <div class="vrow ok"><span>✓</span><span class="vt">SÍ: "La temperatura del ambiente supera los 26 °C por más de 30 min en horario laboral, lo que genera fatiga cognitiva."</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 8 — FASE 1: LOS 5 PASOS ═══ -->
+<section class="slide" id="s-fase1">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Fase 1 · Semanas 1–3</div>
+      <h2>Análisis del Problema — los 5 pasos</h2>
+      <p>Objetivo: comprender qué problema se quiere resolver <em>antes</em> de proponer cualquier solución.</p>
+    </div>
+    <div class="step5-row" style="--sc:#00D4FF"><div class="step5-n">1</div><div class="step5-t">Problema original</div><div class="step5-d">Descríbanlo tal como lo identificaron, sin lenguaje técnico todavía — como lo diría alguien afectado.</div></div>
+    <div class="step5-row" style="--sc:#FFB800"><div class="step5-n">2</div><div class="step5-t">Contexto del problema</div><div class="step5-d">El entorno donde ocurre. Acota el universo de variables posibles. → Produce la componente CONTEXTO.</div></div>
+    <div class="step5-row" style="--sc:#FF4D6A"><div class="step5-n">3</div><div class="step5-t">Impacto del problema</div><div class="step5-d">¿Qué consecuencias genera si no se resuelve? Sin impacto real, el proyecto pierde sentido.</div></div>
+    <div class="step5-row" style="--sc:#9B59B6"><div class="step5-n">4</div><div class="step5-t">Variables del problema</div><div class="step5-d">Todo sistema automático detecta una variable del entorno. <code style="font-size:.7rem;background:rgba(155,89,182,.15);padding:.1rem .4rem;border-radius:4px">sensor = medir variable</code> → Produce VARIABLE.</div></div>
+    <div class="step5-row" style="--sc:#00C896"><div class="step5-n">5</div><div class="step5-t">Problema técnico definitivo</div><div class="step5-d">Reescribir usando la fórmula. Si un término falta, volver al paso correspondiente.</div></div>
+    <div class="tip">💡 <strong>Autocontrol:</strong> si necesitás usar "y" para conectar dos ideas, probablemente estás describiendo dos problemas distintos. Elegí uno.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 9 — EJEMPLO COMPLETO ═══ -->
+<section class="slide" id="s-ejemplo">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Caso resuelto</div>
+      <h2>Ejemplo completo</h2>
+      <p>Un caso trabajado paso a paso desde el problema vago hasta la solución.</p>
+    </div>
+    <div class="wt">
+      <div class="wh"><span class="wtg">PROBLEMA VAGO</span><p>"En la oficina a veces hace mucho calor."</p></div>
+      <div class="ws"><div class="wl" style="color:#00D4FF">CONTEXTO</div><div class="wc">La oficina, en horario laboral, con el personal administrativo presente y ventanas cerradas.</div></div>
+      <div class="ws"><div class="wl" style="color:#FFB800">VARIABLE</div><div class="wc">Temperatura ambiente del espacio de trabajo (medida en °C).</div></div>
+      <div class="ws"><div class="wl" style="color:#FF4D6A">PTO. DE QUIEBRE</div><div class="wc">Temperatura ambiente superior a 26 °C sostenida por más de 30 minutos.</div></div>
+      <div class="ws"><div class="wl" style="color:#00C896">PROB. TÉCNICO</div><div class="wc res">La temperatura del ambiente de la oficina supera los 26 °C durante más de 30 minutos en horario laboral, lo que genera fatiga cognitiva y reduce el rendimiento del personal.</div></div>
+      <div class="ws"><div class="wl" style="color:#9B59B6">OBJETIVO</div><div class="wc">Detectar cuando la temperatura supere los 26 °C por más de 30 minutos y activar automáticamente un mecanismo de enfriamiento.</div></div>
+      <div class="ws"><div class="wl" style="color:#0097B8">SOLUCIÓN</div><div class="wc">Termostato con sensor de temperatura + controlador + relé que activa el aire acondicionado automáticamente al superar el umbral.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 10 — RONDA 1 COLECTIVA ═══ -->
+<section class="slide" id="s-ronda1">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Ejercicio guiado</div>
+      <h2>Ronda 1 · Colectiva</h2>
+      <p>Ejercitación guiada — todos juntos. El docente guía, la clase propone.</p>
+    </div>
+    <div class="ronda-card" style="--rc:#00D4FF">
+      <div class="ronda-tag">Problema vago de partida</div>
+      <h4>"En el taller de la escuela, a veces pasan accidentes."</h4>
+      <div class="ronda-steps" style="margin-top:.8rem">
+        <div class="ronda-step"><b>1.</b> Aplicar la disparadora de CONTEXTO: ¿en qué parte del taller, con quién, en qué momento?</div>
+        <div class="ronda-step"><b>2.</b> Aplicar la disparadora de VARIABLE: ¿qué es lo único que, si lo mido, me dice que hay peligro?</div>
+        <div class="ronda-step"><b>3.</b> Aplicar la disparadora de PUNTO DE QUIEBRE: ¿a partir de qué valor o condición hay problema?</div>
+        <div class="ronda-step"><b>4.</b> Enunciar el PROBLEMA TÉCNICO en una sola oración, sin adjetivos valorativos.</div>
+      </div>
+    </div>
+    <div class="consigna" style="margin-top:.9rem"><b>⏱ 15 minutos</b> El docente guía, la clase propone en voz alta. No avanzar al paso siguiente hasta que el anterior esté cerrado.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 11 — RONDA 2 Y 3 ═══ -->
+<section class="slide" id="s-ronda23">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Ejercicio guiado</div>
+      <h2>Ronda 2 y 3 · Parejas y puesta en común</h2>
+      <p>Ahora en parejas, con un problema distinto para cada una.</p>
+    </div>
+    <div class="card-row cols2">
+      <div class="ronda-card" style="--rc:#FFB800">
+        <div class="ronda-tag">Ronda 2 · En parejas · 25 min</div>
+        <h4>Ingeniería directa — desde el problema</h4>
+        <p style="font-size:.78rem;color:var(--text-dim);margin:.5rem 0">Cada pareja recibe una tarjeta con un problema vago de distinto dominio.</p>
+        <div class="ronda-steps">
+          <div class="ronda-step"><b>A.</b> Aplicar las 4 disparadoras (contexto, variable, quiebre, problema).</div>
+          <div class="ronda-step"><b>B.</b> Enunciar el problema técnico en una sola oración. Sin "y". Sin adjetivos.</div>
+          <div class="ronda-step"><b>C.</b> Definir el eje del proyecto (respuesta / problema / producto).</div>
+          <div class="ronda-step"><b>D.</b> Redactar la pregunta disparadora final — abierta, precisa, con el inicio correcto.</div>
+        </div>
+      </div>
+      <div class="ronda-card" style="--rc:#00C896">
+        <div class="ronda-tag">Ronda 3 · Puesta en común · 15 min</div>
+        <h4>Compartir, votar, reflexionar</h4>
+        <div class="ronda-steps" style="margin-top:.6rem">
+          <div class="ronda-step"><b>1-2min</b> Cada pareja presenta: problema vago → pregunta disparadora final + eje elegido.</div>
+          <div class="ronda-step"><b>Voto</b> La clase vota: ¿el eje es correcto? ¿la pregunta es abierta y precisa?</div>
+          <div class="ronda-step"><b>Reflexión</b> ¿Cuál proyecto les gustó más? ¿Qué mejorarían de la pregunta?</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip">💡 <strong>El mayor desafío</strong> suele ser el punto de quiebre — que no quede en términos subjetivos. Forzar siempre un número o una condición lógica.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 12 — BLOQUE INDIVIDUAL (interactivo) ═══ -->
+<section class="slide" id="s-individual">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Bloque 4 · Proyecto propio</div>
+      <h2>Tu pregunta disparadora de proyecto</h2>
+      <p>Trabajo individual — 45 minutos. Este es el punto de partida real de tu propio proyecto del taller.</p>
+    </div>
+    <div class="exblock">
+      <div class="exhead">Mi problema vago y su transformación</div>
+      <div class="exrow"><div class="exrl">1. Problema vago</div><div class="exv"><input type="text" placeholder="Un problema que observaste en tu entorno..." data-store="ind-vago"></div></div>
+      <div class="exrow"><div class="exrl">2. Contexto</div><div class="exv"><input type="text" placeholder="..." data-store="ind-contexto"></div></div>
+      <div class="exrow"><div class="exrl">Variable</div><div class="exv"><input type="text" placeholder="..." data-store="ind-variable"></div></div>
+      <div class="exrow"><div class="exrl">Pto. quiebre</div><div class="exv"><input type="text" placeholder="..." data-store="ind-quiebre"></div></div>
+      <div class="exrow"><div class="exrl">3. Prob. técnico</div><div class="exv"><input type="text" placeholder="Una sola oración, con la fórmula..." data-store="ind-tecnico"></div></div>
+      <div class="exrow"><div class="exrl">4. Eje elegido</div><div class="exv"><input type="text" placeholder="Respuesta / problema / producto — y por qué" data-store="ind-eje"></div></div>
+      <div class="exrow"><div class="exrl">5. Pregunta final</div><div class="exv"><input type="text" placeholder="La pregunta disparadora que da inicio a tu proyecto" data-store="ind-pregunta"></div></div>
+    </div>
+    <div class="consigna" style="margin-top:.8rem"><b>Se guarda solo</b> Completá con tu equipo — los datos quedan guardados en este dispositivo.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 13 — PROYECTOS DE REFERENCIA (1) ═══ -->
+<section class="slide" id="s-proyectos1">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Referencia de clase</div>
+      <h2>Proyectos de referencia (1/2)</h2>
+      <p>Los 4 proyectos de la competencia grupal, resueltos. Usá estos como modelo para verificar tus respuestas.</p>
+    </div>
+    <div class="card-row cols2">
+      <div class="proy-card" style="--pc:#00C896">
+        <div class="proy-tag">Proyecto 1 · Automatización · Salud · IoT</div>
+        <h4>Monitor de Calidad del Aire</h4>
+        <p><span class="pv">Vago:</span> el ambiente del aula se pone pesado y la gente se cansa.<br>
+        <span class="pv">Variable:</span> concentración de CO₂ (ppm).<br>
+        <span class="pv">Quiebre:</span> &gt; 1000 ppm por más de 5 min.<br>
+        <span class="pv">Solución:</span> sensor MQ-135 + Arduino + LCD + buzzer + relé a extractor.</p>
+      </div>
+      <div class="proy-card" style="--pc:#FFB800">
+        <div class="proy-tag">Proyecto 2 · Energías Limpias · Eficiencia</div>
+        <h4>Panel Solar con Seguidor de Luz</h4>
+        <p><span class="pv">Vago:</span> los paneles no siempre aprovechan bien la luz.<br>
+        <span class="pv">Variable:</span> diferencia de intensidad entre 2 LDR.<br>
+        <span class="pv">Quiebre:</span> diferencia &gt; 50 unidades (0-1023).<br>
+        <span class="pv">Solución:</span> 2 LDR + Arduino + servomotor, rota cada 30 seg.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 14 — PROYECTOS DE REFERENCIA (2) ═══ -->
+<section class="slide" id="s-proyectos2">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Referencia de clase</div>
+      <h2>Proyectos de referencia (2/2)</h2>
+      <p>Los últimos dos proyectos de la competencia grupal.</p>
+    </div>
+    <div class="card-row cols2">
+      <div class="proy-card" style="--pc:#FF4D6A">
+        <div class="proy-tag">Proyecto 3 · Robótica · Inclusión · IA</div>
+        <h4>Silla de Ruedas Autónoma</h4>
+        <p><span class="pv">Vago:</span> las personas en silla de ruedas a veces se chocan.<br>
+        <span class="pv">Variable:</span> distancia al obstáculo (sensor ultrasónico, cm).<br>
+        <span class="pv">Quiebre:</span> &lt; 30 cm en movimiento.<br>
+        <span class="pv">Solución:</span> HC-SR04 + Arduino + L298N. &lt;50cm pre-alerta, &lt;30cm frenado + buzzer.</p>
+      </div>
+      <div class="proy-card" style="--pc:#00D4FF">
+        <div class="proy-tag">Proyecto 4 · Robótica · IA · Sustentabilidad</div>
+        <h4>Brazo Robótico Clasificador de Residuos</h4>
+        <p><span class="pv">Vago:</span> la gente no separa bien la basura.<br>
+        <span class="pv">Variable:</span> tipo de material (color / inductivo).<br>
+        <span class="pv">Quiebre:</span> detección de metálico o clasificación por color.<br>
+        <span class="pv">Solución:</span> 3 servos + sensor inductivo + TCS3200 + Arduino.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 15 — CHECKLIST ═══ -->
+<section class="slide" id="s-checklist">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Autoevaluación</div>
+      <h2>Checklist antes de avanzar</h2>
+      <p>Antes de entregar tu enunciado de problema técnico, verificá cada punto.</p>
+    </div>
+    <div class="cklist" id="cklist">
+      <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Tengo identificado el CONTEXTO: sistema, lugar, momento y personas involucradas.</span></label>
+      <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>La VARIABLE que elegí es observable o medible directamente.</span></label>
+      <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>El PUNTO DE QUIEBRE es un número, condición lógica o cambio de estado concreto.</span></label>
+      <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>El enunciado tiene UNA sola oración — no usé "y" para unir dos problemas.</span></label>
+      <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>No usé adjetivos subjetivos: "mucho", "grave", "excesivo", "peligroso", "muy".</span></label>
+      <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>La pregunta disparadora elegida es abierta: no se responde con sí o no.</span></label>
+      <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>El eje del proyecto (respuesta / problema / producto) está elegido y justificado.</span></label>
+      <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Cada objetivo comienza con un verbo de acción (detectar, activar, medir, controlar...).</span></label>
+      <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Cada objetivo menciona la variable y el punto de quiebre ya identificados.</span></label>
+      <label class="ckitem"><input type="checkbox" onchange="ck(this)"><span>Puedo describir en 2 líneas qué dispositivo resuelve exactamente estos objetivos.</span></label>
+    </div>
+    <div id="ck-res"><span id="ck-n" style="color:var(--accent);font-weight:800;font-size:1.1rem">0</span><span style="color:var(--text-dim)"> / 10 puntos verificados</span><div id="ck-m" style="font-size:.75rem;color:var(--text-dim);margin-top:.2rem">Completá todos antes de avanzar a la solución.</div></div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 16 — GLOSARIO ═══ -->
+<section class="slide" id="s-glosario">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Referencia rápida</div>
+      <h2>Glosario</h2>
+      <p>Los términos clave, en orden de aparición en el flujo del proyecto.</p>
+    </div>
+    <div class="ggrid">
+      <div class="gi" style="--gc:#7A8BAA"><div class="gterm">Problema vago</div><div class="gdef">Descripción informal sin contexto, variable ni umbral. Punto de partida del diseño.</div></div>
+      <div class="gi" style="--gc:#FFB800"><div class="gterm">Pregunta disparadora</div><div class="gdef">Pregunta abierta y precisa que da inicio a un proyecto. No se responde sí/no.</div></div>
+      <div class="gi" style="--gc:#00D4FF"><div class="gterm">Contexto</div><div class="gdef">Sistema o ámbito donde ocurre el problema. Debe poder delimitarse.</div></div>
+      <div class="gi" style="--gc:#FFB800"><div class="gterm">Variable</div><div class="gdef">Magnitud observable que indica si el problema existe. Medible directamente.</div></div>
+      <div class="gi" style="--gc:#FF4D6A"><div class="gterm">Punto de quiebre</div><div class="gdef">Valor o condición a partir del cual el problema se considera activo.</div></div>
+      <div class="gi" style="--gc:#00C896"><div class="gterm">Problema técnico</div><div class="gdef">Enunciado preciso construido con las 4 componentes. Una sola oración.</div></div>
+      <div class="gi" style="--gc:#9B59B6"><div class="gterm">Objetivo</div><div class="gdef">Acción medible que resuelve el problema técnico. Empieza con verbo de acción.</div></div>
+      <div class="gi" style="--gc:#0097B8"><div class="gterm">Eje disparador</div><div class="gdef">Tipo de proyecto: respuesta (informe), problema (diseño), o producto (prototipo).</div></div>
+      <div class="gi" style="--gc:#9B59B6"><div class="gterm">Sensor</div><div class="gdef">Componente que mide una variable y la convierte en señal eléctrica.</div></div>
+      <div class="gi" style="--gc:#FFB800"><div class="gterm">Actuador</div><div class="gdef">Componente que ejecuta una acción física: motor, relé, válvula, servo.</div></div>
+      <div class="gi" style="--gc:#4A5580"><div class="gterm">Instrucción atómica</div><div class="gdef">Instrucción mínima e indivisible, sin ambigüedad ni supuestos implícitos.</div></div>
+      <div class="gi" style="--gc:#00C896"><div class="gterm">ABP</div><div class="gdef">Aprendizaje Basado en Proyectos. Se aprende resolviendo problemas reales.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 17 — EL ARCO COMPLETO / CIERRE ═══ -->
+<section class="slide" id="s-cierre">
+  <div class="slide-wrap" style="text-align:center;max-width:760px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:1.3rem"><span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span>El arco completo<span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span></div>
+    <div class="closing-mark">El "???" ya tiene nombre:<br>Preguntas Disparadoras.</div>
+    <p style="color:var(--text-dim);font-size:.92rem;margin-top:1.1rem;font-style:italic;line-height:1.6">"Una buena pregunta disparadora ya contiene el problema bien enunciado.<br>Si la pregunta es vaga, el proyecto va a ser vago."</p>
+    <div style="margin-top:1.6rem;display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap">
+      <div style="background:var(--bg-raised);border:1px solid rgba(0,212,255,.3);border-radius:8px;padding:.55rem .9rem;font-size:.72rem;font-family:'JetBrains Mono',monospace;color:#00D4FF">✓ La disparadora llena el "?"</div>
+      <div style="background:var(--bg-raised);border:1px solid rgba(255,184,0,.3);border-radius:8px;padding:.55rem .9rem;font-size:.72rem;font-family:'JetBrains Mono',monospace;color:#FFB800">✓ Cada pregunta extrae 1 componente</div>
+      <div style="background:var(--bg-raised);border:1px solid rgba(0,200,150,.35);border-radius:8px;padding:.55rem .9rem;font-size:.72rem;font-family:'JetBrains Mono',monospace;color:#00C896">✓ El eje define el proyecto</div>
+    </div>
+    <div class="consigna" style="margin-top:1.5rem;text-align:left"><b>Tarea</b> Traer una pregunta disparadora de proyecto propia para la próxima clase.</div>
+    <div style="margin-top:1.6rem;padding-top:1.2rem;border-top:1px solid var(--line)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-dim);margin-bottom:.35rem">PRÓXIMO</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;color:var(--accent)">Unidad 3 — Del Problema a la Solución</div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const REDUCE = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  class Construction{
+    constructor(svg,{stepDuration=550}={}){
+      this.svg=svg; this.stepDuration=REDUCE?1:stepDuration;
+      this.elements=Array.from(svg.querySelectorAll('.fade'));
+      this.index=-1; this.timer=null; this.onChange=null;
+      this.setAll(false,{instant:true});
+    }
+    setAll(shown,{instant=false}={}){ this.elements.forEach(el=>this._set(el,shown,instant)); }
+    _set(el,shown,instant){ el.style.transition=instant?'none':`opacity ${this.stepDuration*.65}ms ease`; el.style.opacity=shown?'1':'0'; }
+    goto(target,{instantAll=false}={}){
+      clearInterval(this.timer);
+      target=Math.max(-1,Math.min(this.elements.length-1,target));
+      this.elements.forEach((el,i)=>{
+        const shown=i<=target, isEdge=(i===target&&!instantAll);
+        if(isEdge){ this._set(el,false,true); void el.getBoundingClientRect(); requestAnimationFrame(()=>requestAnimationFrame(()=>this._set(el,true,false))); }
+        else{ this._set(el,shown,true); }
+      });
+      this.index=target;
+      if(this.onChange)this.onChange(target,this.elements.length);
+    }
+    reset(){this.goto(-1)}
+    playAll(){
+      this.reset(); let i=0;
+      const next=()=>{if(i>=this.elements.length)return; this.goto(i); i++; this.timer=setTimeout(next,this.stepDuration*.6);};
+      this.timer=setTimeout(next,100);
+    }
+  }
+
+  const reg={};
+  document.querySelectorAll('svg.diagram').forEach(svg=>{ reg[svg.id]=new Construction(svg); });
+  document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.play].playAll()));
+  document.querySelectorAll('[data-reset]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.reset].reset()));
+  function bindCounter(svgId,elId){
+    const c=reg[svgId],el=document.getElementById(elId);
+    if(!c||!el)return;
+    const total=c.elements.length;
+    c.onChange=(idx)=>{el.textContent=(idx+1)+' / '+total};
+    el.textContent='0 / '+total;
+  }
+  bindCounter('flujoSVG','flujoCount');
+
+  /* Ejercicio individual — persist locally */
+  const K='u2cap_';
+  document.querySelectorAll('[data-store]').forEach(inp=>{
+    const key=inp.dataset.store;
+    const v=localStorage.getItem(K+key);
+    if(v) inp.value=v;
+    inp.addEventListener('input',()=>localStorage.setItem(K+key,inp.value));
+  });
+
+  /* Checklist */
+  window.ck = function(inp){
+    inp.closest('.ckitem').classList.toggle('checked',inp.checked);
+    const all=document.querySelectorAll('#cklist input'), done=document.querySelectorAll('#cklist input:checked').length;
+    document.getElementById('ck-n').textContent=done;
+    const r=document.getElementById('ck-res'), m=document.getElementById('ck-m');
+    if(done===all.length){ r.style.borderColor='var(--green)'; r.style.background='rgba(0,200,150,.07)'; m.textContent='✓ Todos los puntos verificados. ¡Listo para avanzar! 🎯'; m.style.color='var(--green)'; }
+    else if(done>=6){ r.style.borderColor='var(--amber)'; r.style.background='rgba(255,184,0,.05)'; m.textContent='Mayoría cumplida — revisá los pendientes.'; m.style.color='var(--amber)'; }
+    else { r.style.borderColor=''; r.style.background='var(--bg-raised)'; m.textContent='Completá todos antes de avanzar a la solución.'; m.style.color='var(--text-dim)'; }
+    const s=Array.from(all).map(i=>i.checked?'1':'0').join('');
+    localStorage.setItem(K+'cl',s);
+  };
+
+  /* Slide nav */
+  const slides=Array.from(document.querySelectorAll('.slide'));
+  const dotNav=document.getElementById('dotNav');
+  const slideCurrentEl=document.getElementById('slideCurrent');
+  const slideTotalEl=document.getElementById('slideTotal');
+  const progressFill=document.getElementById('progressFill');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  let current=0;
+  slideTotalEl.textContent=String(slides.length).padStart(2,'0');
+  slides.forEach((sl,i)=>{
+    const b=document.createElement('button');
+    b.setAttribute('aria-label','Ir a pantalla '+(i+1));
+    b.addEventListener('click',()=>goTo(i));
+    dotNav.appendChild(b);
+  });
+  const dots=Array.from(dotNav.children);
+  function setActive(i){
+    current=i;
+    dots.forEach((d,idx)=>d.classList.toggle('active',idx===i));
+    slideCurrentEl.textContent=String(i+1).padStart(2,'0');
+    progressFill.style.width=(((i+1)/slides.length)*100)+'%';
+    prevBtn.disabled=i===0; nextBtn.disabled=i===slides.length-1;
+  }
+  function goTo(i){
+    i=Math.max(0,Math.min(slides.length-1,i));
+    slides[i].scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'});
+  }
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>0.55){const idx=slides.indexOf(e.target);if(idx!==-1)setActive(idx);}});
+  },{threshold:[0.55]});
+  slides.forEach(sl=>io.observe(sl));
+  prevBtn.addEventListener('click',()=>goTo(current-1));
+  nextBtn.addEventListener('click',()=>goTo(current+1));
+  window.addEventListener('keydown',(e)=>{
+    const tag=(e.target&&e.target.tagName)||'';
+    if(tag==='INPUT'||tag==='TEXTAREA')return;
+    if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();goTo(current+1);}
+    else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();goTo(current-1);}
+    else if(e.key==='Home'){e.preventDefault();goTo(0);}
+    else if(e.key==='End'){e.preventDefault();goTo(slides.length-1);}
+  });
+  setActive(0);
+})();
+</script>
+</body>
+</html>

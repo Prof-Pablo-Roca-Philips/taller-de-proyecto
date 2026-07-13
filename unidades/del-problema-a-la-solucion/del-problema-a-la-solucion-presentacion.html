@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Del Problema a la Solución — Unidad 3 | Taller de Proyecto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0e1117;
+  --bg-soft:  #151a22;
+  --bg-raised:#1c2330;
+  --line:     #ffffff0f;
+  --accent:   #00C896;
+  --accent2:  #00A87E;
+  --amber:    #FFB800;
+  --purple:   #9B59B6;
+  --cyan:     #00D4FF;
+  --red:      #FF4D6A;
+  --text:     #e8edf5;
+  --text-dim: #7a8baa;
+  --text-mid: #b0bacb;
+  --good:     #00C896;
+  --bad:      #FF4D6A;
+  --radius:   4px;
+  --shadow:   0 24px 48px -16px rgba(0,0,0,.6), 0 2px 0 rgba(255,255,255,.03) inset;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+::selection{background:var(--accent);color:#0a0e1a}
+body{
+  background: radial-gradient(ellipse 1400px 800px at 15% -5%,#162030 0%,transparent 55%),
+              radial-gradient(ellipse 800px 600px at 90% 25%,#0d1a14 0%,transparent 50%),
+              var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;margin:0;color:#f0f4fa}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* ── SLIDE SYSTEM ─────────────────────────────────────────────── */
+.slide{
+  min-height:100vh;width:100%;
+  display:flex;align-items:center;justify-content:center;
+  padding:4.5rem 2.8rem 2rem;
+  scroll-snap-align:start;scroll-snap-stop:always;
+  position:relative;overflow:hidden;
+}
+.slide+.slide{border-top:1px solid var(--line)}
+.slide-wrap{width:100%;max-width:1380px;margin:0 auto}
+
+/* ── FIXED CHROME ─────────────────────────────────────────────── */
+.topbar{
+  position:fixed;top:0;left:0;width:100%;height:3.2rem;
+  background:rgba(14,17,23,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);z-index:60;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.6rem;
+}
+.brandmark{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.82rem;
+  color:rgba(232,237,245,.7);display:flex;align-items:center;gap:.4rem;pointer-events:none;
+}
+.brandmark span{color:var(--accent)}
+.slide-counter{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-dim);letter-spacing:.05em;
+}
+.slide-counter b{color:var(--accent)}
+.progress-fill{
+  position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:61;transition:width .35s ease;
+}
+.dotnav{
+  position:fixed;right:1.3rem;top:50%;transform:translateY(-50%);
+  z-index:60;display:flex;flex-direction:column;gap:.55rem;align-items:center;
+}
+.dotnav button{
+  width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);
+  border:none;padding:0;cursor:pointer;transition:background .2s,transform .2s;
+}
+.dotnav button:hover{background:rgba(255,255,255,.45)}
+.dotnav button.active{background:var(--accent);transform:scale(1.6)}
+.arrownav{position:fixed;right:1.3rem;bottom:1.4rem;z-index:60;display:flex;gap:.45rem}
+.arrownav button{
+  width:34px;height:34px;border-radius:50%;background:var(--bg-raised);
+  border:1px solid rgba(255,255,255,.12);color:var(--text);cursor:pointer;font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.arrownav button:hover{border-color:var(--accent);background:#1e2d24}
+.arrownav button:disabled{opacity:.2;cursor:default}
+
+/* ── TYPOGRAPHY ────────────────────────────────────────────────── */
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;
+  margin-bottom:.6rem;
+}
+.eyebrow::before{content:'';display:block;width:1.8rem;height:1.5px;background:var(--accent)}
+h1.title{font-size:clamp(2.2rem,4.5vw,3.6rem);line-height:1.0;letter-spacing:-.015em;max-width:14ch}
+h1.title em,h2.title em{font-style:normal;color:var(--accent)}
+h2.title{font-size:clamp(1.2rem,2.2vw,1.6rem);max-width:42ch;margin-top:.7rem;color:var(--text-mid);font-weight:400}
+.sec-head{max-width:68ch;margin-bottom:1.4rem}
+.sec-head h2{font-size:clamp(1.3rem,2.2vw,1.8rem)}
+.sec-head p{color:var(--text-dim);margin-top:.45rem;font-size:.88rem;line-height:1.55}
+
+/* ── LAYOUT ────────────────────────────────────────────────────── */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;align-items:center}
+.split.wide{grid-template-columns:1.15fr .85fr}
+.split.flip{grid-template-columns:.85fr 1.15fr}
+.notes{color:var(--text-dim);font-size:.86rem}
+.notes ul,.notes ol{padding-left:1rem;margin:.5rem 0}
+.notes li{margin-bottom:.4rem;line-height:1.45}
+.notes li b{color:var(--text)}
+.notes h3{font-size:.96rem;margin-bottom:.5rem;color:#f0f4fa;font-family:'Space Grotesk',sans-serif}
+.notes p{margin:.45rem 0;line-height:1.5}
+
+/* ── CALLOUTS ──────────────────────────────────────────────────── */
+.tip{
+  margin-top:.8rem;
+  background:linear-gradient(180deg,#0d2219,#0a1c15);
+  border:1px solid rgba(0,200,150,.18);border-left:3px solid var(--accent);
+  border-radius:var(--radius);padding:.65rem .9rem;font-size:.8rem;color:#a8d8c4;line-height:1.45;
+}
+.tip b{color:var(--accent)}
+.warn{
+  margin-top:.8rem;
+  background:linear-gradient(180deg,#1f0e12,#190b0f);
+  border:1px solid rgba(255,77,106,.18);border-left:3px solid var(--red);
+  border-radius:var(--radius);padding:.65rem .9rem;font-size:.8rem;color:#e8aab5;line-height:1.45;
+}
+.warn b{color:var(--red)}
+.consigna{
+  background:var(--bg-raised);border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:var(--radius);padding:.75rem .95rem;font-size:.84rem;color:var(--text-mid);
+  line-height:1.47;margin:.65rem 0;
+}
+.consigna b{
+  color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.68rem;
+  letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.28rem;
+}
+
+/* ── SVG PANEL ─────────────────────────────────────────────────── */
+.svg-panel{
+  background:var(--bg-raised);border:1px solid rgba(0,200,150,.14);
+  border-radius:8px;padding:1.1rem 1.2rem 1rem;position:relative;
+}
+.panel-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:.55rem;
+}
+.panel-label .pname{
+  font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--accent);
+}
+.panel-label .pcount{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-dim)}
+svg.diagram{width:100%;height:auto;display:block;max-height:52vh}
+.draw{fill:none}
+.fade{opacity:0}
+
+/* ── CONTROLS ──────────────────────────────────────────────────── */
+.controls{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-top:.7rem}
+.btn{
+  font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.03em;text-transform:uppercase;
+  background:var(--bg-raised);color:var(--text);border:1px solid rgba(255,255,255,.12);
+  padding:.38rem .7rem;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;
+  transition:all .15s;
+}
+.btn:hover{background:#1e2d24;border-color:var(--accent)}
+.btn:active{transform:scale(.96)}
+.btn.primary{background:var(--accent);color:#081710;border-color:var(--accent);font-weight:600}
+.btn.primary:hover{filter:brightness(1.1)}
+.scrubber{flex:1 1 140px;display:flex;align-items:center;gap:.5rem;min-width:120px}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;width:100%;height:3px;
+  background:rgba(255,255,255,.14);border-radius:2px;outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:13px;height:13px;border-radius:50%;
+  background:var(--accent);border:2px solid var(--bg);cursor:pointer;
+}
+.scrub-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text-dim);white-space:nowrap}
+.legend{
+  margin-top:.6rem;background:var(--bg-soft);border:1px solid var(--line);
+  border-radius:var(--radius);padding:.55rem .85rem;min-height:52px;
+}
+.legend .lg-step{
+  font-family:'JetBrains Mono',monospace;color:var(--accent);font-size:.61rem;
+  letter-spacing:.07em;text-transform:uppercase;margin-bottom:.18rem;
+}
+.legend .lg-text{color:var(--text-mid);font-size:.79rem;line-height:1.42}
+
+/* ── CARDS ─────────────────────────────────────────────────────── */
+.card-row{display:grid;gap:.8rem}
+.card-row.cols2{grid-template-columns:1fr 1fr}
+.card-row.cols3{grid-template-columns:repeat(3,1fr)}
+.card-row.cols4{grid-template-columns:repeat(4,1fr)}
+.card{
+  background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;
+  padding:.85rem 1rem;
+}
+.card.good{border-left:3px solid var(--accent)}
+.card.bad{border-left:3px solid var(--red)}
+.card.amber{border-left:3px solid var(--amber)}
+.card.purple{border-left:3px solid var(--purple)}
+.card.cyan{border-left:3px solid var(--cyan)}
+.card .c-label{
+  font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:.35rem;
+}
+.card.good .c-label{color:var(--accent)}
+.card.bad .c-label{color:var(--red)}
+.card.amber .c-label{color:var(--amber)}
+.card.purple .c-label{color:var(--purple)}
+.card.cyan .c-label{color:var(--cyan)}
+.card h4{font-size:.94rem;margin-bottom:.3rem;color:#f0f4fa}
+.card p{font-size:.8rem;color:var(--text-dim);line-height:1.45}
+
+/* STEP BOXES (numbered) */
+.step-box{
+  background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;
+  padding:.65rem 1rem;display:grid;grid-template-columns:2.5rem 1fr;column-gap:.7rem;align-items:start;
+}
+.step-box .sn{
+  font-family:'JetBrains Mono',monospace;font-size:1.5rem;color:var(--accent);
+  line-height:1;padding-top:.1rem;
+}
+.step-box h4{font-size:.92rem;margin-bottom:.18rem;color:#f0f4fa;line-height:1.2}
+.step-box p{font-size:.79rem;color:var(--text-dim);line-height:1.42}
+
+/* SMART row */
+.smart-row{
+  display:grid;grid-template-columns:2.8rem 130px 1fr;align-items:center;gap:.85rem;
+  padding:.7rem .95rem;background:var(--bg-raised);border:1px solid var(--line);
+  border-radius:7px;border-left:3px solid var(--sc,var(--accent));
+}
+.smart-L{
+  width:38px;height:38px;border-radius:7px;background:var(--sc,var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk',sans-serif;font-size:1.35rem;font-weight:700;color:#0a0e1a;
+}
+.smart-W{font-size:.85rem;font-weight:700;color:var(--sc,var(--accent));font-family:'Space Grotesk',sans-serif}
+.smart-D{font-size:.8rem;color:var(--text-dim);line-height:1.4}
+
+/* SCAMPER row */
+.sc-row{
+  display:grid;grid-template-columns:44px 130px 1fr;align-items:center;
+  border-bottom:1px solid var(--line);
+}
+.sc-row:last-child{border-bottom:none}
+.sc-L{
+  margin:7px;width:32px;height:32px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;color:#0a0e1a;
+}
+.sc-W{font-size:.82rem;font-weight:700}
+.sc-D{font-size:.8rem;color:var(--text-dim);padding:9px 12px 9px 0;line-height:1.4}
+
+/* CLOSING */
+.closing-mark{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,3.2rem);
+  font-weight:700;color:#f0f4fa;
+}
+.closing-sub{
+  color:var(--text-dim);font-family:'JetBrains Mono',monospace;
+  font-size:.82rem;margin-top:.8rem;letter-spacing:.04em;
+}
+
+/* HERO META */
+.hero-meta{
+  display:flex;gap:4rem;flex-wrap:wrap;margin-top:2rem;
+  padding-top:1.4rem;border-top:1px solid var(--line);
+}
+.hero-meta div{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);width:28%}
+.hero-meta b{
+  display:block;color:var(--text);font-family:'Space Grotesk',sans-serif;
+  font-size:.9rem;font-weight:600;margin-bottom:.1rem;
+}
+
+/* PROCESS GRID */
+.process-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:.75rem;margin-top:1.2rem}
+.process-step{
+  background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;
+  padding:.85rem .75rem;text-align:center;position:relative;
+}
+.process-step .pn{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.3rem;color:var(--accent);margin-bottom:.4rem;
+}
+.process-step p{font-size:.72rem;color:var(--text-dim);line-height:1.38;margin:0}
+.process-step.now{border-color:rgba(0,200,150,.4);background:rgba(0,200,150,.06)}
+.process-step.done{opacity:.5}
+
+/* ── RESPONSIVE ────────────────────────────────────────────────── */
+@media(max-width:900px){
+  .slide{padding:4rem 1.3rem 1.5rem}
+  .split,.split.wide,.split.flip{grid-template-columns:1fr}
+  .card-row.cols3,.card-row.cols4{grid-template-columns:1fr 1fr}
+  .process-grid{grid-template-columns:repeat(3,1fr)}
+  .dotnav,.arrownav{display:none}
+  .smart-row{grid-template-columns:2.8rem 1fr}
+  .sc-row{grid-template-columns:44px 1fr}
+  svg.diagram{max-height:none}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<div class="topbar">
+  <div class="brandmark">TALLER DE PROYECTO &nbsp;·&nbsp; <span>UNIDAD 3</span></div>
+  <div class="slide-counter"><b id="slideCurrent">01</b> / <span id="slideTotal">15</span></div>
+</div>
+<nav class="dotnav" id="dotNav"></nav>
+<div class="arrownav">
+  <button id="prevBtn" aria-label="Anterior">↑</button>
+  <button id="nextBtn" aria-label="Siguiente">↓</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 1 — HERO
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-hero">
+  <div class="slide-wrap">
+    <div class="eyebrow" style="margin-bottom:1.2rem">Unidad 3 — Del Problema a la Solución</div>
+    <h1 class="title">Enunciar. Definir. <em>Idear.</em></h1>
+    <h2 class="title">Tres pasos que separan al técnico que describe un problema del que lo resuelve.</h2>
+    <p style="color:var(--text-dim);font-size:.93rem;max-width:72ch;margin-top:1.1rem;line-height:1.6">
+      Ya transformaste un problema vago en técnico. Ahora viene lo que lo convierte en un proyecto real:
+      enunciarlo con criterio profesional, definir objetivos medibles con instrumento, e idear la solución
+      con Brainstorming y SCAMPER antes de elegir ninguna.
+    </p>
+    <div class="hero-meta">
+      <div><b>Navegación</b>↓ / Espacio para avanzar &nbsp;·&nbsp; ↑ para volver &nbsp;·&nbsp; puntos a la derecha</div>
+      <div><b>Herramientas</b>Brainstorming · SCAMPER · SMART · Pugh (avanzado)</div>
+      <div><b>Recorrido</b>Enunciar → Objetivos → Ideación → Ejercicio integrador</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 2 — ROADMAP ANIMADO
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-roadmap">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Contexto</div>
+      <h2>¿Dónde estamos en el recorrido?</h2>
+      <p>Las primeras dos etapas ya están cubiertas. Esta unidad cubre las tres siguientes y cierra el análisis antes del diseño.</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label">
+        <span class="pname">Flujo del proyecto</span>
+        <span class="pcount" id="roadmapCount">0 / 6</span>
+      </div>
+      <svg class="diagram" id="roadmapSVG" viewBox="0 0 900 160" xmlns="http://www.w3.org/2000/svg">
+        <!-- Node 1: Problema vago (done) -->
+        <g class="fade">
+          <rect x="10" y="40" width="120" height="80" rx="7" fill="#1c2330" stroke="#4a5580" stroke-width="1.2"/>
+          <text x="70" y="71" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#6a7a9a" text-anchor="middle">Problema</text>
+          <text x="70" y="86" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#6a7a9a" text-anchor="middle">vago</text>
+          <text x="70" y="108" font-family="JetBrains Mono,monospace" font-size="9" fill="#4a5580" text-anchor="middle">✓ VISTO</text>
+        </g>
+        <!-- Arrow 1→2 -->
+        <g class="fade">
+          <line x1="131" y1="80" x2="155" y2="80" stroke="#4a5580" stroke-width="1.5"/>
+          <polygon points="155,75 165,80 155,85" fill="#4a5580"/>
+        </g>
+        <!-- Node 2: Preguntas disparadoras (done) -->
+        <g class="fade">
+          <rect x="166" y="40" width="130" height="80" rx="7" fill="#1c2330" stroke="#0097B8" stroke-width="1.2"/>
+          <text x="231" y="71" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#0097B8" text-anchor="middle">Preguntas</text>
+          <text x="231" y="86" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#0097B8" text-anchor="middle">disparadoras</text>
+          <text x="231" y="108" font-family="JetBrains Mono,monospace" font-size="9" fill="#0097B8" text-anchor="middle">✓ VISTO</text>
+        </g>
+        <!-- Arrow 2→3 -->
+        <g class="fade">
+          <line x1="297" y1="80" x2="321" y2="80" stroke="#00C896" stroke-width="2"/>
+          <polygon points="321,74 333,80 321,86" fill="#00C896"/>
+        </g>
+        <!-- Node 3: Problema técnico (NOW) -->
+        <g class="fade">
+          <rect x="334" y="28" width="130" height="104" rx="7" fill="rgba(0,200,150,.08)" stroke="#00C896" stroke-width="2"/>
+          <text x="399" y="62" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00C896" text-anchor="middle">Problema</text>
+          <text x="399" y="77" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00C896" text-anchor="middle">técnico</text>
+          <text x="399" y="101" font-family="JetBrains Mono,monospace" font-size="9" fill="#00C896" text-anchor="middle">● AHORA</text>
+          <rect x="354" y="112" width="90" height="14" rx="7" fill="rgba(0,200,150,.15)"/>
+          <text x="399" y="122" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">UNIDAD 3</text>
+        </g>
+        <!-- Arrow 3→4 -->
+        <g class="fade">
+          <line x1="465" y1="80" x2="487" y2="80" stroke="#00C896" stroke-width="2"/>
+          <polygon points="487,74 499,80 487,86" fill="#00C896"/>
+        </g>
+        <!-- Node 4: Objetivos (NOW) -->
+        <g class="fade">
+          <rect x="500" y="28" width="110" height="104" rx="7" fill="rgba(0,200,150,.08)" stroke="#00C896" stroke-width="2"/>
+          <text x="555" y="77" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00C896" text-anchor="middle">Objetivos</text>
+          <text x="555" y="101" font-family="JetBrains Mono,monospace" font-size="9" fill="#00C896" text-anchor="middle">● AHORA</text>
+        </g>
+        <!-- Arrow 4→5 -->
+        <g class="fade">
+          <line x1="611" y1="80" x2="633" y2="80" stroke="#00C896" stroke-width="2"/>
+          <polygon points="633,74 645,80 633,86" fill="#00C896"/>
+        </g>
+        <!-- Node 5: Solución (NOW) -->
+        <g class="fade">
+          <rect x="646" y="28" width="110" height="104" rx="7" fill="rgba(0,200,150,.08)" stroke="#00C896" stroke-width="2"/>
+          <text x="701" y="77" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00C896" text-anchor="middle">Solución</text>
+          <text x="701" y="101" font-family="JetBrains Mono,monospace" font-size="9" fill="#00C896" text-anchor="middle">● AHORA</text>
+        </g>
+        <!-- Arrow 5→6 -->
+        <g class="fade">
+          <line x1="757" y1="80" x2="778" y2="80" stroke="#4a5580" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <polygon points="778,75 788,80 778,85" fill="#4a5580"/>
+        </g>
+        <!-- Node 6: Diseño (NEXT) -->
+        <g class="fade">
+          <rect x="789" y="40" width="102" height="80" rx="7" fill="#1c2330" stroke="#4a5580" stroke-width="1.2" stroke-dasharray="5,3"/>
+          <text x="840" y="71" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#4a5580" text-anchor="middle">Diseño y</text>
+          <text x="840" y="86" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#4a5580" text-anchor="middle">construcción</text>
+          <text x="840" y="108" font-family="JetBrains Mono,monospace" font-size="9" fill="#3a4060" text-anchor="middle">PRÓXIMO</text>
+        </g>
+      </svg>
+      <div class="controls">
+        <button class="btn primary" data-play="roadmapSVG">▶ Mostrar flujo</button>
+        <button class="btn" data-step="roadmapSVG">Paso ⏭</button>
+        <button class="btn" data-reset="roadmapSVG">↺</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 3 — REGLA DE ORO: NO PRESUPONER
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-reglaoro">
+  <div class="slide-wrap">
+    <div class="split wide">
+      <div>
+        <div class="eyebrow">Parte 1 — Enunciar</div>
+        <h2 style="font-size:clamp(1.4rem,2.4vw,2rem);margin-bottom:.9rem">La regla de oro</h2>
+        <p class="notes" style="font-size:.9rem;margin-bottom:1rem">Un buen enunciado describe el problema. <strong style="color:var(--text)">NO la solución.</strong> Si tu enunciado ya menciona el dispositivo o el componente, cerraste el espacio de diseño antes de empezar.</p>
+        <div class="card bad" style="margin-bottom:.7rem">
+          <div class="c-label">✗ Presupone la solución</div>
+          <p style="font-size:.85rem;font-style:italic;color:var(--text);line-height:1.5;margin-bottom:.5rem">"Necesitamos instalar un sensor DHT22 con Arduino para controlar el ventilador de la sala de servidores."</p>
+          <p style="font-size:.78rem;color:var(--text-dim)">El sistema ya viene elegido. ¿Y si la mejor solución era refrigeración líquida o redistribuir los racks? Nunca lo vas a saber.</p>
+        </div>
+        <div class="card good">
+          <div class="c-label">✓ Describe el problema</div>
+          <p style="font-size:.85rem;font-style:italic;color:var(--text);line-height:1.5;margin-bottom:.5rem">"La temperatura en la sala de servidores supera los 28 °C por más de 15 min, generando apagado térmico de equipos críticos."</p>
+          <p style="font-size:.78rem;color:var(--text-dim)">Deja abierto: refrigeración activa, pasiva, gestión de carga, reubicación. Todas las opciones siguen en juego.</p>
+        </div>
+      </div>
+
+      <!-- SVG: apertura/cierre del espacio de diseño -->
+      <div class="svg-panel">
+        <div class="panel-label">
+          <span class="pname">Espacio de soluciones</span>
+          <span class="pcount" id="espacioCount">0 / 8</span>
+        </div>
+        <svg class="diagram" id="espacioSVG" viewBox="0 0 440 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Problema vago (centro) -->
+          <g class="fade">
+            <circle cx="220" cy="150" r="28" fill="rgba(255,184,0,.12)" stroke="#FFB800" stroke-width="1.5"/>
+            <text x="220" y="146" font-family="Space Grotesk,sans-serif" font-size="9.5" font-weight="600" fill="#FFB800" text-anchor="middle">Problema</text>
+            <text x="220" y="159" font-family="Space Grotesk,sans-serif" font-size="9.5" font-weight="600" fill="#FFB800" text-anchor="middle">vago</text>
+          </g>
+          <!-- Soluciones potenciales (aparecen radiando) -->
+          <g class="fade">
+            <line x1="220" y1="122" x2="220" y2="58" stroke="rgba(0,200,150,.35)" stroke-width="1" stroke-dasharray="3,3"/>
+            <circle cx="220" cy="45" r="20" fill="rgba(0,200,150,.1)" stroke="#00C896" stroke-width="1.3"/>
+            <text x="220" y="42" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">Refrig.</text>
+            <text x="220" y="53" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">líquida</text>
+          </g>
+          <g class="fade">
+            <line x1="234" y1="127" x2="310" y2="72" stroke="rgba(0,200,150,.35)" stroke-width="1" stroke-dasharray="3,3"/>
+            <circle cx="323" cy="60" r="20" fill="rgba(0,200,150,.1)" stroke="#00C896" stroke-width="1.3"/>
+            <text x="323" y="57" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">Ventil.</text>
+            <text x="323" y="68" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">activa</text>
+          </g>
+          <g class="fade">
+            <line x1="248" y1="145" x2="388" y2="132" stroke="rgba(0,200,150,.35)" stroke-width="1" stroke-dasharray="3,3"/>
+            <circle cx="403" cy="130" r="20" fill="rgba(0,200,150,.1)" stroke="#00C896" stroke-width="1.3"/>
+            <text x="403" y="127" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">Gestión</text>
+            <text x="403" y="138" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">de carga</text>
+          </g>
+          <g class="fade">
+            <line x1="240" y1="166" x2="370" y2="222" stroke="rgba(0,200,150,.35)" stroke-width="1" stroke-dasharray="3,3"/>
+            <circle cx="383" cy="235" r="20" fill="rgba(0,200,150,.1)" stroke="#00C896" stroke-width="1.3"/>
+            <text x="383" y="232" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">Aislac.</text>
+            <text x="383" y="243" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">térmica</text>
+          </g>
+          <g class="fade">
+            <line x1="192" y1="168" x2="117" y2="228" stroke="rgba(0,200,150,.35)" stroke-width="1" stroke-dasharray="3,3"/>
+            <circle cx="103" cy="240" r="20" fill="rgba(0,200,150,.1)" stroke="#00C896" stroke-width="1.3"/>
+            <text x="103" y="237" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">Reubic.</text>
+            <text x="103" y="248" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">racks</text>
+          </g>
+          <g class="fade">
+            <line x1="194" y1="130" x2="55" y2="80" stroke="rgba(0,200,150,.35)" stroke-width="1" stroke-dasharray="3,3"/>
+            <circle cx="42" cy="68" r="20" fill="rgba(0,200,150,.1)" stroke="#00C896" stroke-width="1.3"/>
+            <text x="42" y="65" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">Refrig.</text>
+            <text x="42" y="76" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">pasiva</text>
+          </g>
+          <!-- Label -->
+          <g class="fade">
+            <text x="220" y="290" font-family="JetBrains Mono,monospace" font-size="9" fill="#00C896" text-anchor="middle" opacity=".7">Espacio de soluciones ABIERTO — todas las opciones disponibles</text>
+          </g>
+        </svg>
+        <div class="controls">
+          <button class="btn primary" data-play="espacioSVG">▶ Abrir espacio</button>
+          <button class="btn" data-step="espacioSVG">Paso ⏭</button>
+          <button class="btn" data-reset="espacioSVG">↺</button>
+          <span class="scrub-label" id="espacioCount" style="margin-left:auto">0 / 8</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 4 — 5 PREGUNTAS DE CONTROL (animadas)
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-control">
+  <div class="slide-wrap">
+    <div class="split flip">
+      <div class="svg-panel">
+        <div class="panel-label">
+          <span class="pname">Checklist de validación</span>
+          <span class="pcount" id="checkCount">0 / 5</span>
+        </div>
+        <svg class="diagram" id="checkSVG" viewBox="0 0 420 290" xmlns="http://www.w3.org/2000/svg">
+          <!-- 5 check rows, revealed one by one -->
+          <g class="fade">
+            <rect x="10" y="10" width="400" height="48" rx="6" fill="#1c2330" stroke="#00D4FF" stroke-width="1.3"/>
+            <circle cx="42" cy="34" r="14" fill="#00D4FF" opacity=".15" stroke="#00D4FF" stroke-width="1.3"/>
+            <text x="42" y="38" font-family="JetBrains Mono,monospace" font-size="13" font-weight="600" fill="#00D4FF" text-anchor="middle">1</text>
+            <text x="68" y="29" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#e8edf5">¿Tiene las 4 componentes?</text>
+            <text x="68" y="44" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a8baa">Contexto · Variable · Punto de quiebre · Efecto</text>
+          </g>
+          <g class="fade">
+            <rect x="10" y="66" width="400" height="48" rx="6" fill="#1c2330" stroke="#FFB800" stroke-width="1.3"/>
+            <circle cx="42" cy="90" r="14" fill="#FFB800" opacity=".15" stroke="#FFB800" stroke-width="1.3"/>
+            <text x="42" y="94" font-family="JetBrains Mono,monospace" font-size="13" font-weight="600" fill="#FFB800" text-anchor="middle">2</text>
+            <text x="68" y="85" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#e8edf5">¿Es una sola oración?</text>
+            <text x="68" y="100" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a8baa">Sin "y" que una dos problemas distintos</text>
+          </g>
+          <g class="fade">
+            <rect x="10" y="122" width="400" height="48" rx="6" fill="#1c2330" stroke="#9B59B6" stroke-width="1.3"/>
+            <circle cx="42" cy="146" r="14" fill="#9B59B6" opacity=".15" stroke="#9B59B6" stroke-width="1.3"/>
+            <text x="42" y="150" font-family="JetBrains Mono,monospace" font-size="13" font-weight="600" fill="#9B59B6" text-anchor="middle">3</text>
+            <text x="68" y="141" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#e8edf5">¿Sin adjetivos subjetivos?</text>
+            <text x="68" y="156" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a8baa">No "mucho", "excesivo", "grave" — solo magnitudes</text>
+          </g>
+          <g class="fade">
+            <rect x="10" y="178" width="400" height="48" rx="6" fill="#1c2330" stroke="#FF4D6A" stroke-width="1.3"/>
+            <circle cx="42" cy="202" r="14" fill="#FF4D6A" opacity=".15" stroke="#FF4D6A" stroke-width="1.3"/>
+            <text x="42" y="206" font-family="JetBrains Mono,monospace" font-size="13" font-weight="600" fill="#FF4D6A" text-anchor="middle">4</text>
+            <text x="68" y="197" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#e8edf5">¿NO presupone la solución?</text>
+            <text x="68" y="212" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a8baa">No nombra Arduino, sensor, relay, servo</text>
+          </g>
+          <g class="fade">
+            <rect x="10" y="234" width="400" height="48" rx="6" fill="#1c2330" stroke="#00C896" stroke-width="1.3"/>
+            <circle cx="42" cy="258" r="14" fill="#00C896" opacity=".15" stroke="#00C896" stroke-width="1.3"/>
+            <text x="42" y="262" font-family="JetBrains Mono,monospace" font-size="13" font-weight="600" fill="#00C896" text-anchor="middle">5</text>
+            <text x="68" y="253" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="600" fill="#e8edf5">¿Se puede verificar?</text>
+            <text x="68" y="268" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a8baa">Un técnico externo podría medirlo con instrumento</text>
+          </g>
+        </svg>
+        <div class="controls">
+          <button class="btn primary" data-play="checkSVG">▶ Revelar</button>
+          <button class="btn" data-step="checkSVG">Paso ⏭</button>
+          <button class="btn" data-reset="checkSVG">↺</button>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Validación del enunciado</div>
+        <h2 style="font-size:clamp(1.3rem,2.2vw,1.8rem);margin-bottom:.9rem">5 preguntas de control</h2>
+        <div class="notes">
+          <p>Antes de dar por cerrado el enunciado, pasalo por estas cinco preguntas. Si falla en cualquiera, hay que reescribirlo.</p>
+          <div class="warn" style="margin-top:.8rem">
+            <b>El punto 4 es el más difícil.</b> Los alumnos tienden a nombrar el sensor o el microcontrolador en el enunciado. Si dice "Arduino", "DHT22", "relay", "servo" → el enunciado no pasa el control y hay que reescribirlo sin mencionar componentes.
+          </div>
+          <div class="tip" style="margin-top:.8rem">
+            <b>Enunciado modelo:</b> "La temperatura de la carcasa del motor de la faja supera los 72 °C durante ciclos de carga sostenida, generando disparo por protección térmica y paro no programado de la línea." Cumple las 5.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 5 — FUNCIÓN / OBJETIVO / RESTRICCIÓN
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-for">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Parte 2 — Objetivos</div>
+      <h2>Función · Objetivo · Restricción</h2>
+      <p>Tres conceptos que los principiantes confunden. Distinguirlos es lo que hace pensar como ingeniero.</p>
+    </div>
+    <div class="card-row cols3" style="margin-bottom:1.2rem">
+      <div class="card cyan">
+        <div class="c-label">Función</div>
+        <h4>¿Qué debe hacer?</h4>
+        <p>El propósito del sistema. Lo que tiene que lograr. No se mide — se cumple o no se cumple.</p>
+        <div class="consigna" style="margin-top:.6rem;font-size:.78rem;font-style:italic">"El sistema debe mantener el motor dentro de su rango de temperatura seguro."</div>
+      </div>
+      <div class="card amber">
+        <div class="c-label">Objetivo</div>
+        <h4>¿Qué querés optimizar?</h4>
+        <p>Una magnitud a maximizar o minimizar. Siempre tiene un número y un instrumento de medición.</p>
+        <div class="consigna" style="margin-top:.6rem;font-size:.78rem;font-style:italic">"Minimizar el tiempo de respuesta ante falla de temperatura del motor."</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--red)">
+        <div class="c-label" style="color:var(--red)">Restricción</div>
+        <h4>¿Qué límite no cruzás?</h4>
+        <p>Un límite que la solución no puede violar bajo ninguna condición. Define el margen de diseño.</p>
+        <div class="consigna" style="margin-top:.6rem;font-size:.78rem;font-style:italic">"El sistema debe operar con 220 V AC disponibles en planta, sin fuente externa adicional."</div>
+      </div>
+    </div>
+    <div class="tip">
+      <b>En automatización:</b> la función dice qué hace el sistema (operar el motor), el objetivo dice qué optimizás (tiempo de respuesta en ms), la restricción dice los límites que no podés cruzar (voltaje disponible, costo, dimensiones del gabinete).
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 6 — SMART ANIMADO
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-smart">
+  <div class="slide-wrap">
+    <div class="split wide">
+      <div>
+        <div class="eyebrow">El estándar profesional</div>
+        <h2 style="margin-bottom:1rem">Objetivos SMART</h2>
+        <div style="display:flex;flex-direction:column;gap:.55rem" id="smartRows">
+          <div class="smart-row" style="--sc:#00D4FF"><div class="smart-L" style="background:#00D4FF">S</div><div class="smart-W" style="color:#00D4FF">Específico</div><div class="smart-D">Apunta a una sola magnitud concreta. No "el sistema funcione bien" — sí "la corriente de arranque del motor".</div></div>
+          <div class="smart-row" style="--sc:#FFB800"><div class="smart-L" style="background:#FFB800">M</div><div class="smart-W" style="color:#FFB800">Medible</div><div class="smart-D">Tiene un número verificable con instrumento real: voltímetro, tacómetro, termocupla, encoder.</div></div>
+          <div class="smart-row" style="--sc:#00C896"><div class="smart-L" style="background:#00C896">A</div><div class="smart-W" style="color:#00C896">Alcanzable</div><div class="smart-D">Posible con componentes, presupuesto y tiempo disponibles en el taller.</div></div>
+          <div class="smart-row" style="--sc:#9B59B6"><div class="smart-L" style="background:#9B59B6">R</div><div class="smart-W" style="color:#9B59B6">Relevante</div><div class="smart-D">Resuelve directamente una parte del problema técnico enunciado. No un objetivo decorativo.</div></div>
+          <div class="smart-row" style="--sc:#FF4D6A"><div class="smart-L" style="background:#FF4D6A">T</div><div class="smart-W" style="color:#FF4D6A">Temporal</div><div class="smart-D">Tiene un plazo. "Al finalizar pruebas" o "dentro de los 500 ms de detectada la falla".</div></div>
+        </div>
+      </div>
+      <div class="svg-panel">
+        <div class="panel-label">
+          <span class="pname">Objetivo — dos versiones</span>
+        </div>
+        <svg class="diagram" id="smartSVG" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+          <!-- Bad -->
+          <g class="fade">
+            <rect x="10" y="10" width="380" height="90" rx="7" fill="rgba(255,77,106,.06)" stroke="#FF4D6A" stroke-width="1.4"/>
+            <rect x="20" y="18" width="48" height="20" rx="10" fill="rgba(255,77,106,.18)"/>
+            <text x="44" y="31" font-family="JetBrains Mono,monospace" font-size="9" fill="#FF4D6A" text-anchor="middle">✗ VAGO</text>
+            <text x="26" y="58" font-family="Inter,sans-serif" font-size="11" fill="#e8aab5" font-style="italic">"Que el motor de la faja no se sobrecaliente</text>
+            <text x="26" y="73" font-family="Inter,sans-serif" font-size="11" fill="#e8aab5" font-style="italic"> y el sistema lo detecte rápido."</text>
+            <text x="26" y="92" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#FF4D6A">¿Cuánto es "rápido"? ¿Qué temperatura? No verificable.</text>
+          </g>
+          <!-- Good -->
+          <g class="fade">
+            <rect x="10" y="112" width="380" height="108" rx="7" fill="rgba(0,200,150,.06)" stroke="#00C896" stroke-width="1.4"/>
+            <rect x="20" y="120" width="58" height="20" rx="10" fill="rgba(0,200,150,.18)"/>
+            <text x="49" y="133" font-family="JetBrains Mono,monospace" font-size="9" fill="#00C896" text-anchor="middle">✓ SMART</text>
+            <text x="26" y="158" font-family="Inter,sans-serif" font-size="10.5" fill="#a8d8c4" font-style="italic">"Detectar cuando la temperatura de la carcasa</text>
+            <text x="26" y="172" font-family="Inter,sans-serif" font-size="10.5" fill="#a8d8c4" font-style="italic"> supere 72 °C (termocupla tipo K) y enviar</text>
+            <text x="26" y="186" font-family="Inter,sans-serif" font-size="10.5" fill="#a8d8c4" font-style="italic"> señal de corte al variador en &lt; 500 ms."</text>
+          </g>
+          <!-- Chips -->
+          <g class="fade">
+            <rect x="16" y="202" width="108" height="18" rx="9" fill="rgba(0,212,255,.14)"/>
+            <text x="70" y="214" font-family="JetBrains Mono,monospace" font-size="8" fill="#00D4FF" text-anchor="middle">S: carcasa del motor</text>
+            <rect x="132" y="202" width="104" height="18" rx="9" fill="rgba(255,184,0,.14)"/>
+            <text x="184" y="214" font-family="JetBrains Mono,monospace" font-size="8" fill="#FFB800" text-anchor="middle">M: 72 °C / termocupla</text>
+            <rect x="244" y="202" width="90" height="18" rx="9" fill="rgba(255,77,106,.14)"/>
+            <text x="289" y="214" font-family="JetBrains Mono,monospace" font-size="8" fill="#FF4D6A" text-anchor="middle">T: &lt; 500 ms</text>
+          </g>
+          <!-- Tip -->
+          <g class="fade">
+            <rect x="10" y="228" width="380" height="24" rx="6" fill="rgba(0,200,150,.08)" stroke="rgba(0,200,150,.2)" stroke-width="1"/>
+            <text x="20" y="244" font-family="JetBrains Mono,monospace" font-size="9" fill="#00C896">💡  Truco: verbo de acción + número + instrumento de medición</text>
+          </g>
+        </svg>
+        <div class="controls">
+          <button class="btn primary" data-play="smartSVG">▶ Comparar</button>
+          <button class="btn" data-step="smartSVG">Paso ⏭</button>
+          <button class="btn" data-reset="smartSVG">↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 7 — DIVERGIR / CONVERGER
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-ideacion">
+  <div class="slide-wrap">
+    <div class="split">
+      <div>
+        <div class="eyebrow">Parte 3 — Idear</div>
+        <h2 style="margin-bottom:.8rem">Primero abrís. Después cerrás.</h2>
+        <div class="notes">
+          <p>La regla de oro de la ideación: <strong style="color:var(--text)">primero generás, después evaluás.</strong> Un ingeniero que juzga ideas mientras las crea pierde soluciones antes de verlas.</p>
+          <div class="card-row cols2" style="margin-top:.9rem">
+            <div class="card cyan">
+              <div class="c-label">🧠 Fase divergente</div>
+              <h4>Abrir</h4>
+              <p>Generar muchas ideas sin juzgar ninguna. Cuantas más, más probable es que aparezca la óptima.</p>
+              <div style="margin-top:.5rem;font-size:.74rem;font-family:'JetBrains Mono',monospace;color:var(--cyan)">→ Brainstorming · SCAMPER</div>
+            </div>
+            <div class="card amber">
+              <div class="c-label">✓ Fase convergente</div>
+              <h4>Cerrar</h4>
+              <p>Evaluar las ideas contra los objetivos SMART y elegir la mejor con criterio técnico.</p>
+              <div style="margin-top:.5rem;font-size:.74rem;font-family:'JetBrains Mono',monospace;color:var(--amber)">→ Matriz de Pugh</div>
+            </div>
+          </div>
+          <div class="warn" style="margin-top:.8rem">
+            <b>Error clásico:</b> juzgar ideas mientras se generan ("eso no funciona con un Arduino", "es muy caro"). Toda crítica durante la fase divergente mata posibilidades antes de que maduren.
+          </div>
+        </div>
+      </div>
+      <div class="svg-panel">
+        <div class="panel-label">
+          <span class="pname">Flujo diverge → converge</span>
+          <span class="pcount" id="divCount">0 / 7</span>
+        </div>
+        <svg class="diagram" id="divSVG" viewBox="0 0 400 270" xmlns="http://www.w3.org/2000/svg">
+          <!-- Problema (entrada) -->
+          <g class="fade">
+            <rect x="10" y="115" width="80" height="40" rx="6" fill="rgba(255,184,0,.1)" stroke="#FFB800" stroke-width="1.3"/>
+            <text x="50" y="131" font-family="Space Grotesk,sans-serif" font-size="9" font-weight="600" fill="#FFB800" text-anchor="middle">Problema</text>
+            <text x="50" y="144" font-family="Space Grotesk,sans-serif" font-size="9" fill="#FFB800" text-anchor="middle">técnico</text>
+          </g>
+          <!-- Diverge label -->
+          <g class="fade">
+            <text x="160" y="20" font-family="JetBrains Mono,monospace" font-size="9" fill="#00D4FF" text-anchor="middle">DIVERGIR</text>
+            <line x1="120" y1="25" x2="200" y2="25" stroke="#00D4FF" stroke-width="1" stroke-dasharray="3,2"/>
+          </g>
+          <!-- Ideas fan out -->
+          <g class="fade">
+            <line x1="91" y1="125" x2="190" y2="35" stroke="#00D4FF" stroke-width="1" stroke-dasharray="3,2"/>
+            <circle cx="205" cy="28" r="16" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.2"/>
+            <text x="205" y="32" font-family="JetBrains Mono,monospace" font-size="8" fill="#00D4FF" text-anchor="middle">Idea 1</text>
+          </g>
+          <g class="fade">
+            <line x1="91" y1="130" x2="190" y2="95" stroke="#00D4FF" stroke-width="1" stroke-dasharray="3,2"/>
+            <circle cx="205" cy="90" r="16" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.2"/>
+            <text x="205" y="94" font-family="JetBrains Mono,monospace" font-size="8" fill="#00D4FF" text-anchor="middle">Idea 2</text>
+          </g>
+          <g class="fade">
+            <line x1="91" y1="135" x2="190" y2="135" stroke="#00D4FF" stroke-width="1" stroke-dasharray="3,2"/>
+            <circle cx="205" cy="135" r="16" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.2"/>
+            <text x="205" y="139" font-family="JetBrains Mono,monospace" font-size="8" fill="#00D4FF" text-anchor="middle">Idea 3</text>
+          </g>
+          <g class="fade">
+            <line x1="91" y1="142" x2="190" y2="180" stroke="#00D4FF" stroke-width="1" stroke-dasharray="3,2"/>
+            <circle cx="205" cy="185" r="16" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.2"/>
+            <text x="205" y="189" font-family="JetBrains Mono,monospace" font-size="8" fill="#00D4FF" text-anchor="middle">Idea 4</text>
+          </g>
+          <g class="fade">
+            <line x1="91" y1="148" x2="190" y2="235" stroke="#00D4FF" stroke-width="1" stroke-dasharray="3,2"/>
+            <circle cx="205" cy="242" r="16" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.2"/>
+            <text x="205" y="246" font-family="JetBrains Mono,monospace" font-size="8" fill="#00D4FF" text-anchor="middle">Idea N</text>
+          </g>
+          <!-- Converge to solution -->
+          <g class="fade">
+            <text x="310" y="20" font-family="JetBrains Mono,monospace" font-size="9" fill="#00C896" text-anchor="middle">CONVERGER</text>
+            <line x1="270" y1="25" x2="350" y2="25" stroke="#00C896" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="222" y1="28" x2="305" y2="128" stroke="#00C896" stroke-width="1.4"/>
+            <line x1="222" y1="90" x2="305" y2="128" stroke="#00C896" stroke-width="1.4"/>
+            <line x1="222" y1="135" x2="305" y2="135" stroke="#00C896" stroke-width="1.4"/>
+            <line x1="222" y1="185" x2="305" y2="140" stroke="#00C896" stroke-width="1.4"/>
+            <line x1="222" y1="242" x2="305" y2="145" stroke="#00C896" stroke-width="1.4" stroke-dasharray="3,2" opacity=".4"/>
+            <rect x="306" y="110" width="85" height="50" rx="7" fill="rgba(0,200,150,.12)" stroke="#00C896" stroke-width="1.8"/>
+            <text x="348" y="131" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700" fill="#00C896" text-anchor="middle">Solución</text>
+            <text x="348" y="147" font-family="Space Grotesk,sans-serif" font-size="10" fill="#00C896" text-anchor="middle">elegida</text>
+          </g>
+        </svg>
+        <div class="controls">
+          <button class="btn primary" data-play="divSVG">▶ Animar</button>
+          <button class="btn" data-step="divSVG">Paso ⏭</button>
+          <button class="btn" data-reset="divSVG">↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 8 — BRAINSTORMING
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-brainstorming">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Herramienta fundamental 1</div>
+      <h2>Brainstorming</h2>
+      <p>Generar la mayor cantidad de ideas de solución en equipo, sin juzgar ninguna. Las 4 reglas, en orden de importancia.</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label">
+        <span class="pname">Las 4 reglas — revelar una por vez</span>
+        <span class="pcount" id="brainCount">0 / 4</span>
+      </div>
+      <svg class="diagram" id="brainSVG" viewBox="0 0 860 180" xmlns="http://www.w3.org/2000/svg">
+        <g class="fade">
+          <rect x="10" y="20" width="200" height="140" rx="8" fill="rgba(0,212,255,.06)" stroke="#00D4FF" stroke-width="1.4"/>
+          <circle cx="50" cy="55" r="18" fill="#00D4FF" opacity=".12" stroke="#00D4FF" stroke-width="1.3"/>
+          <text x="50" y="59" font-family="JetBrains Mono,monospace" font-size="14" font-weight="600" fill="#00D4FF" text-anchor="middle">1</text>
+          <text x="115" y="45" font-family="Space Grotesk,sans-serif" font-size="11.5" font-weight="700" fill="#00D4FF" text-anchor="middle">Cantidad</text>
+          <text x="115" y="60" font-family="Space Grotesk,sans-serif" font-size="11.5" font-weight="700" fill="#00D4FF" text-anchor="middle">sobre calidad</text>
+          <text x="110" y="93" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">15 ideas mediocres valen</text>
+          <text x="110" y="108" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">más que 3 buenas. Cuantas</text>
+          <text x="110" y="123" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">más, más probable es que</text>
+          <text x="110" y="138" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">aparezca la solución óptima.</text>
+        </g>
+        <g class="fade">
+          <rect x="225" y="20" width="200" height="140" rx="8" fill="rgba(0,200,150,.06)" stroke="#00C896" stroke-width="1.4"/>
+          <circle cx="265" cy="55" r="18" fill="#00C896" opacity=".12" stroke="#00C896" stroke-width="1.3"/>
+          <text x="265" y="59" font-family="JetBrains Mono,monospace" font-size="14" font-weight="600" fill="#00C896" text-anchor="middle">2</text>
+          <text x="325" y="45" font-family="Space Grotesk,sans-serif" font-size="11.5" font-weight="700" fill="#00C896" text-anchor="middle">Prohibido</text>
+          <text x="325" y="60" font-family="Space Grotesk,sans-serif" font-size="11.5" font-weight="700" fill="#00C896" text-anchor="middle">criticar</text>
+          <text x="325" y="93" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">Ni "eso no funciona</text>
+          <text x="325" y="108" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">con Arduino", ni "es muy</text>
+          <text x="325" y="123" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">caro". Toda crítica mata</text>
+          <text x="325" y="138" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">ideas antes de que maduren.</text>
+        </g>
+        <g class="fade">
+          <rect x="440" y="20" width="200" height="140" rx="8" fill="rgba(255,184,0,.06)" stroke="#FFB800" stroke-width="1.4"/>
+          <circle cx="480" cy="55" r="18" fill="#FFB800" opacity=".12" stroke="#FFB800" stroke-width="1.3"/>
+          <text x="480" y="59" font-family="JetBrains Mono,monospace" font-size="14" font-weight="600" fill="#FFB800" text-anchor="middle">3</text>
+          <text x="540" y="45" font-family="Space Grotesk,sans-serif" font-size="11.5" font-weight="700" fill="#FFB800" text-anchor="middle">Bienvenidas</text>
+          <text x="540" y="60" font-family="Space Grotesk,sans-serif" font-size="11.5" font-weight="700" fill="#FFB800" text-anchor="middle">las locuras</text>
+          <text x="540" y="93" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">"¿Y si usamos visión</text>
+          <text x="540" y="108" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">artificial en vez del</text>
+          <text x="540" y="123" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">TCS3200?" La idea rara</text>
+          <text x="540" y="138" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">abre caminos nuevos.</text>
+        </g>
+        <g class="fade">
+          <rect x="655" y="20" width="200" height="140" rx="8" fill="rgba(155,89,182,.06)" stroke="#9B59B6" stroke-width="1.4"/>
+          <circle cx="695" cy="55" r="18" fill="#9B59B6" opacity=".12" stroke="#9B59B6" stroke-width="1.3"/>
+          <text x="695" y="59" font-family="JetBrains Mono,monospace" font-size="14" font-weight="600" fill="#9B59B6" text-anchor="middle">4</text>
+          <text x="755" y="45" font-family="Space Grotesk,sans-serif" font-size="11.5" font-weight="700" fill="#9B59B6" text-anchor="middle">Combiná</text>
+          <text x="755" y="60" font-family="Space Grotesk,sans-serif" font-size="11.5" font-weight="700" fill="#9B59B6" text-anchor="middle">y mejorá</text>
+          <text x="755" y="93" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">La detección óptica del</text>
+          <text x="755" y="108" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">compañero + tu idea de</text>
+          <text x="755" y="123" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">relay → resultado mejor</text>
+          <text x="755" y="138" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa" text-anchor="middle">que ambos por separado.</text>
+        </g>
+      </svg>
+      <div class="controls">
+        <button class="btn primary" data-play="brainSVG">▶ Revelar reglas</button>
+        <button class="btn" data-step="brainSVG">Paso ⏭</button>
+        <button class="btn" data-reset="brainSVG">↺</button>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:.9rem"><b>En práctica:</b> 10 min, un anotador por equipo, meta de 15 ideas mínimo. Después de la lista: recién entonces evaluamos.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 9 — SCAMPER definición
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-scamper">
+  <div class="slide-wrap">
+    <div class="split wide">
+      <div>
+        <div class="eyebrow">Herramienta fundamental 2</div>
+        <h2 style="margin-bottom:.8rem">SCAMPER</h2>
+        <p class="notes" style="font-size:.88rem;margin-bottom:1rem">7 gatillos mentales para transformar una idea técnica existente en una nueva. Cuando el brainstorming se traba, SCAMPER destraba. Cada letra activa un ángulo distinto de análisis.</p>
+        <div class="svg-panel">
+          <div class="panel-label">
+            <span class="pname">Las 7 letras</span>
+            <span class="pcount" id="scampDefCount">0 / 7</span>
+          </div>
+          <svg class="diagram" id="scampDefSVG" viewBox="0 0 380 252" xmlns="http://www.w3.org/2000/svg" style="max-height:42vh">
+            <g class="fade"><rect x="0" y="0" width="380" height="36" rx="0" fill="rgba(0,212,255,.04)" stroke="none"/><rect x="0" y="35" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="6" width="30" height="24" rx="5" fill="#00D4FF"/><text x="21" y="22" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#0a0e1a" text-anchor="middle">S</text><text x="48" y="16" font-family="Space Grotesk,sans-serif" font-size="10.5" font-weight="700" fill="#00D4FF">Sustituir</text><text x="48" y="29" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa">¿Qué componente o tecnología puedo reemplazar?</text></g>
+            <g class="fade"><rect x="0" y="36" width="380" height="36" rx="0" fill="rgba(0,200,150,.04)" stroke="none"/><rect x="0" y="71" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="42" width="30" height="24" rx="5" fill="#00C896"/><text x="21" y="58" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#0a0e1a" text-anchor="middle">C</text><text x="48" y="52" font-family="Space Grotesk,sans-serif" font-size="10.5" font-weight="700" fill="#00C896">Combinar</text><text x="48" y="65" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa">¿Qué dos módulos puedo integrar en un solo sistema?</text></g>
+            <g class="fade"><rect x="0" y="72" width="380" height="36" rx="0" fill="rgba(255,184,0,.04)" stroke="none"/><rect x="0" y="107" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="78" width="30" height="24" rx="5" fill="#FFB800"/><text x="21" y="94" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#0a0e1a" text-anchor="middle">A</text><text x="48" y="88" font-family="Space Grotesk,sans-serif" font-size="10.5" font-weight="700" fill="#FFB800">Adaptar</text><text x="48" y="101" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa">¿Qué solución de otro campo de ingeniería traigo acá?</text></g>
+            <g class="fade"><rect x="0" y="108" width="380" height="36" rx="0" fill="rgba(155,89,182,.04)" stroke="none"/><rect x="0" y="143" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="114" width="30" height="24" rx="5" fill="#9B59B6"/><text x="21" y="130" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">M</text><text x="48" y="124" font-family="Space Grotesk,sans-serif" font-size="10.5" font-weight="700" fill="#9B59B6">Modificar</text><text x="48" y="137" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa">¿Qué parámetro cambio: frecuencia, voltaje, dimensión?</text></g>
+            <g class="fade"><rect x="0" y="144" width="380" height="36" rx="0" fill="rgba(255,77,106,.04)" stroke="none"/><rect x="0" y="179" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="150" width="30" height="24" rx="5" fill="#FF4D6A"/><text x="21" y="166" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">P</text><text x="48" y="160" font-family="Space Grotesk,sans-serif" font-size="10.5" font-weight="700" fill="#FF4D6A">Poner otro uso</text><text x="48" y="173" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa">¿Este sistema puede resolver otro problema del proyecto?</text></g>
+            <g class="fade"><rect x="0" y="180" width="380" height="36" rx="0" fill="rgba(0,212,255,.04)" stroke="none"/><rect x="0" y="215" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="186" width="30" height="24" rx="5" fill="#00D4FF"/><text x="21" y="202" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#0a0e1a" text-anchor="middle">E</text><text x="48" y="196" font-family="Space Grotesk,sans-serif" font-size="10.5" font-weight="700" fill="#00D4FF">Eliminar</text><text x="48" y="209" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa">¿Qué parte simplifico sin perder la función principal?</text></g>
+            <g class="fade"><rect x="0" y="216" width="380" height="36" rx="0" fill="rgba(0,200,150,.04)" stroke="none"/><rect x="6" y="222" width="30" height="24" rx="5" fill="#00C896"/><text x="21" y="238" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#0a0e1a" text-anchor="middle">R</text><text x="48" y="232" font-family="Space Grotesk,sans-serif" font-size="10.5" font-weight="700" fill="#00C896">Reordenar</text><text x="48" y="245" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa">¿Qué pasa si invierto el flujo de señal o la lógica de control?</text></g>
+          </svg>
+          <div class="controls">
+            <button class="btn primary" data-play="scampDefSVG">▶ Revelar</button>
+            <button class="btn" data-step="scampDefSVG">Paso ⏭</button>
+            <button class="btn" data-reset="scampDefSVG">↺</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow" style="margin-bottom:.6rem">SCAMPER en acción</div>
+        <p class="notes" style="font-size:.83rem;margin-bottom:.8rem">Idea de partida: brazo robótico con sensor TCS3200 para clasificar residuos en 3 contenedores.</p>
+        <div class="svg-panel">
+          <div class="panel-label">
+            <span class="pname">Ejemplo aplicado — TCS3200</span>
+            <span class="pcount" id="scampExCount">0 / 7</span>
+          </div>
+          <svg class="diagram" id="scampExSVG" viewBox="0 0 380 252" xmlns="http://www.w3.org/2000/svg" style="max-height:42vh">
+            <g class="fade"><rect x="0" y="0" width="380" height="36" rx="0" fill="rgba(0,212,255,.04)"/><rect x="0" y="35" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="6" width="30" height="24" rx="5" fill="#00D4FF"/><text x="21" y="22" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#0a0e1a" text-anchor="middle">S</text><text x="48" y="13" font-family="Inter,sans-serif" font-size="9.5" fill="#e8edf5">Sustituir TCS3200 por cámara + OpenCV:</text><text x="48" y="27" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa">más versátil, detecta forma + color, no solo color.</text></g>
+            <g class="fade"><rect x="0" y="36" width="380" height="36" rx="0" fill="rgba(0,200,150,.04)"/><rect x="0" y="71" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="42" width="30" height="24" rx="5" fill="#00C896"/><text x="21" y="58" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#0a0e1a" text-anchor="middle">C</text><text x="48" y="49" font-family="Inter,sans-serif" font-size="9.5" fill="#e8edf5">Combinar brazo con conveyor de velocidad variable:</text><text x="48" y="63" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa">el brazo clasifica mientras la cinta regula el flujo.</text></g>
+            <g class="fade"><rect x="0" y="72" width="380" height="36" rx="0" fill="rgba(255,184,0,.04)"/><rect x="0" y="107" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="78" width="30" height="24" rx="5" fill="#FFB800"/><text x="21" y="94" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#0a0e1a" text-anchor="middle">A</text><text x="48" y="85" font-family="Inter,sans-serif" font-size="9.5" fill="#e8edf5">Adaptar lógica Pick &amp; Place (Fanuc, KUKA):</text><text x="48" y="99" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa">ángulo de agarre por visión en vez de posición fija.</text></g>
+            <g class="fade"><rect x="0" y="108" width="380" height="36" rx="0" fill="rgba(155,89,182,.04)"/><rect x="0" y="143" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="114" width="30" height="24" rx="5" fill="#9B59B6"/><text x="21" y="130" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">M</text><text x="48" y="121" font-family="Inter,sans-serif" font-size="9.5" fill="#e8edf5">Ampliar a sensor IR: detectar materiales opacos</text><text x="48" y="135" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa">y translúcidos que el TCS3200 no diferencia.</text></g>
+            <g class="fade"><rect x="0" y="144" width="380" height="36" rx="0" fill="rgba(255,77,106,.04)"/><rect x="0" y="179" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="150" width="30" height="24" rx="5" fill="#FF4D6A"/><text x="21" y="166" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">P</text><text x="48" y="157" font-family="Inter,sans-serif" font-size="9.5" fill="#e8edf5">El mismo brazo hace control de calidad dimensional:</text><text x="48" y="171" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa">mide con ultrasónico si una pieza entra en tolerancia.</text></g>
+            <g class="fade"><rect x="0" y="180" width="380" height="36" rx="0" fill="rgba(0,212,255,.04)"/><rect x="0" y="215" width="380" height="1" fill="rgba(255,255,255,.06)"/><rect x="6" y="186" width="30" height="24" rx="5" fill="#00D4FF"/><text x="21" y="202" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#0a0e1a" text-anchor="middle">E</text><text x="48" y="193" font-family="Inter,sans-serif" font-size="9.5" fill="#e8edf5">Eliminar el brazo: usar deflectores + servomotores.</text><text x="48" y="207" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa">Más simple, más rápido, menos puntos de falla.</text></g>
+            <g class="fade"><rect x="0" y="216" width="380" height="36" rx="0" fill="rgba(0,200,150,.04)"/><rect x="6" y="222" width="30" height="24" rx="5" fill="#00C896"/><text x="21" y="238" font-family="Space Grotesk,sans-serif" font-size="14" font-weight="700" fill="#0a0e1a" text-anchor="middle">R</text><text x="48" y="229" font-family="Inter,sans-serif" font-size="9.5" fill="#e8edf5">Reordenar: mover el contenedor correcto debajo</text><text x="48" y="243" font-family="Inter,sans-serif" font-size="9.5" fill="#7a8baa">del punto de descarte, en vez de mover el residuo.</text></g>
+          </svg>
+          <div class="controls">
+            <button class="btn primary" data-play="scampExSVG">▶ Revelar</button>
+            <button class="btn" data-step="scampExSVG">Paso ⏭</button>
+            <button class="btn" data-reset="scampExSVG">↺</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 10 — HERRAMIENTAS AVANZADAS
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-avanzadas">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Si querés ir más allá</div>
+      <h2>Herramientas para avanzar</h2>
+      <p>No son obligatorias. Pero si ya manejás Brainstorming y SCAMPER, estas son el siguiente nivel.</p>
+    </div>
+    <div class="card-row cols3">
+      <div class="card cyan">
+        <div class="c-label">Análisis Morfológico · La Caja de Zwicky</div>
+        <h4>Para crear sistemáticamente</h4>
+        <p>Descomponés el sistema en subsistemas y generás opciones para cada uno. Al combinarlos, explorás todas las arquitecturas posibles.</p>
+        <div class="consigna" style="margin-top:.7rem;font-size:.77rem">
+          <b>Ejemplo — seguimiento solar</b>
+          (motor: DC / paso a paso / servo) × (sensor: LDR / encoder / GPS) × (control: Arduino / PLC / Raspberry) → cada combinación es una arquitectura distinta.
+        </div>
+      </div>
+      <div class="card amber">
+        <div class="c-label">TRIZ · 40 principios de invención</div>
+        <h4>Para resolver contradicciones</h4>
+        <p>Cuando dos requisitos se contradicen (preciso pero barato, liviano pero resistente), TRIZ tiene principios catalogados de millones de patentes.</p>
+        <div class="consigna" style="margin-top:.7rem;font-size:.77rem">
+          <b>Ejemplo</b>
+          "Alta precisión del encoder pero bajo costo" → contradicción técnica → TRIZ: principio de "otro punto de vista" o "parámetro cambiante".
+        </div>
+      </div>
+      <div class="card good">
+        <div class="c-label">Matriz de Pugh · Para converger</div>
+        <h4>Para elegir con criterio</h4>
+        <p>Puntuás cada idea contra tus objetivos SMART en una tabla. Convierte la elección de diseño en algo objetivo y defendible ante el jurado.</p>
+        <div class="consigna" style="margin-top:.7rem;font-size:.77rem">
+          <b>Ejemplo</b>
+          5 arquitecturas × 4 criterios (costo, precisión, robustez, complejidad) → puntaje total → decisión de diseño justificable.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 11 — FLUJO COMPLETO ANIMADO
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-flujo">
+  <div class="slide-wrap">
+    <div class="sec-head center" style="text-align:center;max-width:none;margin-bottom:1.4rem">
+      <div class="eyebrow" style="justify-content:center"><span style="display:block;width:1.8rem;height:1.5px;background:var(--accent)"></span>Síntesis<span style="display:block;width:1.8rem;height:1.5px;background:var(--accent)"></span></div>
+      <h2>El flujo completo de la unidad</h2>
+      <p>Así se conecta todo lo que vimos. Al terminar, tenés el paquete completo para pasar al diseño.</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label">
+        <span class="pname">Flujo — paso a paso</span>
+        <span class="pcount" id="flujoCount">0 / 4</span>
+      </div>
+      <svg class="diagram" id="flujoSVG" viewBox="0 0 860 200" xmlns="http://www.w3.org/2000/svg">
+        <g class="fade">
+          <rect x="10" y="40" width="190" height="120" rx="10" fill="rgba(155,89,182,.08)" stroke="#9B59B6" stroke-width="1.6"/>
+          <circle cx="50" cy="78" r="22" fill="#9B59B6" opacity=".12" stroke="#9B59B6" stroke-width="1.4"/>
+          <text x="50" y="82" font-family="JetBrains Mono,monospace" font-size="16" font-weight="600" fill="#9B59B6" text-anchor="middle">1</text>
+          <text x="130" y="72" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#9B59B6" text-anchor="middle">PROBLEMA</text>
+          <text x="130" y="86" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#9B59B6" text-anchor="middle">TÉCNICO</text>
+          <text x="105" y="118" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">Enunciado claro,</text>
+          <text x="105" y="131" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">sin presuponer</text>
+          <text x="105" y="144" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">componentes</text>
+        </g>
+        <g class="fade">
+          <line x1="201" y1="100" x2="228" y2="100" stroke="#FFB800" stroke-width="2"/>
+          <polygon points="228,94 240,100 228,106" fill="#FFB800"/>
+          <rect x="241" y="40" width="190" height="120" rx="10" fill="rgba(255,184,0,.08)" stroke="#FFB800" stroke-width="1.6"/>
+          <circle cx="281" cy="78" r="22" fill="#FFB800" opacity=".12" stroke="#FFB800" stroke-width="1.4"/>
+          <text x="281" y="82" font-family="JetBrains Mono,monospace" font-size="16" font-weight="600" fill="#FFB800" text-anchor="middle">2</text>
+          <text x="361" y="79" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#FFB800" text-anchor="middle">OBJETIVOS</text>
+          <text x="361" y="93" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#FFB800" text-anchor="middle">SMART</text>
+          <text x="336" y="118" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">Medible con</text>
+          <text x="336" y="131" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">instrumento real</text>
+        </g>
+        <g class="fade">
+          <line x1="432" y1="100" x2="459" y2="100" stroke="#00D4FF" stroke-width="2"/>
+          <polygon points="459,94 471,100 459,106" fill="#00D4FF"/>
+          <rect x="472" y="40" width="190" height="120" rx="10" fill="rgba(0,212,255,.08)" stroke="#00D4FF" stroke-width="1.6"/>
+          <circle cx="512" cy="78" r="22" fill="#00D4FF" opacity=".12" stroke="#00D4FF" stroke-width="1.4"/>
+          <text x="512" y="82" font-family="JetBrains Mono,monospace" font-size="16" font-weight="600" fill="#00D4FF" text-anchor="middle">3</text>
+          <text x="592" y="72" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00D4FF" text-anchor="middle">IDEACIÓN</text>
+          <text x="567" y="100" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">Brainstorming +</text>
+          <text x="567" y="113" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">SCAMPER</text>
+          <text x="567" y="126" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">(divergir)</text>
+        </g>
+        <g class="fade">
+          <line x1="663" y1="100" x2="690" y2="100" stroke="#00C896" stroke-width="2"/>
+          <polygon points="690,94 702,100 690,106" fill="#00C896"/>
+          <rect x="703" y="40" width="155" height="120" rx="10" fill="rgba(0,200,150,.12)" stroke="#00C896" stroke-width="2"/>
+          <circle cx="736" cy="78" r="22" fill="#00C896" opacity=".18" stroke="#00C896" stroke-width="1.4"/>
+          <text x="736" y="82" font-family="JetBrains Mono,monospace" font-size="16" font-weight="600" fill="#00C896" text-anchor="middle">4</text>
+          <text x="800" y="79" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00C896" text-anchor="middle">SOLUCIÓN</text>
+          <text x="800" y="100" font-family="Inter,sans-serif" font-size="9" fill="#a8d8c4" text-anchor="middle">Evaluar y elegir</text>
+          <text x="800" y="113" font-family="Inter,sans-serif" font-size="9" fill="#a8d8c4" text-anchor="middle">con criterio</text>
+          <text x="800" y="126" font-family="Inter,sans-serif" font-size="9" fill="#a8d8c4" text-anchor="middle">(converger)</text>
+        </g>
+      </svg>
+      <div class="controls">
+        <button class="btn primary" data-play="flujoSVG">▶ Animar flujo</button>
+        <button class="btn" data-step="flujoSVG">Paso ⏭</button>
+        <button class="btn" data-reset="flujoSVG">↺</button>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:.9rem"><b>Al terminar esta unidad tenés:</b> un problema técnico sin presuponer dispositivos, objetivos medibles con instrumento, y una solución elegida con criterio técnico. Todo listo para diseñar.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 12 — EJERCICIO GRUPAL
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-ejercicio">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Ejercicio integrador</div>
+      <h2>Ahora les toca a ustedes</h2>
+      <p>Tomen el problema técnico de su proyecto y recorran las 3 partes de esta unidad. 55 minutos en total.</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label">
+        <span class="pname">Consignas — revelar en orden</span>
+        <span class="pcount" id="ejercCount">0 / 4</span>
+      </div>
+      <svg class="diagram" id="ejercSVG" viewBox="0 0 860 180" xmlns="http://www.w3.org/2000/svg">
+        <g class="fade">
+          <rect x="10" y="20" width="200" height="140" rx="8" fill="rgba(155,89,182,.06)" stroke="#9B59B6" stroke-width="1.4"/>
+          <circle cx="50" cy="55" r="18" fill="#9B59B6" opacity=".12" stroke="#9B59B6" stroke-width="1.3"/>
+          <text x="50" y="59" font-family="JetBrains Mono,monospace" font-size="14" font-weight="600" fill="#9B59B6" text-anchor="middle">1</text>
+          <rect x="148" y="25" width="50" height="18" rx="9" fill="rgba(155,89,182,.2)"/>
+          <text x="173" y="37" font-family="JetBrains Mono,monospace" font-size="8" fill="#9B59B6" text-anchor="middle">10 min</text>
+          <text x="115" y="50" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#9B59B6" text-anchor="middle">Revisá tu</text>
+          <text x="115" y="65" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#9B59B6" text-anchor="middle">enunciado</text>
+          <text x="110" y="93" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">¿Nombra Arduino,</text>
+          <text x="110" y="108" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">sensor, relay, servo?</text>
+          <text x="110" y="123" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">Si sí → reescribir</text>
+          <text x="110" y="138" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">sin componentes.</text>
+        </g>
+        <g class="fade">
+          <rect x="225" y="20" width="200" height="140" rx="8" fill="rgba(255,184,0,.06)" stroke="#FFB800" stroke-width="1.4"/>
+          <circle cx="265" cy="55" r="18" fill="#FFB800" opacity=".12" stroke="#FFB800" stroke-width="1.3"/>
+          <text x="265" y="59" font-family="JetBrains Mono,monospace" font-size="14" font-weight="600" fill="#FFB800" text-anchor="middle">2</text>
+          <rect x="363" y="25" width="50" height="18" rx="9" fill="rgba(255,184,0,.2)"/>
+          <text x="388" y="37" font-family="JetBrains Mono,monospace" font-size="8" fill="#FFB800" text-anchor="middle">15 min</text>
+          <text x="330" y="50" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#FFB800" text-anchor="middle">3 objetivos</text>
+          <text x="330" y="65" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#FFB800" text-anchor="middle">SMART</text>
+          <text x="325" y="93" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">Verbo + magnitud +</text>
+          <text x="325" y="108" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">instrumento. Distinguí</text>
+          <text x="325" y="123" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">función, objetivo</text>
+          <text x="325" y="138" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">y restricción.</text>
+        </g>
+        <g class="fade">
+          <rect x="440" y="20" width="200" height="140" rx="8" fill="rgba(0,212,255,.06)" stroke="#00D4FF" stroke-width="1.4"/>
+          <circle cx="480" cy="55" r="18" fill="#00D4FF" opacity=".12" stroke="#00D4FF" stroke-width="1.3"/>
+          <text x="480" y="59" font-family="JetBrains Mono,monospace" font-size="14" font-weight="600" fill="#00D4FF" text-anchor="middle">3</text>
+          <rect x="578" y="25" width="50" height="18" rx="9" fill="rgba(0,212,255,.2)"/>
+          <text x="603" y="37" font-family="JetBrains Mono,monospace" font-size="8" fill="#00D4FF" text-anchor="middle">20 min</text>
+          <text x="540" y="50" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00D4FF" text-anchor="middle">Brainstorming</text>
+          <text x="540" y="65" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00D4FF" text-anchor="middle">+ SCAMPER</text>
+          <text x="540" y="93" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">15 ideas mínimo.</text>
+          <text x="540" y="108" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">Después SCAMPER</text>
+          <text x="540" y="123" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">aplicado a la mejor</text>
+          <text x="540" y="138" font-family="Inter,sans-serif" font-size="9" fill="#7a8baa" text-anchor="middle">idea que surgió.</text>
+        </g>
+        <g class="fade">
+          <rect x="655" y="20" width="200" height="140" rx="8" fill="rgba(0,200,150,.08)" stroke="#00C896" stroke-width="1.6"/>
+          <circle cx="695" cy="55" r="18" fill="#00C896" opacity=".15" stroke="#00C896" stroke-width="1.3"/>
+          <text x="695" y="59" font-family="JetBrains Mono,monospace" font-size="14" font-weight="600" fill="#00C896" text-anchor="middle">4</text>
+          <rect x="793" y="25" width="50" height="18" rx="9" fill="rgba(0,200,150,.2)"/>
+          <text x="818" y="37" font-family="JetBrains Mono,monospace" font-size="8" fill="#00C896" text-anchor="middle">10 min</text>
+          <text x="755" y="50" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00C896" text-anchor="middle">Elegí y</text>
+          <text x="755" y="65" font-family="Space Grotesk,sans-serif" font-size="11" font-weight="700" fill="#00C896" text-anchor="middle">justificá</text>
+          <text x="755" y="93" font-family="Inter,sans-serif" font-size="9" fill="#a8d8c4" text-anchor="middle">¿Cuál resuelve</text>
+          <text x="755" y="108" font-family="Inter,sans-serif" font-size="9" fill="#a8d8c4" text-anchor="middle">mejor los objetivos</text>
+          <text x="755" y="123" font-family="Inter,sans-serif" font-size="9" fill="#a8d8c4" text-anchor="middle">SMART del paso 2?</text>
+          <text x="755" y="138" font-family="Inter,sans-serif" font-size="9" fill="#a8d8c4" text-anchor="middle">Justificá con datos.</text>
+        </g>
+      </svg>
+      <div class="controls">
+        <button class="btn primary" data-play="ejercSVG">▶ Revelar consignas</button>
+        <button class="btn" data-step="ejercSVG">Paso ⏭</button>
+        <button class="btn" data-reset="ejercSVG">↺</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 13 — CIERRE
+═══════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s-cierre">
+  <div class="slide-wrap" style="text-align:center;max-width:700px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:1.4rem"><span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span>Cierre<span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span></div>
+    <div class="closing-mark">Ya sabés QUÉ resolver<br>y CON QUÉ principio.</div>
+    <div class="closing-sub" style="margin-top:1.2rem;font-size:.9rem">Taller de Proyecto &nbsp;·&nbsp; Unidad 3 — Del Problema a la Solución</div>
+    <div style="margin-top:2rem;display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap">
+      <div style="background:var(--bg-raised);border:1px solid rgba(155,89,182,.3);border-radius:8px;padding:.7rem 1.1rem;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:#9B59B6">✓ Enunciado sin presuponer</div>
+      <div style="background:var(--bg-raised);border:1px solid rgba(255,184,0,.3);border-radius:8px;padding:.7rem 1.1rem;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:#FFB800">✓ Objetivos SMART medibles</div>
+      <div style="background:var(--bg-raised);border:1px solid rgba(0,212,255,.3);border-radius:8px;padding:.7rem 1.1rem;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:#00D4FF">✓ Brainstorming + SCAMPER</div>
+      <div style="background:var(--bg-raised);border:1px solid rgba(0,200,150,.35);border-radius:8px;padding:.7rem 1.1rem;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:#00C896">✓ Solución elegida con criterio</div>
+    </div>
+    <div style="margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--line)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);margin-bottom:.4rem">PRÓXIMO</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent)">Unidad 4 — Planificación y Diseño</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--text-dim);margin-top:.3rem">Gantt · Diagramas de proceso · Croquis · Planos · Inventario</div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const REDUCE = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* ── CONSTRUCTION ENGINE (idéntico a la cápsula de boceto) ── */
+  class Construction{
+    constructor(svg,{stepDuration=550}={}){
+      this.svg=svg; this.stepDuration=REDUCE?1:stepDuration;
+      this.elements=Array.from(svg.querySelectorAll('.draw,.fade'));
+      this.index=-1; this.timer=null; this.onChange=null;
+      this.elements.forEach(el=>this._prep(el));
+      this.setAll(false,{instant:true});
+    }
+    _prep(el){
+      if(!el.classList.contains('draw'))return;
+      if(!el.hasAttribute('stroke-dasharray')){
+        el.removeAttribute('pathLength'); el.style.vectorEffect='none';
+        let len=1; try{len=el.getTotalLength()||1}catch(e){}
+        el._len=len; el.style.strokeDasharray=len+' '+(len*2);
+      }else{ el._len=parseFloat(el.getAttribute('stroke-dasharray'))||1; }
+    }
+    setAll(shown,{instant=false}={}){ this.elements.forEach(el=>this._set(el,shown,instant)); }
+    _set(el,shown,instant){
+      if(el.classList.contains('draw')){
+        el.style.transition=instant?'none':`stroke-dashoffset ${this.stepDuration}ms cubic-bezier(.4,0,.2,1)`;
+        el.style.strokeDashoffset=shown?'0':(el._len||1);
+      }else{
+        el.style.transition=instant?'none':`opacity ${this.stepDuration*.65}ms ease`;
+        el.style.opacity=shown?'1':'0';
+      }
+    }
+    goto(target,{instantAll=false}={}){
+      clearInterval(this.timer);
+      target=Math.max(-1,Math.min(this.elements.length-1,target));
+      this.elements.forEach((el,i)=>{
+        const shown=i<=target, isEdge=(i===target&&!instantAll);
+        if(isEdge){
+          this._set(el,false,true); void el.getBoundingClientRect();
+          requestAnimationFrame(()=>requestAnimationFrame(()=>this._set(el,true,false)));
+        }else{ this._set(el,shown,true); }
+      });
+      this.index=target;
+      if(this.onChange)this.onChange(target,this.elements.length);
+    }
+    reset(){this.goto(-1)}
+    step(){this.goto(this.index+1)}
+    back(){this.goto(this.index-1)}
+    playAll(){
+      this.reset(); let i=0;
+      const next=()=>{if(i>=this.elements.length)return; this.goto(i); i++; this.timer=setTimeout(next,this.stepDuration*.6);};
+      this.timer=setTimeout(next,100);
+    }
+  }
+
+  /* ── REGISTRY ─────────────────────────────────────────────── */
+  const reg={};
+  document.querySelectorAll('svg.diagram').forEach(svg=>{ reg[svg.id]=new Construction(svg); });
+  document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.play].playAll()));
+  document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.step].step()));
+  document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.back].back()));
+  document.querySelectorAll('[data-reset]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.reset].reset()));
+
+  function bindCounter(svgId,elId){
+    const c=reg[svgId],el=document.getElementById(elId);
+    if(!c||!el)return;
+    const total=c.elements.length;
+    c.onChange=(idx)=>{el.textContent=(idx+1)+' / '+total};
+    el.textContent='0 / '+total;
+  }
+  bindCounter('roadmapSVG','roadmapCount');
+  bindCounter('espacioSVG','espacioCount');
+  bindCounter('checkSVG','checkCount');
+  bindCounter('smartSVG','');
+  bindCounter('divSVG','divCount');
+  bindCounter('brainSVG','brainCount');
+  bindCounter('scampDefSVG','scampDefCount');
+  bindCounter('scampExSVG','scampExCount');
+  bindCounter('flujoSVG','flujoCount');
+  bindCounter('ejercSVG','ejercCount');
+
+  /* ── SLIDE NAV ────────────────────────────────────────────── */
+  const slides=Array.from(document.querySelectorAll('.slide'));
+  const dotNav=document.getElementById('dotNav');
+  const slideCurrentEl=document.getElementById('slideCurrent');
+  const slideTotalEl=document.getElementById('slideTotal');
+  const progressFill=document.getElementById('progressFill');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  let current=0;
+  slideTotalEl.textContent=String(slides.length).padStart(2,'0');
+  slides.forEach((sl,i)=>{
+    const b=document.createElement('button');
+    b.setAttribute('aria-label','Ir a pantalla '+(i+1));
+    b.addEventListener('click',()=>goTo(i));
+    dotNav.appendChild(b);
+  });
+  const dots=Array.from(dotNav.children);
+  function setActive(i){
+    current=i;
+    dots.forEach((d,idx)=>d.classList.toggle('active',idx===i));
+    slideCurrentEl.textContent=String(i+1).padStart(2,'0');
+    progressFill.style.width=(((i+1)/slides.length)*100)+'%';
+    prevBtn.disabled=i===0; nextBtn.disabled=i===slides.length-1;
+  }
+  function goTo(i){
+    i=Math.max(0,Math.min(slides.length-1,i));
+    slides[i].scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'});
+  }
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>0.55){const idx=slides.indexOf(e.target);if(idx!==-1)setActive(idx);}});
+  },{threshold:[0.55]});
+  slides.forEach(sl=>io.observe(sl));
+  prevBtn.addEventListener('click',()=>goTo(current-1));
+  nextBtn.addEventListener('click',()=>goTo(current+1));
+  window.addEventListener('keydown',(e)=>{
+    const tag=(e.target&&e.target.tagName)||'';
+    if(tag==='INPUT'||tag==='TEXTAREA')return;
+    if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();goTo(current+1);}
+    else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();goTo(current-1);}
+    else if(e.key==='Home'){e.preventDefault();goTo(0);}
+    else if(e.key==='End'){e.preventDefault();goTo(slides.length-1);}
+  });
+  setActive(0);
+})();
+</script>
+</body>
+</html>

@@ -131,6 +131,7 @@ a { color: inherit; }
   border-radius: 28px;
   background: linear-gradient(135deg, rgba(17,24,56,0.95), rgba(10,14,42,0.98));
   padding: 34px 34px 30px;
+  margin-bottom: 1.2em;
 }
 
 .hero-main::after {
@@ -165,7 +166,7 @@ a { color: inherit; }
   font-size: clamp(28px, 5vw, 52px);
   line-height: 1.04;
   color: var(--white);
-  max-width: 11ch;
+  max-width: 25ch;
 }
 
 .hero-main h2 em {
@@ -175,7 +176,7 @@ a { color: inherit; }
 
 .hero-main p {
   margin: 0;
-  max-width: 64ch;
+  max-width: 80ch;
   color: var(--muted);
   font-size: 15px;
 }
@@ -542,38 +543,17 @@ a { color: inherit; }
     </nav>
   </header>
 
-  <section class="hero" id="top">
+  <section id="top">
     <div class="hero-main">
       <div class="tag">Campus académico · Acceso oficial</div>
       <h2>Portal oficial de acceso a <em>Taller de Proyecto</em>.</h2>
       <p>Ingreso institucional a los materiales de 1° y 2° año. Desde esta portada se accede a las unidades, a las guías docentes y a los cuadernos de trabajo publicados.</p>
-      <div class="hero-pills">
-        <span class="pill"><span class="dot" style="background:#FFB800"></span>Unidad 1 · La Ingeniería empieza entendiendo</span>
-        <span class="pill"><span class="dot" style="background:#00D4FF"></span>Unidad 2 · Preguntas disparadoras</span>
-        <span class="pill"><span class="dot" style="background:#FFB800"></span>Unidad 3 · Del Problema a la Solución</span>
-        <span class="pill"><span class="dot" style="background:#FFB800"></span>Unidad 4 · Metodología y Diseño</span>
-        <span class="pill"><span class="dot" style="background:#00D4FF"></span>Unidad 5 · Materiales, Construcción y Validación</span>
-        <span class="pill"><span class="dot" style="background:#FFB800"></span>Unidades 6 a 14 · Proyecto Mi Kit</span>
-        <span class="pill"><span class="dot" style="background:#00C896"></span>Acceso oficial de la materia</span>
-        <span class="pill"><span class="dot" style="background:#00C896"></span>Cápsula · Boceto a mano alzada</span>
-        <span class="pill"><span class="dot" style="background:#00C896"></span>Cápsula · Lógica de Programación para Arduino</span>
-      </div>
     </div>
 
     <div class="hero-side">
-      <div class="info-card">
-        <h3>Ámbito académico</h3>
-        <p>Portal de ingreso oficial a los materiales de la materia para 1° y 2° año.</p>
-      </div>
       <div class="stats">
         <div class="stat"><strong>14</strong><span>unidades</span></div>
-        <div class="stat"><strong>5</strong><span>separadores</span></div>
         <div class="stat"><strong>2</strong><span>cápsulas</span></div>
-        <div class="stat"><strong>OF</strong><span>oficial</span></div>
-      </div>
-      <div class="info-card">
-        <h3>Trayecto continuo</h3>
-        <p>Estructura académica secuencial que organiza separadores y unidades en orden de progresión.</p>
       </div>
     </div>
   </section>
@@ -619,14 +599,14 @@ a { color: inherit; }
             <p>Secuencia, orientación y pautas de dictado.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/ingenieria-empieza-entendiendo/La%20Ingenier%C3%ADa%20empieza%20entendiendo.pptx">
+          <a class="resource-card" href="unidades/ingenieria-empieza-entendiendo/ingenier%C3%ADa-empieza-entendiendo-presentacion.html">
             <div class="resource-top">
               <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
-              <span class="resource-type pptx">Presentación</span>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>La Ingeniería empieza Entendiendo</h5>
+            <h5>Presentación de la unidad</h5>
             <p>Presentación principal de la unidad.</p>
-            <span class="resource-open">Descargar →</span>
+            <span class="resource-open">Abrir →</span>
           </a>
         </div>
       </article>
@@ -662,14 +642,14 @@ a { color: inherit; }
             <p>Organización de la clase y claves didácticas.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/preguntas-disparadoras/Preguntas%20%20Disparadoras%20-%20Del%20problema%20vago%20al%20problema%20t%C3%A9cnico.pptx">
+          <a class="resource-card" href="unidades/preguntas-disparadoras/preguntas-disparadoras-presentacion.html">
             <div class="resource-top">
               <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
-              <span class="resource-type pptx">Presentación</span>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>Preguntas Disparadoras</h5>
+            <h5>Presentación de la unidad</h5>
             <p>Arranque de la unidad técnica.</p>
-            <span class="resource-open">Descargar →</span>
+            <span class="resource-open">Abrir →</span>
           </a>
         </div>
       </article>
@@ -684,7 +664,7 @@ a { color: inherit; }
           <p>Transición del problema técnico definido a la solución propuesta. Reúne el cuaderno del alumno, la guía docente y la presentación de la unidad.</p>
         </div>
         <div class="resource-grid">
-          <a class="resource-card" href="unidades/del-problema-a-la-solucion/del-problema-tecnico-a-la-solucion-cuaderno.html">
+          <a class="resource-card" href="unidades/del-problema-a-la-solucion/del-problema-a-la-solucion-cuaderno.html">
             <div class="resource-top">
               <div class="resource-icon" style="background:rgba(255,184,0,0.12)">✏️</div>
               <span class="resource-type html">Alumno</span>
@@ -693,7 +673,7 @@ a { color: inherit; }
             <p>Actividades y trabajo guiado de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/del-problema-a-la-solucion/del-problema-tecnico-a-la-solucion-guia-docente.html">
+          <a class="resource-card" href="unidades/del-problema-a-la-solucion/del-problema-a-la-solucion-guia-docente.html">
             <div class="resource-top">
               <div class="resource-icon" style="background:rgba(122,139,170,0.15)">🎓</div>
               <span class="resource-type html">Docente</span>
@@ -702,14 +682,14 @@ a { color: inherit; }
             <p>Secuencia, orientación y pautas de dictado.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/del-problema-a-la-solucion/Del%20Problema%20t%C3%A9cnico%20a%20la%20soluci%C3%B3n.pptx">
+          <a class="resource-card" href="unidades/del-problema-a-la-solucion/del-problema-a-la-solucion-presentacion.html">
             <div class="resource-top">
               <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
-              <span class="resource-type pptx">Presentación</span>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>Del Problema técnico a la solución</h5>
+            <h5>Presentación de la unidad</h5>
             <p>Presentación principal de la unidad.</p>
-            <span class="resource-open">Descargar →</span>
+            <span class="resource-open">Abrir →</span>
           </a>
         </div>
       </article>
@@ -816,13 +796,13 @@ a { color: inherit; }
             <p>Actividades y trabajo guiado de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/metodologia-agil/metodologia-agil-capsula.html">
+          <a class="resource-card" href="unidades/metodologia-agil/metodologia-agil-presentacion.html">
             <div class="resource-top">
-              <div class="resource-icon" style="background:rgba(0,200,150,0.12)">🎬</div>
-              <span class="resource-type html">Cápsula</span>
+              <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>Cápsula interactiva</h5>
-            <p>Lección interactiva de la unidad.</p>
+            <h5>Presentación de la unidad</h5>
+            <p>Presentación principal de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
         </div>
@@ -847,13 +827,13 @@ a { color: inherit; }
             <p>Actividades y trabajo guiado de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/planificacion-temporal/planificacion-temporal-capsula.html">
+          <a class="resource-card" href="unidades/planificacion-temporal/planificacion-temporal-presentacion.html">
             <div class="resource-top">
-              <div class="resource-icon" style="background:rgba(0,200,150,0.12)">🎬</div>
-              <span class="resource-type html">Cápsula</span>
+              <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>Cápsula interactiva</h5>
-            <p>Lección interactiva de la unidad.</p>
+            <h5>Presentación de la unidad</h5>
+            <p>Presentación principal de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
         </div>
@@ -878,13 +858,13 @@ a { color: inherit; }
             <p>Actividades y trabajo guiado de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/modelado-3d-con-tinkercad/modelado-3d-con-tinkercad-capsula.html">
+          <a class="resource-card" href="unidades/modelado-3d-con-tinkercad/modelado-3d-con-tinkercad-presentacion.html">
             <div class="resource-top">
-              <div class="resource-icon" style="background:rgba(0,200,150,0.12)">🎬</div>
-              <span class="resource-type html">Cápsula</span>
+              <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>Cápsula interactiva</h5>
-            <p>Lección interactiva de la unidad.</p>
+            <h5>Presentación de la unidad</h5>
+            <p>Presentación principal de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
         </div>
@@ -909,13 +889,13 @@ a { color: inherit; }
             <p>Actividades y trabajo guiado de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/vistas-planos-y-despiece/vistas-planos-y-despiece-capsula.html">
+          <a class="resource-card" href="unidades/vistas-planos-y-despiece/vistas-planos-y-despiece-presentacion.html">
             <div class="resource-top">
-              <div class="resource-icon" style="background:rgba(0,200,150,0.12)">🎬</div>
-              <span class="resource-type html">Cápsula</span>
+              <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>Cápsula interactiva</h5>
-            <p>Lección interactiva de la unidad.</p>
+            <h5>Presentación de la unidad</h5>
+            <p>Presentación principal de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
         </div>
@@ -940,13 +920,13 @@ a { color: inherit; }
             <p>Actividades y trabajo guiado de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/inventario-y-recursos/inventario-y-recursos-capsula.html">
+          <a class="resource-card" href="unidades/inventario-y-recursos/inventario-y-recursos-presentacion.html">
             <div class="resource-top">
-              <div class="resource-icon" style="background:rgba(0,200,150,0.12)">🎬</div>
-              <span class="resource-type html">Cápsula</span>
+              <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>Cápsula interactiva</h5>
-            <p>Lección interactiva de la unidad.</p>
+            <h5>Presentación de la unidad</h5>
+            <p>Presentación principal de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
         </div>
@@ -971,13 +951,13 @@ a { color: inherit; }
             <p>Actividades y trabajo guiado de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/presupuesto-y-factibilidad/presupuesto-y-factibilidad-capsula.html">
+          <a class="resource-card" href="unidades/presupuesto-y-factibilidad/presupuesto-y-factibilidad-presentacion.html">
             <div class="resource-top">
-              <div class="resource-icon" style="background:rgba(0,200,150,0.12)">🎬</div>
-              <span class="resource-type html">Cápsula</span>
+              <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>Cápsula interactiva</h5>
-            <p>Lección interactiva de la unidad.</p>
+            <h5>Presentación de la unidad</h5>
+            <p>Presentación principal de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
         </div>
@@ -1002,13 +982,13 @@ a { color: inherit; }
             <p>Actividades y trabajo guiado de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/ferreteria-y-electronica/ferreteria-y-electronica-capsula.html">
+          <a class="resource-card" href="unidades/ferreteria-y-electronica/ferreteria-y-electronica-presentacion.html">
             <div class="resource-top">
-              <div class="resource-icon" style="background:rgba(0,200,150,0.12)">🎬</div>
-              <span class="resource-type html">Cápsula</span>
+              <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>Cápsula interactiva</h5>
-            <p>Lección interactiva de la unidad.</p>
+            <h5>Presentación de la unidad</h5>
+            <p>Presentación principal de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
         </div>
@@ -1033,13 +1013,13 @@ a { color: inherit; }
             <p>Actividades y trabajo guiado de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/maquinas-y-seguridad-industrial/maquinas-y-seguridad-industrial-capsula.html">
+          <a class="resource-card" href="unidades/maquinas-y-seguridad-industrial/maquinas-y-seguridad-industrial-presentacion.html">
             <div class="resource-top">
-              <div class="resource-icon" style="background:rgba(0,200,150,0.12)">🎬</div>
-              <span class="resource-type html">Cápsula</span>
+              <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>Cápsula interactiva</h5>
-            <p>Lección interactiva de la unidad.</p>
+            <h5>Presentación de la unidad</h5>
+            <p>Presentación principal de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
         </div>
@@ -1064,13 +1044,13 @@ a { color: inherit; }
             <p>Actividades y trabajo guiado de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
-          <a class="resource-card" href="unidades/ensamblaje-calidad-y-validacion/ensamblaje-calidad-y-validacion-capsula.html">
+          <a class="resource-card" href="unidades/ensamblaje-calidad-y-validacion/ensamblaje-calidad-y-validacion-presentacion.html">
             <div class="resource-top">
-              <div class="resource-icon" style="background:rgba(0,200,150,0.12)">🎬</div>
-              <span class="resource-type html">Cápsula</span>
+              <div class="resource-icon" style="background:rgba(255,184,0,0.12)">📊</div>
+              <span class="resource-type html">Presentación</span>
             </div>
-            <h5>Cápsula interactiva</h5>
-            <p>Lección interactiva de la unidad.</p>
+            <h5>Presentación de la unidad</h5>
+            <p>Presentación principal de la unidad.</p>
             <span class="resource-open">Abrir →</span>
           </a>
         </div>

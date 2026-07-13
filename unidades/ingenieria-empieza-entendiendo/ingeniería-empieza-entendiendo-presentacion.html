@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Ingeniería empieza Entendiendo | Taller de Proyecto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0e1117;
+  --bg-soft:  #151a22;
+  --bg-raised:#1c2330;
+  --line:     #ffffff0f;
+  --accent:   #FFB800;
+  --accent2:  #B38200;
+  --cyan:     #00D4FF;
+  --purple:   #9B59B6;
+  --green:    #00C896;
+  --red:      #FF4D6A;
+  --text:     #e8edf5;
+  --text-dim: #7a8baa;
+  --text-mid: #b0bacb;
+  --radius:   4px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+::selection{background:var(--accent);color:#1a1400}
+body{
+  background: radial-gradient(ellipse 1400px 800px at 15% -5%,#2a2010 0%,transparent 55%),
+              radial-gradient(ellipse 800px 600px at 90% 25%,#1f1608 0%,transparent 50%),
+              var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;margin:0;color:#f0f4fa}
+.mono{font-family:'JetBrains Mono',monospace}
+
+.slide{
+  min-height:100vh;width:100%;
+  display:flex;align-items:center;justify-content:center;
+  padding:4.5rem 2.8rem 2rem;
+  scroll-snap-align:start;scroll-snap-stop:always;
+  position:relative;overflow:hidden;
+}
+.slide+.slide{border-top:1px solid var(--line)}
+.slide-wrap{width:100%;max-width:1380px;margin:0 auto}
+
+.topbar{
+  position:fixed;top:0;left:0;width:100%;height:3.2rem;
+  background:rgba(14,17,23,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);z-index:60;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.6rem;
+}
+.brandmark{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.82rem;
+  color:rgba(232,237,245,.7);display:flex;align-items:center;gap:.4rem;pointer-events:none;
+}
+.brandmark span{color:var(--accent)}
+.slide-counter{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-dim);letter-spacing:.05em}
+.slide-counter b{color:var(--accent)}
+.progress-fill{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:61;transition:width .35s ease}
+.dotnav{position:fixed;right:1.3rem;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:.5rem;align-items:center}
+.dotnav button{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);border:none;padding:0;cursor:pointer;transition:background .2s,transform .2s}
+.dotnav button:hover{background:rgba(255,255,255,.45)}
+.dotnav button.active{background:var(--accent);transform:scale(1.6)}
+.arrownav{position:fixed;right:1.3rem;bottom:1.4rem;z-index:60;display:flex;gap:.45rem}
+.arrownav button{width:34px;height:34px;border-radius:50%;background:var(--bg-raised);border:1px solid rgba(255,255,255,.12);color:var(--text);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.arrownav button:hover{border-color:var(--accent);background:#332a15}
+.arrownav button:disabled{opacity:.2;cursor:default}
+
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.eyebrow::before{content:'';display:block;width:1.8rem;height:1.5px;background:var(--accent)}
+h1.title{font-size:clamp(2.2rem,4.5vw,3.6rem);line-height:1.0;letter-spacing:-.015em;max-width:15ch}
+h1.title em{font-style:normal;color:var(--accent)}
+h2.title{font-size:clamp(1.2rem,2.2vw,1.6rem);max-width:42ch;margin-top:.7rem;color:var(--text-mid);font-weight:400}
+.sec-head{max-width:70ch;margin-bottom:1.4rem}
+.sec-head h2{font-size:clamp(1.3rem,2.2vw,1.8rem)}
+.sec-head p{color:var(--text-dim);margin-top:.45rem;font-size:.88rem;line-height:1.55}
+.sec-head.center{max-width:none;text-align:center;margin-left:auto;margin-right:auto}
+.sec-head.center .eyebrow{justify-content:center}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;align-items:center}
+.split.wide{grid-template-columns:1.15fr .85fr}
+.split.flip{grid-template-columns:.85fr 1.15fr}
+.notes{color:var(--text-dim);font-size:.86rem}
+.notes ul{padding-left:1rem;margin:.5rem 0}
+.notes li{margin-bottom:.4rem;line-height:1.45}
+.notes li b{color:var(--text)}
+
+.tip{margin-top:.8rem;background:linear-gradient(180deg,#2a2010,#221a0c);border:1px solid rgba(255,184,0,.2);border-left:3px solid var(--accent);border-radius:var(--radius);padding:.65rem .9rem;font-size:.8rem;color:#e0d4a8;line-height:1.45}
+.tip b{color:var(--accent)}
+.warn{margin-top:.8rem;background:linear-gradient(180deg,#1f0e12,#190b0f);border:1px solid rgba(255,77,106,.18);border-left:3px solid var(--red);border-radius:var(--radius);padding:.65rem .9rem;font-size:.8rem;color:#e8aab5;line-height:1.45}
+.warn b{color:var(--red)}
+.consigna{background:var(--bg-raised);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:var(--radius);padding:.85rem 1.05rem;font-size:.86rem;color:var(--text-mid);line-height:1.5;margin:.65rem 0}
+.consigna b{color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:.3rem}
+
+.svg-panel{background:var(--bg-raised);border:1px solid rgba(255,184,0,.14);border-radius:8px;padding:1.1rem 1.2rem 1rem}
+.panel-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.55rem}
+.panel-label .pname{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.panel-label .pcount{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-dim)}
+svg.diagram{width:100%;height:auto;display:block;max-height:52vh}
+.fade{opacity:0}
+
+.controls{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-top:.7rem}
+.btn{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.03em;text-transform:uppercase;background:var(--bg-raised);color:var(--text);border:1px solid rgba(255,255,255,.12);padding:.38rem .7rem;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .15s}
+.btn:hover{background:#332a15;border-color:var(--accent)}
+.btn:active{transform:scale(.96)}
+.btn.primary{background:var(--accent);color:#1a1400;border-color:var(--accent);font-weight:700}
+.btn.primary:hover{filter:brightness(1.1)}
+
+.card-row{display:grid;gap:.8rem}
+.card-row.cols2{grid-template-columns:1fr 1fr}
+.card-row.cols3{grid-template-columns:repeat(3,1fr)}
+.card-row.cols4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;padding:.85rem 1rem}
+.card.good{border-left:3px solid var(--green)}
+.card.bad{border-left:3px solid var(--red)}
+.card.amber{border-left:3px solid var(--accent)}
+.card.purple{border-left:3px solid var(--purple)}
+.card.cyan{border-left:3px solid var(--cyan)}
+.card .c-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.35rem}
+.card.good .c-label{color:var(--green)}
+.card.bad .c-label{color:var(--red)}
+.card.amber .c-label{color:var(--accent)}
+.card.purple .c-label{color:var(--purple)}
+.card.cyan .c-label{color:var(--cyan)}
+.card h4{font-size:.94rem;margin-bottom:.3rem;color:#f0f4fa}
+.card p{font-size:.8rem;color:var(--text-dim);line-height:1.45}
+
+/* 4-component rows */
+.comp-row{display:grid;grid-template-columns:150px 1fr 1fr;gap:1rem;align-items:start;padding:.9rem 1.05rem;background:var(--bg-raised);border-radius:8px;border-left:3px solid var(--cc,var(--accent));margin-bottom:.6rem}
+.comp-badge{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:800;letter-spacing:.06em;color:var(--cc,var(--accent))}
+.comp-q{font-size:.85rem;color:var(--text);font-style:italic;line-height:1.5}
+.comp-trap{font-size:.7rem;color:rgba(255,77,106,.7);margin-top:.35rem;line-height:1.4}
+.comp-v{font-size:.78rem;color:var(--text-dim);line-height:1.45}
+
+/* Formula box */
+.fbox{background:var(--bg);border:2px solid var(--green);border-radius:8px;padding:1.3rem 1.6rem;margin:1rem 0}
+.flabel{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:.6rem}
+.ftext{font-size:1rem;color:var(--text);line-height:1.9}
+.fc2{color:var(--cyan);font-weight:700} .fp2{color:var(--accent);font-weight:700}
+.fv2{color:var(--purple);font-weight:700} .fq2{color:var(--red);font-weight:700} .fe2{color:var(--green);font-weight:700}
+.vlist{display:flex;flex-direction:column;gap:.45rem;margin-top:.8rem}
+.vrow{display:flex;align-items:flex-start;gap:.6rem;padding:.55rem .9rem;border-radius:7px;font-size:.83rem}
+.vrow.ok{background:rgba(0,200,150,.08);color:var(--green)}
+.vrow.bad{background:rgba(255,77,106,.08);color:var(--red);font-weight:600}
+.vrow .vt{color:var(--text)} .vrow.bad .vt{color:var(--red)}
+
+/* Error cards */
+.egrid{display:flex;flex-direction:column;gap:.6rem}
+.ecard{background:var(--bg-raised);border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.ehead{display:flex;align-items:center;gap:.55rem;padding:.6rem .95rem;background:rgba(255,77,106,.08);border-bottom:1px solid rgba(255,77,106,.12)}
+.etitle{font-size:.82rem;font-weight:700;color:var(--red)}
+.ebody{display:grid;grid-template-columns:1fr 1fr}
+.eno,.esi{padding:.65rem .95rem}
+.eno{border-right:1px solid var(--line)}
+.elabel{font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem}
+.eno .elabel{color:var(--red)} .esi .elabel{color:var(--green)}
+.etext{font-size:.78rem;color:var(--text);font-style:italic;line-height:1.45}
+
+/* Sensor table */
+.stbl{background:var(--bg-raised);border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.stbl table{width:100%;border-collapse:collapse}
+.stbl th{background:#241c0a;padding:.55rem .8rem;text-align:left;font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.stbl td{padding:.5rem .7rem;font-size:.8rem;color:var(--text);border-top:1px solid var(--line)}
+.vpill{display:inline-block;padding:.15rem .55rem;border-radius:20px;font-size:.68rem;font-weight:700}
+
+/* Walkthrough */
+.wt{background:var(--bg-raised);border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.wh{background:#241c0a;padding:.7rem 1.1rem;display:flex;align-items:center;gap:.7rem}
+.wtg{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:rgba(255,184,0,.12);border:1px solid rgba(255,184,0,.3);padding:.2rem .6rem;border-radius:20px}
+.wh p{font-size:.85rem;color:var(--text);font-style:italic}
+.ws{display:grid;grid-template-columns:130px 1fr;align-items:start;border-top:1px solid var(--line)}
+.wl{padding:.7rem .85rem;font-size:.65rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-right:1px solid var(--line)}
+.wc{padding:.7rem 1.05rem;font-size:.85rem;color:var(--text);line-height:1.5}
+.wc.res{background:rgba(0,200,150,.06);border-left:2px solid var(--green)}
+
+/* Ejercicio fill-in */
+.exgrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.exblock{background:var(--bg-raised);border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.exhead{padding:.7rem 1rem;background:rgba(255,184,0,.06);font-size:.85rem;color:var(--text);font-weight:700}
+.exrow{display:grid;grid-template-columns:120px 1fr;border-top:1px solid var(--line)}
+.exrl{padding:.6rem .8rem;font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--accent);border-right:1px solid var(--line)}
+.exv{padding:.5rem .8rem}
+.exv input{width:100%;background:transparent;border:none;border-bottom:1px dashed rgba(255,255,255,.15);color:var(--text);font-size:.82rem;padding:.25rem 0;outline:none;font-style:italic}
+.exv input:focus{border-bottom-color:var(--accent)}
+.exv input::placeholder{color:var(--text-dim)}
+
+.divider{text-align:center;padding:2rem 0}
+.closing-mark{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;color:#f0f4fa}
+.closing-sub{color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:.82rem;margin-top:.8rem;letter-spacing:.04em}
+
+.hero-meta{display:flex;gap:4rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line)}
+.hero-meta div{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);width:28%}
+.hero-meta b{display:block;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;margin-bottom:.1rem}
+
+/* Hook / cliffhanger slide */
+.hook-q{font-size:5rem;color:var(--accent);opacity:.15;font-weight:800;line-height:1}
+.hook-text{font-size:clamp(1.6rem,3vw,2.4rem);color:var(--text);font-weight:700;margin-top:1rem}
+
+/* Spoiler card */
+.spoiler-box{background:var(--bg-raised);border:1.5px solid var(--accent);border-radius:10px;padding:1.6rem 1.8rem;margin-top:1.2rem}
+.spoiler-tag{display:inline-block;background:rgba(255,184,0,.12);border:1px solid rgba(255,184,0,.3);color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .8rem;border-radius:20px;margin-bottom:.8rem}
+.qtype-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-top:1rem}
+.qtype{background:var(--bg);border-radius:7px;padding:.7rem .8rem;text-align:center;border:1px solid var(--line)}
+.qtype .qt-q{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--accent);font-weight:700;margin-bottom:.35rem}
+.qtype p{font-size:.72rem;color:var(--text-dim)}
+
+@media(max-width:900px){
+  .slide{padding:4rem 1.3rem 1.5rem}
+  .split,.split.wide,.split.flip{grid-template-columns:1fr}
+  .card-row.cols3,.card-row.cols4{grid-template-columns:1fr 1fr}
+  .dotnav,.arrownav{display:none}
+  svg.diagram{max-height:none}
+  .comp-row{grid-template-columns:1fr}
+  .ebody,.exgrid,.qtype-row{grid-template-columns:1fr}
+  .eno{border-right:none;border-bottom:1px solid var(--line)}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="progress-fill" id="progressFill" style="width:0%"></div>
+<div class="topbar">
+  <div class="brandmark">TALLER DE PROYECTO &nbsp;·&nbsp; <span>UNIDAD 1</span></div>
+  <div class="slide-counter"><b id="slideCurrent">01</b> / <span id="slideTotal">15</span></div>
+</div>
+<nav class="dotnav" id="dotNav"></nav>
+<div class="arrownav">
+  <button id="prevBtn" aria-label="Anterior">↑</button>
+  <button id="nextBtn" aria-label="Siguiente">↓</button>
+</div>
+
+<!-- ═══ SLIDE 1 — HERO ═══ -->
+<section class="slide" id="s-hero">
+  <div class="slide-wrap">
+    <div class="eyebrow" style="margin-bottom:1.2rem">Unidad 1 — Introducción al Taller</div>
+    <h1 class="title">La ingeniería <em>empieza entendiendo</em>.</h1>
+    <h2 class="title">Antes de construir cualquier cosa, hay que entender exactamente qué problema estás resolviendo.</h2>
+    <p style="color:var(--text-dim);font-size:.93rem;max-width:70ch;margin-top:1.1rem;line-height:1.6">
+      Este es el punto de partida de todo el taller. Vamos a ver qué hace un técnico electromecánico,
+      cómo funciona cualquier sistema automático, y la herramienta central que vas a usar en cada proyecto:
+      transformar un problema vago en un problema técnico.
+    </p>
+    <div class="hero-meta">
+      <div><b>Navegación</b>↓ / Espacio para avanzar &nbsp;·&nbsp; ↑ para volver</div>
+      <div><b>Recorrido</b>Qué hacemos → Sistema interactivo → Problema técnico → Ejercicio</div>
+      <div><b>Siguiente unidad</b>Preguntas Disparadoras</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 2 — QUÉ HACEMOS ═══ -->
+<section class="slide" id="s-que-hacemos">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Fundamento</div>
+      <h2>¿Qué hacemos en Taller de Proyecto?</h2>
+      <p>No es solo construir. Es aprender a pensar, diseñar y resolver problemas como lo hacen los ingenieros y técnicos reales.</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label"><span class="pname">El camino completo del proyecto</span><span class="pcount" id="flowCount">0 / 6</span></div>
+      <svg class="diagram" id="flowSVG" viewBox="0 0 900 150" xmlns="http://www.w3.org/2000/svg">
+        <g class="fade"><rect x="10" y="35" width="150" height="80" rx="8" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="1.8"/><text x="85" y="65" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700" fill="#00D4FF" text-anchor="middle">👁 Observar</text><text x="85" y="88" font-family="Inter,sans-serif" font-size="8.5" fill="#e8edf5" text-anchor="middle">Detectar problemas</text><text x="85" y="99" font-family="Inter,sans-serif" font-size="8.5" fill="#e8edf5" text-anchor="middle">reales del entorno</text></g>
+        <g class="fade"><line x1="161" y1="75" x2="182" y2="75" stroke="#7a8baa" stroke-width="1.6"/><polygon points="182,70 192,75 182,80" fill="#7a8baa"/></g>
+        <g class="fade"><rect x="193" y="35" width="150" height="80" rx="8" fill="rgba(255,184,0,.1)" stroke="#FFB800" stroke-width="1.8"/><text x="268" y="65" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700" fill="#FFB800" text-anchor="middle">🧠 Analizar</text><text x="268" y="88" font-family="Inter,sans-serif" font-size="8.5" fill="#e8edf5" text-anchor="middle">Entender qué y</text><text x="268" y="99" font-family="Inter,sans-serif" font-size="8.5" fill="#e8edf5" text-anchor="middle">por qué pasa</text></g>
+        <g class="fade"><line x1="344" y1="75" x2="365" y2="75" stroke="#7a8baa" stroke-width="1.6"/><polygon points="365,70 375,75 365,80" fill="#7a8baa"/></g>
+        <g class="fade"><rect x="376" y="35" width="150" height="80" rx="8" fill="rgba(0,200,150,.1)" stroke="#00C896" stroke-width="1.8"/><text x="451" y="65" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700" fill="#00C896" text-anchor="middle">📐 Diseñar</text><text x="451" y="88" font-family="Inter,sans-serif" font-size="8.5" fill="#e8edf5" text-anchor="middle">Planos, diagramas,</text><text x="451" y="99" font-family="Inter,sans-serif" font-size="8.5" fill="#e8edf5" text-anchor="middle">inventarios, Gantt</text></g>
+        <g class="fade"><line x1="527" y1="75" x2="548" y2="75" stroke="#7a8baa" stroke-width="1.6"/><polygon points="548,70 558,75 548,80" fill="#7a8baa"/></g>
+        <g class="fade"><rect x="559" y="35" width="150" height="80" rx="8" fill="rgba(155,89,182,.1)" stroke="#9B59B6" stroke-width="1.8"/><text x="634" y="65" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700" fill="#9B59B6" text-anchor="middle">🔧 Construir</text><text x="634" y="88" font-family="Inter,sans-serif" font-size="8.5" fill="#e8edf5" text-anchor="middle">Armar el prototipo</text><text x="634" y="99" font-family="Inter,sans-serif" font-size="8.5" fill="#e8edf5" text-anchor="middle">real en el taller</text></g>
+        <g class="fade"><line x1="710" y1="75" x2="731" y2="75" stroke="#7a8baa" stroke-width="1.6"/><polygon points="731,70 741,75 731,80" fill="#7a8baa"/></g>
+        <g class="fade"><rect x="742" y="35" width="150" height="80" rx="8" fill="rgba(0,200,150,.16)" stroke="#00C896" stroke-width="2.2"/><text x="817" y="65" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700" fill="#00C896" text-anchor="middle">🏁 Presentar</text><text x="817" y="88" font-family="Inter,sans-serif" font-size="8.5" fill="#e8edf5" text-anchor="middle">Pitch Elevator</text><text x="817" y="99" font-family="Inter,sans-serif" font-size="8.5" fill="#e8edf5" text-anchor="middle">frente a jurado</text></g>
+      </svg>
+      <div class="controls"><button class="btn primary" data-play="flowSVG">▶ Mostrar el camino</button><button class="btn" data-reset="flowSVG">↺</button></div>
+    </div>
+    <div class="warn" style="margin-top:1rem">⚠️ <strong>Regla de oro:</strong> un problema mal enunciado genera una solución incorrecta. Si definimos mal el problema, la solución casi seguro va a ser mala.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 3 — SISTEMA INTERACTIVO ═══ -->
+<section class="slide" id="s-sistema">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Concepto central</div>
+      <h2>El sistema interactivo</h2>
+      <p>Desde una puerta automática hasta un robot industrial — todo sistema automático funciona con el mismo principio.</p>
+    </div>
+    <div class="svg-panel">
+      <div class="panel-label"><span class="pname">Entorno → Sensor → Decisión → Acción</span><span class="pcount" id="sisCount">0 / 4</span></div>
+      <svg class="diagram" id="sisSVG" viewBox="0 0 900 130" xmlns="http://www.w3.org/2000/svg">
+        <g class="fade"><rect x="10" y="20" width="190" height="90" rx="8" fill="rgba(122,139,170,.1)" stroke="#7A8BAA" stroke-width="1.8"/><text x="105" y="55" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700" fill="#7A8BAA" text-anchor="middle">ENTORNO</text><text x="105" y="78" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">La realidad que rodea</text><text x="105" y="91" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">al sistema</text></g>
+        <g class="fade"><line x1="201" y1="65" x2="222" y2="65" stroke="#00D4FF" stroke-width="2"/><polygon points="222,59 234,65 222,71" fill="#00D4FF"/></g>
+        <g class="fade"><rect x="235" y="20" width="190" height="90" rx="8" fill="rgba(0,212,255,.1)" stroke="#00D4FF" stroke-width="2"/><text x="330" y="55" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700" fill="#00D4FF" text-anchor="middle">SENSOR</text><text x="330" y="78" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">Detecta y mide</text><text x="330" y="91" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">una variable</text></g>
+        <g class="fade"><line x1="426" y1="65" x2="447" y2="65" stroke="#FFB800" stroke-width="2"/><polygon points="447,59 459,65 447,71" fill="#FFB800"/></g>
+        <g class="fade"><rect x="460" y="20" width="190" height="90" rx="8" fill="rgba(255,184,0,.1)" stroke="#FFB800" stroke-width="2"/><text x="555" y="55" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700" fill="#FFB800" text-anchor="middle">DECISIÓN</text><text x="555" y="78" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">Compara con el</text><text x="555" y="91" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">umbral definido</text></g>
+        <g class="fade"><line x1="651" y1="65" x2="672" y2="65" stroke="#00C896" stroke-width="2"/><polygon points="672,59 684,65 672,71" fill="#00C896"/></g>
+        <g class="fade"><rect x="685" y="20" width="205" height="90" rx="8" fill="rgba(0,200,150,.14)" stroke="#00C896" stroke-width="2.2"/><text x="787" y="55" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700" fill="#00C896" text-anchor="middle">ACCIÓN</text><text x="787" y="78" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">Ejecuta la</text><text x="787" y="91" font-family="Inter,sans-serif" font-size="9" fill="#e8edf5" text-anchor="middle">respuesta correcta</text></g>
+      </svg>
+      <div class="controls"><button class="btn primary" data-play="sisSVG">▶ Animar</button><button class="btn" data-reset="sisSVG">↺</button></div>
+    </div>
+    <div class="card-row cols3" style="margin-top:1rem">
+      <div class="card cyan"><div class="c-label">Puerta automática</div><p>Presencia (infrarrojo) → detecta persona → abre la puerta automáticamente.</p></div>
+      <div class="card amber"><div class="c-label">Aire acondicionado</div><p>Temperatura &gt; 26°C → compara con umbral → activa el compresor.</p></div>
+      <div class="card good"><div class="c-label">Sensor de humo</div><p>Partículas en el aire → supera el nivel → dispara la alarma sonora.</p></div>
+    </div>
+    <div class="tip">💡 <strong>Tres componentes físicos:</strong> sensor (mide), controlador (decide), actuador (actúa). Todo sistema automático tiene estos tres.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 4 — QUÉ ES UN TÉCNICO ═══ -->
+<section class="slide" id="s-tecnico">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Identidad profesional</div>
+      <h2>¿Qué es un técnico electromecánico?</h2>
+      <p>El técnico no solo opera máquinas — las diseña, las mejora y resuelve los problemas que generan.</p>
+    </div>
+    <div class="tip" style="background:linear-gradient(180deg,#1c2330,#171d28);border-color:rgba(255,255,255,.1);border-left-color:var(--purple);color:var(--text)">
+      Un técnico electromecánico es un profesional que <strong style="color:var(--purple)">combina conocimientos de electricidad, mecánica, electrónica y automatización</strong> para diseñar, construir y mantener sistemas que resuelven problemas reales. En la era de la Industria 4.0, también trabaja con <em style="color:var(--cyan);font-style:normal">robótica, sensores, programación e inteligencia artificial</em>.
+    </div>
+    <div class="card-row cols4" style="margin-top:1rem">
+      <div class="card amber"><div class="c-label">Industria 4.0</div><p>Fábricas inteligentes donde máquinas, sensores y sistemas se comunican entre sí. El técnico diseña y mantiene esos sistemas.</p></div>
+      <div class="card cyan"><div class="c-label">IoT</div><p>Internet de las Cosas. Dispositivos conectados que recopilan y comparten datos, desde sensores hasta robots colaborativos.</p></div>
+      <div class="card purple"><div class="c-label">Automatización</div><p>Sistemas que funcionan solos, tomando decisiones basadas en datos del entorno. El núcleo de la electromecánica moderna.</p></div>
+      <div class="card good"><div class="c-label">IA aplicada</div><p>Algoritmos que permiten a los sistemas aprender y adaptarse. Clasificación, detección de fallas, optimización.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 5 — EL PROBLEMA VAGO ═══ -->
+<section class="slide" id="s-vago">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Punto de partida</div>
+      <h2>El problema vago</h2>
+      <p>Así describe un problema alguien que lo vive, pero no sabe cómo resolverlo técnicamente.</p>
+    </div>
+    <div class="tip" style="background:linear-gradient(180deg,#1c2330,#171d28);border-color:rgba(255,255,255,.1);border-left-color:var(--text-dim);color:var(--text)">
+      Un problema vago <strong style="color:var(--red)">no tiene contexto, no tiene variable medible, no tiene umbral.</strong> Es una sensación o descripción informal. <em style="color:var(--accent);font-style:normal">No se puede programar, no se puede medir, no se puede resolver sin antes transformarlo.</em>
+    </div>
+    <div class="card-row cols3" style="margin-top:1rem">
+      <div class="card cyan"><div class="c-label">🔊 "Hay mucho ruido."</div><p>¿Dónde? ¿Cuánto ruido? ¿A partir de qué nivel es un problema? No se puede resolver así.</p></div>
+      <div class="card amber"><div class="c-label">💡 "La luz molesta."</div><p>¿Qué luz? ¿Molesta cuánto? ¿A quién? ¿En qué condición exacta?</p></div>
+      <div class="card bad"><div class="c-label">🚪 "La puerta queda abierta."</div><p>¿Qué puerta? ¿Cuánto abierta? ¿Por qué es un problema? ¿Qué consecuencia tiene?</p></div>
+    </div>
+    <div class="warn">⚠️ <strong>¿Por qué no alcanza?</strong> Un problema vago no se puede medir, no se puede programar en un controlador y no se puede verificar si fue resuelto. Para diseñar una solución técnica, primero hay que convertirlo en un <strong>problema técnico</strong>.</div>
+    <div class="tip">💡 <strong>Test rápido:</strong> ¿Podés programar un Arduino para resolver "hay mucho ruido"? No — porque no sabés qué medir ni cuándo actuar. Eso te dice que todavía es un problema vago.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 6 — LAS 4 COMPONENTES ═══ -->
+<section class="slide" id="s-componentes">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Herramienta central</div>
+      <h2>Las 4 componentes del problema técnico</h2>
+      <p>Todo problema técnico tiene exactamente 4 componentes. Ni más, ni menos. Identificarlas es lo que transforma el problema vago en algo resoluble.</p>
+    </div>
+    <div class="comp-row" style="--cc:#00D4FF">
+      <div class="comp-badge">1 · CONTEXTO</div>
+      <div><div class="comp-q">"¿En qué sistema, lugar o momento ocurre el problema?"</div><div class="comp-trap">⚠ Trampa: confundir el contexto con el problema. El contexto es el escenario, no el síntoma.</div></div>
+      <div class="comp-v">Debe poder delimitarse o dibujarse. Si sigue siendo "en la sociedad", es demasiado amplio.</div>
+    </div>
+    <div class="comp-row" style="--cc:#FFB800">
+      <div class="comp-badge">2 · VARIABLE</div>
+      <div><div class="comp-q">"¿Qué es lo único que, si lo mido, me dice si el problema existe?"</div><div class="comp-trap">⚠ Trampa: elegir algo que no se puede medir directamente. La variable tiene que tener un sensor.</div></div>
+      <div class="comp-v">Tiene que ser observable o medible directamente. No puede ser una sensación.</div>
+    </div>
+    <div class="comp-row" style="--cc:#FF4D6A">
+      <div class="comp-badge">3 · PUNTO DE QUIEBRE</div>
+      <div><div class="comp-q">"¿A partir de qué valor o condición digo que el problema empieza?"</div><div class="comp-trap">⚠ Trampa: dejarlo subjetivo. "Cuando ya es mucho" no es un quiebre — es otra vagedad.</div></div>
+      <div class="comp-v">Un número, un estado lógico (sí/no), o un cambio concreto. Nunca subjetivo.</div>
+    </div>
+    <div class="comp-row" style="--cc:#00C896">
+      <div class="comp-badge">4 · PROBLEMA</div>
+      <div><div class="comp-q">"¿Qué efecto no deseado ocurre cuando se cruza ese umbral?"</div><div class="comp-trap">⚠ Esta componente no genera información nueva: reconstruye el problema a partir de las tres anteriores.</div></div>
+      <div class="comp-v">Una sola oración, sin "y", sin adjetivos subjetivos como "mucho" o "grave".</div>
+    </div>
+    <div class="tip">💡 <strong>Orden importante:</strong> siempre identificar primero el CONTEXTO, luego la VARIABLE, luego el PUNTO DE QUIEBRE. El PROBLEMA sale solo al final como consecuencia lógica de los tres anteriores.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 7 — LA FÓRMULA ═══ -->
+<section class="slide" id="s-formula">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">La herramienta</div>
+      <h2>La fórmula del problema técnico</h2>
+      <p>Una vez identificadas las 4 componentes, el enunciado técnico se construye con esta estructura. Cada hueco corresponde a una componente ya definida.</p>
+    </div>
+    <div class="fbox">
+      <div class="flabel">Estructura</div>
+      <div class="ftext">En <span class="fc2">[CONTEXTO]</span> ocurre <span class="fp2">[PROBLEMA]</span> cuando <span class="fv2">[VARIABLE]</span> supera <span class="fq2">[PUNTO DE QUIEBRE]</span>, lo que genera <span class="fe2">[EFECTO NO DESEADO]</span>.</div>
+    </div>
+    <div class="vlist">
+      <div class="vrow ok"><span>✓</span><span class="vt">Una sola oración — no usar "y" para unir dos problemas distintos.</span></div>
+      <div class="vrow ok"><span>✓</span><span class="vt">Sin adjetivos subjetivos: no "mucho", "grave", "excesivo", "peligroso".</span></div>
+      <div class="vrow ok"><span>✓</span><span class="vt">Cada término entre corchetes tiene que estar ya definido antes de escribir esta oración.</span></div>
+      <div class="vrow bad"><span>✗</span><span class="vt">NO: "Hay mucho ruido en la calle que molesta a la gente y genera problemas."</span></div>
+      <div class="vrow ok"><span>✓</span><span class="vt">SÍ: "El nivel de ruido en Av. 9 de Julio supera los 70 dB los viernes de noche, perturbando el descanso de los habitantes."</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 8 — ERRORES COMUNES ═══ -->
+<section class="slide" id="s-errores">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Para no repetir</div>
+      <h2>Errores comunes</h2>
+      <p>Los errores que aparecen siempre. Conocerlos de antemano te ahorra rehacer el trabajo.</p>
+    </div>
+    <div class="egrid">
+      <div class="ecard"><div class="ehead"><span>🎯</span><span class="etitle">Contexto demasiado amplio</span></div><div class="ebody"><div class="eno"><div class="elabel">✗ Mal</div><div class="etext">"El contexto es la sociedad moderna con problemas de contaminación sonora."</div></div><div class="esi"><div class="elabel">✓ Bien</div><div class="etext">"Av. 9 de Julio, viernes y sábados de noche, entre las 22:00 y las 6:00 hs."</div></div></div></div>
+      <div class="ecard"><div class="ehead"><span>📏</span><span class="etitle">Variable que no se puede medir</span></div><div class="ebody"><div class="eno"><div class="elabel">✗ Mal</div><div class="etext">"La variable es la incomodidad de la gente con el ruido."</div></div><div class="esi"><div class="elabel">✓ Bien</div><div class="etext">"La variable es el nivel de ruido ambiental medido en decibeles (dB)."</div></div></div></div>
+      <div class="ecard"><div class="ehead"><span>⚖️</span><span class="etitle">Punto de quiebre subjetivo</span></div><div class="ebody"><div class="eno"><div class="elabel">✗ Mal</div><div class="etext">"Cuando ya hay demasiado ruido y la situación se pone grave."</div></div><div class="esi"><div class="elabel">✓ Bien</div><div class="etext">"Cuando el nivel de ruido supera los 70 dB — límite apto para la salud auditiva según OMS."</div></div></div></div>
+      <div class="ecard"><div class="ehead"><span>📝</span><span class="etitle">Dos problemas en un enunciado</span></div><div class="ebody"><div class="eno"><div class="elabel">✗ Mal</div><div class="etext">"El ruido molesta y también la luz encandila y eso hace que pasen accidentes."</div></div><div class="esi"><div class="elabel">✓ Bien</div><div class="etext">Una sola oración. Un solo problema. Si tenés varios, elegí el principal y enuncialo solo.</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 9 — VARIABLES Y SENSORES ═══ -->
+<section class="slide" id="s-sensores">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Referencia técnica</div>
+      <h2>Variables y sensores</h2>
+      <p>Cada variable del entorno tiene un sensor que la mide. Esta tabla conecta el problema con la tecnología que lo detecta.</p>
+    </div>
+    <div class="stbl">
+      <table>
+        <thead><tr><th>Variable</th><th>Unidad</th><th>Sensor típico</th><th>Aplicación</th></tr></thead>
+        <tbody>
+          <tr><td><span class="vpill" style="background:rgba(255,77,106,.15);color:#FF4D6A">Temperatura</span></td><td>°C</td><td>DHT11 · DHT22 · LM35</td><td>Clima, refrigeración, seguridad industrial</td></tr>
+          <tr><td><span class="vpill" style="background:rgba(255,184,0,.15);color:#FFB800">Luz</span></td><td>Lux / Lúmenes</td><td>LDR · BH1750</td><td>Iluminación automática, seguidor solar</td></tr>
+          <tr><td><span class="vpill" style="background:rgba(0,212,255,.15);color:#00D4FF">Sonido</span></td><td>dB</td><td>KY-037 · MAX4466</td><td>Control de ruido, detección de alertas</td></tr>
+          <tr><td><span class="vpill" style="background:rgba(155,89,182,.15);color:#9B59B6">Distancia</span></td><td>cm</td><td>HC-SR04 · VL53L0X</td><td>Detección de obstáculos, nivel de líquido</td></tr>
+          <tr><td><span class="vpill" style="background:rgba(0,200,150,.15);color:#00C896">Gas / CO₂</span></td><td>ppm</td><td>MQ-135 · MH-Z19</td><td>Calidad del aire, detección de humo</td></tr>
+          <tr><td><span class="vpill" style="background:rgba(255,184,0,.15);color:#FFB800">Movimiento</span></td><td>Presencia</td><td>PIR HC-SR501</td><td>Alarmas, puertas automáticas, luces</td></tr>
+          <tr><td><span class="vpill" style="background:rgba(0,212,255,.15);color:#00D4FF">Humedad</span></td><td>% HR</td><td>DHT11 · DHT22</td><td>Riego automático, invernaderos</td></tr>
+          <tr><td><span class="vpill" style="background:rgba(255,77,106,.15);color:#FF4D6A">Corriente</span></td><td>A / mA</td><td>ACS712 · INA219</td><td>Protección eléctrica, gestión de energía</td></tr>
+          <tr><td><span class="vpill" style="background:rgba(155,89,182,.15);color:#9B59B6">Posición / ángulo</span></td><td>° / mm</td><td>Potenciómetro · Encoder</td><td>Control de puertas, brazos robóticos</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tip">💡 <strong>Recordá:</strong> sensor = medir variable. El actuador es lo que <em>actúa</em> cuando se supera el quiebre: motor, relé, válvula, servo, buzzer, LED.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 10 — EJEMPLO RESUELTO ═══ -->
+<section class="slide" id="s-ejemplo">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Caso resuelto</div>
+      <h2>Ejemplo completo resuelto</h2>
+      <p>El problema del ruido, resuelto paso a paso usando las 4 componentes y la fórmula.</p>
+    </div>
+    <div class="wt">
+      <div class="wh"><span class="wtg">PROBLEMA VAGO</span><p>"Hay mucho ruido."</p></div>
+      <div class="ws"><div class="wl" style="color:#00D4FF">CONTEXTO</div><div class="wc">Av. 9 de Julio, los viernes y sábados, entre las 22:00 y las 6:00 hs, en el entorno residencial adyacente.</div></div>
+      <div class="ws"><div class="wl" style="color:#FFB800">VARIABLE</div><div class="wc">Nivel de ruido ambiental medido en decibeles (dB) — sensor: micrófono de precisión o sonómetro.</div></div>
+      <div class="ws"><div class="wl" style="color:#FF4D6A">PTO. DE QUIEBRE</div><div class="wc">Nivel de ruido superior a 70 dB — límite máximo apto para la salud auditiva según la OMS.</div></div>
+      <div class="ws"><div class="wl" style="color:#00C896">PROB. TÉCNICO</div><div class="wc res">El nivel de ruido en Av. 9 de Julio supera los 70 dB los viernes y sábados de noche, perturbando la atención y el descanso de los habitantes del entorno.</div></div>
+      <div class="ws"><div class="wl" style="color:#9B59B6">OBJETIVO</div><div class="wc">Detectar cuando el nivel de ruido supere los 70 dB y activar un sistema de alerta o registro para informar a las autoridades competentes.</div></div>
+      <div class="ws"><div class="wl" style="color:#FFB800">DISPARADORA</div><div class="wc">¿Cómo podríamos detectar automáticamente cuándo el ruido en una avenida supera el límite seguro para la salud de los vecinos?</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 11 — EJERCICIO GRUPAL ═══ -->
+<section class="slide" id="s-ejercicio">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Ejercicio grupal</div>
+      <h2>Ahora les toca a ustedes</h2>
+      <p>Usando las 4 componentes, transformen estos problemas vagos en problemas técnicos.</p>
+    </div>
+    <div class="exgrid">
+      <div class="exblock">
+        <div class="exhead">💡 Problema A — "La luz molesta."</div>
+        <div class="exrow"><div class="exrl">Contexto</div><div class="exv"><input type="text" placeholder="..." data-store="ej1-contexto"></div></div>
+        <div class="exrow"><div class="exrl">Variable</div><div class="exv"><input type="text" placeholder="..." data-store="ej1-variable"></div></div>
+        <div class="exrow"><div class="exrl">Pto. quiebre</div><div class="exv"><input type="text" placeholder="..." data-store="ej1-quiebre"></div></div>
+        <div class="exrow"><div class="exrl">Prob. técnico</div><div class="exv"><input type="text" placeholder="..." data-store="ej1-tecnico"></div></div>
+      </div>
+      <div class="exblock">
+        <div class="exhead">🚪 Problema B — "La puerta queda abierta."</div>
+        <div class="exrow"><div class="exrl">Contexto</div><div class="exv"><input type="text" placeholder="..." data-store="ej2-contexto"></div></div>
+        <div class="exrow"><div class="exrl">Variable</div><div class="exv"><input type="text" placeholder="..." data-store="ej2-variable"></div></div>
+        <div class="exrow"><div class="exrl">Pto. quiebre</div><div class="exv"><input type="text" placeholder="..." data-store="ej2-quiebre"></div></div>
+        <div class="exrow"><div class="exrl">Prob. técnico</div><div class="exv"><input type="text" placeholder="..." data-store="ej2-tecnico"></div></div>
+      </div>
+    </div>
+    <div class="consigna" style="margin-top:1rem"><b>⏱ 10 minutos</b> Anotá en los campos de arriba (se guardan solos en este dispositivo). Al terminar, compartimos entre equipos.</div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 12 — RESPUESTAS DE REFERENCIA ═══ -->
+<section class="slide" id="s-respuestas">
+  <div class="slide-wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Respuestas de referencia</div>
+      <h2>Cómo corregir el ejercicio</h2>
+      <p>Modelo de respuesta y criterios de evaluación. No es la única respuesta válida — es una guía de corrección.</p>
+    </div>
+    <div class="wt" style="margin-bottom:.9rem">
+      <div class="wh"><span class="wtg">PROBLEMA A — RESPUESTA MODELO</span><p>"La luz molesta."</p></div>
+      <div class="ws"><div class="wl" style="color:#00D4FF">CONTEXTO</div><div class="wc">Autopista, carriles de circulación, durante la noche (20:00–6:00 hs).</div></div>
+      <div class="ws"><div class="wl" style="color:#FFB800">VARIABLE</div><div class="wc">Ángulo y posición de los focos de los vehículos (en grados).</div></div>
+      <div class="ws"><div class="wl" style="color:#FF4D6A">PTO. DE QUIEBRE</div><div class="wc">Ángulo de incidencia superior a 15° sobre el plano de visión del conductor.</div></div>
+      <div class="ws"><div class="wl" style="color:#00C896">ENUNCIADO</div><div class="wc res">"La posición y ángulo de los focos de vehículos en la autopista supera los 15° de incidencia visual, generando encandilamiento y riesgo de accidente durante la conducción nocturna."</div></div>
+    </div>
+    <div class="tip">💡 <strong>Nota de evaluación:</strong> aceptar cualquier contexto coherente (autopista, aula con proyector, habitación). Lo importante es que el punto de quiebre tenga un valor concreto — no "cuando molesta mucho".</div>
+    <div class="sec-head" style="margin-top:1.3rem;margin-bottom:.6rem"><h2 style="font-size:1.1rem">Criterios de evaluación — ambos problemas</h2></div>
+    <div class="vlist">
+      <div class="vrow ok"><span>✓</span><span class="vt">El problema vago no tiene números ni valores técnicos.</span></div>
+      <div class="vrow ok"><span>✓</span><span class="vt">El contexto tiene lugar, momento y actores identificados.</span></div>
+      <div class="vrow ok"><span>✓</span><span class="vt">La variable tiene una unidad de medida (dB, °C, lux, cm, etc.).</span></div>
+      <div class="vrow ok"><span>✓</span><span class="vt">El punto de quiebre es un número o condición objetiva — no "mucho" ni "excesivo".</span></div>
+      <div class="vrow ok"><span>✓</span><span class="vt">El enunciado es una sola oración que usa la fórmula sin adjetivos subjetivos.</span></div>
+      <div class="vrow bad"><span>✗</span><span class="vt">No aceptar puntos de quiebre subjetivos aunque el contexto sea bueno.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 13 — EL GANCHO ═══ -->
+<section class="slide" id="s-gancho">
+  <div class="slide-wrap" style="text-align:center;max-width:760px;margin:0 auto">
+    <div class="hook-q">?</div>
+    <div class="hook-text">Todo muy bien. Pero...<br>¿cómo llegamos a las 4 componentes?</div>
+    <p style="color:var(--text-dim);font-size:.95rem;margin-top:1.3rem;line-height:1.6">
+      Tenemos el problema vago. Sabemos qué necesitamos encontrar.<br>
+      Pero, ¿qué preguntas hacemos para extraer cada componente?
+    </p>
+    <p style="color:var(--accent);font-size:1rem;margin-top:1.3rem;font-weight:700">Eso lo vemos en la próxima unidad →</p>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 14 — SPOILER UNIDAD 2 ═══ -->
+<section class="slide" id="s-spoiler">
+  <div class="slide-wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">🔮 Spoiler — próxima unidad</div>
+      <h2>Unidad 2: Preguntas Disparadoras</h2>
+      <p>La herramienta que convierte un problema vago en un problema técnico.</p>
+    </div>
+    <div class="spoiler-box">
+      <div class="spoiler-tag">Las 4 preguntas</div>
+      <div class="qtype-row">
+        <div class="qtype"><div class="qt-q">¿Cómo...?</div><p>Busca crear un proceso o solución</p></div>
+        <div class="qtype"><div class="qt-q">¿Por qué...?</div><p>Investiga causas y razones</p></div>
+        <div class="qtype"><div class="qt-q">¿Para qué...?</div><p>Explora el propósito del proyecto</p></div>
+        <div class="qtype"><div class="qt-q">¿Qué harías...?</div><p>Imagina soluciones posibles</p></div>
+      </div>
+      <div class="notes" style="margin-top:1.2rem;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text-dim)">
+        Problema vago &nbsp;→&nbsp; <span style="color:var(--accent)">???</span> &nbsp;→&nbsp; 4 Componentes &nbsp;→&nbsp; Problema técnico &nbsp;→&nbsp; Objetivos &nbsp;→&nbsp; Solución
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 15 — CIERRE ═══ -->
+<section class="slide" id="s-cierre">
+  <div class="slide-wrap" style="text-align:center;max-width:700px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:1.4rem"><span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span>Cierre<span style="width:2rem;height:1.5px;background:var(--accent);display:block"></span></div>
+    <div class="closing-mark">Entendiste el problema.<br>Ahora, a nombrarlo bien.</div>
+    <div class="closing-sub" style="margin-top:1.2rem">Taller de Proyecto &nbsp;·&nbsp; Unidad 1 — La Ingeniería empieza Entendiendo</div>
+    <div style="margin-top:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <div style="background:var(--bg-raised);border:1px solid rgba(0,212,255,.3);border-radius:8px;padding:.6rem 1rem;font-size:.75rem;font-family:'JetBrains Mono',monospace;color:#00D4FF">✓ Sistema interactivo</div>
+      <div style="background:var(--bg-raised);border:1px solid rgba(155,89,182,.3);border-radius:8px;padding:.6rem 1rem;font-size:.75rem;font-family:'JetBrains Mono',monospace;color:#9B59B6">✓ Rol del técnico</div>
+      <div style="background:var(--bg-raised);border:1px solid rgba(255,77,106,.3);border-radius:8px;padding:.6rem 1rem;font-size:.75rem;font-family:'JetBrains Mono',monospace;color:#FF4D6A">✓ Problema vago</div>
+      <div style="background:var(--bg-raised);border:1px solid rgba(0,200,150,.35);border-radius:8px;padding:.6rem 1rem;font-size:.75rem;font-family:'JetBrains Mono',monospace;color:#00C896">✓ 4 componentes</div>
+    </div>
+    <div style="margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--line)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-dim);margin-bottom:.4rem">PRÓXIMO</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent)">Unidad 2 — Preguntas Disparadoras</div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const REDUCE = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  class Construction{
+    constructor(svg,{stepDuration=550}={}){
+      this.svg=svg; this.stepDuration=REDUCE?1:stepDuration;
+      this.elements=Array.from(svg.querySelectorAll('.fade'));
+      this.index=-1; this.timer=null; this.onChange=null;
+      this.setAll(false,{instant:true});
+    }
+    setAll(shown,{instant=false}={}){ this.elements.forEach(el=>this._set(el,shown,instant)); }
+    _set(el,shown,instant){ el.style.transition=instant?'none':`opacity ${this.stepDuration*.65}ms ease`; el.style.opacity=shown?'1':'0'; }
+    goto(target,{instantAll=false}={}){
+      clearInterval(this.timer);
+      target=Math.max(-1,Math.min(this.elements.length-1,target));
+      this.elements.forEach((el,i)=>{
+        const shown=i<=target, isEdge=(i===target&&!instantAll);
+        if(isEdge){ this._set(el,false,true); void el.getBoundingClientRect(); requestAnimationFrame(()=>requestAnimationFrame(()=>this._set(el,true,false))); }
+        else{ this._set(el,shown,true); }
+      });
+      this.index=target;
+      if(this.onChange)this.onChange(target,this.elements.length);
+    }
+    reset(){this.goto(-1)}
+    playAll(){
+      this.reset(); let i=0;
+      const next=()=>{if(i>=this.elements.length)return; this.goto(i); i++; this.timer=setTimeout(next,this.stepDuration*.6);};
+      this.timer=setTimeout(next,100);
+    }
+  }
+
+  const reg={};
+  document.querySelectorAll('svg.diagram').forEach(svg=>{ reg[svg.id]=new Construction(svg); });
+  document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.play].playAll()));
+  document.querySelectorAll('[data-reset]').forEach(b=>b.addEventListener('click',()=>reg[b.dataset.reset].reset()));
+  function bindCounter(svgId,elId){
+    const c=reg[svgId],el=document.getElementById(elId);
+    if(!c||!el)return;
+    const total=c.elements.length;
+    c.onChange=(idx)=>{el.textContent=(idx+1)+' / '+total};
+    el.textContent='0 / '+total;
+  }
+  bindCounter('flowSVG','flowCount');
+  bindCounter('sisSVG','sisCount');
+
+  /* Ejercicio inputs — persist locally */
+  const K='u1cap_';
+  document.querySelectorAll('[data-store]').forEach(inp=>{
+    const key=inp.dataset.store;
+    const v=localStorage.getItem(K+key);
+    if(v) inp.value=v;
+    inp.addEventListener('input',()=>localStorage.setItem(K+key,inp.value));
+  });
+
+  /* Slide nav */
+  const slides=Array.from(document.querySelectorAll('.slide'));
+  const dotNav=document.getElementById('dotNav');
+  const slideCurrentEl=document.getElementById('slideCurrent');
+  const slideTotalEl=document.getElementById('slideTotal');
+  const progressFill=document.getElementById('progressFill');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  let current=0;
+  slideTotalEl.textContent=String(slides.length).padStart(2,'0');
+  slides.forEach((sl,i)=>{
+    const b=document.createElement('button');
+    b.setAttribute('aria-label','Ir a pantalla '+(i+1));
+    b.addEventListener('click',()=>goTo(i));
+    dotNav.appendChild(b);
+  });
+  const dots=Array.from(dotNav.children);
+  function setActive(i){
+    current=i;
+    dots.forEach((d,idx)=>d.classList.toggle('active',idx===i));
+    slideCurrentEl.textContent=String(i+1).padStart(2,'0');
+    progressFill.style.width=(((i+1)/slides.length)*100)+'%';
+    prevBtn.disabled=i===0; nextBtn.disabled=i===slides.length-1;
+  }
+  function goTo(i){
+    i=Math.max(0,Math.min(slides.length-1,i));
+    slides[i].scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'});
+  }
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>0.55){const idx=slides.indexOf(e.target);if(idx!==-1)setActive(idx);}});
+  },{threshold:[0.55]});
+  slides.forEach(sl=>io.observe(sl));
+  prevBtn.addEventListener('click',()=>goTo(current-1));
+  nextBtn.addEventListener('click',()=>goTo(current+1));
+  window.addEventListener('keydown',(e)=>{
+    const tag=(e.target&&e.target.tagName)||'';
+    if(tag==='INPUT'||tag==='TEXTAREA')return;
+    if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();goTo(current+1);}
+    else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();goTo(current-1);}
+    else if(e.key==='Home'){e.preventDefault();goTo(0);}
+    else if(e.key==='End'){e.preventDefault();goTo(slides.length-1);}
+  });
+  setActive(0);
+})();
+</script>
+</body>
+</html>
