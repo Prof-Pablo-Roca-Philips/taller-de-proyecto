@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taller de Proyecto — Campus académico oficial</title>
+<style>
+:root {
+  --navy: #0A0E2A;
+  --navy-mid: #16224D;
+  --cyan: #00D4FF;
+  --cyan-dim: #0097B8;
+  --amber: #FFB800;
+  --green: #00C896;
+  --white: #FFFFFF;
+  --off: #E8EDF5;
+  --muted: #7A8BAA;
+  --card: #121A39;
+  --line: rgba(255,255,255,0.08);
+  --shadow: 0 24px 70px rgba(3, 6, 20, 0.35);
+  --radius: 18px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--off);
+  background:
+    radial-gradient(circle at top right, rgba(0,212,255,0.14), transparent 28%),
+    radial-gradient(circle at left 12%, rgba(255,184,0,0.08), transparent 22%),
+    linear-gradient(180deg, #070A1A 0%, var(--navy) 44%, #070A18 100%);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  line-height: 1.55;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.6), transparent 85%);
+}
+
+a { color: inherit; }
+
+.page {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 28px 0 42px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 6px 0 26px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.brand .eyebrow {
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--cyan-dim);
+  font-weight: 800;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: clamp(18px, 2vw, 24px);
+  color: var(--white);
+  line-height: 1.15;
+}
+
+.brand h1 span { color: var(--cyan); }
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nav a {
+  text-decoration: none;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+  color: var(--off);
+  font-size: 12px;
+  transition: transform .2s, border-color .2s, background .2s;
+}
+
+.nav a:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0,212,255,0.3);
+  background: rgba(0,212,255,0.08);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.hero-main,
+.hero-side,
+.section,
+.unit-card,
+.resource-card {
+  box-shadow: var(--shadow);
+}
+
+.hero-main {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0,212,255,0.14);
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(17,24,56,0.95), rgba(10,14,42,0.98));
+  padding: 34px 34px 30px;
+  margin-bottom: 1.2em;
+}
+
+.hero-main::after {
+  content: '';
+  position: absolute;
+  right: -100px;
+  top: -80px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,212,255,0.14), transparent 68%);
+  pointer-events: none;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,212,255,0.26);
+  background: rgba(0,212,255,0.08);
+  color: var(--cyan);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.hero-main h2 {
+  margin: 16px 0 10px;
+  font-size: clamp(28px, 5vw, 52px);
+  line-height: 1.04;
+  color: var(--white);
+  max-width: 25ch;
+}
+
+.hero-main h2 em {
+  font-style: normal;
+  color: var(--cyan);
+}
+
+.hero-main p {
+  margin: 0;
+  max-width: 80ch;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.hero-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--off);
+  font-size: 12px;
+}
+
+.pill .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.hero-side {
+  display: grid;
+  gap: 14px;
+}
+
+.info-card {
+  border-radius: 24px;
+  padding: 22px 22px 20px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(19,27,58,0.96), rgba(11,16,38,0.96));
+}
+
+.info-card h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--white);
+}
+
+.info-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.stat {
+  border-radius: 18px;
+  padding: 18px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+.stat strong {
+  display: block;
+  color: var(--white);
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.stat span {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.section {
+  margin-top: 18px;
+  border-radius: 28px;
+  border: 1px solid var(--line);
+  background: rgba(9,13,28,0.78);
+  padding: 26px;
+}
+
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.section-kicker {
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--cyan-dim);
+  font-weight: 800;
+}
+
+.section h3 {
+  margin: 6px 0 0;
+  font-size: clamp(22px, 3vw, 32px);
+  line-height: 1.1;
+  color: var(--white);
+}
+
+.section-desc {
+  margin: 0;
+  max-width: 70ch;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.track {
+  display: grid;
+  gap: 10px;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+}
+
+.separator strong {
+  color: var(--white);
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.separator span {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.separator.active {
+  border-color: rgba(0,212,255,0.24);
+  background: linear-gradient(90deg, rgba(0,212,255,0.12), rgba(255,255,255,0.03));
+}
+
+.separator.locked {
+  opacity: .74;
+}
+
+.unit-card {
+  border-radius: 24px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(18,26,57,0.98), rgba(12,18,41,0.98));
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.unit-card.unit-1 { border-top: 3px solid var(--amber); }
+.unit-card.unit-2 { border-top: 3px solid var(--cyan); }
+.unit-card.unit-3 { border-top: 3px solid var(--amber); }
+.unit-card.unit-4 { border-top: 3px solid var(--amber); }
+.unit-card.unit-5 { border-top: 3px solid var(--cyan); }
+.unit-card.unit-6, .unit-card.unit-8, .unit-card.unit-10, .unit-card.unit-12, .unit-card.unit-14 { border-top: 3px solid var(--amber); }
+.unit-card.unit-7, .unit-card.unit-9, .unit-card.unit-11, .unit-card.unit-13 { border-top: 3px solid var(--cyan); }
+.unit-card.capsula { border-top: 3px solid var(--green); }
+
+.unit-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.unit-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.unit-chip.amber { background: rgba(255,184,0,0.12); color: var(--amber); }
+.unit-chip.cyan { background: rgba(0,212,255,0.12); color: var(--cyan); }
+.unit-chip.green { background: rgba(0,200,150,0.12); color: var(--green); }
+
+.unit-card h4 {
+  margin: 0;
+  font-size: clamp(20px, 2.4vw, 28px);
+  color: var(--white);
+  line-height: 1.08;
+}
+
+.unit-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.resource-card {
+  text-decoration: none;
+  border-radius: 18px;
+  padding: 16px 16px 15px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  transition: transform .2s, border-color .2s, background .2s;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+.resource-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0,212,255,0.28);
+  background: rgba(0,212,255,0.07);
+}
+
+.resource-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.resource-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+}
+
+.resource-type {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+
+.resource-type.html { background: rgba(0,212,255,0.12); color: var(--cyan); }
+.resource-type.pptx { background: rgba(255,184,0,0.12); color: var(--amber); }
+
+.resource-card h5 {
+  margin: 0 0 8px;
+  color: var(--white);
+  font-size: 15px;
+  line-height: 1.22;
+}
+
+.resource-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12.8px;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.resource-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.footer {
+  padding: 22px 2px 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.footer strong { color: var(--off); }
+
+#progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  z-index: 20;
+  background: linear-gradient(90deg, var(--cyan), var(--amber));
+}
+
+#backTop {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,212,255,0.26);
+  background: rgba(15,20,44,0.95);
+  color: var(--cyan);
+  font-size: 16px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s, transform .25s;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+}
+
+#backTop.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 960px) {
+  .hero, .resource-grid, .stats { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  .page { width: min(100% - 22px, 1180px); padding-top: 14px; }
+  .topbar { flex-direction: column; align-items: flex-start; }
+  .hero-main, .section, .unit-card { padding: 20px; border-radius: 22px; }
+  .hero-main h2 { max-width: none; }
+  .resource-card { min-height: auto; }
+  #backTop { right: 14px; bottom: 14px; }
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.18); border-radius: 999px; }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<button id="backTop" type="button" aria-label="Volver arriba">↑</button>
+
+<main class="page">
+  <header class="topbar">
+    <div class="brand">
+      <div class="eyebrow">Taller de Proyecto · 1° y 2° año</div>
+      <h1>Taller de <span>Proyecto</span></h1>
+    </div>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#trayecto">Trayecto</a>
+      <a href="#oficial">Oficial</a>
+    </nav>
+  </header>
+
+  <section id="top">
+    <div class="hero-main">
+      <div class="tag">Campus académico · Acceso oficial</div>
+      <h2>Portal oficial de acceso a <em>Taller de Proyecto</em>.</h2>
+      <p>Ingreso institucional a los materiales de 1° y 2° año. Desde esta portada se accede a las unidades, a las guías docentes y a los cuadernos de trabajo publicados.</p>
+    </div>
+
+    <div class="hero-side">
+      <div class="stats">
+        <div class="stat"><strong>@@N_UNIDADES@@</strong><span>unidades</span></div>
+        <div class="stat"><strong>@@N_CAPSULAS@@</strong><span>cápsulas</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="trayecto">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">Estructura académica</div>
+        <h3>Trayecto académico</h3>
+      </div>
+      <p class="section-desc">Estructura completa del curso. Separadores de transición intercalados con unidades en orden secuencial.</p>
+    </div>
+
+    <div class="track">
+@@TRACK@@
+    </div>
+  </section>
+
+  <section class="section" id="oficial">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">Documento oficial</div>
+        <h3>Campus de acceso</h3>
+      </div>
+      <p class="section-desc">Portada oficial de acceso a la materia para uso académico.</p>
+    </div>
+
+    <div class="info-card" style="margin:0;">
+      <h3>Uso institucional</h3>
+      <p>Este espacio funciona como portal académico de referencia para 1° y 2° año. El acceso se mantiene centralizado desde esta portada.</p>
+    </div>
+
+    <div class="footer">
+      <strong>Taller de Proyecto</strong> · Campus académico oficial · 1° y 2° año<br>
+      Unidad 1: La Ingeniería empieza entendiendo · Unidad 2: Preguntas disparadoras · Unidad 3: Del Problema a la Solución · Unidad 4: Metodología y Diseño · Unidad 5: Materiales, Construcción y Validación · Unidades 6 a 14: Proyecto Mi Kit · Cápsulas: Boceto a mano alzada y Lógica de Programación para Arduino
+    </div>
+  </section>
+</main>
+
+<script>
+const progress = document.getElementById('progress');
+const backTop = document.getElementById('backTop');
+
+function updateProgress() {
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+  progress.style.width = pct + '%';
+  backTop.classList.toggle('visible', window.scrollY > 420);
+}
+
+window.addEventListener('scroll', updateProgress, { passive: true });
+window.addEventListener('resize', updateProgress);
+updateProgress();
+
+backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', event => {
+    const target = document.querySelector(anchor.getAttribute('href'));
+    if (!target) return;
+    event.preventDefault();
+    window.scrollTo({ top: target.offsetTop - 18, behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>

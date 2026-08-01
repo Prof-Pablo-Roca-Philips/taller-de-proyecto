@@ -1,0 +1,23 @@
+# Fin de linea fijo en LF para todo el arbol.
+#
+# Por que: el repo tenia core.autocrlf=true y ningun .gitattributes, asi que git
+# guardaba LF pero el checkout escribia CRLF. Con varios carriles trabajando en
+# paralelo, cualquier herramienta que reescriba un archivo puede producir un diff
+# de fin-de-linea del archivo entero, que choca contra todos los demas carriles.
+# Fijandolo aca, la convencion deja de depender de la config de cada maquina.
+
+* text=auto eol=lf
+
+# Binarios: nunca tocar.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.pptx binary
+*.docx binary
+*.xlsx binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
