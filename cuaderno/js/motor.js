@@ -224,6 +224,9 @@
     unidadActual = opciones.unidad;
     adaptadorActual = opciones.adapter || 'local';
     raiz.Cuaderno.init({ adapter: adaptadorActual }).then(refrescarProgreso);
+    /* Si la confirmación de sesión llega tarde (o después de un login/logout), que la
+       UI se ponga al día sola en vez de quedar pegada en el estado con el que arrancó. */
+    raiz.Cuaderno.onCambioSesion(refrescarProgreso);
 
     var mapa = {};
     document.querySelectorAll('script.cd-ejercicio[type="application/json"]').forEach(function (bloque) {

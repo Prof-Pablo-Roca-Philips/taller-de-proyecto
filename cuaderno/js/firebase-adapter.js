@@ -37,19 +37,24 @@ function esCuentaEscolar(email) {
   return typeof email === "string" && email.toLowerCase().endsWith("@" + DOMINIO_ESCOLAR);
 }
 
-function esperarUsuario() {
-  return new Promise(function (resolve) {
-    var quitar = onAuthStateChanged(auth, function (user) {
-      quitar();
-      resolve(user || null);
-    });
-  });
-}
-
 function usuarioASesion(user) {
   if (!user) return { uid: "local", nombre: "", modo: "invitado" };
   return { uid: user.uid, nombre: user.displayName || user.email || "", modo: "alumno", email: user.email };
 }
+
+/* onAuthStateChanged puede tardar (o, con bloqueadores de anuncios/cookies de terceros
+   restringidas/filtros de red de la escuela, no disparar nunca). getSesion() NUNCA debe
+   colgar la UI esperándolo: arranca en "invitado" — el botón de login aparece de
+   inmediato — y se corrige sola en cuanto Firebase confirme algo, avisando a quien se
+   haya suscrito con onCambioSesion() (así, si la sesión tarda en confirmarse, la UI se
+   actualiza cuando llegue en vez de quedar pegada en el estado viejo). */
+var sesionActual = { uid: "local", nombre: "", modo: "invitado" };
+var listenersCambio = [];
+
+onAuthStateChanged(auth, function (user) {
+  sesionActual = usuarioASesion(user);
+  listenersCambio.forEach(function (fn) { fn(sesionActual); });
+});
 
 function llamarApi(ruta, opciones) {
   return auth.currentUser
@@ -75,7 +80,11 @@ function AdaptadorFirebase() {
     nombre: "firebase",
 
     getSesion: function () {
-      return esperarUsuario().then(usuarioASesion);
+      return Promise.resolve(sesionActual);
+    },
+
+    onCambioSesion: function (fn) {
+      listenersCambio.push(fn);
     },
 
     login: function () {

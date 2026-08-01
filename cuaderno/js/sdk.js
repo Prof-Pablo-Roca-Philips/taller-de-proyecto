@@ -63,6 +63,13 @@
     login: function () { return activo.login(); },
     logout: function () { return activo.logout(); },
 
+    /* Opcional: adaptadores que puedan confirmar la sesión de forma diferida (ej.
+       firebase) avisan por acá cuando cambia, sin que quien llama tenga que esperar
+       ese momento para pintar algo. El adaptador `local` no lo implementa — no hace falta. */
+    onCambioSesion: function (fn) {
+      if (activo.onCambioSesion) activo.onCambioSesion(fn);
+    },
+
     registrarIntento: function (datos) {
       var intento = {
         v: 1,
