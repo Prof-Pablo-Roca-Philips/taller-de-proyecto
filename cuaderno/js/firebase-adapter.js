@@ -28,7 +28,7 @@ var DOMINIO_ESCOLAR = "philips.edu.ar";
    Configurable por página vía window.CUADERNO_API_BASE, para no tocar este archivo
    página por página el día que cambie. */
 var API_BASE = (typeof window !== "undefined" && window.CUADERNO_API_BASE) ||
-  "https://taller-cuaderno-api.PENDIENTE-DEPLOY.workers.dev";
+  "https://taller-cuaderno-api.pablo-roca.workers.dev";
 
 var app = initializeApp(firebaseConfig);
 var auth = getAuth(app);
