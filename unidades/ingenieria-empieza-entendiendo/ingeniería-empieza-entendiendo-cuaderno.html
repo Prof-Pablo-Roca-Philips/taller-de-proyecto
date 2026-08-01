@@ -653,6 +653,9 @@ flowInit();
 <script src="../../cuaderno/js/niveles.js"></script>
 <script src="../../cuaderno/js/sdk.js"></script>
 <script src="../../cuaderno/js/motor.js"></script>
-<script>CuadernoMotor.init({unidad:'u1',competenciasUrl:'../cuaderno/competencias/u1.json'})</script>
+<script type="module">
+  import "../../cuaderno/js/firebase-adapter.js";
+  CuadernoMotor.init({unidad:'u1',competenciasUrl:'../../cuaderno/competencias/u1.json',adapter:'firebase'});
+</script>
 </body>
 </html>

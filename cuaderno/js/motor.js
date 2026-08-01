@@ -172,20 +172,48 @@
     'numerico': renderNumerico
   };
 
-  /* ── Widget de progreso por competencia ──────────────────────────────────── */
+  /* ── Widget de progreso por competencia + sesión ─────────────────────────── */
+
+  var adaptadorActual = 'local';
+
+  function htmlSesion(sesion) {
+    if (sesion.modo === 'alumno') {
+      return '<div class="cd-sesion">Sesión: <strong>' + esc(sesion.nombre) + '</strong>' +
+        ' <button type="button" class="cd-cerrar-sesion">Cerrar sesión</button></div>';
+    }
+    if (adaptadorActual === 'firebase') {
+      return '<div class="cd-sesion">Modo invitado — el progreso se guarda solo en este dispositivo.' +
+        ' <button type="button" class="cd-iniciar-sesion">Iniciar sesión con Google</button></div>';
+    }
+    return '<div class="cd-modo">Modo invitado — el progreso se guarda en este dispositivo. Con tu cuenta de la escuela vas a poder verlo desde cualquier lado.</div>';
+  }
 
   function refrescarProgreso() {
-    document.querySelectorAll('.cd-progreso').forEach(function (w) {
-      raiz.Cuaderno.getProgreso(w.dataset.unidad || unidadActual).then(function (prog) {
-        if (!prog.length) return;
-        var html = '';
-        prog.forEach(function (c) {
-          html += '<div class="cd-comp"><div class="cd-comp-cab"><span>' + esc(c.nombre) + '</span>' +
-            '<span class="cd-comp-niv cd-niv-' + c.nivel + '">' + esc(c.nombreNivel) + '</span></div>' +
-            '<div class="cd-barra"><div class="cd-barra-f cd-niv-' + c.nivel + '" style="width:' + (c.nivel * 25) + '%"></div></div></div>';
+    raiz.Cuaderno.getSesion().then(function (sesion) {
+      document.querySelectorAll('.cd-progreso').forEach(function (w) {
+        raiz.Cuaderno.getProgreso(w.dataset.unidad || unidadActual).then(function (prog) {
+          var html = '';
+          prog.forEach(function (c) {
+            html += '<div class="cd-comp"><div class="cd-comp-cab"><span>' + esc(c.nombre) + '</span>' +
+              '<span class="cd-comp-niv cd-niv-' + c.nivel + '">' + esc(c.nombreNivel) + '</span></div>' +
+              '<div class="cd-barra"><div class="cd-barra-f cd-niv-' + c.nivel + '" style="width:' + (c.nivel * 25) + '%"></div></div></div>';
+          });
+          html += htmlSesion(sesion);
+          w.innerHTML = html;
+
+          var btnIn = w.querySelector('.cd-iniciar-sesion');
+          if (btnIn) btnIn.addEventListener('click', function () {
+            btnIn.disabled = true; btnIn.textContent = 'Conectando…';
+            raiz.Cuaderno.login().then(refrescarProgreso).catch(function (e) {
+              alert(e.message || 'No se pudo iniciar sesión.');
+              refrescarProgreso();
+            });
+          });
+          var btnOut = w.querySelector('.cd-cerrar-sesion');
+          if (btnOut) btnOut.addEventListener('click', function () {
+            raiz.Cuaderno.logout().then(refrescarProgreso);
+          });
         });
-        html += '<div class="cd-modo">Modo invitado — el progreso se guarda en este dispositivo. Con tu cuenta de la escuela vas a poder verlo desde cualquier lado.</div>';
-        w.innerHTML = html;
       });
     });
   }
@@ -194,7 +222,8 @@
 
   function init(opciones) {
     unidadActual = opciones.unidad;
-    raiz.Cuaderno.init({ adapter: opciones.adapter || 'local' });
+    adaptadorActual = opciones.adapter || 'local';
+    raiz.Cuaderno.init({ adapter: adaptadorActual }).then(refrescarProgreso);
 
     var mapa = {};
     document.querySelectorAll('script.cd-ejercicio[type="application/json"]').forEach(function (bloque) {

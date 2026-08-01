@@ -2,7 +2,13 @@
    El cliente jamás escribe puntajes directo: todo pasa por acá.
    Producción: ID token de Firebase (RS256) verificado contra las claves públicas
    de Google + chequeo de dominio escolar. Desarrollo: MODO_DEV=1 acepta el header
-   X-Dev-Uid para probar sin proyecto Firebase. */
+   X-Dev-Uid para probar sin proyecto Firebase.
+
+   El token verificado se devuelve junto con la identidad (campo `token`) para que
+   el almacén `firestore` lo reenvíe tal cual a la REST API de Firestore como Bearer
+   — Firestore acepta ID tokens de Firebase Auth directo y aplica las Security Rules
+   según ese uid. Así no hace falta una service account ni un secreto nuevo: el mismo
+   token que ya verificamos acá es válido para Firestore. */
 
 const JWKS_URL = 'https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com';
 let jwksCache = { claves: null, hasta: 0 };
@@ -31,7 +37,7 @@ async function obtenerClave(kid) {
 export async function verificarIdentidad(request, env) {
   if (env.MODO_DEV === '1') {
     const devUid = request.headers.get('X-Dev-Uid');
-    if (devUid) return { uid: devUid, email: devUid + '@dev.local', nombre: devUid, modo: 'dev' };
+    if (devUid) return { uid: devUid, email: devUid + '@dev.local', nombre: devUid, modo: 'dev', token: null };
   }
 
   const auth = request.headers.get('Authorization') || '';
@@ -70,5 +76,5 @@ export async function verificarIdentidad(request, env) {
   const email = (cuerpo.email || '').toLowerCase();
   if (dominio && !email.endsWith('@' + dominio)) return null;
 
-  return { uid: cuerpo.sub, email, nombre: cuerpo.name || email, modo: 'alumno' };
+  return { uid: cuerpo.sub, email, nombre: cuerpo.name || email, modo: 'alumno', token };
 }

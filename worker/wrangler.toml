@@ -4,13 +4,14 @@ main = "src/index.js"
 compatibility_date = "2026-07-01"
 
 [vars]
-# Desarrollo local: MODO_DEV=1 acepta el header X-Dev-Uid sin Firebase.
-# En producción DEBE ir en "0".
-MODO_DEV = "1"
-ALMACEN = "memoria"
+# MODO_DEV=1 acepta el header X-Dev-Uid sin pasar por Firebase — cómodo para probar
+# local (wrangler dev), pero es un bypass de autenticación si queda prendido en
+# producción. Va en "0" acá porque este es el config que se deploya de verdad.
+# Para probar local con el bypass: wrangler dev --var MODO_DEV:1 (no toca este archivo).
+MODO_DEV = "0"
+ALMACEN = "firestore"
 UNIDADES = "u1"
 DOMINIO_ESCOLAR = "philips.edu.ar"
 ORIGEN_PERMITIDO = "https://prof-pablo-roca-philips.github.io"
 COMPETENCIAS_BASE = "https://prof-pablo-roca-philips.github.io/taller-de-proyecto"
-# FIREBASE_PROJECT_ID se define al crear el proyecto Firebase (fase 1):
-# FIREBASE_PROJECT_ID = "taller-de-proyecto-philips"
+FIREBASE_PROJECT_ID = "taller-de-proyecto-philips"

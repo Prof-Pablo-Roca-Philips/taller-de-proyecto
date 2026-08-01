@@ -1,0 +1,47 @@
+// Cuaderno Digital — Firestore Security Rules
+//
+// Defensa en profundidad: el Worker (worker/src/index.js) ya valida todo server-side
+// antes de tocar Firestore, pero estas reglas son la ÚLTIMA línea — si alguna vez algo
+// hablara con Firestore directo (bypaseando el Worker), esto sigue protegiendo.
+//
+// Deny-by-default: todo lo que no está explícitamente permitido, está prohibido.
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function esDelDominioEscolar() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email.matches('.*@philips[.]edu[.]ar$');
+    }
+
+    function esElMismoUsuario(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function intentoValido(datos) {
+      return datos.keys().hasAll(['v', 'id', 'uid', 'ejercicio', 'unidad', 'puntaje', 'ts'])
+        && datos.uid == request.auth.uid
+        && datos.puntaje is number
+        && datos.puntaje >= 0 && datos.puntaje <= 1
+        && datos.ejercicio is string
+        && datos.unidad is string;
+    }
+
+    match /usuarios/{uid}/intentos/{intentoId} {
+      allow read: if esElMismoUsuario(uid) && esDelDominioEscolar();
+      allow create: if esElMismoUsuario(uid) && esDelDominioEscolar() && intentoValido(request.resource.data);
+      // Los intentos son append-only (historial inmutable, ver CONTRATO.md): nunca se
+      // actualizan ni se borran, ni el alumno ni nadie — el "mejor intento" se recalcula
+      // siempre a partir del log completo.
+      allow update, delete: if false;
+    }
+
+    // Cualquier otra ruta: cerrada.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

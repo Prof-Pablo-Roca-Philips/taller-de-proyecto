@@ -61,12 +61,12 @@ export default {
         ts: new Date().toISOString(),
         origen: 'api'
       };
-      await almacen.guardarIntento(intento);
+      await almacen.guardarIntento(intento, quien.token);
       return json(intento, 201, env);
     }
 
     if (ruta === '/api/intentos' && request.method === 'GET') {
-      const intentos = await almacen.listarIntentos(quien.uid, url.searchParams.get('unidad') || undefined);
+      const intentos = await almacen.listarIntentos(quien.uid, url.searchParams.get('unidad') || undefined, quien.token);
       return json({ intentos }, 200, env);
     }
 
@@ -75,7 +75,7 @@ export default {
       const unidad = mProgreso[1];
       const def = await competenciasDe(unidad, env);
       if (!def) return json({ error: 'unidad-desconocida', unidad }, 404, env);
-      const intentos = await almacen.listarIntentos(quien.uid, unidad);
+      const intentos = await almacen.listarIntentos(quien.uid, unidad, quien.token);
       return json({ unidad, progreso: calcularProgreso(intentos, def.ejercicios, def.competencias) }, 200, env);
     }
 
@@ -85,7 +85,7 @@ export default {
       for (const unidad of unidades) {
         const def = await competenciasDe(unidad, env);
         if (!def) continue;
-        const intentos = await almacen.listarIntentos(quien.uid, unidad);
+        const intentos = await almacen.listarIntentos(quien.uid, unidad, quien.token);
         const conIntento = new Set(intentos.map(i => i.ejercicio));
         const todos = Object.keys(def.ejercicios || {});
         boletin.unidades.push({
@@ -101,7 +101,7 @@ export default {
     }
 
     if (ruta === '/api/exportar' && request.method === 'GET') {
-      return json(await almacen.exportar(quien.uid), 200, env);
+      return json(await almacen.exportar(quien.uid, quien.token), 200, env);
     }
 
     return json({ error: 'ruta-desconocida' }, 404, env);
